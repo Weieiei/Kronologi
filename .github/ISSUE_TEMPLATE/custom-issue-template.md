@@ -5,6 +5,7 @@ about: Every issue should contain the information listed.
 ---
 
 *Description of Issue*
+As user X, I want to do Y, so I can accomplish Z.
 [SP: ]
 [Value: ]
 [Risk: ]
