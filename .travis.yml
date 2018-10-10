@@ -1,14 +1,14 @@
 language: node_js
 
 node_js:
-  - "7"
+- "7"
   
 services:
-  - mysql
+- mysql
 
 before_script:
 
-install:  
+install:
 npm test
 
 notifications:
