@@ -8,8 +8,8 @@ services:
 
 #before_script:
 
-#install:
-#npm test
+install:
+npm test
 
 notifications:
 email: false
