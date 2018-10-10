@@ -8,8 +8,11 @@ services:
 
 #before_script:
 
-install:
-npm test
+script:
+- echo "Hello World"
 
+after_script:
+- echo "Hello World again"
+  
 notifications:
 email: false
