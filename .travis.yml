@@ -6,10 +6,10 @@ node_js:
 services:
 - mysql
 
-before_script:
+#before_script:
 
-install:
-npm test
+#install:
+#npm test
 
 notifications:
 email: false
