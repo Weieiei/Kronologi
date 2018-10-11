@@ -1,6 +1,7 @@
 const express = require('express'), 
     bodyParser = require('body-parser'),
-    cors = require('cors');
+    cors = require('cors'),
+    db = require('./db');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -13,6 +14,16 @@ app.get('/', (req, res) => {
     res.send('Hey world');
 })
 
+db.query('SELECT $1::text AS greeting;', ['Hi Earth'], (err, res) => {
+    if (err) {
+        console.log(err);
+        console.log('DB connection unsuccessful.');
+    }
+    else {
+        console.log(res.rows);
+    }
+})
+
 app.listen(PORT, () => {
-    console.log('Running on port', PORT)
+    console.log('Running on port', PORT);
 })
