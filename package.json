@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "serve": "concurrently \"ng serve\" \"./node_modules/.bin/nodemon server/app.js\""
+    "serve:unix": "concurrently \"ng serve\" \"./node_modules/.bin/nodemon server/app.js\"",
+    "serve:win": "concurrently \"ng serve\" \".\\node_modules\\.bin\\nodemon server\\app.js\""
   },
   "private": true,
   "dependencies": {
