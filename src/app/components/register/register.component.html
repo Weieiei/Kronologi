@@ -18,7 +18,7 @@
 	<mat-form-field class="field" hintLabel="E.g.: johnsmith@gmail.com">
 		<input matInput [(ngModel)]="user.email"
 			type="text" name="email" id="email"
-			pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" placeholder="Email" required>
+			pattern="^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$" placeholder="Email" required>
 	</mat-form-field>
 
 	<mat-form-field class="field" hintLabel="Between 4 and 30 characters">
@@ -32,10 +32,15 @@
 		</mat-hint>
 	</mat-form-field>
 
-	<mat-form-field class="field" hintLabel="At least 1 capital letter and 1 number">
-		<input matInput [(ngModel)]="user.password"
+	<mat-form-field class="field" hintLabel="Between 6 and 30 characters">
+		<input matInput #password [(ngModel)]="user.password"
 			type="password" name="password" id="password"
-			placeholder="Password" required>
+			pattern=".{6,30}" placeholder="Password" required>
+		<mat-hint align="end"
+			[class.green]="user.password?.length >= 6 && user.password?.length <= 30"
+			[class.red]="(user.password?.length < 6 || user.password?.length > 30) && password.className.includes('ng-touched')">
+			{{ user.password?.length }}/30
+		</mat-hint>
 	</mat-form-field>
 
 	<mat-form-field class="field">
