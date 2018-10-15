@@ -1,0 +1,21 @@
+.user.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.name.fields {
+    display: flex;
+    flex-direction: row;
+}
+
+.name.fields > * {
+    width: 50%;
+}
+
+.name.fields > #firstname {
+    padding-right: 0.25em;
+}
+
+.name.fields > #lastname {
+    padding-left: 0.25em;
+}

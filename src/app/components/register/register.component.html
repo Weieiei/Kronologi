@@ -1,16 +1,38 @@
 <h3>Sign Up for an Account</h3>
-<form #userForm="ngForm">
+<form class="user form" #userForm="ngForm" (ngSubmit)="registerUser()" autocomplete="off">
+
+	<div class="name fields">
+		<mat-form-field id="firstname">
+			<input matInput [(ngModel)]="user.first_name"
+				type="text" name="firstname" id="firstname"
+				pattern=".{2,}" placeholder="First name" required>
+		</mat-form-field>
+
+		<mat-form-field id="lastname">
+			<input matInput [(ngModel)]="user.last_name"
+				type="text" name="lastname" id="lastname"
+				pattern=".{2,}" placeholder="Last name" required>
+		</mat-form-field>
+	</div>
 
 	<mat-form-field>
-		<input matInput placeholder="First name">
+		<input matInput [(ngModel)]="user.email"
+			type="email" name="email" id="email"
+			placeholder="Email" required>
 	</mat-form-field>
 
 	<mat-form-field>
-		<input matInput placeholder="Last name">
+		<input matInput [(ngModel)]="user.username"
+			type="text" name="username" id="username"
+			pattern=".{4,}" placeholder="Username" required>
 	</mat-form-field>
 
 	<mat-form-field>
-		<input matInput placeholder="Email">
+		<input matInput [(ngModel)]="user.password"
+			type="password" name="password" id="password"
+			placeholder="Password" required>
 	</mat-form-field>
+
+	<button mat-stroked-button color="primary" type="submit">Register</button>
 
 </form>
