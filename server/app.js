@@ -10,8 +10,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => {
-    res.send('Hey world');
+app.get('/api/cork', (req, res) => {
+    res.send({ message: 'Hey world' });
 })
 
 db.query('SELECT $1::text AS greeting;', ['Hi Earth'], (err, res) => {
