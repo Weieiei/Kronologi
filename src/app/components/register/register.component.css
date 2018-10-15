@@ -3,9 +3,18 @@
     flex-direction: column;
 }
 
+.user.form .field {
+    padding-bottom: .3rem;
+}
+
+.user.form button[type=submit] {
+    margin-top: 1rem;
+}
+
 .name.fields {
     display: flex;
     flex-direction: row;
+    padding-bottom: .3rem;
 }
 
 .name.fields > * {
@@ -18,4 +27,12 @@
 
 .name.fields > #lastname {
     padding-left: 0.25em;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: #f44336;
 }

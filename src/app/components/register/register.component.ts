@@ -9,15 +9,22 @@ import { User } from 'src/app/models/user';
 export class RegisterComponent implements OnInit {
 
   user: User;
+  repeatPassword: string;
 
   constructor() { }
 
   ngOnInit() {
     this.user = new User();
+    this.repeatPassword = '';
   }
 
   registerUser() {
-    console.log(this.user);
+    if (this.user.password === this.repeatPassword) {
+      console.log(`Hello ${this.user.first_name} ${this.user.last_name}`);
+    }
+    else {
+      alert('passwords don\'t match');
+    }
   }
 
 }

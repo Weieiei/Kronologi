@@ -15,24 +15,35 @@
 		</mat-form-field>
 	</div>
 
-	<mat-form-field>
+	<mat-form-field class="field" hintLabel="E.g.: johnsmith@gmail.com">
 		<input matInput [(ngModel)]="user.email"
-			type="email" name="email" id="email"
-			placeholder="Email" required>
+			type="text" name="email" id="email"
+			pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" placeholder="Email" required>
 	</mat-form-field>
 
-	<mat-form-field>
-		<input matInput [(ngModel)]="user.username"
+	<mat-form-field class="field" hintLabel="Between 4 and 30 characters">
+		<input matInput #username [(ngModel)]="user.username"
 			type="text" name="username" id="username"
-			pattern=".{4,}" placeholder="Username" required>
+			pattern=".{4,30}" placeholder="Username" required>
+		<mat-hint align="end"
+			[class.green]="user.username?.length >= 4 && user.username?.length <= 30"
+			[class.red]="(user.username?.length < 4 || user.username?.length > 30) && username.className.includes('ng-touched')">
+			{{ user.username?.length }}/30
+		</mat-hint>
 	</mat-form-field>
 
-	<mat-form-field>
+	<mat-form-field class="field" hintLabel="At least 1 capital letter and 1 number">
 		<input matInput [(ngModel)]="user.password"
 			type="password" name="password" id="password"
 			placeholder="Password" required>
 	</mat-form-field>
 
-	<button mat-stroked-button color="primary" type="submit">Register</button>
+	<mat-form-field class="field">
+		<input matInput [(ngModel)]="repeatPassword"
+			type="password" name="repeatPassword" id="repeatPassword"
+			placeholder="Re-enter password" required>
+	</mat-form-field>
+
+	<button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Create Account</button>
 
 </form>
