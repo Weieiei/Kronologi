@@ -1,7 +1,8 @@
 const express = require('express'), 
     bodyParser = require('body-parser'),
     cors = require('cors'),
-    db = require('./db');
+    db = require('./db'),
+    api = require('./api/api');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -10,10 +11,15 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/api/cork', (req, res) => {
-    res.send({ message: 'Hey world' });
-})
+/**
+ * API endpoints are grouped up in the ./api/api.js file.
+ */
+app.use('/api', api);
 
+/**
+ * Dummy query.
+ * Just used to test connection to database.
+ */
 db.query('SELECT $1::text AS greeting;', ['Hi Earth'], (err, res) => {
     if (err) {
         console.log(err);
