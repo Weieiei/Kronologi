@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,7 @@ export class RegisterComponent implements OnInit {
   user: User;
   repeatPassword: string;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.user = new User();
@@ -20,10 +21,13 @@ export class RegisterComponent implements OnInit {
 
   registerUser() {
     if (this.user.password === this.repeatPassword) {
-      console.log(`Hello ${this.user.first_name} ${this.user.last_name}`);
+      this.authService.registerUser(this.user).subscribe(
+        res => console.log(res),
+        err => console.log(err)
+      )
     }
     else {
-      alert('passwords don\'t match');
+      alert('The passwords don\'t match.');
     }
   }
 

@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users(
         CHECK (char_length(first_name) >= 2),
     last_name VARCHAR(255) NOT NULL
         CHECK (char_length(last_name) >= 2),
-    email VARCHAR(255) NOT NULL
+    email CITEXT UNIQUE NOT NULL
         CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$'),
     username CITEXT UNIQUE NOT NULL
         CHECK (char_length(username) >= 4 AND char_length(username) <= 30),
