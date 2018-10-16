@@ -18,7 +18,7 @@
 	<mat-form-field class="field" hintLabel="E.g.: johnsmith@gmail.com">
 		<input matInput [(ngModel)]="user.email"
 			type="text" name="email" id="email"
-			pattern="^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$" placeholder="Email" required>
+			pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$" placeholder="Email" required>
 	</mat-form-field>
 
 	<mat-form-field class="field" hintLabel="Between 4 and 30 characters">
