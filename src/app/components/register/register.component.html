@@ -24,18 +24,21 @@
 				<input matInput [(ngModel)]="user.email"
 					type="text" name="email" id="email"
 					pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$" placeholder="Email" required>
+				<mat-icon matSuffix>email</mat-icon>
 			</mat-form-field>
 
 			<mat-form-field class="field" hintLabel="Between 4 and 30 characters" floatLabel="never">
-				<input matInput #username [(ngModel)]="user.username"
+				<input matInput [(ngModel)]="user.username"
 					type="text" name="username" id="username"
 					pattern=".{4,30}" placeholder="Username" required>
+				<mat-icon matSuffix>person</mat-icon>
 			</mat-form-field>
 
 			<mat-form-field class="field" floatLabel="never">
-				<input matInput #password [(ngModel)]="user.password"
+				<input matInput [(ngModel)]="user.password"
 					type="password" name="password" id="password"
 					pattern="^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$" placeholder="Password" required>
+				<mat-icon matSuffix>visibility_off</mat-icon>
 				<mat-hint>
 					Between 6 and 30 characters
 					<br>
@@ -47,6 +50,7 @@
 				<input matInput [(ngModel)]="repeatPassword"
 					type="password" name="repeatPassword" id="repeatPassword"
 					placeholder="Re-enter password" required>
+				<mat-icon matSuffix>visibility_off</mat-icon>
 			</mat-form-field>
 
 			<button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Create Account</button>

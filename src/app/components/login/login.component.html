@@ -1,0 +1,29 @@
+<div class="main">
+
+	<div class="column">
+
+		<h3>Sign In</h3>
+
+		<form class="user form" #userForm="ngForm" (ngSubmit)="loginUser()" autocomplete="off">
+
+			<mat-form-field class="field" floatLabel="never">
+				<input matInput #usernameInput [(ngModel)]="username"
+					type="text" name="username" id="username"
+					pattern=".{4,30}" placeholder="Username">
+				<mat-icon matSuffix>person</mat-icon>
+			</mat-form-field>
+
+			<mat-form-field class="field" floatLabel="never">
+				<input matInput [(ngModel)]="password"
+					type="password" name="password" id="password"
+					placeholder="Password">
+				<mat-icon matSuffix>visibility_off</mat-icon>
+			</mat-form-field>
+
+			<button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Sign In</button>
+
+		</form>
+
+	</div>
+
+</div>

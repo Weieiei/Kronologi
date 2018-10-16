@@ -18,6 +18,11 @@ authenticate.post('/register', (req, res) => {
     bcrypt.genSalt(saltRounds, (err, salt) => {
         bcrypt.hash(password, salt, (err, hash) => {
 
+            if (err) {
+                console.log(err);
+                return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
+            }
+
             db.query(`
             INSERT INTO users
             (first_name, last_name, email, username, password) VALUES
@@ -47,6 +52,49 @@ authenticate.post('/register', (req, res) => {
             })
 
         })
+    })
+})
+
+authenticate.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    db.query(`
+    SELECT user_id, username, password FROM users
+    WHERE username = $1;
+    `, [username], (error, result) => {
+
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+
+        const invalidCredentials = 'Incorrect username and/or password.';
+
+        if (!result.rows.length) {
+            return res.status(401).send({ invalidCredentials });
+        }
+
+        bcrypt.compare(password, result.rows[0].password, (err, match) => {
+
+            if (err) {
+                console.log(err);
+                return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
+            }
+
+            if (match) {
+                const user_id = result.rows[0].user_id;
+                const message = 'User successfully logged in.';
+                return res.status(200).send({
+                    user_id,
+                    message
+                });
+            }
+            else {
+                return res.status(401).send({ invalidCredentials });
+            }
+
+        })
+
     })
 })
 

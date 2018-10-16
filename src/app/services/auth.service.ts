@@ -13,4 +13,8 @@ export class AuthService {
   registerUser(user: User): Observable<User> {
     return this.http.post<User>(['api', 'authenticate', 'register'].join('/'), { user });
   }
+
+  loginUser(username: String, password: String): Observable<User> {
+    return this.http.post<User>(['api', 'authenticate', 'login'].join('/'), { username, password });
+  }
 }
