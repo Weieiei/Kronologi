@@ -9,7 +9,7 @@ html, body {
 }
 
 body {
-    background-image: url('./assets/images/clouds.jpg');
+    background-image: linear-gradient(#3F51B5, #9FA8DA);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;

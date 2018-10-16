@@ -1,3 +1,7 @@
+#navbar {
+  background: transparent;
+}
+
 .space {
   flex: 1 1 auto;
 }
