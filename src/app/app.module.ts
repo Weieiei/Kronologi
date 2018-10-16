@@ -13,7 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards/auth.guard';
+import { AnonymousGuard } from './guards/anonymous.guard';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { AuthGuard } from './auth.guard';
     MaterialModule,
     HttpClientModule
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, AnonymousGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
