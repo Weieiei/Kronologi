@@ -20,7 +20,7 @@ app.use('/api', api);
  * Dummy query.
  * Just used to test connection to database.
  */
-db.query('SELECT $1::text AS greeting;', ['Hi Earth'], (err, res) => {
+db.query('SELECT * FROM users LIMIT 1;', [], (err, res) => {
     if (err) {
         console.log(err);
         console.log('DB connection unsuccessful.');
