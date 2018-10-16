@@ -1,5 +1,6 @@
 const express = require('express'),
     bcrypt = require('bcrypt'),
+    jwt = require('jsonwebtoken'),
     db = require('../../db'),
     saltRounds = 10,
     passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/,
@@ -42,9 +43,12 @@ authenticate.post('/register', (req, res) => {
                 }
                 else {
                     const user_id = result.rows[0].user_id;
+                    const token = generateToken(user_id);
                     const message = 'User successfully created.';
+
                     return res.status(200).send({
                         user_id,
+                        token,
                         message
                     });
                 }
@@ -83,9 +87,12 @@ authenticate.post('/login', (req, res) => {
 
             if (match) {
                 const user_id = result.rows[0].user_id;
+                const token = generateToken(user_id);
                 const message = 'User successfully logged in.';
+                
                 return res.status(200).send({
                     user_id,
+                    token,
                     message
                 });
             }
@@ -97,5 +104,11 @@ authenticate.post('/login', (req, res) => {
 
     })
 })
+
+function generateToken(user_id) {
+    const payload = { subject: user_id };
+    const token = jwt.sign(payload, 'secretKey');
+    return token;
+}
 
 module.exports = authenticate;

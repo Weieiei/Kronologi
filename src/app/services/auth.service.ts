@@ -17,4 +17,16 @@ export class AuthService {
   loginUser(username: String, password: String): Observable<User> {
     return this.http.post<User>(['api', 'authenticate', 'login'].join('/'), { username, password });
   }
+
+  loggedIn(): boolean {
+    return !!(this.getToken());
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string {
+    return localStorage.getItem('token');
+  }
 }
