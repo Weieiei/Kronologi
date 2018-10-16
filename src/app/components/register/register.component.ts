@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -12,11 +12,14 @@ export class RegisterComponent implements OnInit {
   user: User;
   repeatPassword: string;
 
+  @ViewChild('firstNameInput') firstNameInput: ElementRef;
+
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.user = new User();
     this.repeatPassword = '';
+    this.firstNameInput.nativeElement.focus();
   }
 
   registerUser() {
