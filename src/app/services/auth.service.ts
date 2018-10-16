@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
   registerUser(user: User): Observable<User> {
     return this.http.post<User>(['api', 'authenticate', 'register'].join('/'), { user });
@@ -28,5 +32,14 @@ export class AuthService {
 
   getToken(): string {
     return localStorage.getItem('token');
+  }
+
+  deleteToken(): void {
+    localStorage.removeItem('token');
+  }
+
+  logoutUser(): void {
+    this.deleteToken();
+    this.router.navigate(['']);
   }
 }
