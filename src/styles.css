@@ -14,3 +14,20 @@ body {
     background-repeat: no-repeat;
     background-position: center center;
 }
+
+.container {
+  max-width: 1127px;
+  height: 80%;
+  display: flex;
+  margin-left: auto!important;
+  margin-right: auto!important;
+}
+
+div.main {
+    display: flex;
+    justify-content: center;
+}
+
+div.main > div.column {
+    width: 50%;
+}
