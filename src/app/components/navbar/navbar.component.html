@@ -1,9 +1,12 @@
 <mat-toolbar color="primary">
 	<mat-toolbar-row class="container">
-		<span>Appointment Scheduler</span>
+		<button mat-button class="title" routerLink="/">Appointment Scheduler</button>
+
 		<span class="space"></span>
 	
 		<mat-icon class="nav-icon">calendar_today</mat-icon>
-		<button mat-button>Contact</button>
+		<button mat-button routerLink="/register">Register</button>
+		<button mat-button routerLink="/login">Login</button>
+		<button mat-button routerLink="/contact">Contact</button>
 	</mat-toolbar-row>
 </mat-toolbar>
