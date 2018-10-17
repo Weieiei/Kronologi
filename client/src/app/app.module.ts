@@ -9,12 +9,13 @@ import { MaterialModule } from './material';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
+import { UrlInterceptor } from './interceptor';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,16 @@ import { AnonymousGuard } from './guards/anonymous.guard';
     MaterialModule,
     HttpClientModule
   ],
-  providers: [AuthService, AuthGuard, AnonymousGuard],
+  providers: [
+    AuthService,
+    AuthGuard,
+    AnonymousGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UrlInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
