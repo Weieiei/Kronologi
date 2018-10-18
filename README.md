@@ -1,5 +1,7 @@
 # Appointment Scheduler
 
+[![Build Status](https://travis-ci.com/Weieiei/AppointmentScheduler.svg?token=246smhzQ1xhQqHvZsnxy&branch=master)](https://travis-ci.com/Weieiei/AppointmentScheduler)
+
 SOEN 490 (Capstone) project for Concordia University.
 
 # Running the stack
