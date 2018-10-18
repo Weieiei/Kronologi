@@ -6,7 +6,7 @@ const { Client } = require('pg'),
  * Else, use local connection.
  */
 const client = new Client({
-    name: process.env.DB_NAME || config.name,
+    database: process.env.DB_NAME || config.database,
     port: process.env.DB_PORT || config.port,
     host: process.env.DB_HOST || config.host,
     user: process.env.DB_USER || config.user,
