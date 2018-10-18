@@ -34,9 +34,8 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['']);
         },
         err => console.log(err)
-      )
-    }
-    else {
+      );
+    } else {
       alert('The passwords don\'t match.');
     }
   }

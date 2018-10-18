@@ -1,10 +1,12 @@
 const express = require('express'),
     bcrypt = require('bcrypt'),
     jwt = require('jsonwebtoken'),
-    db = require('../../db'),
-    saltRounds = 10,
-    passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/,
-    authenticate = express.Router();
+    db = require('../../db');
+
+const authenticate = express.Router();
+
+const saltRounds = 10;
+const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
 authenticate.post('/register', (req, res) => {
     const { first_name, last_name, email, username, password } = req.body.user;

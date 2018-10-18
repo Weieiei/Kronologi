@@ -14,7 +14,7 @@ export class AnonymousGuard implements CanActivate {
 
   canActivate(): boolean {
 
-    if (!this.authService.loggedIn()) return true;
+    if (!this.authService.loggedIn()) { return true; }
 
     this.router.navigate(['']);
     return false;
