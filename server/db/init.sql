@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS users(
     join_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS vendors(
-    vendor_id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS employees(
+    employee_id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL
         CHECK (char_length(first_name) >= 2),
     last_name VARCHAR(255) NOT NULL
@@ -31,8 +31,29 @@ CREATE TABLE IF NOT EXISTS vendors(
 CREATE TABLE IF NOT EXISTS appointments(
 	appointment_id SERIAL PRIMARY KEY,
 	user_id SERIAL REFERENCES users(user_id),
-	vendor_id SERIAL REFERENCES vendors(vendor_id),
+	employee_id SERIAL REFERENCES employees(employee_id),
+  service_id SERIAL REFERENCES services(service_id),
 	start_time TIMESTAMP NOT NULL,
 	end_time TIMESTAMP NOT NULL,
 	notes VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS services(
+  service_id SERIAL PRIMARY KEY,
+  time_in_hours INT,
+  price FLOAT,
+  description VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS businesses(
+  business_id SERIAL PRIMARY KEY,
+  name VARCHAR (255) NOT NULL,
+  address VARCHAR (255)
+);
+
+CREATE TABLE IF NOT EXISTS employee_hours(
+  employee_id SERIAL REFERENCES employee(employee_id),
+  start_time TIMESTAMP NOT NULL,
+  end_time TIMESTAMP NOT NULL,
+  PRIMARY KEY (employee_id, start_time)
 );
