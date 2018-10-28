@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS appointments(
 
 CREATE TABLE IF NOT EXISTS services(
   service_id SERIAL PRIMARY KEY,
-  time_in_hours INT,
+  duration_in_hours INT,
   price FLOAT,
   description VARCHAR(255)
 );
