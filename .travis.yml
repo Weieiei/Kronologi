@@ -1,18 +1,38 @@
 language: node_js
 
 node_js:
-- "7"
+- "8.12.0"
   
 services:
-- mysql
+- postgresql
 
-#before_script:
+addons:
+apt:
+  sources:
+    - google-chrome
+  packages:
+    - google-chrome-stable
+    - google-chrome-beta
 
-script:
-- echo "Hello World"
+before_script:
+# Client
+- cd client && npm install
+- npm install -g @angular-cli
+#- npm install -g karma
+- ng build
+- ng serve
 
-after_script:
-- echo "Hello World again"
+# Server
+- cd ../server && npm install
+- psql -c 'create database travis_ci_test;' -U postgres
+- node app.js
+
+script: 
+# Client
+cd ../client && ng test
+#karma start client/src/karma.conf.js --single-run
+# Server
+#some tests here
   
 notifications:
 email: false
