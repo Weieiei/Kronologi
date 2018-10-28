@@ -14,19 +14,25 @@ apt:
     - google-chrome-stable
     - google-chrome-beta
 
-
 before_script:
-- psql -c 'create database travis_ci_test;' -U postgres
+# Client
+- cd client && npm install
 - npm install -g @angular-cli
 - npm install -g karma
-- npm install
 - ng build
+- ng serve
+
+# Server
+- cd ../server && npm install
+- psql -c 'create database travis_ci_test;' -U postgres
+- node app.js
 
 script: 
 # Client
-ng test
+cd ../client && ng test
 karma start client/src/karma.conf.js --single-run
-
+# Server
+#some tests here
   
 notifications:
 email: false
