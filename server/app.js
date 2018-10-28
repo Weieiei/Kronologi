@@ -1,7 +1,7 @@
 const express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
-    db = require('./db'),
+    knex = require('./db/knex'),
     api = require('./api/api');
 
 const PORT = process.env.PORT || 3000;
@@ -18,16 +18,9 @@ app.use('/api', api);
 
 /**
  * Dummy query.
- * Just used to test connection to database.
  */
-db.query('SELECT * FROM users LIMIT 1;', [], (err, res) => {
-    if (err) {
-        console.log(err);
-        console.log('DB connection unsuccessful.');
-    }
-    else {
-        console.log(res.rows);
-    }
+knex.select().from('users').limit(1).then(user => {
+    console.log(user);
 })
 
 app.listen(PORT, () => {
