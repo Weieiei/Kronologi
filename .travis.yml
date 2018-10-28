@@ -18,7 +18,7 @@ before_script:
 # Client
 - cd client && npm install
 - npm install -g @angular-cli
-- npm install -g karma
+#- npm install -g karma
 - ng build
 - ng serve
 
@@ -30,7 +30,7 @@ before_script:
 script: 
 # Client
 cd ../client && ng test
-karma start client/src/karma.conf.js --single-run
+#karma start client/src/karma.conf.js --single-run
 # Server
 #some tests here
   
