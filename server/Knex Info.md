@@ -1,6 +1,6 @@
-# Knex.js
+# [Knex.js](https://knexjs.org/)
 
-Knex.js is a SQL query builder that's used to take away the need for the developer to work with raw queries (for the most part...).
+Knex.js is a SQL query builder that's used to take away the need for the developer to work with raw queries (for the most part...). Click [here](https://devhints.io/knex) for a useful cheatsheet.
 
 ## Getting Started
 
