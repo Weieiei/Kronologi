@@ -2,7 +2,8 @@
 exports.up = async knex => {
 	await knex.schema.raw('CREATE EXTENSION IF NOT EXISTS CITEXT;');
 
-	await knex.schema.createTable('users', (table) => {
+	await knex.schema
+	.createTable('users', table => {
 		table.increments('user_id');
 		table.string('first_name').notNullable();
 		table.string('last_name').notNullable();
@@ -10,6 +11,13 @@ exports.up = async knex => {
 		table.specificType('username', 'CITEXT').unique().notNullable();
 		table.string('password').notNullable();
 		table.timestamp('created_at').defaultTo(knex.fn.now());
+	})
+	.createTable('appointments', table => {
+		table.increments('appointment_id');
+		table.integer('user_id').unsigned().references('user_id').inTable('users');
+		table.timestamp('start_time').notNullable();
+		table.timestamp('end_time').notNullable();
+		table.string('notes');
 	})
 	
 	await knex.schema.raw(`
@@ -21,5 +29,7 @@ exports.up = async knex => {
 };
 
 exports.down = function(knex, Promise) {
-	return knex.schema.dropTable('users');
+	return knex.schema
+		.dropTable('appointments')
+		.dropTable('users');
 };
