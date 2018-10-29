@@ -12,8 +12,6 @@ exports.up = async knex => {
 		table.string('password').notNullable();
 		table.timestamp('created_at').defaultTo(knex.fn.now());
 	})
-	
-	await knex.schema
 	.createTable('appointments', table => {
 		table.increments('appointment_id');
 		table.integer('user_id').unsigned().references('user_id').inTable('users');
@@ -32,6 +30,6 @@ exports.up = async knex => {
 
 exports.down = function(knex, Promise) {
 	return knex.schema
-		.dropTable('users')
-		.dropTable('appointments');
+		.dropTable('appointments')
+		.dropTable('users');
 };
