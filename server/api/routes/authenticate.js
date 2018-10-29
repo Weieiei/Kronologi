@@ -1,7 +1,7 @@
 const express = require('express'),
     bcrypt = require('bcryptjs'),
     jwt = require('jsonwebtoken'),
-    db = require('../../db');
+    knex = require('../../db/knex');
 
 const authenticate = express.Router();
 
@@ -9,6 +9,7 @@ const saltRounds = 10;
 const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
 authenticate.post('/register', (req, res) => {
+
     const { first_name, last_name, email, username, password } = req.body.user;
 
     if (password.length < 6 || password.length > 30) {
@@ -26,34 +27,42 @@ authenticate.post('/register', (req, res) => {
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
 
-            db.query(`
-            INSERT INTO users
-            (first_name, last_name, email, username, password) VALUES
-            ($1, $2, $3, $4, $5)
-            RETURNING user_id;
-            `, [first_name, last_name, email, username, hash],
-            (error, result) => {
+            knex('users').insert({
+                first_name,
+                last_name,
+                email,
+                username,
+                password: hash
+            })
+            .returning('user_id')
+            .then(result => {
 
-                if (error) {
-                    switch (error.constraint) {
-                        case 'users_email_key':
-                            return res.status(400).send({ emailError: 'An account with this email already exists.' });
-                        case 'users_username_key':
-                            return res.status(400).send({ usernameError: 'This username is taken.' });
-                    }
-                    return res.status(500).send({ error: 'Something went wrong.' });
-                }
-                else {
-                    const user_id = result.rows[0].user_id;
-                    const token = generateToken(user_id);
-                    const message = 'User successfully created.';
+                const user_id = result[0];
+                const token = generateToken(user_id);
+                const message = 'User successfully created.';
 
-                    return res.status(200).send({
-                        user_id,
-                        token,
-                        message
-                    });
+                return res.status(200).send({
+                    user_id,
+                    token,
+                    message
+                });
+
+            })
+            .catch(error => {
+
+                switch (error.constraint) {
+                    case 'users_first_name_length':
+                    case 'users_last_name_length':
+                        return res.status(400).send({ nameError: 'Both first and last names should be at least 2 characters long each.' });
+                    case 'users_email_unique':
+                        return res.status(400).send({ emailError: 'An account with this email already exists.' });
+                    case 'users_username_unique':
+                        return res.status(400).send({ usernameError: 'This username is taken.' });
+                    case 'users_username_length':
+                        return res.status(400).send({ usernameError: 'Usernames should be between 4 and 30 characters.' });
                 }
+
+                return res.status(500).send({ error });
 
             })
 
@@ -62,25 +71,19 @@ authenticate.post('/register', (req, res) => {
 })
 
 authenticate.post('/login', (req, res) => {
+
     const { username, password } = req.body;
 
-    db.query(`
-    SELECT user_id, username, password FROM users
-    WHERE username = $1;
-    `, [username], (error, result) => {
-
-        if (error) {
-            console.log(error);
-            return res.status(500).send({ error: 'Something went wrong.' });
-        }
+    knex.select().from('users').where('username', username)
+    .then(user => {
 
         const invalidCredentials = 'Incorrect username and/or password.';
 
-        if (!result.rows.length) {
+        if (!user.length) {
             return res.status(401).send({ invalidCredentials });
         }
 
-        bcrypt.compare(password, result.rows[0].password, (err, match) => {
+        bcrypt.compare(password, user[0].password, (err, match) => {
 
             if (err) {
                 console.log(err);
@@ -88,10 +91,10 @@ authenticate.post('/login', (req, res) => {
             }
 
             if (match) {
-                const user_id = result.rows[0].user_id;
+                const user_id = user[0].user_id;
                 const token = generateToken(user_id);
                 const message = 'User successfully logged in.';
-                
+
                 return res.status(200).send({
                     user_id,
                     token,
@@ -105,6 +108,12 @@ authenticate.post('/login', (req, res) => {
         })
 
     })
+    .catch(error => {
+
+        return res.status(500).send({ error });
+
+    })
+
 })
 
 function generateToken(user_id) {
