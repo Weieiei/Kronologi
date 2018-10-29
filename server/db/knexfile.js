@@ -1,4 +1,4 @@
-const config = require('./db/config');
+const config = require('./config');
 
 module.exports = {
 
@@ -12,10 +12,10 @@ module.exports = {
             database: config.database
         },
         migrations: {
-            directory: __dirname + '/db/migrations'
+            directory: __dirname + '/migrations'
         },
         seeds: {
-            directory: __dirname + '/db/seeds'
+            directory: __dirname + '/seeds'
         }
     },
 
@@ -29,10 +29,10 @@ module.exports = {
             database: process.env.DB_NAME
         },
         migrations: {
-            directory: __dirname + '/db/migrations'
+            directory: __dirname + '/migrations'
         },
         seeds: {
-            directory: __dirname + '/db/seeds/production'
+            directory: __dirname + '/seeds/production'
         }
     }
 

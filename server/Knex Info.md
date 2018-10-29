@@ -2,7 +2,25 @@
 
 Knex.js is a SQL query builder that's used to take away the need for the developer to work with raw queries (for the most part...).
 
-Here are some examples of raw queries, and their Knex counterpart.
+## Getting Started
+
+First, install the Knex CLI via `npm i -g knex`.
+
+### Migrations
+
+Migration files allow us to create/update tables easily. While in the `server/db` directory (i.e. the one with the `knexfile`), simple running `knex migrate:make migration_name` will create a new migration file.
+
+Once you've finished writing the migration, running `knex migrate:latest` will update your database to match your latest migrations.
+
+If you happen to make updates to your migrations, first run `knex migrate:rollback`, then rerun `knex migrate:latest`.
+
+### Seed Files
+
+Seed files are used to populate your database with an initial set of data. To create a seed file, run `knex seed:make seed_name`.
+
+This will generate a file in which there is an insert method. Using the table in which you want to insert rows, add in however many objects you want. When they're added, running `knex seed:run` will execute all seed files.
+
+## Queries
 
 ### `SELECT`
 
