@@ -7,13 +7,16 @@ node_js:
 services:
 - postgresql
 
+#addons:
+#apt:
+#  sources:
+#    - google-chrome
+#  packages:
+#    - google-chrome-stable
+#    - google-chrome-beta
+    
 addons:
-apt:
-  sources:
-    - google-chrome
-  packages:
-    - google-chrome-stable
-    - google-chrome-beta
+  chrome: stable --no-sandbox
 
 before_script:
 # Client
