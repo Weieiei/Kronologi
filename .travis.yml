@@ -17,7 +17,7 @@ apt:
 before_script:
 # Client
 - cd client && npm install
-- npm install -g @angular-cli
+- sudo npm install -g @angular-cli
 #- npm install -g karma
 - ng build
 - ng serve
