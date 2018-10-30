@@ -26,9 +26,9 @@ before_script:
 - ng build
 
 # Server
-#- cd ../server && npm install
-#- psql -c 'create database travis_ci_test;' -U postgres
-#- node app.js
+- cd ../server && npm install
+- psql -c 'create database travis_ci_test;' -U postgres
+- node app.js
 
 script: 
 # Client
