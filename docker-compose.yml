@@ -14,7 +14,7 @@ services:
     network_mode: host
 
   db:
-    image: postgres
+    image: postgres:11
     container_name: postgres
     network_mode: host
     environment:
