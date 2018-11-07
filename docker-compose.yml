@@ -5,18 +5,17 @@ services:
     build: ./client
     image: appointment-scheduler-client
     container_name: appointment-scheduler-client
-    network_mode: host
+    ports:
+      - "80:80"
 
   web-server:
     build: ./server
     image: appointment-scheduler-server
     container_name: appointment-scheduler-server
-    network_mode: host
 
   db:
     image: postgres:11
     container_name: postgres
-    network_mode: host
     environment:
       POSTGRES_DB: scheduler
       POSTGRES_USER: scheduler
