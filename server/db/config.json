@@ -1,7 +1,7 @@
 {
-    "database": "scheduler",
+    "host": "postgres",
     "port": 5432,
-    "host": "localhost",
+    "database": "scheduler",
     "user": "scheduler",
     "password": "scheduler"
 }
