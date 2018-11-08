@@ -1,0 +1,32 @@
+---
+version: "3.4"
+services:
+  web-client:
+    build: ./client
+    image: appointment-scheduler-client
+    container_name: appointment-scheduler-client
+    ports:
+      - "80:80"
+
+  web-server:
+    build: ./server
+    image: appointment-scheduler-server
+    container_name: appointment-scheduler-server
+    ports:
+      - "3000:3000"
+
+  db:
+    image: postgres:11
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: scheduler
+      POSTGRES_USER: scheduler
+      POSTGRES_PASSWORD: scheduler
+    volumes:
+      - "pgdata:/var/lib/postgresql/data"
+
+volumes:
+  pgdata:
+    name: pgdata
