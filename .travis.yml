@@ -22,7 +22,6 @@ before_script:
 - sh -e /etc/init.d/xvfb start
 - cd client && npm install
 - npm install -g angular-cli
-#- npm install -g karma
 - ng build
 
 # Server
@@ -34,7 +33,6 @@ script:
 # Client
 #- ng serve
 - cd ../client && ng test
-#karma start client/src/karma.conf.js --single-run
 # Server
 #some tests here
   
