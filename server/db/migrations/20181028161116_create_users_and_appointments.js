@@ -19,7 +19,11 @@ exports.up = async knex => {
 		table.timestamp('end_time').notNullable();
 		table.string('notes');
 	})
-	
+	.createTable('services', table => {
+		table.increments('service_id');
+		table.string('name').notNullable();
+		table.integer('service_duration').unsigned();
+	})
 	await knex.schema.raw(`
 		ALTER TABLE users
 			ADD CONSTRAINT users_first_name_length CHECK (char_length(first_name) >= 2),
@@ -31,5 +35,6 @@ exports.up = async knex => {
 exports.down = function(knex, Promise) {
 	return knex.schema
 		.dropTable('appointments')
+		.dropTable('services')
 		.dropTable('users');
 };
