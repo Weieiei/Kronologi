@@ -1,5 +1,5 @@
-const express = require('express'),
-    authenticate = require('./routes/authenticate');
+const express = require('express');
+const authenticate = require('./routes/authenticate');
 
 const api = express.Router();
 
