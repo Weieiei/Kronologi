@@ -10,17 +10,17 @@ const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
 authenticate.post('/register', (req, res) => {
 
-    const { first_name, last_name, email, username, password } = req.body.user;
+    const { _firstName, _lastName, _email, _username, _password, _userType } = req.body.user;
 
-    if (password.length < 6 || password.length > 30) {
+    if (_password.length < 6 || _password.length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
     }
-    else if (!passwordRegex.test(password)) {
+    else if (!passwordRegex.test(_password)) {
         return res.status(400).send({ passwordError: 'Password must contain at least 1 letter and 1 digit.' });
     }
 
     bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(password, salt, (err, hash) => {
+        bcrypt.hash(_password, salt, (err, hash) => {
 
             if (err) {
                 console.log(err);
@@ -28,11 +28,12 @@ authenticate.post('/register', (req, res) => {
             }
 
             knex('users').insert({
-                first_name,
-                last_name,
-                email,
-                username,
-                password: hash
+                first_name: _firstName,
+                last_name: _lastName,
+                email: _email,
+                username: _username,
+                password: hash,
+                user_type: _userType
             })
             .returning('id')
             .then(result => {
@@ -91,7 +92,7 @@ authenticate.post('/login', (req, res) => {
             }
 
             if (match) {
-                const user_id = user[0].user_id;
+                const user_id = user[0].id;
                 const token = generateToken(user_id);
                 const message = 'User successfully logged in.';
 

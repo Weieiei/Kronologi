@@ -8,13 +8,13 @@
 
 			<div class="name fields">
 				<mat-form-field id="firstname" floatLabel="never">
-					<input matInput #firstNameInput [(ngModel)]="user.first_name"
+					<input matInput #firstNameInput [(ngModel)]="user.firstName"
 						type="text" name="firstname" id="firstname"
 						pattern=".{2,}" placeholder="First name" required>
 				</mat-form-field>
 
 				<mat-form-field id="lastname" floatLabel="never">
-					<input matInput [(ngModel)]="user.last_name"
+					<input matInput [(ngModel)]="user.lastName"
 						type="text" name="lastname" id="lastname"
 						pattern=".{2,}" placeholder="Last name" required>
 				</mat-form-field>
