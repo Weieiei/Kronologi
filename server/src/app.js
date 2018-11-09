@@ -21,8 +21,8 @@ app.use('/api', api);
  */
 knex.select().from('users').limit(1).then(user => {
     console.log(user);
-})
+});
 
 app.listen(PORT, () => {
     console.log('Running on port', PORT);
-})
+});

@@ -1,7 +1,7 @@
 const express = require('express'),
     bcrypt = require('bcryptjs'),
-    jwt = require('jsonwebtoken'),
-    knex = require('../../db/knex');
+    knex = require('../../db/knex'),
+    jwtWrapper = require('../../models/JWTWrapper');
 
 const authenticate = express.Router();
 
@@ -34,7 +34,7 @@ authenticate.post('/register', (req, res) => {
                 username,
                 password: hash
             })
-            .returning('user_id')
+            .returning('id')
             .then(result => {
 
                 const user_id = result[0];
@@ -68,7 +68,7 @@ authenticate.post('/register', (req, res) => {
 
         })
     })
-})
+});
 
 authenticate.post('/login', (req, res) => {
 
@@ -114,12 +114,11 @@ authenticate.post('/login', (req, res) => {
 
     })
 
-})
+});
 
 function generateToken(user_id) {
     const payload = { subject: user_id };
-    const token = jwt.sign(payload, 'secretKey');
-    return token;
+    return jwtWrapper.generateToken(payload);
 }
 
 module.exports = authenticate;
