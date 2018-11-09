@@ -20,9 +20,9 @@ exports.up = async knex => {
 		table.string('notes');
 	})
 	.createTable('services', table => {
-		table.increments('service_id');
+		table.increments('id');
 		table.string('name').notNullable();
-		table.integer('service_duration').unsigned();
+		table.integer('duration').unsigned();
 	})
 	await knex.schema.raw(`
 		ALTER TABLE users
