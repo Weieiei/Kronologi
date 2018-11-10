@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { User } from 'src/app/models/user';
+import { User } from 'src/app/models/user/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 
@@ -28,6 +28,7 @@ export class RegisterComponent implements OnInit {
 
   registerUser() {
     if (this.user.password === this.repeatPassword) {
+      
       this.authService.registerUser(this.user).subscribe(
         res => {
           this.authService.setToken(res['token']);
@@ -35,6 +36,7 @@ export class RegisterComponent implements OnInit {
         },
         err => console.log(err)
       );
+
     } else {
       alert('The passwords don\'t match.');
     }
