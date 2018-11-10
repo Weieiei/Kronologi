@@ -4,7 +4,7 @@
 # If it hasn't started, wait 2 seconds before checking again
 # Do this 10 times max, we don't want the program to hang forever
 
-# If a connection exists, set up tables and start the server
+# If a connection exists, set up tables, populate with data, and start the server
 
 bash -c '
     limit=10
@@ -25,7 +25,11 @@ bash -c '
     if </dev/tcp/$DB_HOST/5432 ;
     then
         cd ./src/
-        (cd ./db/ && ../../node_modules/.bin/knex migrate:latest)
+        (
+            cd ./db/
+            ../../node_modules/.bin/knex migrate:latest
+            ../../node_modules/.bin/knex seed:run
+        )
         node app.js
     fi
 '
