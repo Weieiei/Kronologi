@@ -5,6 +5,9 @@ WORKDIR /home/node
 COPY . /home/node/
 RUN npm install
 
+# Make the script executable
+RUN chmod +x ./setup.sh
+
 EXPOSE 3000
 
-CMD [ "node", "src/app.js" ]
+CMD [ "./setup.sh" ]
