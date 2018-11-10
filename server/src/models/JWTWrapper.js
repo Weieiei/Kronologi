@@ -28,10 +28,6 @@ class JWTWrapper {
         next();
     }
 
-    static sign(payload) {
-        return jwt.sign(payload, secretKey);
-    }
-
 }
 
 module.exports = JWTWrapper;

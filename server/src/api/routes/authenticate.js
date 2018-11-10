@@ -37,9 +37,7 @@ authenticate.post('/register', (req, res) => {
             .returning('id')
             .then(result => {
 
-                const payload = { subject: result[0] };
-                const token = jwtWrapper.sign(payload);
-
+                const token = generateToken(result[0]);
                 return res.status(200).send({ token });
 
             })
@@ -87,10 +85,9 @@ authenticate.post('/login', (req, res) => {
 
             if (match) {
 
-                const payload = { subject: user[0].id };
-                const token = jwtWrapper.sign(payload);
-
+                const token = generateToken(user[0].id);
                 return res.status(200).send({ token });
+                
             }
             else {
                 return res.status(401).send({ invalidCredentials });
