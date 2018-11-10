@@ -37,15 +37,10 @@ authenticate.post('/register', (req, res) => {
             .returning('id')
             .then(result => {
 
-                const user_id = result[0];
-                const token = generateToken(user_id);
-                const message = 'User successfully created.';
+                const payload = { subject: result[0] };
+                const token = jwtWrapper.sign(payload);
 
-                return res.status(200).send({
-                    user_id,
-                    token,
-                    message
-                });
+                return res.status(200).send({ token });
 
             })
             .catch(error => {
@@ -91,15 +86,11 @@ authenticate.post('/login', (req, res) => {
             }
 
             if (match) {
-                const user_id = user[0].user_id;
-                const token = generateToken(user_id);
-                const message = 'User successfully logged in.';
 
-                return res.status(200).send({
-                    user_id,
-                    token,
-                    message
-                });
+                const payload = { subject: user[0].id };
+                const token = jwtWrapper.sign(payload);
+
+                return res.status(200).send({ token });
             }
             else {
                 return res.status(401).send({ invalidCredentials });
