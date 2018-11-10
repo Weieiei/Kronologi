@@ -2,6 +2,8 @@
 version: "3.4"
 services:
   web-client:
+    depends_on:
+      - web-server
     build: ./client
     image: appointment-scheduler-client
     container_name: appointment-scheduler-client
@@ -9,9 +11,14 @@ services:
       - "80:80"
 
   web-server:
+    depends_on:
+      - db
     build: ./server
     image: appointment-scheduler-server
     container_name: appointment-scheduler-server
+    environment:
+      # can also be 'db'
+      DB_HOST: postgres
     ports:
       - "3000:3000"
 
