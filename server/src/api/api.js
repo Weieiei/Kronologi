@@ -9,5 +9,5 @@ api.get('/', (req, res) => {
 });
 
 api.use('/authenticate', authenticate);
-api.use('/appointments', appointments);
+api.use('/admin', appointments);
 module.exports = api;

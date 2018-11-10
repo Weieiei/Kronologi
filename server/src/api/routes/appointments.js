@@ -3,12 +3,13 @@ knex = require('../../db/knex');
 
 const appointments = express.Router();
 
-appointments.get('', (req, res) => {
+appointments.get('/appointments', (req, res) => {
     const {username} = req.body;
      knex.select().from('appointments')
       .then(appointments => {
         res.json(appointments);
-        res.send({ message: username });
+        console.log(appointments);
+        console.log(appointments[0]);
       });
 });
  module.exports = appointments;
