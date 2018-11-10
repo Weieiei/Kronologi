@@ -1,0 +1,26 @@
+<div class="example-container">
+    <form class="user form" #userForm="ngForm" (ngSubmit)="reserve()" autocomplete="off">
+        <mat-form-field>
+            <mat-select placeholder="Select a service">
+              <mat-option value="service option">Option</mat-option>
+            </mat-select>
+            <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="field" hintLabel="Between 4 and 30 characters" floatLabel="never">
+              <input matInput [(ngModel)]="user.username"
+                type="text" name="username" id="username"
+                pattern=".{4,30}" placeholder="Username" required>
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+          <button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Reserve</button>
+    </form>
+
+</div>
