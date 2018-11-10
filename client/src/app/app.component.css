@@ -7,4 +7,5 @@ div.content {
     padding: 2rem;
     left: 50%;
     background-color: white;
+    overflow: auto;
 }
