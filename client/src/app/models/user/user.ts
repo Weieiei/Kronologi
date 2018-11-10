@@ -6,13 +6,11 @@ export class User {
     private _email: string;
     private _username: string;
     private _password: string;
-    private _userType: number;
 
     constructor(
         id: number = null,
         firstName: string = '', lastName: string = '',
-        email: string = '', username: string = '', password: string = '',
-        userType: number = null
+        email: string = '', username: string = '', password: string = ''
     ) {
         this._id = id;
         this._firstName = firstName;
@@ -20,7 +18,6 @@ export class User {
         this._email = email;
         this._username = username;
         this._password = password;
-        this._userType = userType
     }
 
     public get id(): number {
@@ -65,14 +62,6 @@ export class User {
 
     public set password(password: string) {
         this._password = password;
-    }
-
-    public get userType(): number {
-        return this._userType;
-    }
-
-    public set userType(userType: number) {
-        this._userType = userType;
     }
 
 }

@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User } from 'src/app/models/user/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
-import { USER_TYPE } from 'src/app/models/user/USER_TYPE';
 
 @Component({
   selector: 'app-register',
@@ -29,8 +28,6 @@ export class RegisterComponent implements OnInit {
 
   registerUser() {
     if (this.user.password === this.repeatPassword) {
-
-      this.user.userType = USER_TYPE.CLIENT;
       
       this.authService.registerUser(this.user).subscribe(
         res => {

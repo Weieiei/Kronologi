@@ -1,7 +1,8 @@
 const express = require('express'),
     bcrypt = require('bcryptjs'),
     knex = require('../../db/knex'),
-    jwtWrapper = require('../../models/JWTWrapper');
+    jwtWrapper = require('../../models/JWTWrapper'),
+    USER_TYPE = require('../../models/user/USER_TYPE');
 
 const authenticate = express.Router();
 
@@ -10,7 +11,7 @@ const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
 authenticate.post('/register', (req, res) => {
 
-    const { _firstName, _lastName, _email, _username, _password, _userType } = req.body.user;
+    const { _firstName, _lastName, _email, _username, _password } = req.body.user;
 
     if (_password.length < 6 || _password.length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
@@ -33,7 +34,7 @@ authenticate.post('/register', (req, res) => {
                 email: _email,
                 username: _username,
                 password: hash,
-                user_type: _userType
+                user_type: USER_TYPE.CLIENT
             })
             .returning('id')
             .then(result => {
