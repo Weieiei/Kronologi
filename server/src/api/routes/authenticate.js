@@ -39,15 +39,8 @@ authenticate.post('/register', (req, res) => {
             .returning('id')
             .then(result => {
 
-                const user_id = result[0];
-                const token = generateToken(user_id);
-                const message = 'User successfully created.';
-
-                return res.status(200).send({
-                    user_id,
-                    token,
-                    message
-                });
+                const token = generateToken(result[0]);
+                return res.status(200).send({ token });
 
             })
             .catch(error => {
@@ -93,15 +86,10 @@ authenticate.post('/login', (req, res) => {
             }
 
             if (match) {
-                const user_id = user[0].id;
-                const token = generateToken(user_id);
-                const message = 'User successfully logged in.';
 
-                return res.status(200).send({
-                    user_id,
-                    token,
-                    message
-                });
+                const token = generateToken(user[0].id);
+                return res.status(200).send({ token });
+
             }
             else {
                 return res.status(401).send({ invalidCredentials });
