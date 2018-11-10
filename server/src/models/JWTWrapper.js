@@ -19,7 +19,6 @@ class JWTWrapper {
         }
 
         let payload = jwt.verify(token, secretKey);
-        console.log(payload);
         if (!payload) {
             return res.status(401).send({ error });            
         }
