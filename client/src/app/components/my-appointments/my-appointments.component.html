@@ -1,5 +1,7 @@
 <div *ngIf="appointments?.length">
 
+    <p>You have {{ appointments?.length }} upcoming appointment(s):</p>
+
     <table style="width: 100%" mat-table [dataSource]="appointments" class="mat-elevation-z8">
     
         <ng-container matColumnDef="service">
@@ -14,7 +16,7 @@
     
         <ng-container matColumnDef="duration">
             <th mat-header-cell *matHeaderCellDef> Duration </th>
-            <td mat-cell *matCellDef="let appointment"> {{ appointment.duration }} min </td>
+            <td mat-cell *matCellDef="let appointment"> {{ appointment.duration }} min. </td>
         </ng-container>
     
         <ng-container matColumnDef="notes">

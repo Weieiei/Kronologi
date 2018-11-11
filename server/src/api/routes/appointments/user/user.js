@@ -1,11 +1,10 @@
 const express = require('express'),
-    jwtWrapper = require('../../models/JWTWrapper'),
-    knex = require('../../db/knex'),
-    Appointment = require('../../models/appointment/appointment');
+    jwtWrapper = require('../../../../models/JWTWrapper'),
+    knex = require('../../../../db/knex');
 
-const appointments = express.Router();
+const userAppts = express.Router();
 
-appointments.get('/user', jwtWrapper.verifyToken, (req, res) => {
+userAppts.get('/', jwtWrapper.verifyToken, (req, res) => {
 
     const userId = req.userId;
 
@@ -21,4 +20,4 @@ appointments.get('/user', jwtWrapper.verifyToken, (req, res) => {
 
 });
 
-module.exports = appointments;
+module.exports = userAppts;
