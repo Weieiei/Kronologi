@@ -13,17 +13,17 @@
           </mat-select>
           <mat-hint>Here's the drop-down arrow ^</mat-hint>
         </mat-form-field>
-
+        <br/>
         <mat-form-field>
           <input matInput [matDatepicker]="picker" [matDatepickerFilter]="dateFilter" placeholder="Choose a date">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-
+          <br/>
           <mat-form-field class="field" hintLabel="Enter a time" floatLabel="never">
               <input matInput placeholder="Time" type="time" id="appt" name="appt" min="9:00" max="18:00" required>
           </mat-form-field>
-
+          <br/>
           <button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Reserve</button>
 
         </form>
