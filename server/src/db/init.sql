@@ -1,5 +1,12 @@
 CREATE EXTENSION IF NOT EXISTS CITEXT;
 
+CREATE TABLE IF NOT EXISTS services(
+  service_id SERIAL PRIMARY KEY,
+  duration_in_hours INT,
+  price FLOAT,
+  description VARCHAR(255)
+);
+
 CREATE TABLE IF NOT EXISTS users(
     user_id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL
@@ -38,13 +45,6 @@ CREATE TABLE IF NOT EXISTS appointments(
 	notes VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS services(
-  service_id SERIAL PRIMARY KEY,
-  duration_in_hours INT,
-  price FLOAT,
-  description VARCHAR(255)
-);
-
 CREATE TABLE IF NOT EXISTS businesses(
   business_id SERIAL PRIMARY KEY,
   name VARCHAR (255) NOT NULL,
@@ -52,8 +52,9 @@ CREATE TABLE IF NOT EXISTS businesses(
 );
 
 CREATE TABLE IF NOT EXISTS employee_hours(
-  employee_id SERIAL REFERENCES employee(employee_id),
+  employee_id SERIAL REFERENCES employees(employee_id),
   start_time TIMESTAMP NOT NULL,
   end_time TIMESTAMP NOT NULL,
   PRIMARY KEY (employee_id, start_time)
 );
+
