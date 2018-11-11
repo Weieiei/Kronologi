@@ -5,12 +5,18 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Appointment } from 'src/app/models/appointment/appointment';
 import { User } from 'src/app/models/user/user';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-reserve',
   templateUrl: './reserve.component.html',
   styleUrls: ['./reserve.component.css']
 })
+
+// export interface Service {
+//   service: string;
+// }
+
 export class ReserveComponent implements OnInit {
   appointment: Appointment;
   service: Service = null;
@@ -22,16 +28,26 @@ export class ReserveComponent implements OnInit {
   today: number = Date.now();
   dateFilter = (date: Date) => date.getDate() <= this.today;
 
+
   print() {
     this.service.name = this.selectedOption;
   }
 
   constructor(private authService: AuthService,
-    private router: Router) { }
+    private router: Router, private http: HttpClient) { }
+
+  getServiceJson() {
+    return this.http.get('api/services');
+  }
+
 
   ngOnInit() {
     this.appointment = new Appointment();
     console.log(this.today);
+    this.getServiceJson().subscribe((object) => {
+      console.log(object);
+    });
+
   }
   reserve_service() {
     // TODO
