@@ -1,4 +1,4 @@
-var  config = require("./config.json");
+import config from './config.json'
 module.exports = {
     development: {
         client: 'pg',
