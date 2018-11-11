@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
 
   registerUser() {
     if (this.user.password === this.repeatPassword) {
-      
+
       this.authService.registerUser(this.user).subscribe(
         res => {
           this.authService.setToken(res['token']);

@@ -16,6 +16,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
+import { ReserveComponent } from './components/reserve/reserve.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { UrlInterceptor } from './interceptor';
     NavbarComponent,
     RegisterComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    ReserveComponent
   ],
   imports: [
     BrowserModule,

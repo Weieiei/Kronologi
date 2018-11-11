@@ -1,5 +1,5 @@
 <div class="example-container">
-    <form class="user form" #userForm="ngForm" (ngSubmit)="reserve()" autocomplete="off">
+    <form class="reservation form" #userForm="ngForm" (ngSubmit)="reserve()" autocomplete="off">
         <mat-form-field>
             <mat-select placeholder="Select a service">
               <mat-option value="service option">Option</mat-option>
@@ -13,12 +13,10 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field class="field" hintLabel="Between 4 and 30 characters" floatLabel="never">
-              <input matInput [(ngModel)]="user.username"
-                type="text" name="username" id="username"
-                pattern=".{4,30}" placeholder="Username" required>
-              <mat-icon matSuffix>person</mat-icon>
-            </mat-form-field>
+          <mat-form-field class="field" hintLabel="Enter a time" floatLabel="never">
+              <input matInput placeholder="Time" type="time" id="appt" name="appt"
+              min="9:00" max="18:00" required>
+          </mat-form-field>
 
           <button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Reserve</button>
     </form>
