@@ -1,14 +1,12 @@
 const express = require('express'),
     authenticate = require('./routes/authenticate'),
-    services = require('./routes/services');
+    services = require('./routes/services'),
+    appointments = require('./routes/appointments');
 
 const api = express.Router();
 
-api.get('/', (req, res) => {
-    res.send({ message: 'Hey world' });
-});
-
 api.use('/authenticate', authenticate);
 api.use('/services', services);
+api.use('/appointments', appointments);
 
 module.exports = api;

@@ -16,13 +16,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
  */
 app.use('/api', api);
 
-/**
- * Dummy query.
- */
-knex.select().from('users').limit(1).then(user => {
-    console.log(user);
-});
-
 app.listen(PORT, () => {
     console.log('Running on port', PORT);
 });
