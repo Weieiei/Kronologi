@@ -1,4 +1,4 @@
-export class Services {
+export class Service {
 
   private _id: number;
   private _name: string;
