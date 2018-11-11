@@ -1,4 +1,4 @@
-const config = require('./config');
+var  config = require("./config.json");
 module.exports = {
     development: {
         client: 'pg',

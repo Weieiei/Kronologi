@@ -1,8 +1,18 @@
-const express = require('express'), bcrypt = require('bcryptjs'), knex = require('../../db/knex'), jwtWrapper = require('../../models/JWTWrapper');
+import * as knextObject from 'knex';
+import { Connection } from '../../db/knex'
+
+const express = require('express'), 
+bcrypt = require('bcryptjs'), 
+knex = require('../../db/knex'),
+jwtWrapper = require('../../models/JWTWrapper');
 const authenticate = express.Router();
 const saltRounds = 10;
 const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
+
 authenticate.post('/register', (req, res) => {
+    var temp = 0
+    this.connector = new Connection().knex();
+
     const { first_name, last_name, email, username, password } = req.body.user;
     if (password.length < 6 || password.length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
@@ -16,14 +26,16 @@ authenticate.post('/register', (req, res) => {
                 console.log(err);
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
-            knex('users').insert({
+           
+            this.connector.table('users').insert({
                 first_name,
                 last_name,
                 email,
                 username,
                 password: hash
             })
-                .returning('id')
+                
+                .returning('user_id')
                 .then(result => {
                 const user_id = result[0];
                 const token = generateToken(user_id);
@@ -46,14 +58,18 @@ authenticate.post('/register', (req, res) => {
                     case 'users_username_length':
                         return res.status(400).send({ usernameError: 'Usernames should be between 4 and 30 characters.' });
                 }
+                console.log(error)
                 return res.status(500).send({ error });
             });
         });
     });
 });
 authenticate.post('/login', (req, res) => {
+
+    this.connector = new Connection().knex();
+
     const { username, password } = req.body;
-    knex.select().from('users').where('username', username)
+    this.connector.select().from('users').where('username', username)
         .then(user => {
         const invalidCredentials = 'Incorrect username and/or password.';
         if (!user.length) {

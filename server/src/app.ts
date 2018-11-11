@@ -1,9 +1,5 @@
 import  * as express from "express";
 import * as bodyParser from "body-parser";
-import {auto as ngAuto} from "angular";
-import * as knex from './db/knex'; 
-import { Connection } from './db/knex'
-//const knex = require('./db/knex')
 import { api } from './api/api';
 var cors = require('cors');
 
