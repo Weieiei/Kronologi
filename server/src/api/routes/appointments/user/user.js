@@ -8,7 +8,9 @@ userAppts.get('/', jwtWrapper.verifyToken, (req, res) => {
 
     const userId = req.userId;
 
-    knex.select().from('appointments')
+    knex
+        .select('appointments.id', 'service_id', 'services.name', 'start_time', 'end_time', 'duration', 'notes')
+        .from('appointments')
         .innerJoin('services', 'appointments.service_id', 'services.id')
         .where('appointments.user_id', userId)
     .then(appointments => {
