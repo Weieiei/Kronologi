@@ -13,12 +13,15 @@ import { Router } from '@angular/router';
 })
 export class ReserveComponent implements OnInit {
   appointment: Appointment;
-  service: Service;
+  service: Service = null;
   selectedOption: string;
   service_options = [
     { name: 'option1', value: 1 },
     { name: 'option2', value: 2 } // using getting to get a list of services
   ];
+  today: number = Date.now();
+  dateFilter = (date: Date) => date.getDate() <= this.today;
+
   print() {
     this.service.name = this.selectedOption;
   }
@@ -28,6 +31,7 @@ export class ReserveComponent implements OnInit {
 
   ngOnInit() {
     this.appointment = new Appointment();
+    console.log(this.today);
   }
   reserve_service() {
     // TODO
