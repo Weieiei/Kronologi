@@ -1,5 +1,6 @@
-const express = require('express'),
-    appointments = require('./routes/appointments');
+const express = require('express');
+
+const appointments = require('./routes/appointment');
 
 const user = express.Router();
 
