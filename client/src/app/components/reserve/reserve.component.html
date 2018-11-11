@@ -1,25 +1,32 @@
-<div class="example-container">
+<div class="main">
 
-    <form class="reservation form" #userForm="ngForm" (ngSubmit)="reserve()" autocomplete="off">
+    <div class="column">
+
+      <h3>Make a reservation</h3>
+
+      <form class="reservation form" #userForm="ngForm" (ngSubmit)="reserve_service()" autocomplete="off">
         <mat-form-field>
-          <mat-select placeholder="Select a service">
-            <mat-option value="service option">Option</mat-option>
-          </mat-select>
-          <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+          <mat-select placeholder="Select a service" [(ngModel)]="selectedOption">
+            <mat-option value="service option" *ngFor="let service of service_options">Option</mat-option>
+               {{service.name}}
+            </mat-select>
+          <mat-hint>Here's the drop-down arrow ^</mat-hint>
         </mat-form-field>
 
         <mat-form-field>
           <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
 
-        <mat-form-field class="field" hintLabel="Enter a time" floatLabel="never">
-            <input matInput placeholder="Time" type="time" id="appt" name="appt"
-            min="9:00" max="18:00" required>
-        </mat-form-field>
+          <mat-form-field class="field" hintLabel="Enter a time" floatLabel="never">
+              <input matInput placeholder="Time" type="time" id="appt" name="appt" min="9:00" max="18:00" required>
+          </mat-form-field>
 
-        <button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Reserve</button>
-    </form>
+          <button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Reserve</button>
 
-</div>
+        </form>
+
+    </div>
+
+  </div>
