@@ -33,8 +33,10 @@ function normalizePort(val) {
     return val;
   }
 
+
   if (port >= 0) {
     // port number
+    console.log(port)
     return port;
   }
 

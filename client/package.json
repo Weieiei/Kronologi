@@ -5,11 +5,13 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "pre-build:win": "..\\server && npm run tsc",
+    "pre-build:unix": "../server && npm run tsc",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "serve:unix": "concurrently \"ng serve\" \"../server/node_modules/.bin/nodemon ../server/src/app.ts\"",
-    "serve:win": "concurrently \"ng serve\" \"..\\server\\node_modules\\.bin\\nodemon ..\\server\\bin\\www\""
+    "serve:unix": "npm run pre-build:unix && concurrently \"ng serve\" \"../server/node_modules/.bin/nodemon ../server/src/app.ts\"",
+    "serve:win": " npm run pre-build:win && concurrently \"ng serve\"  \"..\\server\\node_modules\\.bin\\nodemon ..\\server\\bin\\www\""
   },
   "private": true,
   "dependencies": {
