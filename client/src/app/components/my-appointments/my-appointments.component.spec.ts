@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 @Component({ selector: 'app-appointment', template: '' })
 class AppointmentStubComponent { }
 
-fdescribe('MyAppointmentsComponent', () => {
+describe('MyAppointmentsComponent', () => {
   let component: MyAppointmentsComponent;
   let fixture: ComponentFixture<MyAppointmentsComponent>;
 
