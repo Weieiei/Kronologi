@@ -1,24 +1,25 @@
 <div class="example-container">
+
     <form class="reservation form" #userForm="ngForm" (ngSubmit)="reserve()" autocomplete="off">
         <mat-form-field>
-            <mat-select placeholder="Select a service">
-              <mat-option value="service option">Option</mat-option>
-            </mat-select>
-            <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
-          </mat-form-field>
+          <mat-select placeholder="Select a service">
+            <mat-option value="service option">Option</mat-option>
+          </mat-select>
+          <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+        </mat-form-field>
 
-          <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
-          <mat-form-field class="field" hintLabel="Enter a time" floatLabel="never">
-              <input matInput placeholder="Time" type="time" id="appt" name="appt"
-              min="9:00" max="18:00" required>
-          </mat-form-field>
+        <mat-form-field class="field" hintLabel="Enter a time" floatLabel="never">
+            <input matInput placeholder="Time" type="time" id="appt" name="appt"
+            min="9:00" max="18:00" required>
+        </mat-form-field>
 
-          <button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Reserve</button>
+        <button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Reserve</button>
     </form>
 
 </div>
