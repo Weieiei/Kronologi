@@ -1,9 +1,11 @@
 const express = require('express');
 
-const appointments = require('./routes/appointment');
 
-const router = express.Router();
+const appointments = require('./routes/appointments');
 
-router.use('/appointments', appointments);
+const user = express.Router();
 
-module.exports = router;
+user.use('/appointments', appointments);
+
+module.exports = user;
+
