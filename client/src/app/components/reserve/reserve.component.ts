@@ -1,7 +1,7 @@
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Service } from 'src/app/models/service/service';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { Appointment } from 'src/app/models/appointment/appointment';
 import { User } from 'src/app/models/user/user';
 import { Router } from '@angular/router';
