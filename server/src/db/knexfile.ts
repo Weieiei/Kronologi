@@ -1,9 +1,9 @@
-const config = require('./config.json')
+import config  from './config.json'
 module.exports = {
     development: {
         client: 'pg',
         connection: {
-            host: config.host,
+            host: process.env.DB_HOST || config.host,
             port: config.port,
             user: config.user,
             password: config.password,

@@ -1,50 +1,53 @@
-import * as knextObject from 'knex';
 import { Connection } from '../../db/knex'
+import { USER_TYPE } from '../../models/user/USER_TYPE'
+const express = require('express'),
+    bcrypt = require('bcryptjs'),
+    jwtWrapper = require('../../models/JWTWrapper');
 
-const express = require('express'), 
-bcrypt = require('bcryptjs'), 
-knex = require('../../db/knex'),
-jwtWrapper = require('../../models/JWTWrapper');
 const authenticate = express.Router();
 const saltRounds = 10;
 const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
 authenticate.post('/register', (req, res) => {
-    var temp = 0
     this.connector = new Connection().knex();
 
-    const { first_name, last_name, email, username, password } = req.body.user;
-    if (password.length < 6 || password.length > 30) {
+    const { _firstName, _lastName, _email, _username, _password } = req.body.user;
+
+    if (_password.length < 6 || _password.length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
     }
-    else if (!passwordRegex.test(password)) {
+    else if (!passwordRegex.test(_password)) {
         return res.status(400).send({ passwordError: 'Password must contain at least 1 letter and 1 digit.' });
     }
     bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(password, salt, (err, hash) => {
+        bcrypt.hash(_password, salt, (err, hash) => {
+
             if (err) {
                 console.log(err);
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
-           
+
             this.connector.table('users').insert({
-                first_name,
-                last_name,
-                email,
-                username,
-                password: hash
+                first_name: _firstName,
+                last_name: _lastName,
+                email: _email,
+                username: _username,
+                password: hash,
+                user_type: USER_TYPE.CLIENT
             })
-                
-                .returning('user_id')
-                .then(result => {
+            .returning('id')
+            .then(result => {
+
                 const user_id = result[0];
                 const token = generateToken(user_id);
                 const message = 'User successfully created.';
+
                 return res.status(200).send({
                     user_id,
                     token,
                     message
                 });
+
             })
                 .catch(error => {
                 switch (error.constraint) {
@@ -81,14 +84,9 @@ authenticate.post('/login', (req, res) => {
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
             if (match) {
-                const user_id = user[0].user_id;
-                const token = generateToken(user_id);
-                const message = 'User successfully logged in.';
-                return res.status(200).send({
-                    user_id,
-                    token,
-                    message
-                });
+                const token = generateToken(user[0].id);
+                return res.status(200).send({ token });
+
             }
             else {
                 return res.status(401).send({ invalidCredentials });
