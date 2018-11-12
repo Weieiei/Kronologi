@@ -3,9 +3,10 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Service } from 'src/app/models/service/service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Appointment } from 'src/app/models/appointment/appointment';
-import { User } from 'src/app/models/user/user';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Time } from '@angular/common';
 
 @Component({
   selector: 'app-reserve',
@@ -14,17 +15,13 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class ReserveComponent implements OnInit {
-  appointment: Appointment;
   service: Service = null;
-  selectedOption: string;
+  selectedService: Service;
   service_options: Array<Service>;
   today: number = Date.now();
+  startDate: Date;
+  startTime: Time;
   dateFilter = (date: Date) => date.getDate() <= this.today;
-
-
-  print() {
-    this.service.name = this.selectedOption;
-  }
 
   constructor(private authService: AuthService,
     private router: Router, private http: HttpClient) { }
@@ -35,7 +32,6 @@ export class ReserveComponent implements OnInit {
 
 
   ngOnInit() {
-    this.appointment = new Appointment();
     console.log(this.today);
     this.getServiceJson().subscribe((object: Array<Service>) => {
       this.service_options = object;
@@ -45,7 +41,22 @@ export class ReserveComponent implements OnInit {
 
   }
   reserve_service() {
-    // TODO
+    let appointment = new Appointment();
+    appointment.start_time = this.startTime;
+    appointment.end_time = this.startTime // add the minutes
+    appointment.date = this.startDate
+    appointment.service_id = this.selectedService.id
+    // appointment.user_id = user.id
+    this.addAppointment(appointment);
+
+
+
+
+
+  }
+
+  addAppointment(appointment: Appointment): Observable<Appointment> {
+    return this.http.post<Appointment>(['api', 'appointment'].join('/'), { appointment });
   }
 
 }

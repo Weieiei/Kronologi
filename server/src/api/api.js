@@ -3,6 +3,7 @@ const jwtWrapper = require('../models/JWTWrapper');
 
 const authenticate = require('./routes/authenticate');
 const services = require('./routes/services');
+const appointment = require('./routes/appointment')
 
 const user = require('./routes/user/user');
 
@@ -38,6 +39,7 @@ api.get('/', (req, res) => {
 
 api.use('/authenticate', authenticate);
 api.use('/services', services);
+api.use('/appointment', appointment);
 
 api.use('/user', userMiddleware, user);
 

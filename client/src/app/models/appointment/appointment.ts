@@ -5,6 +5,7 @@ export class Appointment {
   private _id: number;
   private _user_id: number;
   private _service_id: number;
+  private _date: Date;
   private _start_time: Time;
   private _end_time: Time;
   private _notes: string;
@@ -64,5 +65,13 @@ export class Appointment {
 
   public set end_time(end_time: Time) {
     this._end_time = end_time;
+  }
+
+  public get date(): Date {
+    return this._date;
+  }
+
+  public set date(date: Date) {
+    this._date = date;
   }
 }
