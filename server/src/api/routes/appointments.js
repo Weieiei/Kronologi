@@ -8,8 +8,6 @@ appointments.get('/appointments', (req, res) => {
      knex.select().from('appointments')
       .then(appointments => {
         res.json(appointments);
-        console.log(appointments);
-        console.log(appointments[0]);
       });
 });
  module.exports = appointments;
