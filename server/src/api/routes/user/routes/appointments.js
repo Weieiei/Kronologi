@@ -36,12 +36,23 @@ appointments.post('/', (req, res) => {
             if (service !== undefined) {
                 const end_time = moment(start_time).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss');
 
-                knex('appointments').insert({ user_id, service_id, start_time, end_time, notes }).then(result => {
-                    console.log(result);
-                    res.send(result);
-                }).catch(err => {
-                    res.status(400).send({ error: 'Bad request.' });
-                });
+                knex('appointments')
+                    .whereBetween('start_time', [start_time, end_time])
+                    .orWhereBetween('end_time', [start_time, end_time])
+                    .then(exists => {
+                        if (exists.length === 0) {
+                            knex('appointments').insert({ user_id, service_id, start_time, end_time, notes }).then(result => {
+                                res.send(result);
+                            }).catch(err => {
+                                res.status(400).send({ error: 'Bad request.' });
+                            });
+                        }
+                        else {
+                            res.status(409).send({ error: 'Conflict.' });
+                        }
+                    });
+
+
             }
             else {
                 res.status(404).send({ error: 'Not found.' });
