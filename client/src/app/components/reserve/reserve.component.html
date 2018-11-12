@@ -6,10 +6,9 @@
       <form class="reservation form" #userForm="ngForm" (ngSubmit)="reserve_service()" autocomplete="off">
         <mat-form-field>
           <mat-select placeholder="Select a service" [(ngModel)]="selectedOption" name="service-select">
-            <ng-container *ngIf="service">
-              <mat-option value="service option" *ngFor="let service of service_options">Option</mat-option>
+              <mat-option [value]="service" *ngFor="let service of service_options">
                 {{service.name}}
-              </ng-container>
+              </mat-option>
           </mat-select>
           <mat-hint>Here's the drop-down arrow ^</mat-hint>
         </mat-form-field>

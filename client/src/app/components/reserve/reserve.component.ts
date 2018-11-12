@@ -13,18 +13,11 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./reserve.component.css']
 })
 
-// export interface Service {
-//   service: string;
-// }
-
 export class ReserveComponent implements OnInit {
   appointment: Appointment;
   service: Service = null;
   selectedOption: string;
-  service_options = [
-    { name: 'option1', value: 1 },
-    { name: 'option2', value: 2 } // using getting to get a list of services
-  ];
+  service_options: Array<Service>;
   today: number = Date.now();
   dateFilter = (date: Date) => date.getDate() <= this.today;
 
@@ -37,15 +30,17 @@ export class ReserveComponent implements OnInit {
     private router: Router, private http: HttpClient) { }
 
   getServiceJson() {
-    return this.http.get('api/services');
+    return this.http.get<any>('api/services');
   }
 
 
   ngOnInit() {
     this.appointment = new Appointment();
     console.log(this.today);
-    this.getServiceJson().subscribe((object) => {
+    this.getServiceJson().subscribe((object: Array<Service>) => {
+      this.service_options = object;
       console.log(object);
+      console.log(this.service_options[0]);
     });
 
   }
