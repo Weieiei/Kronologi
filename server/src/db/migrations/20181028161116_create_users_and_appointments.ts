@@ -34,8 +34,8 @@ exports.up = (knex) => __awaiter(this, void 0, void 0, function* () {
 });
 exports.down = function (knex, Promise) {
     return knex.schema
-        .dropTable('appointments')
-        .dropTable('services')
-        .dropTable('users');
+        .dropTableIfExists('appointments')
+        .dropTableIfExists('services')
+        .dropTableIfExists('users');
 };
 //# sourceMappingURL=20181028161116_create_users_and_appointments.js.map

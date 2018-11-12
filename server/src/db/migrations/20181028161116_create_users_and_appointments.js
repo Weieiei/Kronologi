@@ -29,7 +29,7 @@ exports.up = async knex => {
 
 exports.down = function (knex, Promise) {
     return knex.schema
-        .dropTable('appointments')
-        .dropTable('services')
-        .dropTable('users');
+        .dropTableIfExists('appointments')
+        .dropTableIfExists('services')
+        .dropTableIfExists('users');
 };
