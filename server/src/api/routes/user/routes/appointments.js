@@ -2,9 +2,9 @@ const express = require('express'),
     jwtWrapper = require('../../../../models/JWTWrapper'),
     knex = require('../../../../db/knex');
 
-const userAppts = express.Router();
+const appointments = express.Router();
 
-userAppts.get('/', jwtWrapper.verifyToken, (req, res) => {
+appointments.get('/', jwtWrapper.verifyToken, (req, res) => {
 
     const userId = req.userId;
     let today = new Date();
@@ -25,4 +25,4 @@ userAppts.get('/', jwtWrapper.verifyToken, (req, res) => {
 
 });
 
-module.exports = userAppts;
+module.exports = appointments;

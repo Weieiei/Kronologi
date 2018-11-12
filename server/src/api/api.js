@@ -1,12 +1,14 @@
 const express = require('express'),
     authenticate = require('./routes/authenticate'),
     services = require('./routes/services'),
-    appointments = require('./routes/appointments/appointments');
+    admin = require('./routes/admin/admin'),
+    user = require('./routes/user/user');
 
 const api = express.Router();
 
 api.use('/authenticate', authenticate);
 api.use('/services', services);
-api.use('/appointments', appointments);
+api.use('/admin', admin);
+api.use('/user', user);
 
 module.exports = api;

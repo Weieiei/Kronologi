@@ -2,12 +2,12 @@ const express = require('express'),
     jwtWrapper = require('../../../../models/JWTWrapper'),
     knex = require('../../../../db/knex');
 
-const adminAppts = express.Router();
+const appointments = express.Router();
 
-adminAppts.get('/admin', jwtWrapper.verifyToken, (req, res) => {
+appointments.get('/', jwtWrapper.verifyToken, (req, res) => {
 
     // TODO
 
 });
 
-module.exports = adminAppts;
+module.exports = appointments;

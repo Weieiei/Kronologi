@@ -10,7 +10,7 @@ export class AppointmentService {
   constructor(private http: HttpClient) { }
 
   getMyAppointments(): Observable<any[]> {
-    return this.http.get<any[]>(['api', 'appointments', 'user'].join('/'));
+    return this.http.get<any[]>(['api', 'user', 'appointments'].join('/'));
   }
 
 }
