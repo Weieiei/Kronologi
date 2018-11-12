@@ -3,7 +3,9 @@
 		<button mat-button class="title" routerLink="/">Appointment Scheduler</button>
 		<span class="space"></span>
 
-    <mat-icon class="nav-icon">calendar_today</mat-icon>
+
+		<mat-icon class="nav-icon">calendar_today</mat-icon>
+		<button mat-button id="my-appts-button" *ngIf="authService.loggedIn()" routerLink="/my/appts">My Appointments</button>
     <button mat-button id="reserve-button" *ngIf="authService.loggedIn()" routerLink="/reserve">New Reservation</button>
 		<button mat-button id="register-button" *ngIf="!authService.loggedIn()" routerLink="/register">Register</button>
 		<button mat-button id="login-button" *ngIf="!authService.loggedIn()" routerLink="/login">Login</button>

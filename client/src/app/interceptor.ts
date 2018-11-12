@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse, HttpErrorResponse } from "@angular/common/http";
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/auth/auth.service';
 
 @Injectable()
 export class UrlInterceptor implements HttpInterceptor {
@@ -17,7 +17,7 @@ export class UrlInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
 
-        let authService = this.injector.get(AuthService);
+        const authService = this.injector.get(AuthService);
 
         // Forward all api/ paths to server path.
         if (request.url.startsWith('api/')) {
