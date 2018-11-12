@@ -6,7 +6,11 @@ const appointments = express.Router();
 
 appointments.get('/', jwtWrapper.verifyToken, (req, res) => {
 
-    // TODO
+    const {username} = req.body;
+    knex.select().from('appointments')
+        .then(appointments => {
+            res.json(appointments);
+        });
 
 });
 
