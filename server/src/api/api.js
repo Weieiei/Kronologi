@@ -7,7 +7,6 @@ const express = require('express'),
 const api = express.Router();
 
 api.use('/authenticate', authenticate);
-api.use('/admin', appointments);
 api.use('/services', services);
 api.use('/admin', admin);
 api.use('/user', user);
