@@ -1,4 +1,5 @@
 const express = require('express');
+const USER_TYPE = require('../models/user/USER_TYPE');
 const jwtWrapper = require('../models/JWTWrapper');
 
 const authenticate = require('./routes/authenticate');
@@ -29,6 +30,26 @@ function userMiddleware(req, res, next) {
     next();
 }
 
+function adminMiddleware(req, res, next) {
+    const userId = req.userId;
+
+    knex.select().from('users').where('id', userId).then(users => {
+        if (users.length === 0) {
+            res.status(401).send({ error });
+        }
+        else {
+            const user = users[0];
+            if (user.user_type === USER_TYPE.ADMIN) {
+                next();
+            }
+            else {
+                res.status(401).send({ error });
+            }
+        }
+    });
+}
+
+
 ///////////////
 // START OF API
 ///////////////
@@ -37,6 +58,6 @@ api.use('/authenticate', authenticate);
 api.use('/services', services);
 
 api.use('/user', userMiddleware, user);
-api.use('/admin', admin);
+api.use('/admin', userMiddleware, adminMiddleware, admin);
 
 module.exports = api;
