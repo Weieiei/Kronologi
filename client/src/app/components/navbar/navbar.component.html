@@ -4,7 +4,7 @@
 		<span class="space"></span>
 
     <mat-icon class="nav-icon">calendar_today</mat-icon>
-    <button mat-button id="reserve-button" *ngIf="!authService.loggedIn()" routerLink="/reserve">New Reservation</button>
+    <button mat-button id="reserve-button" *ngIf="authService.loggedIn()" routerLink="/reserve">New Reservation</button>
 		<button mat-button id="register-button" *ngIf="!authService.loggedIn()" routerLink="/register">Register</button>
 		<button mat-button id="login-button" *ngIf="!authService.loggedIn()" routerLink="/login">Login</button>
 		<button mat-button id="logout-button" *ngIf="authService.loggedIn()" (click)="authService.logoutUser()">Sign Out</button>
