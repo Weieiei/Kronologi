@@ -10,6 +10,6 @@ const USER_TYPE = {
     CLIENT: 'client',
     ADMIN: 'admin'
 
-}
+};
 
 module.exports = USER_TYPE;

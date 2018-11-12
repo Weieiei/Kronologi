@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppointmentService } from 'src/app/services/appointment.service';
+import { AppointmentService } from '../../services/appointment/appointment.service';
 
 @Component({
   selector: 'app-my-appointments',
@@ -21,7 +21,7 @@ export class MyAppointmentsComponent implements OnInit {
     this.appointmentService.getMyAppointments().subscribe(
       res => this.appointments = res['appointments'],
       err => console.log(err)
-    )
+    );
   }
 
 }
