@@ -29,4 +29,5 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 ## First run potential problem(s):
-1. If you cannot start with npm, please run the `npm link @angular/cli` to be able to run the app with the `ng server`
+
+- If you cannot start with `npm`, please run `npm link @angular/cli` to be able to run the client with `ng serve`.
