@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
-  { path: 'reserve', component: ReserveComponent, canActivate: [AnonymousGuard] },
+  { path: 'reserve', component: ReserveComponent, canActivate: [AuthGuard] },
   { path: 'my/appts', component: MyAppointmentsComponent, canActivate: [AuthGuard] }
 ];
 
