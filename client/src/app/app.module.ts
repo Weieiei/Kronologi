@@ -9,7 +9,7 @@ import { MaterialModule } from './material';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
@@ -18,6 +18,8 @@ import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,16 @@ import { MyAppointmentsComponent } from './components/my-appointments/my-appoint
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
+
   ],
   providers: [
     AuthService,
@@ -50,3 +61,7 @@ import { MyAppointmentsComponent } from './components/my-appointments/my-appoint
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}

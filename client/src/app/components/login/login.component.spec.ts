@@ -6,6 +6,7 @@ import { MaterialModule } from 'src/app/material';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -18,9 +19,12 @@ describe('LoginComponent', () => {
         MaterialModule,
         HttpClientModule,
         RouterTestingModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
       ],
-      declarations: [ LoginComponent ]
+      declarations: [ LoginComponent ],
     })
     .compileComponents();
   }));

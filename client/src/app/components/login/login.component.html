@@ -2,25 +2,25 @@
 
 	<div class="column">
 
-		<h3>Sign In</h3>
+		<h3>{{'LOGGING_IN.TITLE' | translate}}</h3>
 
 		<form class="user form" #userForm="ngForm" (ngSubmit)="loginUser()" autocomplete="off">
 
 			<mat-form-field class="field" floatLabel="never">
 				<input matInput #usernameInput [(ngModel)]="username"
 					type="text" name="username" id="username"
-					placeholder="Username">
+					placeholder="{{'LOGGING_IN.USERNAME' | translate}}">
 				<mat-icon matSuffix>person</mat-icon>
 			</mat-form-field>
 
 			<mat-form-field class="field" floatLabel="never">
 				<input matInput [(ngModel)]="password"
 					type="password" name="password" id="password"
-					placeholder="Password">
+					placeholder="{{'LOGGING_IN.PASSWORD' | translate}}">
 				<mat-icon matSuffix>visibility_off</mat-icon>
 			</mat-form-field>
 
-			<button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Sign In</button>
+			<button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">{{'LOGGING_IN.SUBMIT' | translate}}</button>
 
 		</form>
 
