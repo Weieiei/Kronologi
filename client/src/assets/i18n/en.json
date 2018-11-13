@@ -24,10 +24,23 @@
       "PASSWORD_2": "Must contain at least 1 letter and 1 digit"
     }
   },
-  "LOGGING_IN" : {
+  "LOGGING_IN": {
     "TITLE": "Sign In",
     "USERNAME": "Username",
     "PASSWORD": "Password",
     "SUBMIT": "Sign In"
+  },
+  "MY_REGISTRATION" : {
+    "TITLE_1": "You have",
+    "TITLE_2": "upcoming appointment(s)",
+    "NO_APPOINTMENTS": "You currently do not have any appointments",
+    "TABLE": {
+      "SERVICE": "Service",
+      "DATE": "Date",
+      "START": "Starts at",
+      "END": "Ends at",
+      "DURATION": "Duration",
+      "NOTES": "Notes"
+    }
   }
 }

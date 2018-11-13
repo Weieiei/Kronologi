@@ -24,10 +24,23 @@
       "PASSWORD_2": "Doit contenir au moins une lettre et un chiffre"
     }
   },
-  "LOGGING_IN" : {
+  "LOGGING_IN": {
     "TITLE": "Connexion",
     "USERNAME": "Nom d'utilisateur",
     "PASSWORD": "Mot de passe",
     "SUBMIT": "Se connecter"
+  },
+  "MY_REGISTRATION" : {
+    "TITLE_1": "Vouz avez",
+    "TITLE_2": "rendez-vous à venir",
+    "NO_APPOINTMENTS": "Vous n'avez actuellement aucun rendez-vous",
+    "TABLE": {
+      "SERVICE": "Service",
+      "DATE": "Date",
+      "START": "Commence à",
+      "END": "Se termine à",
+      "DURATION": "Durée",
+      "NOTES": "Commentaires"
+    }
   }
 }
