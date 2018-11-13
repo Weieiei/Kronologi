@@ -1,5 +1,6 @@
 {
   "TITLE": "Planificateur de rendez-vous",
+  "LANGUAGE_LABEL": "Language",
   "NAVBAR": {
     "REGISTER": "Créer un compte",
     "LOGIN": "Connexion",

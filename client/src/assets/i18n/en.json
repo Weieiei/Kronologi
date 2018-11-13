@@ -1,5 +1,6 @@
 {
   "TITLE": "Appointment Scheduler",
+  "LANGUAGE_LABEL": "Langue",
   "NAVBAR": {
     "REGISTER": "Register",
     "LOGIN": "Login",

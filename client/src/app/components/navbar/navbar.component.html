@@ -9,7 +9,10 @@
 		<button mat-button id="login-button" *ngIf="!authService.loggedIn()" routerLink="/login">{{'NAVBAR.LOGIN' | translate}}</button>
 		<button mat-button id="logout-button" *ngIf="authService.loggedIn()" (click)="authService.logoutUser()">{{'NAVBAR.LOGOUT' | translate}}</button>
 		<button mat-button routerLink="/contact">{{'NAVBAR.CONTACT' | translate}}</button>
-    <button mat-button (click)="switchLanguage('en')">en</button>
-    <button mat-button (click)="switchLanguage('fr')">fr</button>
+    <button mat-button [matMenuTriggerFor]="languageSwitcher">{{'LANGUAGE_LABEL' | translate}}</button>
+    <mat-menu #languageSwitcher="matMenu">
+      <button mat-menu-item (click)="switchLanguage('en')">English</button>
+      <button mat-menu-item (click)="switchLanguage('fr')">Français</button>
+    </mat-menu>
   </mat-toolbar-row>
 </mat-toolbar>
