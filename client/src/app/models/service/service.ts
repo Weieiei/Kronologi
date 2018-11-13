@@ -1,5 +1,4 @@
 export class Service {
-
     private _id: number;
     private _name: string;
     private _duration: number;
@@ -9,7 +8,7 @@ export class Service {
     ) {
         this._id = id;
         this._name = name;
-        this._duration = duration
+        this._duration = duration;
     }
 
     public get id(): number {
@@ -31,5 +30,4 @@ export class Service {
     public set duration(duration: number) {
         this._duration = duration;
     }
-
 }

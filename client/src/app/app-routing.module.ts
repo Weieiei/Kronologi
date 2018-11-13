@@ -5,16 +5,16 @@ import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { AnonymousGuard } from './guards/anonymous.guard';
+import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', redirectTo: '', pathMatch: 'full' },
-
-  { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
-
+  { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
+  { path: 'reserve', component: ReserveComponent, canActivate: [AuthGuard] },
   { path: 'my/appts', component: MyAppointmentsComponent, canActivate: [AuthGuard] }
 ];
 

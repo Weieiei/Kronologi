@@ -58,7 +58,7 @@ describe('NavbarComponent', () => {
 
     debugElement = fixture.debugElement.query(By.css('#logout-button'));
     expect(debugElement).toBeNull();
-  })
+  });
 
   it('should display register and login buttons only if user is not logged in', () => {
     expect(authService.loggedIn()).toBe(false);

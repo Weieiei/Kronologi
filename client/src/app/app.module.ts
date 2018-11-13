@@ -16,6 +16,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
+import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
 
 @NgModule({
@@ -25,7 +26,8 @@ import { MyAppointmentsComponent } from './components/my-appointments/my-appoint
     RegisterComponent,
     HomeComponent,
     LoginComponent,
-    MyAppointmentsComponent,
+    ReserveComponent,
+    MyAppointmentsComponent
   ],
   imports: [
     BrowserModule,
