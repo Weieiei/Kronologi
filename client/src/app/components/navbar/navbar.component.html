@@ -12,7 +12,7 @@
 		<button mat-button routerLink="/contact">Contact</button>
 	</mat-toolbar-row>
 		<button mat-button id="my-appts-button" *ngIf="authService.loggedIn()" routerLink="/my/appts">{{'NAVBAR.APPOINTMENTS' | translate}}</button>
-    <button mat-button id="reserve-button" *ngIf="authService.loggedIn()" routerLink="/reserve">New Reservation</button>
+    <button mat-button id="reserve-button" *ngIf="authService.loggedIn()" routerLink="/reserve">{{'NAVBAR.RESERVATION' | translate}}</button>
     <button mat-button id="register-button" *ngIf="!authService.loggedIn()" routerLink="/register">{{'NAVBAR.REGISTER' | translate}}</button>
 		<button mat-button id="login-button" *ngIf="!authService.loggedIn()" routerLink="/login">{{'NAVBAR.LOGIN' | translate}}</button>
 		<button mat-button id="logout-button" *ngIf="authService.loggedIn()" (click)="authService.logoutUser()">{{'NAVBAR.LOGOUT' | translate}}</button>
