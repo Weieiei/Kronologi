@@ -42,5 +42,16 @@
       "DURATION": "Duration",
       "NOTES": "Notes"
     }
+  },
+  "RESERVE": {
+    "SERVICE": "Choose a service",
+    "DATE": "Choose a date",
+    "START": "Enter a time",
+    "END": "Enter a time",
+    "NOTE": "Leave a note",
+    "CONFIRM": "Confirm Reservation",
+    "HINT": {
+      "SERVICE": "Here's the drop-down arrow"
+    }
   }
 }

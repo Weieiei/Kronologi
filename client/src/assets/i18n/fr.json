@@ -42,5 +42,16 @@
       "DURATION": "Durée",
       "NOTES": "Commentaires"
     }
+  },
+  "RESERVE": {
+    "SERVICE": "Choisissez un service",
+    "DATE": "Choisissez une date",
+    "START": "Entrez une heure",
+    "END": "Entrez une heure",
+    "NOTE": "Laissez un commentaire",
+    "CONFIRM": "Confirmer la réservation",
+    "HINT": {
+      "SERVICE": "Voici la flèche déroulante"
+    }
   }
 }
