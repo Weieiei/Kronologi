@@ -6,7 +6,8 @@
     "LOGIN": "Login",
     "LOGOUT": "Signout",
     "CONTACT": "Contact",
-    "APPOINTMENTS": "My Appointments"
+    "APPOINTMENTS": "My Appointments",
+    "RESERVATION": "New Reservation"
   },
   "REGISTRATION": {
     "TITLE": "Sign Up for an Account",

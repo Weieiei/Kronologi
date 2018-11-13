@@ -6,7 +6,8 @@
     "LOGIN": "Connexion",
     "LOGOUT": "Déconnexion",
     "CONTACT": "Contacter",
-    "APPOINTMENTS": "Mes rendez-vous"
+    "APPOINTMENTS": "Mes rendez-vous",
+    "RESERVATION": "Nouvelle Réservation"
   },
   "REGISTRATION": {
     "TITLE": "Créer un compte",
