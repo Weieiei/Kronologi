@@ -1,12 +1,10 @@
-
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Service } from 'src/app/models/service/service';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { AppointmentService } from 'src/app/services/appointment/appointment.service';
+import { ServicesService } from 'src/app/services/services/services.service';
+import { Service } from 'src/app/interfaces/service';
+import * as moment from 'moment';
 import { Appointment } from 'src/app/models/appointment/appointment';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Time } from '@angular/common';
 
 @Component({
   selector: 'app-reserve',
@@ -15,48 +13,57 @@ import { Time } from '@angular/common';
 })
 
 export class ReserveComponent implements OnInit {
-  service: Service = null;
-  selectedService: Service;
-  service_options: Array<Service>;
-  today: number = Date.now();
-  startDate: Date;
-  startTime: Time;
-  dateFilter = (date: Date) => date.getDate() <= this.today;
 
-  constructor(private authService: AuthService,
-    private router: Router, private http: HttpClient) { }
+  services: any[];
 
-  getServiceJson() {
-    return this.http.get<any>('api/services');
-  }
+  appointment: Appointment;
+  date: string;
+  startTime: string;
+  endTime: string;
 
+  constructor(
+    private appointmentService: AppointmentService,
+    private servicesService: ServicesService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    console.log(this.today);
-    this.getServiceJson().subscribe((object: Array<Service>) => {
-      this.service_options = object;
-      console.log(object);
-      console.log(this.service_options[0]);
-    });
-
-  }
-  reserve_service() {
-    let appointment = new Appointment();
-    appointment.start_time = this.startTime;
-    appointment.end_time = this.startTime // add the minutes
-    appointment.date = this.startDate
-    appointment.service_id = this.selectedService.id
-    // appointment.user_id = user.id
-    this.addAppointment(appointment);
-
-
-
-
-
+    this.appointment = new Appointment();
+    this.getServices();
   }
 
-  addAppointment(appointment: Appointment): Observable<Appointment> {
-    return this.http.post<Appointment>(['api', 'appointment'].join('/'), { appointment });
+  getServices() {
+    this.servicesService.getServices().subscribe(
+      res => this.services = res,
+      err => console.log(err)
+    )
+  }
+
+  private findServiceById(id: number): Service {
+    for (let i = 0; i < this.services.length; i++) {
+      const service: Service = this.services[i];
+
+      if (service.id == id) {
+        return service;
+      }
+    }
+  }
+
+  updateEndTime() {
+    if (this.appointment.service_id != undefined && this.startTime != undefined) {
+      const service: Service = this.findServiceById(this.appointment.service_id);
+      const date = moment('2012-12-12 ' + this.startTime).add(service.duration, 'm');
+      this.endTime = date.format('HH:mm:ss');
+    }
+  }
+
+  makeAppointment(): void {
+    let date = moment(this.date).format('YYYY-MM-DD');
+    this.appointment.start_time = moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss');
+    this.appointmentService.reserveAppointment(this.appointment).subscribe(
+      res => this.router.navigate(['/my/appts']),
+      err => console.log(err)
+    )
   }
 
 }

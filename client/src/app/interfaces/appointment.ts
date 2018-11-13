@@ -1,4 +1,4 @@
-export interface Appointment {
+export interface IAppointment {
   id?;
   user_id?;
   service_id;

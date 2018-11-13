@@ -4,7 +4,6 @@ const jwtWrapper = require('../models/JWTWrapper');
 
 const authenticate = require('./routes/authenticate');
 const services = require('./routes/services');
-const appointment = require('./routes/appointment')
 
 const user = require('./routes/user/user');
 const admin = require('./routes/admin/admin');
@@ -57,7 +56,6 @@ function adminMiddleware(req, res, next) {
 
 api.use('/authenticate', authenticate);
 api.use('/services', services);
-api.use('/appointment', appointment);
 
 api.use('/user', userMiddleware, user);
 api.use('/admin', userMiddleware, adminMiddleware, admin);

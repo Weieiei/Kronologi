@@ -1,32 +1,42 @@
-<div class="main">
+<div>
 
-    <div class="column">
+	<form fxLayout="column" fxLayoutAlign="start center" (ngSubmit)="makeAppointment()">
+		<div>
+			<mat-form-field>
+				<mat-select placeholder="Choose a service" name="serviceId" id="serviceId" [(ngModel)]="appointment.service_id" (change)="updateEndTime()">
+					<mat-option *ngFor="let service of services" [value]="service.id">
+						{{ service.name }} // {{ service.duration }}
+					</mat-option>
+				</mat-select>
+				<mat-hint>Here's the drop-down arrow ^</mat-hint>
+			</mat-form-field>
+		</div>
+		<div fxLayout="row">
+			<mat-form-field>
+				<input matInput [matDatepicker]="picker" [matDatepickerFilter]="dateFilter" placeholder="Choose a date" [(ngModel)]="date"
+					name="start_date">
+				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-datepicker #picker></mat-datepicker>
+			</mat-form-field>
+			<div fxLayout="column">
+				<mat-form-field class="field" hintLabel="Enter a time" floatLabel="never">
+					<input matInput placeholder="Time" type="time" id="appt" name="appt" required [(ngModel)]="startTime"
+						name="start_time" (change)="updateEndTime()">
+				</mat-form-field>
+		
+				<mat-form-field class="field" hintLabel="Enter a time" floatLabel="never">
+					<input matInput placeholder="Time" type="time" id="appt" name="appt" required [(ngModel)]="endTime"
+						name="endTime" disabled>
+				</mat-form-field>
+			</div>
+		</div>
+		<div>
+			<mat-form-field>
+				<textarea matInput placeholder="Leave a note" [(ngModel)]="appointment.notes" name="notes"></textarea>
+			</mat-form-field>
+		</div>
 
-      <h3>Make a reservation</h3>
-      <form class="reservation form" #userForm="ngForm" (ngSubmit)="reserve_service()" autocomplete="off">
-        <mat-form-field>
-          <mat-select placeholder="Select a service" [(ngModel)]="selectedService" name="service-select">
-              <mat-option [value]="service" *ngFor="let service of service_options">
-                {{service.name}}
-              </mat-option>
-          </mat-select>
-          <mat-hint>Here's the drop-down arrow ^</mat-hint>
-        </mat-form-field>
-        <br/>
-        <mat-form-field>
-          <input matInput [matDatepicker]="picker" [matDatepickerFilter]="dateFilter" placeholder="Choose a date" [(ngModel)]="startDate" name="start_date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-          <br/>
-          <mat-form-field class="field" hintLabel="Enter a time" floatLabel="never">
-              <input matInput placeholder="Time" type="time" id="appt" name="appt" min="9:00" max="18:00" required [(ngModel)]="startTime" name="start_time">
-          </mat-form-field>
-          <br/>
-          <button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Reserve</button>
+		<button type="submit">Submit</button>
+	</form>
 
-        </form>
-
-    </div>
-
-  </div>
+</div>
