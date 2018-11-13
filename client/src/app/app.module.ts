@@ -18,7 +18,6 @@ import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
-import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   declarations: [
@@ -36,8 +35,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule,
-    FlexLayoutModule
+    HttpClientModule
   ],
   providers: [
     AuthService,
