@@ -9,6 +9,7 @@ exports.up = async knex => {
             table.specificType('email', 'CITEXT').unique().notNullable();
             table.specificType('username', 'CITEXT').unique().notNullable();
             table.string('password').notNullable();
+            table.string('user_type').notNullable();
             table.timestamp('created_at').defaultTo(knex.fn.now());
         })
         .createTable('services', table => {

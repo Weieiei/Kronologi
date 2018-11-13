@@ -1,0 +1,33 @@
+{
+  "TITLE": "Planificateur de rendez-vous",
+  "LANGUAGE_LABEL": "Language",
+  "NAVBAR": {
+    "REGISTER": "Créer un compte",
+    "LOGIN": "Connexion",
+    "LOGOUT": "Déconnexion",
+    "CONTACT": "Contacter",
+    "APPOINTMENTS": "Mes rendez-vous"
+  },
+  "REGISTRATION": {
+    "TITLE": "Créer un compte",
+    "FIRST_NAME": "Prénom",
+    "LAST_NAME": "Nom de famille",
+    "EMAIL": "Courriel",
+    "USERNAME": "Nom d'utilisateur",
+    "PASSWORD": "Mot de passe",
+    "PASSWORD_CONFIRMATION": "Ré-entrez le mot de passe",
+    "SUBMIT": "Créer un compte",
+    "HINTS": {
+      "EMAIL": "Exemple: johnsmith@gmail.com",
+      "USERNAME": "Entre 4 et 30 charactères",
+      "PASSWORD_1": "Entre 6 et 30 charactères",
+      "PASSWORD_2": "Doit contenir au moins une lettre et un chiffre"
+    }
+  },
+  "LOGGING_IN" : {
+    "TITLE": "Connexion",
+    "USERNAME": "Nom d'utilisateur",
+    "PASSWORD": "Mot de passe",
+    "SUBMIT": "Se connecter"
+  }
+}

@@ -4,15 +4,16 @@ import { NavbarComponent } from './navbar.component';
 import { DebugElement } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { By } from '@angular/platform-browser';
 import { MaterialModule } from 'src/app/material';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
   let debugElement: DebugElement;
-  
+
   let authService: AuthService;
 
   beforeEach(async(() => {
@@ -20,7 +21,10 @@ describe('NavbarComponent', () => {
       imports: [
         HttpClientModule,
         RouterTestingModule,
-        MaterialModule
+        MaterialModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
       ],
       declarations: [
         NavbarComponent
@@ -58,7 +62,7 @@ describe('NavbarComponent', () => {
 
     debugElement = fixture.debugElement.query(By.css('#logout-button'));
     expect(debugElement).toBeNull();
-  })
+  });
 
   it('should display register and login buttons only if user is not logged in', () => {
     expect(authService.loggedIn()).toBe(false);
@@ -78,7 +82,7 @@ describe('NavbarComponent', () => {
 
     debugElement = fixture.debugElement.query(By.css('#login-button'));
     expect(debugElement).toBeNull();
-  })
+  });
 });
 
 function login() {

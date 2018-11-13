@@ -1,8 +1,8 @@
 <mat-toolbar color="primary" id="navbar">
 	<mat-toolbar-row class="container">
-		<button mat-button class="title" routerLink="/">Appointment Scheduler</button>
-
+		<button mat-button class="title" routerLink="/">{{'TITLE' | translate}}</button>
 		<span class="space"></span>
+
 
 		<mat-icon class="nav-icon">calendar_today</mat-icon>
 		<button mat-button id="register-button" *ngIf="!authService.loggedIn()" routerLink="/register">Register</button>
@@ -11,4 +11,16 @@
 		<button mat-button id="logout-button" *ngIf="authService.loggedIn()" (click)="authService.logoutUser()">Sign Out</button>
 		<button mat-button routerLink="/contact">Contact</button>
 	</mat-toolbar-row>
+		<button mat-button id="my-appts-button" *ngIf="authService.loggedIn()" routerLink="/my/appts">{{'NAVBAR.APPOINTMENTS' | translate}}</button>
+    <button mat-button id="reserve-button" *ngIf="authService.loggedIn()" routerLink="/reserve">New Reservation</button>
+    <button mat-button id="register-button" *ngIf="!authService.loggedIn()" routerLink="/register">{{'NAVBAR.REGISTER' | translate}}</button>
+		<button mat-button id="login-button" *ngIf="!authService.loggedIn()" routerLink="/login">{{'NAVBAR.LOGIN' | translate}}</button>
+		<button mat-button id="logout-button" *ngIf="authService.loggedIn()" (click)="authService.logoutUser()">{{'NAVBAR.LOGOUT' | translate}}</button>
+		<button mat-button routerLink="/contact">{{'NAVBAR.CONTACT' | translate}}</button>
+    <button mat-button [matMenuTriggerFor]="languageSwitcher">{{'LANGUAGE_LABEL' | translate}}</button>
+    <mat-menu #languageSwitcher="matMenu">
+      <button mat-menu-item (click)="switchLanguage('en')">English</button>
+      <button mat-menu-item (click)="switchLanguage('fr')">Français</button>
+    </mat-menu>
+  </mat-toolbar-row>
 </mat-toolbar>

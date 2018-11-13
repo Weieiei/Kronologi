@@ -9,14 +9,18 @@ import { MaterialModule } from './material';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthService } from './services/auth.service';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { AuthService } from './services/auth/auth.service';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
+import { ReserveComponent } from './components/reserve/reserve.component';
+import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -24,8 +28,10 @@ import { AppointmentsComponent } from './components/appointments/appointments.co
     NavbarComponent,
     RegisterComponent,
     HomeComponent,
-    LoginComponent,
     AppointmentsComponent
+    LoginComponent,
+    ReserveComponent,
+    MyAppointmentsComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +39,16 @@ import { AppointmentsComponent } from './components/appointments/appointments.co
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
+
   ],
   providers: [
     AuthService,
@@ -48,3 +63,7 @@ import { AppointmentsComponent } from './components/appointments/appointments.co
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
