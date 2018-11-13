@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { By } from '@angular/platform-browser';
 import { MaterialModule } from 'src/app/material';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -20,7 +21,10 @@ describe('NavbarComponent', () => {
       imports: [
         HttpClientModule,
         RouterTestingModule,
-        MaterialModule
+        MaterialModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
       ],
       declarations: [
         NavbarComponent
