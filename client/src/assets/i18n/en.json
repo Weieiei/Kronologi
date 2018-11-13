@@ -6,7 +6,8 @@
     "LOGIN": "Login",
     "LOGOUT": "Signout",
     "CONTACT": "Contact",
-    "APPOINTMENTS": "My Appointments"
+    "APPOINTMENTS": "My Appointments",
+    "RESERVATION": "New Reservation"
   },
   "REGISTRATION": {
     "TITLE": "Sign Up for an Account",
@@ -24,10 +25,34 @@
       "PASSWORD_2": "Must contain at least 1 letter and 1 digit"
     }
   },
-  "LOGGING_IN" : {
+  "LOGGING_IN": {
     "TITLE": "Sign In",
     "USERNAME": "Username",
     "PASSWORD": "Password",
     "SUBMIT": "Sign In"
+  },
+  "MY_REGISTRATION" : {
+    "TITLE_1": "You have",
+    "TITLE_2": "upcoming appointment(s)",
+    "NO_APPOINTMENTS": "You currently do not have any appointments",
+    "TABLE": {
+      "SERVICE": "Service",
+      "DATE": "Date",
+      "START": "Starts at",
+      "END": "Ends at",
+      "DURATION": "Duration",
+      "NOTES": "Notes"
+    }
+  },
+  "RESERVE": {
+    "SERVICE": "Choose a service",
+    "DATE": "Choose a date",
+    "START": "Enter a time",
+    "END": "Enter a time",
+    "NOTE": "Leave a note",
+    "CONFIRM": "Confirm Reservation",
+    "HINT": {
+      "SERVICE": "Here's the drop-down arrow"
+    }
   }
 }

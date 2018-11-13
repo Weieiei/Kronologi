@@ -1,36 +1,36 @@
 <div *ngIf="appointments?.length">
 
-    <p>You have {{ appointments?.length }} upcoming appointment(s):</p>
+    <p>{{'MY_REGISTRATION.TITLE_1' | translate}} {{ appointments?.length }} {{'MY_REGISTRATION.TITLE_2' | translate}}:</p>
 
     <table style="width: 100%" mat-table [dataSource]="appointments" class="mat-elevation-z8">
     
         <ng-container matColumnDef="service">
-            <th mat-header-cell *matHeaderCellDef> Service </th>
+            <th mat-header-cell *matHeaderCellDef> {{'MY_REGISTRATION.TABLE.SERVICE' | translate}} </th>
             <td mat-cell *matCellDef="let appointment"> {{ appointment.name }} </td>
         </ng-container>
     
         <ng-container matColumnDef="day">
-            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <th mat-header-cell *matHeaderCellDef> {{'MY_REGISTRATION.TABLE.DATE' | translate}} </th>
             <td mat-cell *matCellDef="let appointment"> {{ appointment.start_time | date: 'mediumDate' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="start">
-            <th mat-header-cell *matHeaderCellDef> Starts at </th>
+            <th mat-header-cell *matHeaderCellDef> {{'MY_REGISTRATION.TABLE.START' | translate}} </th>
             <td mat-cell *matCellDef="let appointment"> {{ appointment.start_time | date: 'h:mm a' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="end">
-            <th mat-header-cell *matHeaderCellDef> Ends at </th>
+            <th mat-header-cell *matHeaderCellDef> {{'MY_REGISTRATION.TABLE.END' | translate}} </th>
             <td mat-cell *matCellDef="let appointment"> {{ appointment.end_time | date: 'h:mm a' }} </td>
         </ng-container>
     
         <ng-container matColumnDef="duration">
-            <th mat-header-cell *matHeaderCellDef> Duration </th>
+            <th mat-header-cell *matHeaderCellDef> {{'MY_REGISTRATION.TABLE.DURATION' | translate}} </th>
             <td mat-cell *matCellDef="let appointment"> {{ appointment.duration }} min. </td>
         </ng-container>
     
         <ng-container matColumnDef="notes">
-            <th mat-header-cell *matHeaderCellDef> Notes </th>
+            <th mat-header-cell *matHeaderCellDef> {{'MY_REGISTRATION.TABLE.NOTES' | translate}} </th>
             <td mat-cell *matCellDef="let appointment"> {{ appointment.notes }} </td>
         </ng-container>
     
@@ -42,5 +42,5 @@
 </div>
 
 <div *ngIf="!appointments?.length">
-    <p>You currently do not have any appointments.</p>
+    <p>{{'MY_REGISTRATION.NO_APPOINTMENTS' | translate}}.</p>
 </div>

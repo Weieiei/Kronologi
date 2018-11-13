@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MaterialModule } from '../../material';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 @Component({ selector: 'app-appointment', template: '' })
 class AppointmentStubComponent { }
@@ -23,7 +24,10 @@ describe('MyAppointmentsComponent', () => {
         HttpClientModule,
         RouterTestingModule,
         MaterialModule,
-        FormsModule
+        FormsModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
       ],
       declarations: [
         MyAppointmentsComponent,
