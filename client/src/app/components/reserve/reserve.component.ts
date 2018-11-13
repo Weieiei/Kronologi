@@ -40,13 +40,7 @@ export class ReserveComponent implements OnInit {
   }
 
   private findServiceById(id: number): Service {
-    for (let i = 0; i < this.services.length; i++) {
-      const service: Service = this.services[i];
-
-      if (service.id == id) {
-        return service;
-      }
-    }
+    return this.services.find(service => service.id == id);
   }
 
   updateEndTime() {
