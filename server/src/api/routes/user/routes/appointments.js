@@ -25,7 +25,7 @@ appointments.get('/', (req, res) => {
 appointments.post('/', (req, res) => {
     const user_id = req.userId;
     const service_id = req.body.service_id;
-    const start_time = req.body.start_time;
+    let start_time = req.body.start_time;
     const notes = req.body.notes;
 
     knex.select()
@@ -34,7 +34,10 @@ appointments.post('/', (req, res) => {
         .first()
         .then(service => {
             if (service !== undefined) {
-                const end_time = moment(start_time).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss');
+                let end_time = moment(start_time).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss');
+
+                start_time += '-05';
+                end_time += '-05';
 
                 knex('appointments')
                     .whereBetween('start_time', [start_time, end_time])

@@ -27,6 +27,7 @@
     "@ngx-translate/core": "^11.0.0",
     "@ngx-translate/http-loader": "^4.0.0",
     "core-js": "^2.5.4",
+    "moment": "^2.22.2",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },

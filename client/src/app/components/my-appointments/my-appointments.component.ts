@@ -8,7 +8,7 @@ import { AppointmentService } from '../../services/appointment/appointment.servi
 })
 export class MyAppointmentsComponent implements OnInit {
 
-  displayedColumns: string[] = ['service', 'start', 'duration', 'notes'];
+  displayedColumns: string[] = ['service', 'day', 'start', 'end', 'duration', 'notes'];
   appointments: any[] = [];
 
   constructor(private appointmentService: AppointmentService) { }

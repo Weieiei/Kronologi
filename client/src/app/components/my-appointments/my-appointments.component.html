@@ -9,9 +9,19 @@
             <td mat-cell *matCellDef="let appointment"> {{ appointment.name }} </td>
         </ng-container>
     
+        <ng-container matColumnDef="day">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let appointment"> {{ appointment.start_time | date: 'mediumDate' }} </td>
+        </ng-container>
+
         <ng-container matColumnDef="start">
-            <th mat-header-cell *matHeaderCellDef> Start Time </th>
-            <td mat-cell *matCellDef="let appointment"> {{ appointment.start_time | date: 'medium' }} </td>
+            <th mat-header-cell *matHeaderCellDef> Starts at </th>
+            <td mat-cell *matCellDef="let appointment"> {{ appointment.start_time | date: 'h:mm a' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="end">
+            <th mat-header-cell *matHeaderCellDef> Ends at </th>
+            <td mat-cell *matCellDef="let appointment"> {{ appointment.end_time | date: 'h:mm a' }} </td>
         </ng-container>
     
         <ng-container matColumnDef="duration">
