@@ -22,5 +22,11 @@
       "PASSWORD_1": "Between 6 and 30 characters",
       "PASSWORD_2": "Must contain at least 1 letter and 1 digit"
     }
+  },
+  "LOGGING_IN" : {
+    "TITLE": "Sign In",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "SUBMIT": "Sign In"
   }
 }
