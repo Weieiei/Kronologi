@@ -28,7 +28,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     NavbarComponent,
     RegisterComponent,
     HomeComponent,
-    AppointmentsComponent
+    AppointmentsComponent,
     LoginComponent,
     ReserveComponent,
     MyAppointmentsComponent
