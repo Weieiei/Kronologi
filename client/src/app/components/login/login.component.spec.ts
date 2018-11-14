@@ -53,19 +53,6 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // it('login a user', () => {
-  //   component.username = 'hello';
-  //   component.password = 'capstone';
-  //   const user: User = new User();
-  //   user.username = 'hello';
-  //   user.password = 'capstone';
-  //   // Trigger the login function
-  //   component.loginUser();
-  //   // Now we can check to make sure the value is correct
-  //   expect(user.username).toBe('hello');
-  //   expect(user.password).toBe('capstone');
-  // });
-
 
   it('loginUser should have the same value as user', () => {
     component.username = 'user';
@@ -75,12 +62,7 @@ describe('LoginComponent', () => {
     user.username = 'user';
     user.password = 'password1';
     component.loginUser();
-    // spy = spyOn(service, 'loginUser').and.returnValue(user);
-    // expect(service.loginUser('user', 'password1')).toHaveBeenCalled();
-    //  localStorage.setItem('user', 'password1');
-    // spyOn(authService, 'loginUser').withArgs('user' , 'password1').and.returnValue(true);
-    // expect(user.username).toBe('hello');
-    // expect(user.password).toBe('capstone');
+
     expect(service.loginUser('user', 'password1')).toEqual(new User(null,  '', '',
     '',  'user', 'password1'));
   });
