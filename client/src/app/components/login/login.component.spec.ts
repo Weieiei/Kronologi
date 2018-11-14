@@ -6,9 +6,7 @@ import { MaterialModule } from 'src/app/material';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import { User } from 'src/app/models/user/user';
-import { AuthService } from 'src/app/services/auth/auth.service';
 
 class MockAuthService {
   loginUser(username: string, password: string) {
@@ -32,10 +30,7 @@ describe('LoginComponent', () => {
         MaterialModule,
         HttpClientModule,
         RouterTestingModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
+        BrowserAnimationsModule
       ],
       declarations: [ LoginComponent ],
     })
