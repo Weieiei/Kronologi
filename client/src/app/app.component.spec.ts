@@ -1,7 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
 @Component({ selector: 'app-navbar', template: '' })
 class NavbarStubComponent { }
@@ -16,11 +15,6 @@ describe('AppComponent', () => {
         AppComponent,
         NavbarStubComponent,
         RouterOutletStubComponent
-      ],
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
-        }),
       ]
     }).compileComponents();
   }));

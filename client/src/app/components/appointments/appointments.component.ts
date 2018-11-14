@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import {HttpClient} from '@angular/common/http';
 import {AppointmentService} from "../../services/appointment/appointment.service";
 import * as moment from "moment";
 
@@ -24,11 +22,7 @@ export class AppointmentsComponent implements OnInit {
   rawData: any[];
   services: any[];
 
-
-
-  constructor(private authService: AuthService,
-              private httpService: HttpClient,
-              private appointmentService: AppointmentService) { }
+  constructor(private appointmentService: AppointmentService) { }
 
   ngOnInit() {
     this.getAllAppointments();
