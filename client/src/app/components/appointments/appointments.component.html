@@ -1,6 +1,6 @@
 <div *ngIf="dataSource?.length">
 
-  <p>{{'MY_REGISTRATION.TITLE_1' | translate}} {{ dataSource?.length }} {{'MY_REGISTRATION.TITLE_2' | translate}}:</p>
+  <p>{{'ALL_APPOINTMENTS.TITLE_1' | translate}} {{ dataSource?.length }} {{'ALL_APPOINTMENTS.TITLE_2' | translate}}:</p>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -9,31 +9,31 @@
 
     <!-- Service Column -->
     <ng-container matColumnDef="service">
-      <th mat-header-cell *matHeaderCellDef> Service </th>
+      <th mat-header-cell *matHeaderCellDef> {{'ALL_APPOINTMENTS.TABLE.SERVICE' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.service}} </td>
     </ng-container>
 
     <!-- Date Column -->
     <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <th mat-header-cell *matHeaderCellDef> {{'ALL_APPOINTMENTS.TABLE.DATE' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.date}} </td>
     </ng-container>
 
     <!-- Time Column -->
     <ng-container matColumnDef="time">
-      <th mat-header-cell *matHeaderCellDef> Time </th>
+      <th mat-header-cell *matHeaderCellDef> {{'ALL_APPOINTMENTS.TABLE.TIME' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.time}} </td>
     </ng-container>
 
     <!-- Duration Column -->
     <ng-container matColumnDef="duration">
-      <th mat-header-cell *matHeaderCellDef> Duration </th>
+      <th mat-header-cell *matHeaderCellDef> {{'ALL_APPOINTMENTS.TABLE.DURATION' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
     </ng-container>
 
     <!-- User Column -->
     <ng-container matColumnDef="user">
-      <th mat-header-cell *matHeaderCellDef> User </th>
+      <th mat-header-cell *matHeaderCellDef> {{'ALL_APPOINTMENTS.TABLE.USER' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.user}} </td>
     </ng-container>
 
@@ -43,5 +43,5 @@
 </div>
 
 <div *ngIf="!dataSource?.length">
-  <p>{{'MY_REGISTRATION.NO_APPOINTMENTS' | translate}}.</p>
+  <p>{{'ALL_APPOINTMENTS.NO_APPOINTMENTS' | translate}}.</p>
 </div>

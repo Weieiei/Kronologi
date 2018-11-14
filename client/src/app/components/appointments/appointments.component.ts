@@ -72,8 +72,8 @@ export class AppointmentsComponent implements OnInit {
     const start: Date = new Date(startTime);
     const end: Date = new Date(endTime);
     // @ts-ignore
-    const duration = Math.abs(end - start) / 36e5;
-    return duration.toFixed(2) + " hours";
+    const duration = Math.abs(end - start) / 36e5 * 60;
+    return duration.toFixed(0) + " min.";
   }
 
   getDate(date: any) {

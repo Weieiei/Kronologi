@@ -1,12 +1,17 @@
 {
   "TITLE": "Planificateur de rendez-vous",
   "LANGUAGE_LABEL": "Language",
+  "HOME": {
+    "WELOCME_MESSAGE": "Bienvenue",
+    "LOGIN_SUCCESS" : "Connecté avec succès"
+  },
   "NAVBAR": {
     "REGISTER": "Créer un compte",
     "LOGIN": "Connexion",
     "LOGOUT": "Déconnexion",
     "CONTACT": "Contacter",
     "APPOINTMENTS": "Mes rendez-vous",
+    "CLIENT_APPOINTMENTS": "Rendez-vous client",
     "RESERVATION": "Nouvelle Réservation"
   },
   "REGISTRATION": {
@@ -54,5 +59,17 @@
     "HINT": {
       "SERVICE": "Voici la flèche déroulante"
     }
+  },
+  "ALL_APPOINTMENTS": {
+  "TITLE_1": "Vouz avez",
+  "TITLE_2": "rendez-vous client à venir",
+  "NO_APPOINTMENTS": "Vous n'avez actuellement aucun rendez-vous client",
+  "TABLE": {
+    "SERVICE": "Service",
+    "DATE": "Date",
+    "TIME": "Commence à",
+    "DURATION": "Durée",
+    "USER": "Utilisateur"
   }
+}
 }
