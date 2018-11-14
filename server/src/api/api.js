@@ -1,4 +1,5 @@
 const express = require('express');
+const knex = require('../db/knex');
 const USER_TYPE = require('../models/user/USER_TYPE');
 const jwtWrapper = require('../models/JWTWrapper');
 

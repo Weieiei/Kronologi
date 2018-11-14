@@ -85,3 +85,14 @@ knex.raw('DELETE FROM users WHERE user_id = ?;', user_id).then(() => { ... });
 
 knex('users').where('user_id', user_id).del().then(() => { ... });
 ```
+
+### `INNER JOIN`
+
+```
+const { user_id } = req.params;
+
+knex.raw('SELECT * FROM books INNER JOIN users ON
+            (books.author_id = users.id);').then(books => { ... });
+
+knex('books').innerJoin('users', 'books.author_id', 'users.id').then(books => { ... });
+```

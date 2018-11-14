@@ -1,12 +1,17 @@
 {
   "TITLE": "Appointment Scheduler",
   "LANGUAGE_LABEL": "Langue",
+  "HOME": {
+    "WELOCME_MESSAGE": "Welcome",
+    "LOGIN_SUCCESS" : "Successfully logged in"
+  },
   "NAVBAR": {
     "REGISTER": "Register",
     "LOGIN": "Login",
     "LOGOUT": "Signout",
     "CONTACT": "Contact",
     "APPOINTMENTS": "My Appointments",
+    "CLIENT_APPOINTMENTS": "Client Appointments",
     "RESERVATION": "New Reservation"
   },
   "REGISTRATION": {
@@ -53,6 +58,18 @@
     "CONFIRM": "Confirm Reservation",
     "HINT": {
       "SERVICE": "Here's the drop-down arrow"
+    }
+  },
+  "ALL_APPOINTMENTS": {
+    "TITLE_1": "You have",
+    "TITLE_2": "client appointment(s)",
+    "NO_APPOINTMENTS": "You currently do not have any client appointments",
+    "TABLE": {
+      "SERVICE": "Service",
+      "DATE": "Date",
+      "TIME": "Time",
+      "DURATION": "Duration",
+      "USER": "User"
     }
   }
 }

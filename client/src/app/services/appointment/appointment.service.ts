@@ -14,6 +14,10 @@ export class AppointmentService {
     return this.http.get<any[]>(['api', 'user', 'appointments'].join('/'));
   }
 
+  public getAllAppointments(): Observable<any[]> {
+    return this.http.get<any[]>(['api', 'admin', 'appointments'].join('/'));
+  }
+
   public reserveAppointment(appointment: IAppointment): Observable<any> {
     return this.http.post<any>(['api', 'user', 'appointments'].join('/'), appointment);
   }

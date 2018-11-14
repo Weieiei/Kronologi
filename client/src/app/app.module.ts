@@ -16,6 +16,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
+import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -27,6 +28,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     NavbarComponent,
     RegisterComponent,
     HomeComponent,
+    AppointmentsComponent,
     LoginComponent,
     ReserveComponent,
     MyAppointmentsComponent
