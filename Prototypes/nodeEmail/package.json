@@ -1,0 +1,15 @@
+{
+  "name": "nodemail",
+  "version": "1.0.0",
+  "description": "Testing mail sending",
+  "main": "index.js",
+  "dependencies": {
+    "nodemailer": "^4.6.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
