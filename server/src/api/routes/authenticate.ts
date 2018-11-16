@@ -100,7 +100,6 @@ authenticate.post('/login', (req, res) => {
             if (match) {
                 const token = generateToken(user[0].id);
                 return res.status(200).send({ token });
-
             }
             else {
                 return res.status(401).send({ invalidCredentials });

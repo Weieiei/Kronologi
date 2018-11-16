@@ -4,7 +4,6 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "grunt": "grunt",
     "test": "mocha",
     "tsc": "tsc"
   },
@@ -18,7 +17,8 @@
     "jsonwebtoken": "^8.4.0",
     "knex": "^0.15.2",
     "pg": "^7.6.1",
-    "tslint": "^5.9.1"
+    "tslint": "^5.9.1",
+    "moment": "^2.22.2"
   },
   "devDependencies": {
     "@types/async": "^2.0.45",

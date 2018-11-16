@@ -1,32 +1,14 @@
 const secretKey = 'secretKey';
 const jwt = require('jsonwebtoken');
-const error = 'Unauthorized request.';
 
 class JWTWrapper {
-
     static generateToken(payload) {
         return jwt.sign(payload, secretKey);
     }
 
-    static verifyToken(req, res, next) {
-        if (!req.headers.authorization) {
-            return res.status(401).send({ error });
-        }
-        
-        let token = req.headers.authorization.split(' ')[1];
-        if (token === 'null') {
-            return res.status(401).send({ error });
-        }
-
-        let payload = jwt.verify(token, secretKey);
-        if (!payload) {
-            return res.status(401).send({ error });            
-        }
-
-        req.userId = payload.subject;
-        next();
+    static verifyToken(token) {
+        return jwt.verify(token, secretKey);
     }
-
 }
 module.exports = JWTWrapper;
 //# sourceMappingURL=JWTWrapper.js.map

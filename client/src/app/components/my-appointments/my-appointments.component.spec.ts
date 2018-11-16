@@ -4,9 +4,9 @@ import { MyAppointmentsComponent } from './my-appointments.component';
 import { Component, NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MaterialModule } from 'src/app/material';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { MaterialModule } from '../../material';
 
 @Component({ selector: 'app-appointment', template: '' })
 class AppointmentStubComponent { }
@@ -49,10 +49,10 @@ describe('MyAppointmentsComponent', () => {
   it('should display n appointments if appointments array has n items', () => {
 
     component.appointments = [
-      { name: 'service', start_time: '2018-11-14 21:00', duration: 45, notes: 'notes' },
-      { name: 'service', start_time: '2018-11-14 21:00', duration: 45, notes: 'notes' },
-      { name: 'service', start_time: '2018-11-14 21:00', duration: 45, notes: 'notes' }
-    ]
+      { name: 'service', start_time: '2018-11-14 19:00', end_time: '2018-11-14 21:00', duration: 45, notes: 'notes' },
+      { name: 'service', start_time: '2018-11-14 19:00', end_time: '2018-11-14 21:00', duration: 45, notes: 'notes' },
+      { name: 'service', start_time: '2018-11-14 19:00', end_time: '2018-11-14 21:00', duration: 45, notes: 'notes' }
+    ];
 
     fixture.detectChanges();
 
@@ -61,5 +61,5 @@ describe('MyAppointmentsComponent', () => {
     // the header is mat-header-row so it won't show up
     expect((table.nativeElement.innerHTML.match(/class="mat-row"/g) || []).length).toEqual(component.appointments.length);
 
-  })
+  });
 });

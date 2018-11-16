@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User } from 'src/app/models/user/user';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
 
   registerUser() {
     if (this.user.password === this.repeatPassword) {
-      
+
       this.authService.registerUser(this.user).subscribe(
         res => {
           this.authService.setToken(res['token']);

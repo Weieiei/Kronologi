@@ -15,7 +15,7 @@ describe('AppComponent', () => {
         AppComponent,
         NavbarStubComponent,
         RouterOutletStubComponent
-      ],
+      ]
     }).compileComponents();
   }));
 

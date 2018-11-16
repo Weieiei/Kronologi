@@ -10,12 +10,14 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/auth/auth.service';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
+import { AppointmentsComponent } from './components/appointments/appointments.component';
+import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
 
 @NgModule({
@@ -24,8 +26,10 @@ import { MyAppointmentsComponent } from './components/my-appointments/my-appoint
     NavbarComponent,
     RegisterComponent,
     HomeComponent,
+    AppointmentsComponent,
     LoginComponent,
-    MyAppointmentsComponent,
+    ReserveComponent,
+    MyAppointmentsComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +37,8 @@ import { MyAppointmentsComponent } from './components/my-appointments/my-appoint
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule
   ],
   providers: [
     AuthService,

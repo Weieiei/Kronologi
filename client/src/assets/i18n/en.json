@@ -1,0 +1,75 @@
+{
+  "TITLE": "Appointment Scheduler",
+  "LANGUAGE_LABEL": "Langue",
+  "HOME": {
+    "WELOCME_MESSAGE": "Welcome",
+    "LOGIN_SUCCESS" : "Successfully logged in"
+  },
+  "NAVBAR": {
+    "REGISTER": "Register",
+    "LOGIN": "Login",
+    "LOGOUT": "Signout",
+    "CONTACT": "Contact",
+    "APPOINTMENTS": "My Appointments",
+    "CLIENT_APPOINTMENTS": "Client Appointments",
+    "RESERVATION": "New Reservation"
+  },
+  "REGISTRATION": {
+    "TITLE": "Sign Up for an Account",
+    "FIRST_NAME": "First name",
+    "LAST_NAME": "Last name",
+    "EMAIL": "Email",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "PASSWORD_CONFIRMATION": "Re-enter Password",
+    "SUBMIT": "Create Account",
+    "HINTS": {
+      "EMAIL": "E.g.: johnsmith@gmail.com",
+      "USERNAME": "Between 4 and 30 characters",
+      "PASSWORD_1": "Between 6 and 30 characters",
+      "PASSWORD_2": "Must contain at least 1 letter and 1 digit"
+    }
+  },
+  "LOGGING_IN": {
+    "TITLE": "Sign In",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "SUBMIT": "Sign In"
+  },
+  "MY_REGISTRATION" : {
+    "TITLE_1": "You have",
+    "TITLE_2": "upcoming appointment(s)",
+    "NO_APPOINTMENTS": "You currently do not have any appointments",
+    "TABLE": {
+      "SERVICE": "Service",
+      "DATE": "Date",
+      "START": "Starts at",
+      "END": "Ends at",
+      "DURATION": "Duration",
+      "NOTES": "Notes"
+    }
+  },
+  "RESERVE": {
+    "SERVICE": "Choose a service",
+    "DATE": "Choose a date",
+    "START": "Enter a time",
+    "END": "Enter a time",
+    "NOTE": "Leave a note",
+    "CONFIRM": "Confirm Reservation",
+    "HINT": {
+      "SERVICE": "Here's the drop-down arrow"
+    }
+  },
+  "ALL_APPOINTMENTS": {
+    "TITLE_1": "You have",
+    "TITLE_2": "client appointment(s)",
+    "NO_APPOINTMENTS": "You currently do not have any client appointments",
+    "TABLE": {
+      "SERVICE": "Service",
+      "DATE": "Date",
+      "TIME": "Time",
+      "DURATION": "Duration",
+      "USER": "User"
+    }
+  }
+}
