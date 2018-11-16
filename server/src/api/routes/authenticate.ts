@@ -9,14 +9,17 @@ let authenticate = express.Router();
 let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
 /**
- * A client object was created here. However, in my opinion, it would be optimal to have a save() function returning 
- * a promise in the Client class that handles all that to be sure we follow encapsulation principles as well.
+ * @route       api/routes/authenticate/register
+ * @description Register user
+ * @access      Public
  */
 authenticate.post('/register', (req, res) => {
     this.connector = new Connection().knex();
-    console.log(req.body)
-    const client : Client = new Client(req.body.user._firstName, req.body.user._lastName, req.body.user._email ,req.body.user._username,req.body._password)
-    console.log(client.getPassword())
+
+    //FIXME: Client should save its own instance into the db, we could relay this to the ./Models/Client ?
+    const client : Client = new Client(req.body.user._firstName, req.body.user._lastName, req.body.user._email ,req.body.user._username,req.body.user._password)
+    
+   
     if (client.getPassword().length < 6 || client.getPassword().length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
     }
@@ -24,20 +27,22 @@ authenticate.post('/register', (req, res) => {
         return res.status(400).send({ passwordError: 'Password must contain at least 1 letter and 1 digit.' });
     }
     bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(client.getPassword(), salt, (err, hash) => {
+        bcrypt.hash(client.getPassword(), salt,null,(err, hash) => {
 
             if (err) {
                 console.log(err);
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
+            
             client.setPassword(hash)
-            this.connector.table('users').insert([
-                client.getFName(),
-                client.getLName(),
-                client.getEmail(),
-                client.getUsername(),
-                client.getPassword(),
-            ])
+            this.connector.table('users').insert({
+                first_name: client.getFName(),
+                last_name:  client.getLName(),
+                email: client.getEmail(),
+                username: client.getUsername(),
+                password: client.getPassword(),
+                user_type: client.getType()
+            })
             .returning('id')
             .then(result => {
 
@@ -69,6 +74,13 @@ authenticate.post('/register', (req, res) => {
         });
     });
 });
+
+/**
+ * @route       api/routes/authenticate/login
+ * @description Login User
+ * @returns     JWT Token
+ * @access      Public
+ */
 authenticate.post('/login', (req, res) => {
 
     this.connector = new Connection().knex();

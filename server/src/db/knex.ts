@@ -1,7 +1,11 @@
 import knex = require("knex");
 import { Config } from 'knex';
 
+//should be a singleton
 
+/**
+ * Class to set up the knex connection to allow access to our db instance
+ */
 export class Connection {
     public knex(): knex {
         return knex(exportConfig());

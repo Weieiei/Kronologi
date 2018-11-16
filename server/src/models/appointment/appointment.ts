@@ -1,58 +1,56 @@
-class Appointment {
+export class Appointment {
     
-    private id : string;
-    private userId : string;
-    private serviceId : string;
-    private startTime : string;
-    private endTime : string;
-    private notes : string; 
+    private _id : string;
+    private _userId : string;
+    private _serviceId : string;
+    private _startTime : string;
+    private _endTime : string;
+    private _notes : string; 
 
     constructor(id, userId, serviceId, startTime, endTime, notes) {
-        this.id = id;
-        this.userId = userId;
-        this.serviceId = serviceId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.notes = notes;
+        this._id = id;
+        this._userId = userId;
+        this._serviceId = serviceId;
+        this._startTime = startTime;
+        this._endTime = endTime;
+        this._notes = notes;
     }
 
     public setId(id:string): void{
-		this.id = id;
+		this._id = id;
 	}
 	public getId():string{
-		return this.id;
+		return this._id;
 	}
 	public setUserId(userId:string): void{
-		this.userId = userId;
+		this._userId = userId;
 	}
 	public getUserId():string{
-		return this.userId;
+		return this._userId;
 	}
 	public setServiceId(serviceId:string): void{
-		this.serviceId = serviceId;
+		this._serviceId = serviceId;
 	}
 	public getserviceId():string{
-		return this.serviceId;
+		return this._serviceId;
 	}
 	public setStartTime(startTime:string): void{
-		this.startTime = startTime;
+		this._startTime = startTime;
 	}
 	public getStartTime():string{
-		return this.startTime;
+		return this._startTime;
 	}
 	public setEndTime(endTime:string): void{
-		this.endTime = endTime;
+		this._endTime = endTime;
 	}
 	public getEndTime():string{
-		return this.endTime;
+		return this._endTime;
     }
     public setNotes(notes:string): void{
-        this.notes = notes;
+        this._notes = notes;
     }
     public getNotes(): string{
-        return this.notes;
+        return this._notes;
     }
 
 }
-
-module.exports = Appointment;

@@ -6,6 +6,11 @@ const jwtWrapper = require('../../../../models/JWTWrapper');
 const appointments = express.Router()
 const knex = new Connection().knex()
 
+/**
+ * @route       api/routes/user/register
+ * @description Register user
+ * @access      Public
+ */
 appointments.get('/', jwtWrapper.verifyToken, (req, res) => {
 
     const userId = req.body.userId;

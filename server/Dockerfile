@@ -3,9 +3,11 @@ FROM node:10-stretch
 # Copy repo
 WORKDIR /home/node
 COPY . /home/node/
+
 RUN npm install\
-        && npm install typescript -g;
-RUN npm run-script tsc
+        && npm install typescript -g\
+        && npm run-script tsc
+
 WORKDIR /home/node/dist
 # Make the script executable
 RUN chmod +x ../setup.sh

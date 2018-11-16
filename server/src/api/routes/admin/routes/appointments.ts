@@ -8,6 +8,11 @@ import { Connection } from '../../../../db/knex'
 const knex = new Connection().knex()
 const appointments = express.Router()
 
+/**
+ * @route       api/routes/admin/routes/appointment
+ * @description Returns appointments to the admin ( returns all of them at the moment)
+ * @access      Private
+ */
 appointments.get('/', (req, res) => {
 
     const {username} = req.body;

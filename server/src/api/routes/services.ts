@@ -4,6 +4,11 @@ let knex = require('../../db/knex'),
 
 let services = express.Router();
 
+/**
+ * @route       api/routes/services
+ * @description Get services for a buisiness
+ * @access      Public
+ */
 services.get('', (req, res) => {
 
     knex.select().from('services')
