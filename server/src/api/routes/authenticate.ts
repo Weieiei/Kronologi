@@ -1,53 +1,55 @@
 import { Connection } from '../../db/knex'
-import { USER_TYPE } from '../../models/user/USER_TYPE'
-const express = require('express'),
-    bcrypt = require('bcryptjs'),
-    jwtWrapper = require('../../models/JWTWrapper');
+import { Client } from '../../models/user/Client'
+import bcrypt from "bcrypt-nodejs";
+import express from 'express'
+const jwtWrapper = require('../../models/JWTWrapper');
 
-const authenticate = express.Router();
-const saltRounds = 10;
-const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
+let saltRounds = 10;
+let authenticate = express.Router();
+let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
+/**
+ * A client object was created here. However, in my opinion, it would be optimal to have a save() function returning 
+ * a promise in the Client class that handles all that to be sure we follow encapsulation principles as well.
+ */
 authenticate.post('/register', (req, res) => {
     this.connector = new Connection().knex();
-
-    const { _firstName, _lastName, _email, _username, _password } = req.body.user;
-
-    if (_password.length < 6 || _password.length > 30) {
+    console.log(req.body)
+    const client : Client = new Client(req.body.user._firstName, req.body.user._lastName, req.body.user._email ,req.body.user._username,req.body._password)
+    console.log(client.getPassword())
+    if (client.getPassword().length < 6 || client.getPassword().length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
     }
-    else if (!passwordRegex.test(_password)) {
+    else if (!passwordRegex.test(client.getPassword())) {
         return res.status(400).send({ passwordError: 'Password must contain at least 1 letter and 1 digit.' });
     }
     bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(_password, salt, (err, hash) => {
+        bcrypt.hash(client.getPassword(), salt, (err, hash) => {
 
             if (err) {
                 console.log(err);
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
-
-            this.connector.table('users').insert({
-                first_name: _firstName,
-                last_name: _lastName,
-                email: _email,
-                username: _username,
-                password: hash,
-                user_type: USER_TYPE.CLIENT
-            })
+            client.setPassword(hash)
+            this.connector.table('users').insert([
+                client.getFName(),
+                client.getLName(),
+                client.getEmail(),
+                client.getUsername(),
+                client.getPassword(),
+            ])
             .returning('id')
             .then(result => {
 
-                const user_id = result[0];
-                const token = generateToken(user_id);
+                client.setId(result[0]);
+                client.setToken(generateToken(client.getId()));
                 const message = 'User successfully created.';
 
-                return res.status(200).send({
-                    user_id,
-                    token,
+                return res.status(200).send([
+                    client.getId(),
+                    client.getToken(),
                     message
-                });
-
+                ]);
             })
                 .catch(error => {
                 switch (error.constraint) {

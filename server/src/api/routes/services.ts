@@ -1,8 +1,8 @@
-const express = require('express'),
-    knex = require('../../db/knex'),
+import express from 'express'
+let knex = require('../../db/knex'),
     Service = require('../../models/service/service');
 
-const services = express.Router();
+let services = express.Router();
 
 services.get('', (req, res) => {
 

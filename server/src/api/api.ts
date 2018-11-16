@@ -1,13 +1,17 @@
-import * as express from "express"
+import express from 'express'
 
-const authenticate = require('./routes/authenticate');
+let authenticate = require('./routes/authenticate'),
+    services = require('./routes/services'),
+    admin = require('./routes/admin/admin'),
+    user = require('./routes/user/user');
 
-let apiTemp: express.Router;
-apiTemp = express.Router();
+let api  = express.Router();
 
-export let api = apiTemp.get('/', (req , res ) => {
-    res.send({ message: 'Hey world' });
-});
 api.use('/authenticate', authenticate);
+api.use('/authenticate', authenticate);
+api.use('/services', services);
+api.use('/admin', admin);
+api.use('/user', user);
 
-//# sourceMappingURL=api.js.map
+module.exports = api;
+

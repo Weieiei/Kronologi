@@ -1,14 +1,16 @@
-const express = require('express'),
-    jwtWrapper = require('../../../../models/JWTWrapper'),
-    knex = require('../../../../db/knex');
+import express from 'express'
+import { Connection } from '../../../../db/knex'
 
-const appointments = express.Router();
+const jwtWrapper = require('../../../../models/JWTWrapper');
+
+const appointments = express.Router()
+const knex = new Connection().knex()
 
 appointments.get('/', jwtWrapper.verifyToken, (req, res) => {
 
-    const userId = req.userId;
+    const userId = req.body.userId;
     let today = new Date();
-    today = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+    today = new Date(`${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`);
 
     knex
         .select('appointments.id', 'service_id', 'services.name', 'start_time', 'end_time', 'duration', 'notes')
