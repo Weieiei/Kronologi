@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-reserve',
   templateUrl: './reserve.component.html',
-  styleUrls: ['./reserve.component.css']
+  styleUrls: ['./reserve.component.scss']
 })
 
 export class ReserveComponent implements OnInit {

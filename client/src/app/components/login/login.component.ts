@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   /**
    * Using RegisterComponent's css since they're pretty much the same component.
    */
-  styleUrls: ['../register/register.component.css']
+  styleUrls: ['../register/register.component.scss']
 })
 export class LoginComponent implements OnInit {
 
