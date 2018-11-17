@@ -1,5 +1,5 @@
 const secretKey = 'secretKey';
-const jwt = require('jsonwebtoken');
+const jwt= require('jsonwebtoken');
 
 class JWTWrapper {
     static generateToken(payload) {
@@ -10,5 +10,5 @@ class JWTWrapper {
         return jwt.verify(token, secretKey);
     }
 }
-
 module.exports = JWTWrapper;
+//# sourceMappingURL=JWTWrapper.js.map

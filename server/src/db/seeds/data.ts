@@ -1,7 +1,9 @@
-const bcrypt = require('bcryptjs');
-const saltRounds = 10;
-const USER_TYPE = require('../../models/user/USER_TYPE');
+import bcrypt from "bcrypt-nodejs";
+import { Admin } from '../../models/user/Admin'
+import { Client } from '../../models/user/Client'
 
+
+let saltRounds : any = 10;
 async function hashPassword(password) {
 	const hashedPassword = await new Promise((resolve, reject) => {
 		bcrypt.hash(password, saltRounds, (err, hash) => {
@@ -43,9 +45,9 @@ exports.seed = async function (knex, Promise) {
 					{ name: 'RECONNECT WITH YOUR BODY', duration: 210 }
 				]),
 				await knex('users').insert([
-					{ first_name: 'John', last_name: 'Doe', email: 'johndoe@gmail.com', username: 'johndoe', password: await hashPassword('johndoe'), user_type: USER_TYPE.CLIENT },
-					{ first_name: 'Test', last_name: 'User', email: 'testuser@gmail.com', username: 'test', password: await hashPassword('test123'), user_type: USER_TYPE.CLIENT },
-					{ first_name: 'Admin', last_name: 'User', email: 'admin@gmail.com', username: 'admin', password: await hashPassword('admin123'), user_type: USER_TYPE.ADMIN },
+					{ first_name: 'John', last_name: 'Doe', email: 'johndoe@gmail.com', username: 'johndoe', password: await hashPassword('johndoe'), user_type: Client.name },
+					{ first_name: 'Test', last_name: 'User', email: 'testuser@gmail.com', username: 'test', password: await hashPassword('test123'), user_type: Admin.name },
+					{ first_name: 'Admin', last_name: 'User', email: 'admin@gmail.com', username: 'admin', password: await hashPassword('admin123'), user_type: Client.name },
 				]),
 				await knex('appointments').insert([
 					{ user_id: 2, service_id: 7, start_time: '2018-11-30 18:00:00-05', end_time: '2018-11-30 20:20:00-05', notes: 'Hello world' },

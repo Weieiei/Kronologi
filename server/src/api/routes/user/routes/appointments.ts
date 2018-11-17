@@ -1,19 +1,28 @@
-const express = require('express');
-const knex = require('../../../../db/knex');
-const moment = require('moment');
 
-const appointments = express.Router();
+import express from 'express'
+import { Connection } from '../../../../db/knex'
+import moment from 'moment'
 
+const jwtWrapper = require('../../../../models/JWTWrapper');
+const appointments = express.Router()
+const knex = new Connection().knex()
+
+/**
+ * @route       api/routes/user/appointments
+ * @description GET user appointments
+ * @access      Public  
+ */
 appointments.get('/', (req, res) => {
-    const userId = req.userId;
+
+    const userId = req.body.userId;
     let today = new Date();
-    today = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+    let todayString : string = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
 
     knex.select('appointments.id', 'service_id', 'services.name', 'start_time', 'end_time', 'duration', 'notes')
         .from('appointments')
         .innerJoin('services', 'appointments.service_id', 'services.id')
         .where('appointments.user_id', userId)
-        .andWhereRaw(`appointments.start_time >= '${today}'::date`)
+        .andWhereRaw(`appointments.start_time >= '${todayString}'::date`)
         .then(appointments => {
             return res.status(200).send({appointments});
         })
@@ -23,7 +32,7 @@ appointments.get('/', (req, res) => {
 });
 
 appointments.post('/', (req, res) => {
-    const user_id = req.userId;
+    const user_id = req.body.userId;
     const service_id = req.body.service_id;
     let start_time = req.body.start_time;
     const notes = req.body.notes;
