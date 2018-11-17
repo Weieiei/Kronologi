@@ -19,7 +19,7 @@ authenticate.post('/register', (req, res) => {
     //FIXME: Client should save its own instance into the db, we could relay this to the ./Models/Client ?
     const client : Client = new Client(req.body.user._firstName, req.body.user._lastName, req.body.user._email ,req.body.user._username,req.body.user._password)
     
-   
+    console.log(client)
     if (client.getPassword().length < 6 || client.getPassword().length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
     }
@@ -36,8 +36,8 @@ authenticate.post('/register', (req, res) => {
             
             client.setPassword(hash)
             this.connector.table('users').insert({
-                first_name: client.getFName(),
-                last_name:  client.getLName(),
+                first_name: client.getFirstName(),
+                last_name:  client.getLastName(),
                 email: client.getEmail(),
                 username: client.getUsername(),
                 password: client.getPassword(),
@@ -45,7 +45,7 @@ authenticate.post('/register', (req, res) => {
             })
             .returning('id')
             .then(result => {
-
+                console.log(result[0])
                 client.setId(result[0]);
                 client.setToken(generateToken(client.getId()));
                 const message = 'User successfully created.';
@@ -57,6 +57,7 @@ authenticate.post('/register', (req, res) => {
                 ]);
             })
                 .catch(error => {
+                console.log(error)
                 switch (error.constraint) {
                     case 'users_first_name_length':
                     case 'users_last_name_length':

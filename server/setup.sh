@@ -23,7 +23,6 @@ bash -c '
     done
 
     if </dev/tcp/$DB_HOST/5432 ;
-    
     then
         (
             cd ./db/

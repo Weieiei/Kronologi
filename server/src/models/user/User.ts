@@ -1,56 +1,64 @@
 export abstract class User{
+	private _id: number;
+	private _firstName: string;
+	private _lastName: string;
+	private _email: string;
+	private _password: string;
+    private _token : string;
+	constructor(firstName: string , lastName: string, email: string, password: string) {
+	    this._firstName = firstName;
+	    this._lastName = lastName;
+	    this._email = email;
+	    this._password = password;
+	}
+        
+	public getId(): number {
+	    return this._id;
+	}
     
-    private _id: string;
-    protected _fname: string;
-	protected _lname: string;
-	protected _email: string;
-	protected _password: string;
-	protected _token: string;
-  
-    constructor(fname: string, lname: string, email: string, password: string) {
-		this._fname = fname;
-		this._lname = lname;
-		this._email = email;
-		this._password = password;
+    public setId(id: number): number{
+        return this._id;
+    }
+	public getFirstName(): string {
+	    return this._firstName;
 	}
+        
+	public setFirstName(firstName: string) {
+	    this._firstName = firstName;
+	}
+        
+	public getLastName(): string {
+	    return this._lastName;
+	}
+        
+	public setLastName(lastName: string) {
+	    this._lastName = lastName;
+	}
+        
+	public getEmail(): string {
+	    return this._email;
+	}
+        
+	public setEmail(email: string) {
+	    this._email = email;
+	}
+        
+	public getPassword(): string {
+	    return this._password;
+	}
+        
+	public setPassword(password: string) {
+	    this._password = password;
+    }
+    
+    public getToken(){
+        return this._token;
+    }
 
-	public setId(id:string): void{
-		this._id = id;
-	}
-	public getId():string{
-		return this._id;
-	}
-	public setFName(fname:string): void{
-		this._fname = fname;
-	}
-	public getFName():string{
-		return this._fname;
-	}
-	public setLName(lname:string): void{
-		this._lname = lname;
-	}
-	public getLName():string{
-		return this._lname;
-	}
-	public setEmail(email:string): void{
-		this._email = email;
-	}
-	public getEmail():string{
-		return this._email;
-	}
-	public setPassword(password:string): void{
-		this._password = password;
-	}
-	public getPassword():string{
-		return this._password;
-	}
-	public setToken (token :string): void{
-		this._token = token;
-	}
-	public getToken(): string{
-		return this._token;
-	}
-    abstract getType(): string;
+    public setToken(token : string){
+        this._token = token;
+    }
+
+    abstract getType() : string;       
 }
-
-
+        

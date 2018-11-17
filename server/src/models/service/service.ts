@@ -1,31 +1,31 @@
 export class Service {
 
-    public _id : string;
-    public _name : string;
-    public _duration : string;
+    public id : string;
+    public name : string;
+    public duration : string;
     constructor(id, name, duration) {
-        this._id = id;
-        this._name = name;
-        this._duration = duration;
+        this.id = id;
+        this.name = name;
+        this.duration = duration;
     }
 
     public setId(id:string): void{
-		this._id = id;
+		this.id = id;
 	}
 	public getId():string{
-		return this._id;
+		return this.id;
 	}
 	public setName(name:string): void{
-		this._name = name;
+		this.name = name;
 	}
 	public getFName():string{
-		return this._name;
+		return this.name;
 	}
 	public setDuration(duration:string): void{
-		this._duration = duration;
+		this.duration = duration;
 	}
 	public getDuration():string{
-		return this._duration;
+		return this.duration;
 	}
 }
 

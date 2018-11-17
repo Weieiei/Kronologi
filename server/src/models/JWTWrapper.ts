@@ -1,5 +1,5 @@
 const secretKey = 'secretKey';
-const jwt = require('jsonwebtoken');
+const jwt= require('jsonwebtoken');
 
 class JWTWrapper {
     static generateToken(payload) {

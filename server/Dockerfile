@@ -6,7 +6,7 @@ COPY . /home/node/
 
 RUN npm install\
         && npm install typescript -g\
-        && npm run-script tsc
+        && npm run-script tsc;
 
 WORKDIR /home/node/dist
 # Make the script executable
