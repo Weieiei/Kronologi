@@ -5,7 +5,7 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $primary-palette: mat-palette($mat-deep-orange);
-$accent-palette:  mat-palette($mat-pink, A200, A100, A400);
+$accent-palette:  mat-palette($mat-light-blue, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $warn-palette:    mat-palette($mat-red);

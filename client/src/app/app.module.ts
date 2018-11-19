@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material';
+import { FlexModule } from '@angular/flex-layout';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +20,10 @@ import { UrlInterceptor } from './interceptor';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
+import { SchedulerComponent } from './components/scheduler/scheduler.component';
+import { SlidePanelComponent } from './components/scheduler/slide-panel/slide-panel.component';
+import { CalendarComponent } from './components/scheduler/calendar/calendar.component';
+import { MonthPickerComponent } from './components/scheduler/month-picker/month-picker.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +34,11 @@ import { MyAppointmentsComponent } from './components/my-appointments/my-appoint
     AppointmentsComponent,
     LoginComponent,
     ReserveComponent,
-    MyAppointmentsComponent
+    MyAppointmentsComponent,
+    SchedulerComponent,
+    SlidePanelComponent,
+    CalendarComponent,
+    MonthPickerComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +46,7 @@ import { MyAppointmentsComponent } from './components/my-appointments/my-appoint
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
+    FlexModule,
     HttpClientModule,
     BrowserModule
   ],

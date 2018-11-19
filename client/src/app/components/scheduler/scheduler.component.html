@@ -1,0 +1,7 @@
+<app-slide-panel #slider [activePane]="slider.activePane">
+  <div leftPane>
+    <app-month-picker #monthPicker [calendar]="calendar"></app-month-picker>
+    <app-calendar #calendar [year]="monthPicker.year" [month]="monthPicker.month" [slider]="slider"></app-calendar>
+  </div>
+  <div rightPane (click)="slider.goLeft()">Hello</div>
+</app-slide-panel>

@@ -36,7 +36,7 @@ export class ReserveComponent implements OnInit {
     this.servicesService.getServices().subscribe(
       res => this.services = res,
       err => console.log(err)
-    )
+    );
   }
 
   private findServiceById(id: number): Service {
@@ -52,12 +52,12 @@ export class ReserveComponent implements OnInit {
   }
 
   makeAppointment(): void {
-    let date = moment(this.date).format('YYYY-MM-DD');
+    const date = moment(this.date).format('YYYY-MM-DD');
     this.appointment.start_time = moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss');
     this.appointmentService.reserveAppointment(this.appointment).subscribe(
       res => this.router.navigate(['/my/appts']),
       err => console.log(err)
-    )
+    );
   }
 
 }
