@@ -3,33 +3,38 @@ import * as bodyParser from "body-parser";
 var api = require('./api/api');
 var cors = require('cors');
 
-const Gelf = require('gelf')
-const gelf = new Gelf()
+var graylog2 = require("graylog2");
+var logger = new graylog2.graylog({
+    servers: [
+      { 'host': '127.0.0.1', port: 12201 },
+      { 'host': '0.0.0.0', port: 12201}
+    ],
+    hostname: 'server.name', // the name of this host
+                             // (optional, default: os.hostname())
+    facility: 'Node.js',     // the facility for these log messages
+                             // (optional, default: "Node.js")
+    bufferSize: 1350         // max UDP packet size, should never exceed the
+                             // MTU of your system (optional, default: 1400)
+});
 
-gelf.on('error', (err) => {
-    console.log('ouch!', err)
-  })
+logger.on('error', function (error) {
+    console.error('Error while trying to write to graylog2:', error);
+});
+logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.");
+
+logger.log("What we've got here is...failure to communicate");
+
+logger.log("What we've got here is...failure to communicate", { cool: 'beans' });
+
+logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.",
+    {
+        cool: "beans"
+    }
+);
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-gelf.emit('gelf.log', 'myshortmessage')
 
-// send a full message
-const message = {
-    "version": "1.0",
-    "host": "www1",
-    "short_message": "Short message",
-    "full_message": "Backtrace here\n\nmore stuff",
-    "timestamp": Date.now() / 1000,
-    "level": 1,
-    "facility": "payment-backend",
-    "file": "/var/www/somefile.rb",
-    "line": 356,
-    "_user_id": 42,
-    "_something_else": "foo"
-  }
-  
-  gelf.emit('gelf.log', message);
   
 app.use(cors());
 app.use(bodyParser.json());

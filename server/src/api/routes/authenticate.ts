@@ -7,7 +7,6 @@ const jwtWrapper = require('../../models/JWTWrapper');
 let saltRounds = 10;
 let authenticate = express.Router();
 let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
-
 /**
  * @route       api/routes/authenticate/register
  * @description Register user
@@ -15,6 +14,36 @@ let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
  */
 authenticate.post('/register', (req, res) => {
     this.connector = new Connection().knex();
+
+    var graylog2 = require("graylog2");
+var logger = new graylog2.graylog({
+    servers: [
+        { 'host': '127.0.0.1', port: 12201 },
+        { 'host': '0.0.0.0', port: 12201}
+    ],
+    hostname: 'server.name', // the name of this host
+                             // (optional, default: os.hostname())
+    facility: 'Node.js',     // the facility for these log messages
+                             // (optional, default: "Node.js")
+    bufferSize: 1350         // max UDP packet size, should never exceed the
+                             // MTU of your system (optional, default: 1400)
+});
+
+logger.on('error', function (error) {
+    console.error('Error while trying to write to graylog2:', error);
+});
+logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.");
+
+logger.log("What we've got here is...failure to communicate");
+
+logger.log("What we've got here is...failure to communicate", { cool: 'beans' });
+
+logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.",
+    {
+        cool: "beans"
+    }
+);
+
 
     //FIXME: Client should save its own instance into the db, we could relay this to the ./Models/Client ?
     const client : Client = new Client(req.body.user._firstName, req.body.user._lastName, req.body.user._email ,req.body.user._username,req.body.user._password)

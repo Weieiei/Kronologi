@@ -24,7 +24,6 @@ exports.seed = async function (knex, Promise) {
 		 * As well as the other tables.
 		 */
 		if (!services.length) {
-
 			return Promise.all([
 				await knex('services').insert([
 					{ name: 'BACK TO PURE LIFE', duration: 150 },
@@ -54,9 +53,6 @@ exports.seed = async function (knex, Promise) {
 					{ user_id: 1, service_id: 12, start_time: '2018-12-02 19:30:00-05', end_time: '2018-12-02 22:30:00-05', notes: 'Some note' }
 				])
 			])
-
 		}
-
 	})
-
 };
