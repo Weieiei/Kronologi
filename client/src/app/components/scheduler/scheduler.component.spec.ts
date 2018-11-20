@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SchedulerComponent } from './scheduler.component';
+import { MaterialModule } from '../../material';
+import { CalendarComponent } from './calendar/calendar.component';
+import { MonthPickerComponent } from './month-picker/month-picker.component';
+import { SlidePanelComponent } from './slide-panel/slide-panel.component';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SchedulerComponent', () => {
   let component: SchedulerComponent;
@@ -8,7 +14,17 @@ describe('SchedulerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SchedulerComponent ]
+      imports: [
+        MaterialModule,
+        FormsModule,
+        BrowserAnimationsModule
+      ],
+      declarations: [
+        SchedulerComponent,
+        CalendarComponent,
+        MonthPickerComponent,
+        SlidePanelComponent
+      ]
     })
     .compileComponents();
   }));

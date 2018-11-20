@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SlidePanelComponent } from './slide-panel.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SlidePanelComponent', () => {
   let component: SlidePanelComponent;
@@ -8,6 +9,7 @@ describe('SlidePanelComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ BrowserAnimationsModule ],
       declarations: [ SlidePanelComponent ]
     })
     .compileComponents();
