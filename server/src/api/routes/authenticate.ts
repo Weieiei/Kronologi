@@ -3,34 +3,34 @@ import { Client } from '../../models/user/Client'
 import bcrypt from "bcrypt-nodejs";
 import express from 'express'
 import { Logger } from '../../models/logger'
-const jwtWrapper = require('../../models/JWTWrapper');
+import { JWTWrapper } from '../../models/JWTWrapper';
 
 let saltRounds = 10;
 let authenticate = express.Router();
 let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
+
 /**
  * @route       api/routes/authenticate/register
  * @description Register user
  * @access      Public
  */
 authenticate.post('/register', (req, res) => {
+
     this.connector = new Connection().knex();
 
-   const logger = Logger.Instance.getGrayLog();
-logger.on('error', function (error) {
-    console.error('Error while trying to write to graylog2:', error);
-});
-logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.");
+    const logger = Logger.Instance.getGrayLog();
 
-logger.log("What we've got here is...failure to communicate");
+    logger.on('error', function (error) {
+        console.error('Error while trying to write to graylog2:', error);
+    });
 
-logger.log("What we've got here is...failure to communicate", { cool: 'beans' });
+    logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.");
 
-logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.",
-    {
-        cool: "beans"
-    }
-);
+    logger.log("What we've got here is...failure to communicate");
+
+    logger.log("What we've got here is...failure to communicate", { cool: 'beans' });
+
+    logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.", { cool: "beans" });
 
 
     //FIXME: Client should save its own instance into the db, we could relay this to the ./Models/Client ?
@@ -44,7 +44,8 @@ logger.log("What we've got here is...failure to communicate", "Some men you just
         return res.status(400).send({ passwordError: 'Password must contain at least 1 letter and 1 digit.' });
     }
     bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(client.getPassword(), salt,null,(err, hash) => {
+        
+        bcrypt.hash(client.getPassword(), salt, null, (err, hash) => {
 
             if (err) {
                 console.log(err);
@@ -73,8 +74,8 @@ logger.log("What we've got here is...failure to communicate", "Some men you just
                     message
                 ]);
             })
-                .catch(error => {
-                console.log(error)
+            .catch(error => {
+
                 switch (error.constraint) {
                     case 'users_first_name_length':
                     case 'users_last_name_length':
@@ -86,8 +87,9 @@ logger.log("What we've got here is...failure to communicate", "Some men you just
                     case 'users_username_length':
                         return res.status(400).send({ usernameError: 'Usernames should be between 4 and 30 characters.' });
                 }
-                console.log(error)
+
                 return res.status(500).send({ error });
+                    
             });
         });
     });
@@ -104,17 +106,23 @@ authenticate.post('/login', (req, res) => {
     this.connector = new Connection().knex();
 
     const { username, password } = req.body;
+    
     this.connector.select().from('users').where('username', username)
-        .then(user => {
+    .then(user => {
+
         const invalidCredentials = 'Incorrect username and/or password.';
+
         if (!user.length) {
             return res.status(401).send({ invalidCredentials });
         }
+
         bcrypt.compare(password, user[0].password, (err, match) => {
+
             if (err) {
                 console.log(err);
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
+
             if (match) {
                 const token = generateToken(user[0].id);
                 return res.status(200).send({ token });
@@ -122,15 +130,18 @@ authenticate.post('/login', (req, res) => {
             else {
                 return res.status(401).send({ invalidCredentials });
             }
+
         });
+        
     })
-        .catch(error => {
+    .catch(error => {
         return res.status(500).send({ error });
     });
 });
-function generateToken(user_id) {
-    const payload = { subject: user_id };
-    return jwtWrapper.generateToken(payload);
+
+function generateToken(user_id: number): string {
+    const payload: string | Buffer | object = { subject: user_id };
+    return JWTWrapper.generateToken(payload);
 }
+
 module.exports = authenticate;
-//# sourceMappingURL=authenticate.js.map

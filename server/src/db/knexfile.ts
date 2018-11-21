@@ -1,4 +1,5 @@
-import config  from './config.json'
+const config = require('./config.json');
+
 module.exports = {
     development: {
         client: 'pg',
@@ -33,4 +34,3 @@ module.exports = {
         }
     }
 };
-//# sourceMappingURL=knexfile.js.map

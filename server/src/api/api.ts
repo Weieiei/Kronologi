@@ -26,12 +26,12 @@ function userMiddleware(req, res, next) {
     if (!payload) {
         return res.status(401).send({ error });
     }
-    req.body.userId = payload.subject;
+    req['userId'] = payload.subject;
     next();
 }
 
 function adminMiddleware(req, res, next) {
-    const userId = req.body.userId;
+    const userId = req['userId'];
 
     knex.select().from('users').where('id', userId).then(users => {
         if (users.length === 0) {
@@ -55,12 +55,9 @@ function adminMiddleware(req, res, next) {
 ///////////////
 
 api.use('/authenticate', authenticate);
-api.use('/authenticate', authenticate);
 api.use('/services', services);
 
 api.use('/user', userMiddleware, user);
 api.use('/admin', userMiddleware, adminMiddleware, admin);
 
-
 module.exports = api;
-
