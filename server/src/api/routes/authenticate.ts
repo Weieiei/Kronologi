@@ -2,6 +2,7 @@ import { Connection } from '../../db/knex'
 import { Client } from '../../models/user/Client'
 import bcrypt from "bcrypt-nodejs";
 import express from 'express'
+import { Logger } from '../../models/logger'
 const jwtWrapper = require('../../models/JWTWrapper');
 
 let saltRounds = 10;
@@ -15,20 +16,7 @@ let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 authenticate.post('/register', (req, res) => {
     this.connector = new Connection().knex();
 
-    var graylog2 = require("graylog2");
-var logger = new graylog2.graylog({
-    servers: [
-        { 'host': '127.0.0.1', port: 12201 },
-        { 'host': '0.0.0.0', port: 12201}
-    ],
-    hostname: 'server.name', // the name of this host
-                             // (optional, default: os.hostname())
-    facility: 'Node.js',     // the facility for these log messages
-                             // (optional, default: "Node.js")
-    bufferSize: 1350         // max UDP packet size, should never exceed the
-                             // MTU of your system (optional, default: 1400)
-});
-
+   const logger = Logger.Instance.getGrayLog();
 logger.on('error', function (error) {
     console.error('Error while trying to write to graylog2:', error);
 });
