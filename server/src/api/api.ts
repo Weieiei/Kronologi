@@ -2,6 +2,7 @@
 import express from 'express'
 import { Admin } from '../models/user/Admin'
 const knex = require('../db/knex');
+import { Connection } from '../db/knex';
 const jwtWrapper = require('../models/JWTWrapper');
 
 const authenticate = require('./routes/authenticate');
@@ -26,12 +27,15 @@ function userMiddleware(req, res, next) {
     if (!payload) {
         return res.status(401).send({ error });
     }
-    req['userId'] = payload.subject;
+    
+    req.userId = payload.subject;
     next();
 }
 
 function adminMiddleware(req, res, next) {
-    const userId = req['userId'];
+    const userId = req.userId;
+
+    const knex = new Connection().knex();
 
     knex.select().from('users').where('id', userId).then(users => {
         if (users.length === 0) {

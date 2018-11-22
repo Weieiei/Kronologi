@@ -3,7 +3,7 @@ import { Client } from '../../models/user/Client'
 import bcrypt from "bcrypt-nodejs";
 import express from 'express'
 import { Logger } from '../../models/logger'
-import { JWTWrapper } from '../../models/JWTWrapper';
+const jwtWrapper = require('../../models/JWTWrapper');
 
 let saltRounds = 10;
 let authenticate = express.Router();
@@ -141,7 +141,7 @@ authenticate.post('/login', (req, res) => {
 
 function generateToken(user_id: number): string {
     const payload: string | Buffer | object = { subject: user_id };
-    return JWTWrapper.generateToken(payload);
+    return jwtWrapper.generateToken(payload);
 }
 
 module.exports = authenticate;

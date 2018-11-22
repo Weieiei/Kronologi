@@ -1,6 +1,8 @@
 import knex = require("knex");
 import { Config } from 'knex';
 
+// TODO getInstance()
+
 /**
  * Class to set up the knex connection to allow access to our db instance
  */

@@ -14,7 +14,7 @@ const knex = new Connection().knex()
  */
 appointments.get('/', (req, res) => {
 
-    const userId = req.body.userId;
+    const userId = req.userId;
     let today = new Date();
     let todayString : string = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
 
@@ -32,7 +32,8 @@ appointments.get('/', (req, res) => {
 });
 
 appointments.post('/', (req, res) => {
-    const user_id = req.body.userId;
+
+    const user_id = req.userId;
     const service_id = req.body.service_id;
     let start_time = req.body.start_time;
     const notes = req.body.notes;
