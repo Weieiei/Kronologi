@@ -1,8 +1,8 @@
-import { Connection } from '../../db/knex'
-import { Client } from '../../models/user/Client'
+import express from 'express';
+import { Connection } from '../../db/knex';
+import { Client } from '../../models/user/Client';
 import bcrypt from "bcrypt-nodejs";
-import express from 'express'
-import { Logger } from '../../models/logger'
+import { Logger } from '../../models/logger';
 const jwtWrapper = require('../../models/JWTWrapper');
 
 let saltRounds = 10;
@@ -10,8 +10,8 @@ let authenticate = express.Router();
 let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
 /**
- * @route       api/routes/authenticate/register
- * @description Register user
+ * @route       POST api/authenticate/register
+ * @description Register user.
  * @access      Public
  */
 authenticate.post('/register', (req, res) => {
@@ -32,17 +32,16 @@ authenticate.post('/register', (req, res) => {
 
     logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.", { cool: "beans" });
 
+    const { _firstName, _lastName, _email, _username, _password } = req.body.user;
+    const client: Client = new Client(_firstName, _lastName, _email, _username, _password);
 
-    //FIXME: Client should save its own instance into the db, we could relay this to the ./Models/Client ?
-    const client : Client = new Client(req.body.user._firstName, req.body.user._lastName, req.body.user._email ,req.body.user._username,req.body.user._password)
-    
-    console.log(client)
     if (client.getPassword().length < 6 || client.getPassword().length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
     }
     else if (!passwordRegex.test(client.getPassword())) {
         return res.status(400).send({ passwordError: 'Password must contain at least 1 letter and 1 digit.' });
     }
+
     bcrypt.genSalt(saltRounds, (err, salt) => {
         
         bcrypt.hash(client.getPassword(), salt, null, (err, hash) => {
@@ -51,8 +50,9 @@ authenticate.post('/register', (req, res) => {
                 console.log(err);
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
-            
+
             client.setPassword(hash)
+
             this.connector.table('users').insert({
                 first_name: client.getFirstName(),
                 last_name:  client.getLastName(),
@@ -63,23 +63,17 @@ authenticate.post('/register', (req, res) => {
             })
             .returning('id')
             .then(result => {
-                console.log(result[0])
-                client.setId(result[0]);
-                client.setToken(generateToken(client.getId()));
-                const message = 'User successfully created.';
 
-                return res.status(200).send([
-                    client.getId(),
-                    client.getToken(),
-                    message
-                ]);
+                const token: string = generateToken(result[0]);
+                return res.status(200).send({ token });
+
             })
             .catch(error => {
 
                 switch (error.constraint) {
                     case 'users_first_name_length':
                     case 'users_last_name_length':
-                        return res.status(400).send({ nameError: 'Both first and last names should be at least 2 characters long each.' });
+                        return res.status(400).send({ nameError: 'Both first and last names should be at least 2 characters long.' });
                     case 'users_email_unique':
                         return res.status(400).send({ emailError: 'An account with this email already exists.' });
                     case 'users_username_unique':
@@ -89,16 +83,18 @@ authenticate.post('/register', (req, res) => {
                 }
 
                 return res.status(500).send({ error });
-                    
+
             });
+
         });
+
     });
+
 });
 
 /**
- * @route       api/routes/authenticate/login
- * @description Login User
- * @returns     JWT Token
+ * @route       POST api/authenticate/login
+ * @description Login user.
  * @access      Public
  */
 authenticate.post('/login', (req, res) => {
@@ -137,6 +133,7 @@ authenticate.post('/login', (req, res) => {
     .catch(error => {
         return res.status(500).send({ error });
     });
+
 });
 
 function generateToken(user_id: number): string {

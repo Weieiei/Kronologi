@@ -3,14 +3,13 @@ import express from 'express'
 import { Connection } from '../../../../db/knex'
 import moment from 'moment'
 
-const jwtWrapper = require('../../../../models/JWTWrapper');
 const appointments = express.Router()
 const knex = new Connection().knex()
 
 /**
- * @route       api/routes/user/appointments
- * @description GET user appointments
- * @access      Public  
+ * @route       GET api/user/appointments
+ * @description Get all of you appointments that are either today or in the future.
+ * @access      Private  
  */
 appointments.get('/', (req, res) => {
 
@@ -29,8 +28,14 @@ appointments.get('/', (req, res) => {
         .catch(error => {
             return res.status(500).send({error});
         });
+
 });
 
+/**
+ * @route       POST api/user/appointments
+ * @description Make an appointment.
+ * @access      Private  
+ */
 appointments.post('/', (req, res) => {
 
     const user_id = req.userId;
@@ -71,6 +76,7 @@ appointments.post('/', (req, res) => {
                 res.status(404).send({ error: 'Not found.' });
             }
         });
+
 });
 
 module.exports = appointments;

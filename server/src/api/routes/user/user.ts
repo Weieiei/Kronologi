@@ -1,8 +1,8 @@
-import express from 'express'
+import express from 'express';
 
-const userAppointments = require('./routes/appointments')
 const user = express.Router();
+const appointments = require('./routes/appointments');
 
-user.use('/appointments', userAppointments);
+user.use('/appointments', appointments);
 
 module.exports = user;

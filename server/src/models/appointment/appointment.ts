@@ -1,8 +1,8 @@
 export class Appointment {
     
-    private _id : string;
-    private _userId : string;
-    private _serviceId : string;
+    private _id : number;
+    private _userId : number;
+    private _serviceId : number;
     private _startTime : string;
     private _endTime : string;
     private _notes : string; 
@@ -15,41 +15,48 @@ export class Appointment {
         this._endTime = endTime;
         this._notes = notes;
     }
-
-    public setId(id:string): void{
-		this._id = id;
-	}
-	public getId():string{
+	
+	public getId(): number {
 		return this._id;
 	}
-	public setUserId(userId:string): void{
+	
+	public setUserId(userId: number): void {
 		this._userId = userId;
 	}
-	public getUserId():string{
+	
+	public getUserId(): number {
 		return this._userId;
 	}
-	public setServiceId(serviceId:string): void{
+	
+	public setServiceId(serviceId: number): void {
 		this._serviceId = serviceId;
 	}
-	public getserviceId():string{
+	
+	public getserviceId(): number {
 		return this._serviceId;
 	}
-	public setStartTime(startTime:string): void{
+	
+	public setStartTime(startTime: string): void {
 		this._startTime = startTime;
 	}
-	public getStartTime():string{
+	
+	public getStartTime(): string {
 		return this._startTime;
 	}
-	public setEndTime(endTime:string): void{
+
+	public setEndTime(endTime: string): void {
 		this._endTime = endTime;
 	}
-	public getEndTime():string{
+
+	public getEndTime(): string {
 		return this._endTime;
-    }
-    public setNotes(notes:string): void{
+	}
+	
+    public setNotes(notes: string): void {
         this._notes = notes;
-    }
-    public getNotes(): string{
+	}
+	
+    public getNotes(): string {
         return this._notes;
     }
 

@@ -1,13 +1,8 @@
-import express from 'express'
+import express from 'express';
 
-const adminRoute = express.Router();
-const adminAppointments = require('./routes/appointments')
+const admin = express.Router();
+const appointments = require('./routes/appointments');
 
-/**
- * @route       api/routes/admin/appointments
- * @description return all appointments to the administrator
- * @access      Private
- */
-adminRoute.use('/appointments', adminAppointments);
+admin.use('/appointments', appointments);
 
-module.exports = adminRoute;
+module.exports = admin;

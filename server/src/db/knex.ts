@@ -1,4 +1,4 @@
-import knex = require("knex");
+import knex = require('knex');
 import { Config } from 'knex';
 
 // TODO getInstance()
@@ -12,7 +12,7 @@ export class Connection {
     }
 }
 
-function exportConfig(): Config{
+function exportConfig(): Config {
     const environment = process.env.NODE_ENV || 'development';
     return require('./knexfile')[environment];
 }

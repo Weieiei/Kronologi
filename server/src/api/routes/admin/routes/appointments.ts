@@ -1,16 +1,16 @@
 import express from 'express'
 import { Connection } from '../../../../db/knex'
 
-/**
- * knex initialization -- we could create a global variable or create a TDG to have one instance of knex. As of right now
- * it is a bit all over the place.
- */
-const knex = new Connection().knex()
-const appointments = express.Router()
+const appointments = express.Router();
 
 /**
- * @route       api/routes/admin/routes/appointment
- * @description Returns appointments to the admin ( returns all of them at the moment)
+ * Knex initialization
+ */
+const knex = new Connection().knex()
+
+/**
+ * @route       GET api/admin/appointments
+ * @description Return list of all appointments to the admin.
  * @access      Private
  */
 appointments.get('/', (req, res) => {
@@ -23,6 +23,7 @@ appointments.get('/', (req, res) => {
         .then(appointments => {
             res.status(200).send({ appointments });
         });
+
 });
 
 module.exports = appointments;
