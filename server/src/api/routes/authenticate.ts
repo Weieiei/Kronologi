@@ -20,9 +20,6 @@ authenticate.post('/register', (req, res) => {
 
     this.connector = new Connection().knex();
 
-
-    
-
     const { _firstName, _lastName, _email, _username, _password } = req.body.user;
     const client: Client = new Client(_firstName, _lastName, _email, _username, _password);
 
@@ -39,7 +36,7 @@ authenticate.post('/register', (req, res) => {
 
             if (err) {
                 console.log(err);
-                logger.error("error with bcrypt", {errorData : err} )
+                logger.error('error with bcrypt', { errorData: err });
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
 
@@ -73,7 +70,8 @@ authenticate.post('/register', (req, res) => {
                     case 'users_username_length':
                         return res.status(400).send({ usernameError: 'Usernames should be between 4 and 30 characters.' });
                 }
-                logger.error("insertion for client didn't work", { errorData : error}, { clientId: client.getId()})
+
+                logger.error('client registration failed', { errorData: error }, { clientId: client.getId() });
                 return res.status(500).send({ error });
 
             });
@@ -108,7 +106,7 @@ authenticate.post('/login', (req, res) => {
 
             if (err) {
                 console.log(err);
-                logger.error("error with bcrypt", {errorData : err} )
+                logger.error('error with bcrypt', { errorData: err });
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
 
@@ -124,7 +122,7 @@ authenticate.post('/login', (req, res) => {
         
     })
     .catch(error => {
-        logger.error("error with login ", {errorData:error})
+        logger.error('error with login', { errorData: error });
         return res.status(500).send({ error });
     });
 
