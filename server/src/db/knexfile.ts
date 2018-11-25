@@ -1,7 +1,6 @@
-const config = require('./config');
+const config = require('./config.json');
 
 module.exports = {
-
     development: {
         client: 'pg',
         connection: {
@@ -18,7 +17,6 @@ module.exports = {
             directory: __dirname + '/seeds'
         }
     },
-
     production: {
         client: 'pg',
         connection: {
@@ -35,5 +33,4 @@ module.exports = {
             directory: __dirname + '/seeds/production'
         }
     }
-
-}
+};

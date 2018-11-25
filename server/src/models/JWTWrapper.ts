@@ -1,14 +1,16 @@
+import * as jwt from 'jsonwebtoken';
 const secretKey = 'secretKey';
-const jwt = require('jsonwebtoken');
 
 class JWTWrapper {
-    static generateToken(payload) {
+
+    static generateToken(payload): string {
         return jwt.sign(payload, secretKey);
     }
 
-    static verifyToken(token) {
+    static verifyToken(token): object | string {
         return jwt.verify(token, secretKey);
     }
+    
 }
 
 module.exports = JWTWrapper;

@@ -1,6 +1,8 @@
-const express = require('express');
+
+import express from 'express'
+import { Admin } from '../models/user/Admin'
 const knex = require('../db/knex');
-const USER_TYPE = require('../models/user/USER_TYPE');
+import { Connection } from '../db/knex';
 const jwtWrapper = require('../models/JWTWrapper');
 
 const authenticate = require('./routes/authenticate');
@@ -16,17 +18,16 @@ function userMiddleware(req, res, next) {
     if (!req.headers.authorization) {
         return res.status(401).send({ error });
     }
-
+    
     let token = req.headers.authorization.split(' ')[1];
     if (token === 'null') {
         return res.status(401).send({ error });
     }
-
     let payload = jwtWrapper.verifyToken(token);
     if (!payload) {
         return res.status(401).send({ error });
     }
-
+    
     req.userId = payload.subject;
     next();
 }
@@ -34,13 +35,15 @@ function userMiddleware(req, res, next) {
 function adminMiddleware(req, res, next) {
     const userId = req.userId;
 
+    const knex = new Connection().knex();
+
     knex.select().from('users').where('id', userId).then(users => {
         if (users.length === 0) {
             res.status(401).send({ error });
         }
         else {
             const user = users[0];
-            if (user.user_type === USER_TYPE.ADMIN) {
+            if (user.user_type === Admin.name) {
                 next();
             }
             else {
@@ -60,6 +63,5 @@ api.use('/services', services);
 
 api.use('/user', userMiddleware, user);
 api.use('/admin', userMiddleware, adminMiddleware, admin);
-
 
 module.exports = api;

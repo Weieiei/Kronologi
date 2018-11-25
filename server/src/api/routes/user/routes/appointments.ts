@@ -1,28 +1,43 @@
-const express = require('express');
-const knex = require('../../../../db/knex');
-const moment = require('moment');
 
-const appointments = express.Router();
+import express from 'express'
+import { Connection } from '../../../../db/knex'
+import moment from 'moment'
 
+const appointments = express.Router()
+const knex = new Connection().knex()
+
+/**
+ * @route       GET api/user/appointments
+ * @description Get all of you appointments that are either today or in the future.
+ * @access      Private  
+ */
 appointments.get('/', (req, res) => {
+
     const userId = req.userId;
     let today = new Date();
-    today = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+    let todayString : string = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
 
     knex.select('appointments.id', 'service_id', 'services.name', 'start_time', 'end_time', 'duration', 'notes')
         .from('appointments')
         .innerJoin('services', 'appointments.service_id', 'services.id')
         .where('appointments.user_id', userId)
-        .andWhereRaw(`appointments.start_time >= '${today}'::date`)
+        .andWhereRaw(`appointments.start_time >= '${todayString}'::date`)
         .then(appointments => {
             return res.status(200).send({appointments});
         })
         .catch(error => {
             return res.status(500).send({error});
         });
+
 });
 
+/**
+ * @route       POST api/user/appointments
+ * @description Make an appointment.
+ * @access      Private  
+ */
 appointments.post('/', (req, res) => {
+
     const user_id = req.userId;
     const service_id = req.body.service_id;
     let start_time = req.body.start_time;
@@ -61,6 +76,7 @@ appointments.post('/', (req, res) => {
                 res.status(404).send({ error: 'Not found.' });
             }
         });
+
 });
 
 module.exports = appointments;
