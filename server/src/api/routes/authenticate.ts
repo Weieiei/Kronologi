@@ -3,7 +3,9 @@ import { Connection } from '../../db/knex';
 import { Client } from '../../models/user/Client';
 import bcrypt from "bcrypt-nodejs";
 import { Logger } from '../../models/logger';
+
 const jwtWrapper = require('../../models/JWTWrapper');
+const logger = Logger.Instance.getGrayLog();
 
 let saltRounds = 10;
 let authenticate = express.Router();
@@ -18,19 +20,8 @@ authenticate.post('/register', (req, res) => {
 
     this.connector = new Connection().knex();
 
-    const logger = Logger.Instance.getGrayLog();
 
-    logger.on('error', function (error) {
-        console.error('Error while trying to write to graylog2:', error);
-    });
-
-    logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.");
-
-    logger.log("What we've got here is...failure to communicate");
-
-    logger.log("What we've got here is...failure to communicate", { cool: 'beans' });
-
-    logger.log("What we've got here is...failure to communicate", "Some men you just can't reach. So you get what we had here last week, which is the way he wants it... well, he gets it. I don't like it any more than you men.", { cool: "beans" });
+    
 
     const { _firstName, _lastName, _email, _username, _password } = req.body.user;
     const client: Client = new Client(_firstName, _lastName, _email, _username, _password);
@@ -48,6 +39,7 @@ authenticate.post('/register', (req, res) => {
 
             if (err) {
                 console.log(err);
+                logger.error("error with bcrypt", {errorData : err} )
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
 
@@ -81,7 +73,7 @@ authenticate.post('/register', (req, res) => {
                     case 'users_username_length':
                         return res.status(400).send({ usernameError: 'Usernames should be between 4 and 30 characters.' });
                 }
-
+                logger.error("insertion for client didn't work", { errorData : error}, { clientId: client.getId()})
                 return res.status(500).send({ error });
 
             });
@@ -116,6 +108,7 @@ authenticate.post('/login', (req, res) => {
 
             if (err) {
                 console.log(err);
+                logger.error("error with bcrypt", {errorData : err} )
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
 
@@ -131,6 +124,7 @@ authenticate.post('/login', (req, res) => {
         
     })
     .catch(error => {
+        logger.error("error with login ", {errorData:error})
         return res.status(500).send({ error });
     });
 
