@@ -20,4 +20,21 @@ export class EmailService {
       });
     }
 
+    public sendEmail(receiver: string, mailSubject: string, body : string) {
+        var mailOptions = {
+            from: this.userEmail,
+            to: receiver,
+            subject: mailSubject,
+            text: body
+      };
+
+      this.transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+                console.log(error);
+              } else {
+                      console.log('Email sent: ' + info.response);
+                    }
+        });
+    }
+
 }
