@@ -1,7 +1,7 @@
-const express = require('express');
-const appointments = require('./routes/appointments');
+import express from 'express';
 
 const user = express.Router();
+const appointments = require('./routes/appointments');
 
 user.use('/appointments', appointments);
 

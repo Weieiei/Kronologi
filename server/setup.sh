@@ -24,12 +24,12 @@ bash -c '
 
     if </dev/tcp/$DB_HOST/5432 ;
     then
-        cd ./src/
         (
             cd ./db/
             ../../node_modules/.bin/knex migrate:latest
             ../../node_modules/.bin/knex seed:run
         )
+
         node app.js
     fi
 '

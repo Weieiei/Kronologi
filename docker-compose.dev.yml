@@ -1,5 +1,5 @@
 ---
-version: "3.4"
+version: "2.1"
 services:
   web-client:
     depends_on:
@@ -21,7 +21,6 @@ services:
       DB_HOST: postgres
     ports:
       - "3000:3000"
-
   db:
     image: postgres:11
     container_name: postgres
@@ -33,7 +32,6 @@ services:
       POSTGRES_PASSWORD: scheduler
     volumes:
       - "pgdata:/var/lib/postgresql/data"
-
 volumes:
   pgdata:
     name: pgdata
