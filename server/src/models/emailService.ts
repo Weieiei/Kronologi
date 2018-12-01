@@ -1,9 +1,9 @@
 var nodemailer = require('nodemailer');
 
 export class EmailService {
-    private service;
-    private userEmail;
-    private password;
+    private service: string;
+    private userEmail: string;
+    private password: string;
     private transporter;
 
 
@@ -11,6 +11,10 @@ export class EmailService {
         this.service = serv;
         this.userEmail = user;
         this.password = pass;
+        this.updateTransport();
+    }
+
+    private updateTransport() {
         this.transporter = nodemailer.createTransport({
             service: this.service,
             auth: {
@@ -18,6 +22,33 @@ export class EmailService {
                     pass: this.password 
                   }
       });
+    }
+
+    public getUserEmail():string {
+        return this.userEmail;
+    }
+
+    public setUserEmail(user: string):void {
+        this.userEmail = user;
+        this.updateTransport();
+    }
+
+    public getPassword():string {
+        return this.password;
+    }
+
+    public setPassword(pass: string):void {
+        this.password = pass;
+        this.updateTransport();
+    }
+
+    public getService():string {
+        return this.service;
+    }
+    
+    public setService(serv: string):void {
+        this.service = serv;
+        this.updateTransport();
     }
 
     public sendEmail(receiver: string, mailSubject: string, body : string) {
@@ -36,5 +67,6 @@ export class EmailService {
                     }
         });
     }
+
 
 }
