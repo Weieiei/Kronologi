@@ -1,5 +1,4 @@
-import 'mocha';
-process.env.NODE_ENV = "test";
+//process.env.NODE_ENV = "test";
 var chai = require('chai'), chaiHttp = require('chai-http');
 
 chai.use(chaiHttp);
@@ -15,8 +14,8 @@ const expect = chai.expect;
 describe('registration best case scenario', () => {
 
     it('should return status 200 on call', () => {
-        return chai.request('http://localhost:3000')
-            .post('/api/authenticate/login')
+        return chai.request('http://localhost:3000/')
+            .post('api/authenticate/login')
             .type('form')
             .send({
                 "username" : "password123",

@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve:unix": "npm run pre-build:unix && concurrently \"ng serve\" \"../server/node_modules/.bin/nodemon ../server/dist/app.js\"",
-    "serve:win": " npm run pre-build:win && concurrently \"ng serve\"  \"..\\server\\node_modules\\.bin\\nodemon ..\\server\\bin\\www\""
+    "serve:win": " npm run pre-build:win && concurrently \"ng serve\"  \"..\\server\\node_modules\\.bin\\nodemon ..\\server\\dist\\app.js\""
   },
   "private": true,
   "dependencies": {

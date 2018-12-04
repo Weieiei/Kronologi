@@ -5,7 +5,10 @@
   "private": true,
   "scripts": {
     "tsc": "tsc",
-    "test": "mocha -r ts-node/register ./test/*.ts"
+    "test": "mocha -r ts-node/register ./test/*.ts",
+    "mocha": "mocha ./test/*.ts",
+    "test-mocha":"mocha --inspect-brk mocha ./test/*.ts"
+
   },
   "dependencies": {
     "@types/jsonwebtoken": "^8.3.0",
@@ -15,6 +18,7 @@
     "body-parser": "^1.18.3",
     "chai-http": "^4.2.0",
     "cors": "^2.8.5",
+    "debug": "^4.1.0",
     "express": "^4.16.4",
     "graylog2": "^0.2.1",
     "jsonwebtoken": "^8.4.0",

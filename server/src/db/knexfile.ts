@@ -1,4 +1,3 @@
-/*
 import * as config from './config.json';
 
 module.exports = {
@@ -52,4 +51,3 @@ module.exports = {
         }
     }
 };
-*/

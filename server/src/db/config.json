@@ -2,6 +2,6 @@
     "host": "localhost",
     "port": 5432,
     "database": "scheduler",
-    "user": "scheduler",
-    "password": "scheduler"
+    "user": "postgres",
+    "password": "admin"
 }

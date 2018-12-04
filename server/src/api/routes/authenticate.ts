@@ -90,7 +90,7 @@ authenticate.post('/register', (req, res) => {
 authenticate.post('/login', (req, res) => {
 
     this.connector = new Connection().knex();
-
+    debugger
     const { username, password } = req.body;
     
     this.connector.select().from('users').where('username', username)
