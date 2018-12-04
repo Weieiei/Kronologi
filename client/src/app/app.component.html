@@ -1,6 +1,31 @@
-<app-navbar></app-navbar>
-<div class="container">
-	<div class="content">
-		<router-outlet></router-outlet>
-	</div>
-</div>
+<!-- <mat-sidenav-container fxFill
+    (backdropClick)="sidenav.close()">
+  <mat-sidenav #sidenav (keydown.escape)="sidenav.close()" disableClose>
+    <p><button mat-button (click)="sidenav.close()">Toggle</button></p>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+		<p><button mat-button (click)="sidenav.open()">Open</button></p>
+		<app-navbar></app-navbar>
+		<div class="container">
+			<div class="content">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container> -->
+
+<mat-sidenav-container fxFlexFill>
+  <mat-sidenav #sidenav mode="over">
+    <div>Stuff</div>
+  </mat-sidenav>
+
+  <mat-sidenav-content fxLayout="column">
+    <app-navbar></app-navbar>
+
+    <div fxFlexAlign="center">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
