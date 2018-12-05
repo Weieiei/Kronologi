@@ -24,6 +24,7 @@ import { SchedulerComponent } from './components/scheduler/scheduler.component';
 import { SlidePanelComponent } from './components/scheduler/slide-panel/slide-panel.component';
 import { CalendarComponent } from './components/scheduler/calendar/calendar.component';
 import { MonthPickerComponent } from './components/scheduler/month-picker/month-picker.component';
+import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MonthPickerComponent } from './components/scheduler/month-picker/month-
     SchedulerComponent,
     SlidePanelComponent,
     CalendarComponent,
-    MonthPickerComponent
+    MonthPickerComponent,
+    CustomStepperComponent
   ],
   imports: [
     BrowserModule,

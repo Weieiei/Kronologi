@@ -7,6 +7,7 @@ import {
   MatInputModule,
   MatMenuModule,
   MatNativeDateModule,
+  MatProgressBarModule,
   MatSelectModule,
   MatTableModule
 } from '@angular/material';
@@ -15,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatStepperModule } from '@angular/material/stepper';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @NgModule({
   imports: [
@@ -30,7 +32,9 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatTableModule,
     MatMenuModule,
     MatGridListModule,
-    MatStepperModule
+    MatStepperModule,
+    MatProgressBarModule,
+    CdkStepperModule
   ],
   exports: [
     MatButtonModule,
@@ -45,7 +49,9 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatTableModule,
     MatMenuModule,
     MatGridListModule,
-    MatStepperModule
+    MatStepperModule,
+    MatProgressBarModule,
+    CdkStepperModule
   ]
 })
 export class MaterialModule {
