@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { User } from 'src/app/models/user/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -10,7 +9,12 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
-  user: User;
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  password: string;
+
   repeatPassword: string;
 
   @ViewChild('firstNameInput') firstNameInput: ElementRef;
@@ -21,15 +25,13 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user = new User();
-    this.repeatPassword = '';
     this.firstNameInput.nativeElement.focus();
   }
 
   registerUser() {
-    if (this.user.password === this.repeatPassword) {
+    if (this.password === this.repeatPassword) {
 
-      this.authService.registerUser(this.user).subscribe(
+      this.authService.registerUser(this.firstName, this.lastName, this.email, this.username, this.password).subscribe(
         res => {
           this.authService.setToken(res['token']);
           this.router.navigate(['']);

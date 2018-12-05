@@ -23,8 +23,6 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.username = '';
-    this.password = '';
     this.usernameInput.nativeElement.focus();
   }
 

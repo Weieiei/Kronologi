@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../../models/user/user';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -14,12 +13,12 @@ export class AuthService {
     private router: Router
   ) { }
 
-  registerUser(user: User): Observable<User> {
-    return this.http.post<User>(['api', 'authenticate', 'register'].join('/'), { user });
+  registerUser(firstName: string, lastName: string, email: string, username: string, password: string): Observable<any> {
+    return this.http.post<any>(['api', 'authenticate', 'register'].join('/'), { firstName, lastName, email, username, password });
   }
 
-  loginUser(username: String, password: String): Observable<User> {
-    return this.http.post<User>(['api', 'authenticate', 'login'].join('/'), { username, password });
+  loginUser(username: String, password: String): Observable<any> {
+    return this.http.post<any>(['api', 'authenticate', 'login'].join('/'), { username, password });
   }
 
   loggedIn(): boolean {

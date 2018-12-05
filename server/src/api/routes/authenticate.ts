@@ -20,8 +20,8 @@ authenticate.post('/register', (req, res) => {
 
     this.connector = new Connection().knex();
 
-    const { _firstName, _lastName, _email, _username, _password } = req.body.user;
-    const client: Client = new Client(_firstName, _lastName, _email, _username, _password);
+    const { firstName, lastName, email, username, password } = req.body;
+    const client: Client = new Client(firstName, lastName, email, username, password);
 
     if (client.getPassword().length < 6 || client.getPassword().length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
