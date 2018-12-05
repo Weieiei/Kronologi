@@ -1,6 +1,8 @@
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
+
 import { Admin } from '../../models/user/Admin';
 import { Client } from '../../models/user/Client';
+import { Employee } from '../../models/user/Employee';
 
 const saltRounds: any = 10;
 
@@ -51,7 +53,8 @@ exports.seed = (knex, Promise) => {
 				return knex('users').insert([
 					{ first_name: 'John', last_name: 'Doe', email: 'johndoe@gmail.com', username: 'johndoe', password: await hashPassword('johndoe'), user_type: Client.name },
 					{ first_name: 'Test', last_name: 'User', email: 'testuser@gmail.com', username: 'test', password: await hashPassword('test123'), user_type: Client.name },
-					{ first_name: 'Admin', last_name: 'User', email: 'admin@gmail.com', username: 'admin', password: await hashPassword('admin123'), user_type: Admin.name }
+					{ first_name: 'Admin', last_name: 'User', email: 'admin@gmail.com', username: 'admin', password: await hashPassword('admin123'), user_type: Admin.name },
+					{ first_name: 'Employee', last_name: 'User', email: 'emp@gmail.com', username: 'employee', password: await hashPassword('employee123'), user_type: Employee.name }
 				]);
 			})
 			.then(() => {
