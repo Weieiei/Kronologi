@@ -6,8 +6,8 @@
   "scripts": {
     "tsc": "tsc",
     "test": "mocha -r ts-node/register ./test/*.ts",
-    "mocha": "mocha ./test/*.ts",
-    "test-mocha":"mocha --inspect-brk mocha ./test/*.ts"
+    "mocha-test": "mocha ./test/*.ts",
+    "mocha-debug":"mocha --inspect-brk mocha ./test/*.ts"
 
   },
   "dependencies": {

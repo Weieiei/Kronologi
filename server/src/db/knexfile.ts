@@ -5,7 +5,7 @@ module.exports = {
     test: {
         client: 'pg',
         connection: {
-            host: process.env.DB_HOST || config.host,
+            host: config.host,
             port: config.port,
             user: config.user,
             password: config.password,

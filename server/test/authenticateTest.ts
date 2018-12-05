@@ -1,13 +1,11 @@
 //process.env.NODE_ENV = "test";
-import {Connection} from "../src/db/knex";
-
 var chai = require('chai'), chaiHttp = require('chai-http');
 
 chai.use(chaiHttp);
 
 const expect = chai.expect;
 
-describe('registration with correct credentials', () => {
+describe('registration best case scenario', () => {
 
     it('should return status 200 on call', () => {
         return chai.request('http://localhost:3000/')
@@ -21,7 +19,7 @@ describe('registration with correct credentials', () => {
                 chai.expect(res.status).to.eql(200);
             });
     });
-   this.connector = new Connection().knex();
-this.connector().table('users').del().where('_username',"melissa");
+    //   this.connector = new Connection().knex();
+    // this.connector().table('users').del().where('_username',"melissa");
 
 });
