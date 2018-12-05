@@ -1,10 +1,11 @@
-export {};
+//export {};
+import {Service} from "../src/models/service/service";
+
+process.env.NODE_ENV = "test";
 import 'mocha';
 import {Connection} from "../src/db/knex";
 const chai = require('chai'), chaiHttp = require('chai-http');
-const knex = require('../src/db/knex');
 const express = require('express');
-
 chai.use(chaiHttp);
 
 describe('login with correct credentials', () => {
@@ -21,22 +22,24 @@ describe('login with correct credentials', () => {
                 chai.expect(res.status).to.eql(200);
             });
     });
-//    this.connector = new Connection().knex();
-//this.connector().table('users').del().where('_username',"melissa");
 
 });
 
-describe('registration with ', () => {
+describe('registration with correct information', () => {
 
     it('should return status 200 on call', () => {
         return chai.request('localhost:3000/')
             .post('api/authenticate/register')
-            .send({"user":{"_firstName":"lova","_lastName":"duong","_email":"gee@123.com","_username":"gee","_password":"test123"}})
+            .send({"user":{"_firstName":"billy","_lastName":"duong","_email":"billy@123.com","_username":"billy","_password":"test123"}})
             .then(res => {
                 chai.expect(res.status).to.eql(200);
             })
     })
-    //  this.connector = new Connection().knex();
-    // this.connector().table('users').del().where('_username',"melissa");
+    let connector = new Connection().knex();
+    debugger
+    //delete newly added entry
+    (connector.select().from('users').where("username", "billy")).del().then((data) => {
+        console.log(data);
+    });
 
 })

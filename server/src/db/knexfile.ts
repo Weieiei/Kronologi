@@ -1,4 +1,4 @@
-import * as config from './config.json';
+import config = require('./config.json');
 
 module.exports = {
 
