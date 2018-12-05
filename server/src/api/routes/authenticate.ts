@@ -1,15 +1,17 @@
 import express from 'express';
 import { Connection } from '../../db/knex';
 import { Client } from '../../models/user/Client';
-import bcrypt from "bcrypt-nodejs";
+import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../models/logger';
 
 const jwtWrapper = require('../../models/JWTWrapper');
 const logger = Logger.Instance.getGrayLog();
 
-let saltRounds = 10;
-let authenticate = express.Router();
-let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
+const saltRounds = 10;
+const authenticate = express.Router();
+const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
+
+const knex = new Connection().knex();
 
 /**
  * @route       POST api/authenticate/register
@@ -17,8 +19,6 @@ let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
  * @access      Public
  */
 authenticate.post('/register', (req, res) => {
-
-    this.connector = new Connection().knex();
 
     const { firstName, lastName, email, username, password } = req.body;
     const client: Client = new Client(firstName, lastName, email, username, password);
@@ -31,8 +31,8 @@ authenticate.post('/register', (req, res) => {
     }
 
     bcrypt.genSalt(saltRounds, (err, salt) => {
-        
-        bcrypt.hash(client.getPassword(), salt, null, (err, hash) => {
+
+        bcrypt.hash(client.getPassword(), salt, undefined, (err, hash) => {
 
             if (err) {
                 console.log(err);
@@ -42,7 +42,7 @@ authenticate.post('/register', (req, res) => {
 
             client.setPassword(hash)
 
-            this.connector.table('users').insert({
+            knex.table('users').insert({
                 first_name: client.getFirstName(),
                 last_name:  client.getLastName(),
                 email: client.getEmail(),
@@ -89,11 +89,9 @@ authenticate.post('/register', (req, res) => {
  */
 authenticate.post('/login', (req, res) => {
 
-    this.connector = new Connection().knex();
-
     const { username, password } = req.body;
-    
-    this.connector.select().from('users').where('username', username)
+
+    knex.select().from('users').where('username', username)
     .then(user => {
 
         const invalidCredentials = 'Incorrect username and/or password.';
@@ -119,7 +117,7 @@ authenticate.post('/login', (req, res) => {
             }
 
         });
-        
+
     })
     .catch(error => {
         logger.error('error with login', { errorData: error });
