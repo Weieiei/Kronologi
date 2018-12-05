@@ -31,8 +31,8 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false
+    browsers: ['Chrome', 'ChromeCanary'],
+    singleRun: true
   });
   if(process.env.TRAVIS){
     config.browsers = ['Chrome_travis_ci'];
