@@ -3,6 +3,7 @@ import { Connection } from '../../db/knex';
 import { Client } from '../../models/user/Client';
 import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../models/logger';
+import { EmailService} from '../../models/email/emailService';
 
 const jwtWrapper = require('../../models/JWTWrapper');
 const logger = Logger.Instance.getGrayLog();
@@ -22,6 +23,8 @@ authenticate.post('/register', (req, res) => {
 
     const { firstName, lastName, email, username, password } = req.body;
     const client: Client = new Client(firstName, lastName, email, username, password);
+  
+    let email = new EmailService();
 
     if (client.getPassword().length < 6 || client.getPassword().length > 30) {
         return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
@@ -54,6 +57,7 @@ authenticate.post('/register', (req, res) => {
             .then(result => {
 
                 const token: string = generateToken(result[0].id, result[0].user_id);
+                email.sendEmail(client.getEmail(), "Registration Successful", "Congratulations!!");
                 return res.status(200).send({ token });
 
             })
