@@ -74,11 +74,12 @@ describe('this set of tests will verify the functionality of POST api/authentica
                 chai.expect(res.status).to.eql(200);
                 console.log(JSON.parse(res.text));
                 (connector.select().from('users').where("username", "bella")).del().then((data) => {
-                });;
+                });
+                ;
             })
     });
 
- it('registration should return status 400 with username taken', () => {
+    it('registration should return status 400 with username taken', () => {
         return chai.request('localhost:3000/')
             .post('api/authenticate/register')
             .send({
