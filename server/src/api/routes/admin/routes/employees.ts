@@ -47,7 +47,7 @@ employees.post('/register', (req, res) => {
                 email: employee.getEmail(),
                 username: employee.getUsername(),
                 password: employee.getPassword(),
-                user_type: employee.getType()
+                user_type: Employee.getType()
             })
                 .then(result => {
 

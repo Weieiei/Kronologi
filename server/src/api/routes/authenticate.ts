@@ -40,7 +40,7 @@ authenticate.post('/register', (req, res) => {
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
 
-            client.setPassword(hash)
+            client.setPassword(hash);
 
             knex.table('users').insert({
                 first_name: client.getFirstName(),
@@ -48,12 +48,12 @@ authenticate.post('/register', (req, res) => {
                 email: client.getEmail(),
                 username: client.getUsername(),
                 password: client.getPassword(),
-                user_type: client.getType()
+                user_type: Client.getType()
             })
-            .returning('id')
+            .returning(['id', 'user_type'])
             .then(result => {
 
-                const token: string = generateToken(result[0]);
+                const token: string = generateToken(result[0].id, result[0].user_id);
                 return res.status(200).send({ token });
 
             })
@@ -109,7 +109,7 @@ authenticate.post('/login', (req, res) => {
             }
 
             if (match) {
-                const token = generateToken(user[0].id);
+                const token = generateToken(user[0].id, user[0].user_type);
                 return res.status(200).send({ token });
             }
             else {
@@ -126,8 +126,8 @@ authenticate.post('/login', (req, res) => {
 
 });
 
-function generateToken(user_id: number): string {
-    const payload: string | Buffer | object = { subject: user_id };
+function generateToken(userId: number, userType: string): string {
+    const payload: string | Buffer | object = { subject: userId, type: userType };
     return jwtWrapper.generateToken(payload);
 }
 

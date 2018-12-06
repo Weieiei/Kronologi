@@ -9,8 +9,4 @@ export class Client extends User {
         super(fname, lname, email, username, password);
     }
 
-    public getType(): string {
-        return Client.name;
-    }
-
 }

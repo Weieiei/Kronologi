@@ -6,8 +6,4 @@ export class Employee extends User {
         super(fname, lname, email, username, password);
     }
 
-    public getType(): string {
-        return Employee.name;
-    }
-
 }

@@ -6,8 +6,4 @@ export class Admin extends User {
         super(fname, lname, email, username, password);
     }
 
-    public getType(): string {
-        return Admin.name;
-    }
-
 }
