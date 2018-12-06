@@ -55,7 +55,8 @@ describe('this set of tests will verify the functionality of POST api/authentica
 
     let connector = new Connection().knex();
     //delete newly added entry
-    (connector.select().from('users').where("username", "bella")).del();
+    (connector.select().from('users').where("username", "bella")).del().then((data) => {
+    });
 
     it('registration should return status 200 with correct input data', () => {
         return chai.request('localhost:3000/')
@@ -72,7 +73,8 @@ describe('this set of tests will verify the functionality of POST api/authentica
             .then(res => {
                 chai.expect(res.status).to.eql(200);
                 console.log(JSON.parse(res.text));
-                (connector.select().from('users').where("username", "bella")).del();
+                (connector.select().from('users').where("username", "bella")).del().then((data) => {
+                });;
             })
     });
 
@@ -91,7 +93,8 @@ describe('this set of tests will verify the functionality of POST api/authentica
             .then(res => {
                 chai.expect(res.status).to.eql(400);
                 chai.expect(JSON.parse(res.text).emailError == "This username is taken.");
-                (connector.select().from('users').where("username", "bella")).del();
+                (connector.select().from('users').where("username", "bella")).del().then((data) => {
+                });
             });
     });
 });
