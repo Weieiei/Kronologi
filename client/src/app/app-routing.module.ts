@@ -9,6 +9,7 @@ import { AppointmentsComponent } from './components/appointments/appointments.co
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 export interface Data {
   type?: string;
@@ -20,7 +21,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
 
   { path: 'home', redirectTo: '', pathMatch: 'full' },
-  { path: 'appointments', component: AppointmentsComponent, canActivate: [AuthGuard] },
+  { path: 'appointments', component: AppointmentsComponent, canActivate: [AuthGuard, AdminGuard] },
 
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard], data: {
@@ -32,7 +33,7 @@ const routes: Routes = [
   { path: 'reserve', component: ReserveComponent, canActivate: [AuthGuard] },
   { path: 'my/appts', component: MyAppointmentsComponent, canActivate: [AuthGuard] },
 
-  { path: 'add/employee', component: RegisterComponent, canActivate: [AuthGuard], data: {
+  { path: 'add/employee', component: RegisterComponent, canActivate: [AuthGuard, AdminGuard], data: {
       type: 'register-employee',
       header: 'Create an Employee Account',
       button: 'Create Employee'
