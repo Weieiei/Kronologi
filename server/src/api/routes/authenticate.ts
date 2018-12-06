@@ -3,6 +3,7 @@ import { Connection } from '../../db/knex';
 import { Client } from '../../models/user/Client';
 import bcrypt from "bcrypt-nodejs";
 import { Logger } from '../../models/logger';
+import { EmailService} from '../../models/email/emailService';
 
 const jwtWrapper = require('../../models/JWTWrapper');
 const logger = Logger.Instance.getGrayLog();
@@ -19,7 +20,7 @@ let passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 authenticate.post('/register', (req, res) => {
 
     this.connector = new Connection().knex();
-
+    let email = new EmailService();
     const { _firstName, _lastName, _email, _username, _password } = req.body.user;
     const client: Client = new Client(_firstName, _lastName, _email, _username, _password);
 
@@ -52,7 +53,7 @@ authenticate.post('/register', (req, res) => {
             })
             .returning('id')
             .then(result => {
-
+                email.sendEmail(client.getEmail(), "Registration Successful", "Congratulations!!");
                 const token: string = generateToken(result[0]);
                 return res.status(200).send({ token });
 
