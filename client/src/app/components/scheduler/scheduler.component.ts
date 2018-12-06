@@ -7,7 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SchedulerComponent implements OnInit {
 
-  constructor() { }
+  year: number;
+  month: number;
+
+  constructor() {
+    const currentDate = new Date();
+    this.year = currentDate.getFullYear();
+    this.month = currentDate.getMonth();
+  }
 
   ngOnInit() {
   }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CalendarComponent } from '../calendar/calendar.component';
 
 @Component({
@@ -25,24 +25,20 @@ export class MonthPickerComponent implements OnInit {
     'December'
   ];
 
-  @Input() calendar: CalendarComponent;
+  @Input() year: number;
+  @Output() yearChange = new EventEmitter();
+  @Input() month: number;
+  @Output() monthChange = new EventEmitter();
 
   options = [];
   dropdownIndex: number;
-
-  year: number;
-  month: number;
-
-  private currentDate: Date;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.currentDate = new Date();
     this.dropdownIndex = 0;
     this.initOptions();
-    this.update();
   }
 
   nextMonth(): void {
@@ -66,21 +62,21 @@ export class MonthPickerComponent implements OnInit {
 
   setYear(): void {
     this.year = this.options[this.dropdownIndex].year;
+    this.yearChange.emit(this.year);
   }
 
   setMonth(): void {
     this.month = this.options[this.dropdownIndex].month;
+    this.monthChange.emit(this.month);
   }
 
   private initOptions() {
-    const currentYear = this.currentDate.getFullYear();
-
     for (let i = 0; i < this.MONTHS_IN_ADVANCE; i++) {
-      const currentMonth = i + this.currentDate.getMonth();
+      const currentMonth = i + this.month;
       this.options.push({
         index: i,
-        month: (currentMonth % 12) + 1,
-        year: currentYear + Math.floor(currentMonth / 12)
+        month: currentMonth % 12,
+        year: this.year + Math.floor(currentMonth / 12)
       });
     }
   }

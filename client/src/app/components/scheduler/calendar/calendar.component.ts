@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
-import { SlidePanelComponent } from '../slide-panel/slide-panel.component';
 
 @Component({
   selector: 'app-calendar',
@@ -10,7 +9,6 @@ export class CalendarComponent implements OnInit, OnChanges {
 
   @Input() year: number;
   @Input() month: number;
-  @Input() slider: SlidePanelComponent;
 
   daysOfWeek = [
     'Sunday',
@@ -42,14 +40,8 @@ export class CalendarComponent implements OnInit, OnChanges {
     this.setNumberOfDays();
   }
 
-  chooseDate(date: any) {
-    if (date.enabled) {
-      this.slider.goRight();
-    }
-  }
-
   private setNumberOfDays(): void {
-    const numOfDays = new Date(this.year, this.month, 0).getDate();
+    const numOfDays = new Date(this.year, this.month + 1, 0).getDate();
 
     for (let i = 1; i <= numOfDays; i++) {
       this.days.push({date: i, enabled: this.isEnabled(i)});
@@ -62,9 +54,9 @@ export class CalendarComponent implements OnInit, OnChanges {
     } else {
       const yearGood = this.year >= this.currentDate.getFullYear();
 
-      if (yearGood && this.month > this.currentDate.getMonth() + 1) {
+      if (yearGood && this.month > this.currentDate.getMonth()) {
         return true;
-      } else if (yearGood && this.month >= this.currentDate.getMonth() + 1 && date >= this.currentDate.getDate()) {
+      } else if (yearGood && this.month >= this.currentDate.getMonth() && date >= this.currentDate.getDate()) {
         return true;
       }
     }
@@ -73,6 +65,6 @@ export class CalendarComponent implements OnInit, OnChanges {
   }
 
   private setSpacerLength(): void {
-    this.spacer = new Date(this.year, this.month - 1, 1).getDay();
+    this.spacer = new Date(this.year, this.month, 1).getDay();
   }
 }

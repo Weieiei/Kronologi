@@ -21,7 +21,6 @@ import { AppointmentsComponent } from './components/appointments/appointments.co
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
 import { SchedulerComponent } from './components/scheduler/scheduler.component';
-import { SlidePanelComponent } from './components/scheduler/slide-panel/slide-panel.component';
 import { CalendarComponent } from './components/scheduler/calendar/calendar.component';
 import { MonthPickerComponent } from './components/scheduler/month-picker/month-picker.component';
 import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
@@ -37,7 +36,6 @@ import { CustomStepperComponent } from './components/custom-stepper/custom-stepp
     ReserveComponent,
     MyAppointmentsComponent,
     SchedulerComponent,
-    SlidePanelComponent,
     CalendarComponent,
     MonthPickerComponent,
     CustomStepperComponent
