@@ -77,4 +77,10 @@ export class AuthService {
     }
   }
 
+  isAdmin(): boolean {
+    const claims: any = this.getTokenClaims(this.getToken());
+    const isAdmin: boolean = claims === null ? false : claims.type === 'Admin';
+    return isAdmin;
+  }
+
 }

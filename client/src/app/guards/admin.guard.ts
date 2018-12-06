@@ -14,10 +14,7 @@ export class AdminGuard implements CanActivate {
 
   canActivate(): boolean {
 
-    const claims: any = this.authService.getTokenClaims(this.authService.getToken());
-    const isAdmin: boolean = claims === null ? false : claims.type === 'Admin';
-
-    if (isAdmin) { return true; }
+    if (this.authService.isAdmin()) { return true; }
 
     this.router.navigate(['']);
     return false;
