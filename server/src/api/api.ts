@@ -1,6 +1,5 @@
-
-import express from 'express'
-import { Admin } from '../models/user/Admin'
+import express from 'express';
+import { Admin } from '../models/user/Admin';
 const knex = require('../db/knex');
 import { Connection } from '../db/knex';
 const jwtWrapper = require('../models/JWTWrapper');
@@ -18,16 +17,16 @@ function userMiddleware(req, res, next) {
     if (!req.headers.authorization) {
         return res.status(401).send({ error });
     }
-    
-    let token = req.headers.authorization.split(' ')[1];
+
+    const token = req.headers.authorization.split(' ')[1];
     if (token === 'null') {
         return res.status(401).send({ error });
     }
-    let payload = jwtWrapper.verifyToken(token);
+    const payload = jwtWrapper.verifyToken(token);
     if (!payload) {
         return res.status(401).send({ error });
     }
-    
+
     req.userId = payload.subject;
     next();
 }

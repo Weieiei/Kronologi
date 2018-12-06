@@ -1,9 +1,9 @@
-import express from 'express'
-import { Connection } from './../../db/knex'
+import express from 'express';
+import { Connection } from './../../db/knex';
 import { Service } from '../../models/service/service';
 
-let services = express.Router();
-const knex = new Connection().knex()
+const services = express.Router();
+const knex = new Connection().knex();
 /**
  * @route       GET api/services
  * @description Get list of services offered.
@@ -20,13 +20,13 @@ services.get('', (req, res) => {
             const service = new Service(row.id, row.name, row.duration);
             services.push(service);
         });
-        
+
         return res.status(200).send(services);
 
     })
     .catch(error => {
         return res.status(500).send({ error });
-    })
+    });
 
 });
 
