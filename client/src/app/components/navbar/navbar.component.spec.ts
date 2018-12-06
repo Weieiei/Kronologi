@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { By } from '@angular/platform-browser';
 import { MaterialModule } from 'src/app/material';
+import { Subject } from 'rxjs';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -89,12 +90,27 @@ function logout() {
   localStorage.removeItem('token');
 }
 
+const claims = {
+  id: 1,
+  type: 'Client'
+};
+
 class MockAuthService {
+  authenticateObservable = new Subject();
+
   loggedIn() {
     return !!(this.getToken());
   }
 
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  getTokenClaims(token: string) {
+    if (token) {
+      return claims;
+    } else {
+      return null;
+    }
   }
 }

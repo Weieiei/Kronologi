@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(this.username, this.password).subscribe(
       res => {
         this.authService.setToken(res['token']);
+        this.authService.notifyAuthentication();
         this.router.navigate(['']);
       },
       err => console.log(err)

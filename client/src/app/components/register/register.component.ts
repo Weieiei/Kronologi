@@ -54,6 +54,7 @@ export class RegisterComponent implements OnInit {
     this.authService.registerClient(this.firstName, this.lastName, this.email, this.username, this.password).subscribe(
       res => {
         this.authService.setToken(res['token']);
+        this.authService.notifyAuthentication();
         this.router.navigate(['']);
       },
       err => console.log(err)
