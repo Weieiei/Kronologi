@@ -1,16 +1,17 @@
 FROM node:10-stretch
 
-WORKDIR /home/node/
-COPY . /home/node/
+RUN npm install typescript tsc -g
 
-RUN npm install && \
-    npm install typescript -g && \
-    npm run-script tsc
+WORKDIR /home/node/
+
+COPY package.json /home/node/
+RUN npm install
+
+COPY . /home/node
+RUN chmod +x setup.sh && \
+    tsc
 
 WORKDIR /home/node/dist
-
-# Make the script executable
-RUN chmod +x ../setup.sh
 
 EXPOSE 3000
 

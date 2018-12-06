@@ -26,7 +26,8 @@
     "pg": "^7.6.1",
     "require": "^2.4.20",
     "require.js": "^1.0.0",
-    "tslint": "^5.9.1"
+    "tslint": "^5.9.1",
+    "nodemailer": "^4.6.8"
   },
   "devDependencies": {
     "@types/async": "^2.0.45",

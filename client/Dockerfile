@@ -1,9 +1,12 @@
 FROM node:10-alpine AS node
 
-# Copy repo
 WORKDIR /home/node
+
+COPY package.json /home/node
+RUN npm install
+
 COPY . /home/node
-RUN npm install && ./node_modules/@angular/cli/bin/ng build
+RUN ./node_modules/@angular/cli/bin/ng build
 
 
 FROM nginx:latest
