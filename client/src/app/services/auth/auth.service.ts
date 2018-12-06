@@ -13,8 +13,12 @@ export class AuthService {
     private router: Router
   ) { }
 
-  registerUser(firstName: string, lastName: string, email: string, username: string, password: string): Observable<any> {
+  registerClient(firstName: string, lastName: string, email: string, username: string, password: string): Observable<any> {
     return this.http.post<any>(['api', 'authenticate', 'register'].join('/'), { firstName, lastName, email, username, password });
+  }
+
+  registerEmployee(firstName: string, lastName: string, email: string, username: string, password: string): Observable<any> {
+    return this.http.post<any>(['api', 'admin', 'employees', 'register'].join('/'), { firstName, lastName, email, username, password });
   }
 
   loginUser(username: String, password: String): Observable<any> {

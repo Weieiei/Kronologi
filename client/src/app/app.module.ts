@@ -19,7 +19,6 @@ import { UrlInterceptor } from './interceptor';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
-import { CreateEmployeeComponent } from './components/create-employee/create-employee.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,7 @@ import { CreateEmployeeComponent } from './components/create-employee/create-emp
     AppointmentsComponent,
     LoginComponent,
     ReserveComponent,
-    MyAppointmentsComponent,
-    CreateEmployeeComponent
+    MyAppointmentsComponent
   ],
   imports: [
     BrowserModule,
