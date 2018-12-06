@@ -1,21 +1,20 @@
+import express from 'express';
+import { Connection } from '../../../../db/knex';
+import moment from 'moment';
 
-import express from 'express'
-import { Connection } from '../../../../db/knex'
-import moment from 'moment'
-
-const appointments = express.Router()
-const knex = new Connection().knex()
+const appointments = express.Router();
+const knex = new Connection().knex();
 
 /**
  * @route       GET api/user/appointments
  * @description Get all of you appointments that are either today or in the future.
- * @access      Private  
+ * @access      Private
  */
 appointments.get('/', (req, res) => {
 
     const userId = req.userId;
-    let today = new Date();
-    let todayString : string = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+    const today = new Date();
+    const todayString: string = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
 
     knex.select('appointments.id', 'service_id', 'services.name', 'start_time', 'end_time', 'duration', 'notes')
         .from('appointments')
@@ -34,7 +33,7 @@ appointments.get('/', (req, res) => {
 /**
  * @route       POST api/user/appointments
  * @description Make an appointment.
- * @access      Private  
+ * @access      Private
  */
 appointments.post('/', (req, res) => {
 

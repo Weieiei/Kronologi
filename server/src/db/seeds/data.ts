@@ -1,6 +1,8 @@
-import bcrypt from "bcryptjs";
+import * as bcrypt from 'bcryptjs';
+
 import { Admin } from '../../models/user/Admin';
 import { Client } from '../../models/user/Client';
+import { Employee } from '../../models/user/Employee';
 
 const saltRounds: any = 10;
 
@@ -49,18 +51,19 @@ exports.seed = (knex, Promise) => {
 			])
 			.then(async () => {
 				return knex('users').insert([
-					{ first_name: 'John', last_name: 'Doe', email: 'johndoe@gmail.com', username: 'johndoe', password: await hashPassword('johndoe'), user_type: Client.name },
+					{ first_name: 'John', last_name: 'Doe', email: 'johndoe@gmail.com', username: 'johndoe', password: await hashPassword('johndoe123'), user_type: Client.name },
 					{ first_name: 'Test', last_name: 'User', email: 'testuser@gmail.com', username: 'test', password: await hashPassword('test123'), user_type: Client.name },
-					{ first_name: 'Admin', last_name: 'User', email: 'admin@gmail.com', username: 'admin', password: await hashPassword('admin123'), user_type: Admin.name }
+					{ first_name: 'Admin', last_name: 'User', email: 'admin@gmail.com', username: 'admin', password: await hashPassword('admin123'), user_type: Admin.name },
+					{ first_name: 'Employee', last_name: 'User', email: 'emp@gmail.com', username: 'employee', password: await hashPassword('employee123'), user_type: Employee.name }
 				]);
 			})
 			.then(() => {
 				return knex('appointments').insert([
 					{ user_id: 2, service_id: 7, start_time: '2018-11-30 18:00:00-05', end_time: '2018-11-30 20:20:00-05', notes: 'Hello world' },
 					{ user_id: 1, service_id: 12, start_time: '2018-12-02 19:30:00-05', end_time: '2018-12-02 22:30:00-05', notes: 'Some note' }
-				])
-			})
+				]);
+			});
 
 		}
-	})
+	});
 };
