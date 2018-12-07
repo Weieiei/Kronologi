@@ -1,5 +1,5 @@
-import  express from "express";
-import * as bodyParser from "body-parser";
+import express from 'express';
+import * as bodyParser from 'body-parser';
 import { Logger } from './models/logger';
 const cors = require('cors');
 const api = require('./api/api');
@@ -12,7 +12,7 @@ const app = express();
 declare global {
     namespace Express {
         interface Request {
-            userId: number
+            userId: number;
         }
     }
 }

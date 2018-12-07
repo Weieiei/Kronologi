@@ -1,8 +1,8 @@
 const graylog2 = require('graylog2');
 
-export class Logger{
+export class Logger {
 
-    private static _logger : Logger;  
+    private static _logger: Logger;
     private graylog;
 
     private constructor() {
@@ -18,14 +18,14 @@ export class Logger{
             bufferSize: 1350         // max UDP packet size, should never exceed the
                                      // MTU of your system (optional, default: 1400)
         });
-        
+
     }
 
     public static get Instance(): Logger {
         return this._logger || (this._logger = new Logger());
     }
 
-    public getGrayLog() : any {
+    public getGrayLog(): any {
         return this.graylog;
     }
 

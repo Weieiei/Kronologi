@@ -10,7 +10,7 @@ class JWTWrapper {
     static verifyToken(token): object | string {
         return jwt.verify(token, secretKey);
     }
-    
+
 }
 
 module.exports = JWTWrapper;

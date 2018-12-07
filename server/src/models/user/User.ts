@@ -1,4 +1,4 @@
-export abstract class User{
+export abstract class User {
 
 	private _id: number;
 	private _firstName: string;
@@ -6,7 +6,7 @@ export abstract class User{
 	private _email: string;
 	private _username: string;
 	private _password: string;
-	
+
 	constructor(firstName: string , lastName: string, email: string, username: string, password: string) {
 		this._firstName = firstName;
 		this._lastName = lastName;
@@ -59,6 +59,8 @@ export abstract class User{
 		this._password = password;
 	}
 
-	abstract getType(): string;
+	public static getType(): string {
+		return this.name;
+	}
 
 }

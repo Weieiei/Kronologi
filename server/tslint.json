@@ -5,10 +5,6 @@
             true,
             "check-space"
         ],
-        "indent": [
-            true,
-            "spaces"
-        ],
         "one-line": [
             true,
             "check-open-brace",
@@ -17,8 +13,7 @@
         "no-var-keyword": true,
         "quotemark": [
             true,
-            "double",
-            "avoid-escape"
+            "single"
         ],
         "semicolon": [
             true,

@@ -19,6 +19,7 @@ import { UrlInterceptor } from './interceptor';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
+import { AdminGuard } from './guards/admin.guard';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { MyAppointmentsComponent } from './components/my-appointments/my-appoint
     AuthService,
     AuthGuard,
     AnonymousGuard,
+    AdminGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UrlInterceptor,

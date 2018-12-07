@@ -1,12 +1,12 @@
-import express from 'express'
-import { Connection } from '../../../../db/knex'
+import express from 'express';
+import { Connection } from '../../../../db/knex';
 
 const appointments = express.Router();
 
 /**
  * Knex initialization
  */
-const knex = new Connection().knex()
+const knex = new Connection().knex();
 
 /**
  * @route       GET api/admin/appointments

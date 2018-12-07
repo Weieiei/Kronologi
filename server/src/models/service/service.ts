@@ -3,7 +3,7 @@ export class Service {
     public id: number;
     public name: string;
 	public duration: number;
-	
+
     constructor(id, name, duration) {
         this.id = id;
         this.name = name;
