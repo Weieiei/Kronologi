@@ -24,5 +24,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', api);
 
 app.listen(PORT, () => {
+    console.log(process.env.NODE_ENV + ' environment');
     console.log('Running on port', PORT);
 });

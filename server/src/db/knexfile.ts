@@ -1,6 +1,23 @@
-import * as config from './config.json';
+import config = require('./config.json');
 
 module.exports = {
+
+    test: {
+        client: 'pg',
+        connection: {
+            host: config.host,
+            port: config.port,
+            user: config.user,
+            password: config.password,
+            database: "scheduler-test"
+        },
+        migrations: {
+            directory: __dirname + '/migrations'
+        },
+        seeds: {
+            directory: __dirname + '/seeds'
+        }
+    },
     development: {
         client: 'pg',
         connection: {

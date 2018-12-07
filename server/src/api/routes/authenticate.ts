@@ -92,7 +92,7 @@ authenticate.post('/register', (req, res) => {
  */
 authenticate.post('/login', (req, res) => {
 
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
     knex.select().from('users').where('username', username)
     .then(user => {
