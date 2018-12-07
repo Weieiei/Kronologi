@@ -3,7 +3,7 @@ import { Connection } from '../../db/knex';
 import { Client } from '../../models/user/Client';
 import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../models/logger';
-import { EmailService} from '../../models/email/emailService';
+import { EmailService } from '../../models/email/emailService';
 
 const jwtWrapper = require('../../models/JWTWrapper');
 const logger = Logger.Instance.getGrayLog();
@@ -55,8 +55,8 @@ authenticate.post('/register', (req, res) => {
             .returning(['id', 'user_type'])
             .then(result => {
 
-                const token: string = generateToken(result[0].id, result[0].user_id);
-                emailService.sendEmail(client.getEmail(), "Registration Successful", "Congratulations!!");
+                const token: string = generateToken(result[0].id, result[0].user_type);
+                emailService.sendEmail(client.getEmail(), 'Registration Successful', 'Congratulations!!');
                 return res.status(200).send({ token });
 
             })
