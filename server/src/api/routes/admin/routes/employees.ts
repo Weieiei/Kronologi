@@ -3,12 +3,12 @@ import { Connection } from '../../../../db/knex';
 import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../../../models/logger';
 import { Employee } from '../../../../models/user/Employee';
+import { validatePassword } from '../../../../helpers';
 
 const employees = express.Router();
 
 const logger = Logger.Instance.getGrayLog();
 const saltRounds = 10;
-const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
 const knex = new Connection().knex();
 
@@ -20,14 +20,11 @@ const knex = new Connection().knex();
 employees.post('/register', (req, res) => {
 
     const { firstName, lastName, email, username, password } = req.body;
-    const employee: Employee = new Employee(firstName, lastName, email, username, password);
 
-    if (employee.getPassword().length < 6 || employee.getPassword().length > 30) {
-        return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
-    }
-    else if (!passwordRegex.test(employee.getPassword())) {
-        return res.status(400).send({ passwordError: 'Password must contain at least 1 letter and 1 digit.' });
-    }
+    const pw = validatePassword(password);
+    if (!pw['isValid']) return res.status(400).send({ error: pw['errors'] });
+
+    const employee: Employee = new Employee(firstName, lastName, email, username, password);
 
     bcrypt.genSalt(saltRounds, (err, salt) => {
 

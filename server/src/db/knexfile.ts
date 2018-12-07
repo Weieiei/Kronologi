@@ -9,7 +9,7 @@ module.exports = {
             port: config.port,
             user: config.user,
             password: config.password,
-            database: "scheduler-test"
+            database: 'scheduler-test'
         },
         migrations: {
             directory: __dirname + '/migrations'
