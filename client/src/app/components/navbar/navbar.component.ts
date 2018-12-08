@@ -8,18 +8,9 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-  isAdmin = false;
-
   constructor(public authService: AuthService) { }
 
   ngOnInit() {
-
-    this.isAdmin = this.authService.isAdmin();
-
-    this.authService.authenticateObservable.subscribe(
-      res => this.isAdmin = this.authService.isAdmin()
-    );
-
   }
 
 }
