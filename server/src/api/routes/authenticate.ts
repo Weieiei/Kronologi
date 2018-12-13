@@ -4,33 +4,30 @@ import { Client } from '../../models/user/Client';
 import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../models/logger';
 import { EmailService } from '../../models/email/emailService';
+import { validatePassword } from '../../helpers';
 
 const jwtWrapper = require('../../models/JWTWrapper');
 const logger = Logger.Instance.getGrayLog();
 
 const saltRounds = 10;
 const authenticate = express.Router();
-const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 
 const knex = new Connection().knex();
 const emailService = new EmailService();
 
 /**
  * @route       POST api/authenticate/register
- * @description Register user.
+ * @description Register user of type client.
  * @access      Public
  */
 authenticate.post('/register', (req, res) => {
 
     const { firstName, lastName, email, username, password } = req.body;
-    const client: Client = new Client(firstName, lastName, email, username, password);
 
-    if (client.getPassword().length < 6 || client.getPassword().length > 30) {
-        return res.status(400).send({ passwordError: 'Password must be between 6 and 30 characters.' });
-    }
-    else if (!passwordRegex.test(client.getPassword())) {
-        return res.status(400).send({ passwordError: 'Password must contain at least 1 letter and 1 digit.' });
-    }
+    const pw = validatePassword(password);
+    if (!pw['isValid']) return res.status(400).send({ error: pw['errors'] });
+
+    const client: Client = new Client(firstName, lastName, email, username, password);
 
     bcrypt.genSalt(saltRounds, (err, salt) => {
 

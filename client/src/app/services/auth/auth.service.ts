@@ -14,6 +14,8 @@ export class AuthService {
    */
   public authenticateObservable = new Subject();
 
+  private admin = false;
+
   constructor(
     private http: HttpClient,
     private router: Router
@@ -78,9 +80,12 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
+    return this.admin;
+  }
+
+  checkAdmin(): void {
     const claims: any = this.getTokenClaims(this.getToken());
-    const isAdmin: boolean = claims === null ? false : claims.type === 'Admin';
-    return isAdmin;
+    this.admin = claims === null ? false : claims.type === 'Admin';
   }
 
 }
