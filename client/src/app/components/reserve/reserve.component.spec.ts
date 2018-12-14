@@ -7,9 +7,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SchedulerComponent } from '../scheduler/scheduler.component';
-import { SlidePanelComponent } from '../scheduler/slide-panel/slide-panel.component';
 import { CalendarComponent } from '../scheduler/calendar/calendar.component';
 import { MonthPickerComponent } from '../scheduler/month-picker/month-picker.component';
+import { CustomStepperComponent } from '../custom-stepper/custom-stepper.component';
 
 describe('ReserveComponent', () => {
   let component: ReserveComponent;
@@ -29,7 +29,7 @@ describe('ReserveComponent', () => {
         SchedulerComponent,
         CalendarComponent,
         MonthPickerComponent,
-        SlidePanelComponent
+        CustomStepperComponent
       ]
     })
     .compileComponents();

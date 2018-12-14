@@ -4,7 +4,6 @@ import { SchedulerComponent } from './scheduler.component';
 import { MaterialModule } from '../../material';
 import { CalendarComponent } from './calendar/calendar.component';
 import { MonthPickerComponent } from './month-picker/month-picker.component';
-import { SlidePanelComponent } from './slide-panel/slide-panel.component';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -22,8 +21,7 @@ describe('SchedulerComponent', () => {
       declarations: [
         SchedulerComponent,
         CalendarComponent,
-        MonthPickerComponent,
-        SlidePanelComponent
+        MonthPickerComponent
       ]
     })
     .compileComponents();

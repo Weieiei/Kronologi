@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CustomStepperComponent } from './custom-stepper.component';
+import { MaterialModule } from '../../material';
 
 describe('CustomStepperComponent', () => {
   let component: CustomStepperComponent;
@@ -8,6 +9,7 @@ describe('CustomStepperComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ MaterialModule ],
       declarations: [ CustomStepperComponent ]
     })
     .compileComponents();
