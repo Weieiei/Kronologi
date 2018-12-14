@@ -23,8 +23,6 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.username = '';
-    this.password = '';
     this.usernameInput.nativeElement.focus();
   }
 
@@ -32,6 +30,7 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(this.username, this.password).subscribe(
       res => {
         this.authService.setToken(res['token']);
+        this.authService.verifyAdminStatus();
         this.router.navigate(['']);
       },
       err => console.log(err)

@@ -48,10 +48,15 @@ describe('MyAppointmentsComponent', () => {
 
   it('should display n appointments if appointments array has n items', () => {
 
+    const service = {
+      name: 'Some service',
+      duration: 120
+    };
+
     component.appointments = [
-      { name: 'service', start_time: '2018-11-14 19:00', end_time: '2018-11-14 21:00', duration: 45, notes: 'notes' },
-      { name: 'service', start_time: '2018-11-14 19:00', end_time: '2018-11-14 21:00', duration: 45, notes: 'notes' },
-      { name: 'service', start_time: '2018-11-14 19:00', end_time: '2018-11-14 21:00', duration: 45, notes: 'notes' }
+      { startTime: '2018-11-14 19:00', endTime: '2018-11-14 21:00', notes: 'notes', service },
+      { startTime: '2018-11-14 19:00', endTime: '2018-11-14 21:00', notes: 'notes', service },
+      { startTime: '2018-11-14 19:00', endTime: '2018-11-14 21:00', notes: 'notes', service }
     ];
 
     fixture.detectChanges();

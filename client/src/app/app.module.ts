@@ -20,6 +20,7 @@ import { UrlInterceptor } from './interceptor';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
+import { AdminGuard } from './guards/admin.guard';
 import { SchedulerComponent } from './components/scheduler/scheduler.component';
 import { CalendarComponent } from './components/scheduler/calendar/calendar.component';
 import { MonthPickerComponent } from './components/scheduler/month-picker/month-picker.component';
@@ -54,6 +55,7 @@ import { CustomStepperComponent } from './components/custom-stepper/custom-stepp
     AuthService,
     AuthGuard,
     AnonymousGuard,
+    AdminGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UrlInterceptor,

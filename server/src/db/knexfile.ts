@@ -1,7 +1,25 @@
-const config = require('./config');
+import config = require('./config.json');
+import { knexSnakeCaseMappers } from 'objection';
 
 module.exports = {
 
+    test: {
+        client: 'pg',
+        connection: {
+            host: config.host,
+            port: config.port,
+            user: config.user,
+            password: config.password,
+            database: 'scheduler-test'
+        },
+        migrations: {
+            directory: __dirname + '/migrations'
+        },
+        seeds: {
+            directory: __dirname + '/seeds'
+        },
+        ...knexSnakeCaseMappers()
+    },
     development: {
         client: 'pg',
         connection: {
@@ -16,9 +34,9 @@ module.exports = {
         },
         seeds: {
             directory: __dirname + '/seeds'
-        }
+        },
+        ...knexSnakeCaseMappers()
     },
-
     production: {
         client: 'pg',
         connection: {
@@ -33,7 +51,8 @@ module.exports = {
         },
         seeds: {
             directory: __dirname + '/seeds/production'
-        }
+        },
+        ...knexSnakeCaseMappers()
     }
 
-}
+};
