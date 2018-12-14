@@ -46,11 +46,11 @@ employees.post('/register', async (req, res) => {
 
                 if (error instanceof ValidationError) {
                     const message: string = error.message;
-                    // logger.error('employee registration failed', { error } );
+                    logger.error('employee registration failed', { error } );
                     return res.status(400).send({ message });
                 }
                 else {
-                    // logger.error('employee registration failed', { error } );
+                    logger.error('employee registration failed', { error } );
                     return res.status(500).send({ error });
                 }
 

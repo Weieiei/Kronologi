@@ -8,7 +8,7 @@ import { validatePassword } from '../../helpers';
 import { ValidationError } from 'objection';
 
 const jwtWrapper = require('../../models/JWTWrapper');
-// const logger = Logger.Instance.getGrayLog();
+const logger = Logger.Instance.getGrayLog();
 
 const saltRounds = 10;
 const authenticate = express.Router();
@@ -35,7 +35,7 @@ authenticate.post('/register', async (req, res) => {
 
             if (err) {
                 console.log(err);
-                // logger.error('error with bcrypt', { error: err });
+                logger.error('error with bcrypt', { error: err });
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
 
@@ -53,11 +53,11 @@ authenticate.post('/register', async (req, res) => {
             catch (error) {
                 if (error instanceof ValidationError) {
                     const message: string = error.message;
-                    // logger.error('client registration failed', { error } );
+                    logger.error('client registration failed', { error } );
                     return res.status(400).send({ message });
                 }
                 else {
-                    // logger.error('client registration failed', { error } );
+                    logger.error('client registration failed', { error } );
                     return res.status(500).send({ error });
                 }
             }
@@ -85,7 +85,7 @@ authenticate.post('/login', async (req, res) => {
 
         if (err) {
             console.log(err);
-            // logger.error('error with bcrypt', { errorData: err });
+            logger.error('error with bcrypt', { error: err });
             return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
         }
 
