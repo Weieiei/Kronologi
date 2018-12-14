@@ -1,4 +1,5 @@
 import config = require('./config.json');
+import { knexSnakeCaseMappers } from 'objection';
 
 module.exports = {
 
@@ -16,7 +17,8 @@ module.exports = {
         },
         seeds: {
             directory: __dirname + '/seeds'
-        }
+        },
+        ...knexSnakeCaseMappers()
     },
     development: {
         client: 'pg',
@@ -32,7 +34,8 @@ module.exports = {
         },
         seeds: {
             directory: __dirname + '/seeds'
-        }
+        },
+        ...knexSnakeCaseMappers()
     },
     production: {
         client: 'pg',
@@ -48,6 +51,8 @@ module.exports = {
         },
         seeds: {
             directory: __dirname + '/seeds/production'
-        }
+        },
+        ...knexSnakeCaseMappers()
     }
+
 };

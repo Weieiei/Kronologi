@@ -10,9 +10,10 @@ import * as decode from 'jwt-decode';
 export class AuthService {
 
   /**
-   * Observable that will take notice of users registering, logging in, or logging out.
+   * Observable that will take notice of app initialization, as well as
+   * users registering, logging in, or logging out.
    */
-  public authenticateObservable = new Subject();
+  public adminObservable = new Subject();
 
   private admin = false;
 
@@ -51,7 +52,7 @@ export class AuthService {
 
   logoutUser(): void {
     this.deleteToken();
-    this.notifyAuthentication();
+    this.verifyAdminStatus();
     this.router.navigate(['']);
   }
 
@@ -63,8 +64,8 @@ export class AuthService {
    * So the navbar will be subscribed to this observable, and everytime it gets called (i.e. we 'ping' to it), we will
    * recall the getCredentials() method.
    */
-  notifyAuthentication(): void {
-    this.authenticateObservable.next();
+  verifyAdminStatus(): void {
+    this.adminObservable.next();
   }
 
   /**
@@ -85,7 +86,7 @@ export class AuthService {
 
   checkAdmin(): void {
     const claims: any = this.getTokenClaims(this.getToken());
-    this.admin = claims === null ? false : claims.type === 'Admin';
+    this.admin = claims === null ? false : claims.type === 'admin';
   }
 
 }

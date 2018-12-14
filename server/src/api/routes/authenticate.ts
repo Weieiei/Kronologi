@@ -1,10 +1,11 @@
 import express from 'express';
-import { Connection } from '../../db/knex';
-import { Client } from '../../models/user/Client';
+import { User } from '../../models/user/User';
+import { UserType } from '../../models/user/UserType';
 import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../models/logger';
 import { EmailService } from '../../models/email/emailService';
 import { validatePassword } from '../../helpers';
+import { ValidationError } from 'objection';
 
 const jwtWrapper = require('../../models/JWTWrapper');
 const logger = Logger.Instance.getGrayLog();
@@ -12,69 +13,54 @@ const logger = Logger.Instance.getGrayLog();
 const saltRounds = 10;
 const authenticate = express.Router();
 
-const knex = new Connection().knex();
 const emailService = new EmailService();
+
+const invalidCredentials = 'Incorrect username and/or password.';
 
 /**
  * @route       POST api/authenticate/register
  * @description Register user of type client.
  * @access      Public
  */
-authenticate.post('/register', (req, res) => {
+authenticate.post('/register', async (req, res) => {
 
     const { firstName, lastName, email, username, password } = req.body;
 
     const pw = validatePassword(password);
     if (!pw['isValid']) return res.status(400).send({ error: pw['errors'] });
 
-    const client: Client = new Client(firstName, lastName, email, username, password);
+    bcrypt.genSalt(saltRounds, async (err, salt) => {
 
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-
-        bcrypt.hash(client.getPassword(), salt, undefined, (err, hash) => {
+        bcrypt.hash(password, salt, undefined, async (err, hash) => {
 
             if (err) {
                 console.log(err);
-                logger.error('error with bcrypt', { errorData: err });
+                logger.error('error with bcrypt', { error: err });
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
 
-            client.setPassword(hash);
+            try {
 
-            knex.table('users').insert({
-                first_name: client.getFirstName(),
-                last_name:  client.getLastName(),
-                email: client.getEmail(),
-                username: client.getUsername(),
-                password: client.getPassword(),
-                user_type: Client.getType()
-            })
-            .returning(['id', 'user_type'])
-            .then(result => {
+                const user = await User
+                    .query()
+                    .insert({ firstName, lastName, email, username, password: hash, userType: UserType.client });
 
-                const token: string = generateToken(result[0].id, result[0].user_type);
-                emailService.sendEmail(client.getEmail(), 'Registration Successful', 'Congratulations!!');
+                const token: string = generateToken(user.id, user.userType);
+                emailService.sendEmail(email, 'Registration Successful', 'Congratulations!!');
                 return res.status(200).send({ token });
 
-            })
-            .catch(error => {
-
-                switch (error.constraint) {
-                    case 'users_first_name_length':
-                    case 'users_last_name_length':
-                        return res.status(400).send({ nameError: 'Both first and last names should be at least 2 characters long.' });
-                    case 'users_email_unique':
-                        return res.status(400).send({ emailError: 'An account with this email already exists.' });
-                    case 'users_username_unique':
-                        return res.status(400).send({ usernameError: 'This username is taken.' });
-                    case 'users_username_length':
-                        return res.status(400).send({ usernameError: 'Usernames should be between 4 and 30 characters.' });
+            }
+            catch (error) {
+                if (error instanceof ValidationError) {
+                    const message: string = error.message;
+                    logger.error('client registration failed', { error } );
+                    return res.status(400).send({ message });
                 }
-
-                logger.error('client registration failed', { errorData: error }, { clientId: client.getId() });
-                return res.status(500).send({ error });
-
-            });
+                else {
+                    logger.error('client registration failed', { error } );
+                    return res.status(500).send({ error });
+                }
+            }
 
         });
 
@@ -84,44 +70,33 @@ authenticate.post('/register', (req, res) => {
 
 /**
  * @route       POST api/authenticate/login
- * @description Login user.
+ * @description Login user of any type.
  * @access      Public
  */
-authenticate.post('/login', (req, res) => {
+authenticate.post('/login', async (req, res) => {
 
-  const { username, password } = req.body;
+    const { username, password } = req.body;
 
-    knex.select().from('users').where('username', username)
-    .then(user => {
+    const user = await User.query().where({ username }).first();
 
-        const invalidCredentials = 'Incorrect username and/or password.';
+    if (!user) return res.status(401).send({ invalidCredentials });
 
-        if (!user.length) {
+    bcrypt.compare(password, user.password, (err, match) => {
+
+        if (err) {
+            console.log(err);
+            logger.error('error with bcrypt', { error: err });
+            return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
+        }
+
+        if (match) {
+            const token: string = generateToken(user.id, user.userType);
+            return res.status(200).send({ token });
+        }
+        else {
             return res.status(401).send({ invalidCredentials });
         }
 
-        bcrypt.compare(password, user[0].password, (err, match) => {
-
-            if (err) {
-                console.log(err);
-                logger.error('error with bcrypt', { errorData: err });
-                return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
-            }
-
-            if (match) {
-                const token = generateToken(user[0].id, user[0].user_type);
-                return res.status(200).send({ token });
-            }
-            else {
-                return res.status(401).send({ invalidCredentials });
-            }
-
-        });
-
-    })
-    .catch(error => {
-        logger.error('error with login', { errorData: error });
-        return res.status(500).send({ error });
     });
 
 });

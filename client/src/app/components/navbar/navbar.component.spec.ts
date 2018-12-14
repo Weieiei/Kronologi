@@ -116,7 +116,7 @@ class MockAuthService {
 
   isAdmin(): boolean {
     const tokenClaims: any = this.getTokenClaims(this.getToken());
-    const isAdmin: boolean = tokenClaims === null ? false : tokenClaims.type === 'Admin';
+    const isAdmin: boolean = tokenClaims === null ? false : tokenClaims.type === 'admin';
     return isAdmin;
   }
 }
