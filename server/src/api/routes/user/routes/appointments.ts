@@ -12,21 +12,17 @@ const appointments = express.Router();
  */
 appointments.get('/', async (req, res) => {
 
-    const userId = req.userId;
-    const today = new Date();
+    const userId: number = req.userId;
+    const today: Date = new Date();
     const todayString: string = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
 
     try {
 
         const appointments = await Appointment
             .query()
-            .select(
-                'appointments.*',
-                'services.name as name', 'services.duration as duration'
-            )
-            .join('services', 'appointments.service_id', 'services.id')
             .where({ userId })
-            .andWhereRaw(`appointments.start_time >= '${todayString}'::date`);
+            .andWhereRaw(`appointments.start_time >= '${todayString}'::date`)
+            .eager('service');
 
         return res.status(200).send({ appointments });
 
@@ -44,10 +40,10 @@ appointments.get('/', async (req, res) => {
  */
 appointments.post('/', async (req, res) => {
 
-    const userId = req.userId;
-    const serviceId = req.body.service_id;
-    let startTime = req.body.start_time;
-    const notes = req.body.notes;
+    const userId: number = req.userId;
+    const serviceId: number = req.body.service_id;
+    let startTime: string = req.body.start_time;
+    const notes: string = req.body.notes;
 
     const service = await Service
         .query()
@@ -56,7 +52,7 @@ appointments.post('/', async (req, res) => {
 
     if (!service) res.status(404).send({ error: 'Service not found.' });
 
-    let endTime = moment(startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss');
+    let endTime: string = moment(startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss');
 
     startTime += '-05';
     endTime += '-05';

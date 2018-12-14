@@ -7,8 +7,8 @@ export class Appointment extends Model {
     readonly id!: number;
     userId?: number;
     serviceId?: number;
-    startTime?: Date;
-    endTime?: Date;
+    startTime?: string;
+    endTime?: string;
     notes?: string;
     createdAt?: Date;
     updatedAt?: Date;
@@ -24,7 +24,7 @@ export class Appointment extends Model {
     static get jsonSchema(): JsonSchema {
         return {
             type: 'object',
-            required: ['userId', 'serviceId', 'startTime', 'endTime', 'notes'],
+            required: ['userId', 'serviceId', 'startTime', 'endTime'],
             properties: {
                 id: { type: 'integer' },
                 userId: { type: 'integer' },
