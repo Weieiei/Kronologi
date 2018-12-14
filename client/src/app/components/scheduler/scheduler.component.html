@@ -1,2 +1,2 @@
 <app-month-picker [(year)]="year" [(month)]="month"></app-month-picker>
-<app-calendar [year]="year" [month]="month"></app-calendar>
+<app-calendar [year]="year" [month]="month" (dayChange)="setDay($event)"></app-calendar>

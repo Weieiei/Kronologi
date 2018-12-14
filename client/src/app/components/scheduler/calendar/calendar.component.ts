@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-calendar',
@@ -9,6 +9,7 @@ export class CalendarComponent implements OnInit, OnChanges {
 
   @Input() year: number;
   @Input() month: number;
+  @Output() dayChange = new EventEmitter();
 
   daysOfWeek = [
     'Sunday',
@@ -66,5 +67,11 @@ export class CalendarComponent implements OnInit, OnChanges {
 
   private setSpacerLength(): void {
     this.spacer = new Date(this.year, this.month, 1).getDay();
+  }
+
+  handleDateClick(date: any) {
+    if (date.enabled) {
+      this.dayChange.emit(date.date);
+    }
   }
 }
