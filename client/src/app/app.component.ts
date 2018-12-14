@@ -11,7 +11,8 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.authenticateObservable.subscribe(res => this.authService.checkAdmin());
+    this.authService.adminObservable.subscribe(res => this.authService.checkAdmin());
+    this.authService.verifyAdminStatus();
   }
 
 }

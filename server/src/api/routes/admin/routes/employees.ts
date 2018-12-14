@@ -1,34 +1,31 @@
 import express from 'express';
-import { Connection } from '../../../../db/knex';
 import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../../../models/logger';
-import { Employee } from '../../../../models/user/Employee';
+import { User } from '../../../../models/user/User';
+import { UserType } from '../../../../models/user/UserType';
 import { validatePassword } from '../../../../helpers';
+import { ValidationError } from 'objection';
 
 const employees = express.Router();
 
 const logger = Logger.Instance.getGrayLog();
 const saltRounds = 10;
 
-const knex = new Connection().knex();
-
 /**
  * @route       POST api/admin/employees/register
  * @description Create a user of type employee.
  * @access      Private
  */
-employees.post('/register', (req, res) => {
+employees.post('/register', async (req, res) => {
 
     const { firstName, lastName, email, username, password } = req.body;
 
     const pw = validatePassword(password);
     if (!pw['isValid']) return res.status(400).send({ error: pw['errors'] });
 
-    const employee: Employee = new Employee(firstName, lastName, email, username, password);
+    bcrypt.genSalt(saltRounds, async (err, salt) => {
 
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-
-        bcrypt.hash(employee.getPassword(), salt, undefined, (err, hash) => {
+        bcrypt.hash(password, salt, undefined, async (err, hash) => {
 
             if (err) {
                 console.log(err);
@@ -36,39 +33,28 @@ employees.post('/register', (req, res) => {
                 return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
             }
 
-            employee.setPassword(hash);
+            try {
 
-            knex.table('users').insert({
-                first_name: employee.getFirstName(),
-                last_name:  employee.getLastName(),
-                email: employee.getEmail(),
-                username: employee.getUsername(),
-                password: employee.getPassword(),
-                user_type: Employee.getType()
-            })
-                .then(result => {
+                await User
+                    .query()
+                    .insert({ firstName, lastName, email, username, password: hash, userType: UserType.employee });
 
-                    return res.status(200).send({ message: 'Successfully registered an employee.' });
+                return res.status(200).send({ message: 'Successfuly registered an employee.' });
 
-                })
-                .catch(error => {
+            }
+            catch (error) {
 
-                    switch (error.constraint) {
-                        case 'users_first_name_length':
-                        case 'users_last_name_length':
-                            return res.status(400).send({ nameError: 'Both first and last names should be at least 2 characters long.' });
-                        case 'users_email_unique':
-                            return res.status(400).send({ emailError: 'An account with this email already exists.' });
-                        case 'users_username_unique':
-                            return res.status(400).send({ usernameError: 'This username is taken.' });
-                        case 'users_username_length':
-                            return res.status(400).send({ usernameError: 'Usernames should be between 4 and 30 characters.' });
-                    }
-
-                    logger.error('employee registration failed', { errorData: error }, { employeeId: employee.getId() });
+                if (error instanceof ValidationError) {
+                    const message: string = error.message;
+                    // logger.error('employee registration failed', { error } );
+                    return res.status(400).send({ message });
+                }
+                else {
+                    // logger.error('employee registration failed', { error } );
                     return res.status(500).send({ error });
+                }
 
-                });
+            }
 
         });
 

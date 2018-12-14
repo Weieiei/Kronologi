@@ -10,13 +10,13 @@
 				<mat-form-field id="firstname" floatLabel="never">
 					<input matInput #firstNameInput [(ngModel)]="firstName"
 						type="text" name="firstname"
-						pattern=".{2,}" placeholder="First name" required>
+						pattern=".{1,}" placeholder="First name" required>
 				</mat-form-field>
 
 				<mat-form-field id="lastname" floatLabel="never">
 					<input matInput [(ngModel)]="lastName"
 						type="text" name="lastname"
-						pattern=".{2,}" placeholder="Last name" required>
+						pattern=".{1,}" placeholder="Last name" required>
 				</mat-form-field>
 			</div>
 

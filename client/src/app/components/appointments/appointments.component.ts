@@ -41,10 +41,10 @@ export class AppointmentsComponent implements OnInit {
     this.rawData.forEach(item => {
       const appointment: Appointment = {
         service: item.name,
-        date: this.getDate(item.start_time),
-        time: this.getTime(item.start_time),
+        date: this.getDate(item.startTime),
+        time: this.getTime(item.startTime),
         duration: item.duration + " min.",
-        user: item.first_name + " " + item.last_name,
+        user: item.firstName + " " + item.lastName,
       };
       dataSourceParsed.push(appointment);
     });
