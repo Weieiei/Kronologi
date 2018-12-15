@@ -1,4 +1,7 @@
+import * as dotenv from 'dotenv';
 import { knexSnakeCaseMappers } from 'objection';
+
+dotenv.config({ path: '../../.env' });
 
 module.exports = {
 
@@ -9,7 +12,7 @@ module.exports = {
             port: process.env.DB_PORT,
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
-            database: 'scheduler-test'
+            database: process.env.DB_NAME_TEST
         },
         migrations: {
             directory: __dirname + '/migrations'
