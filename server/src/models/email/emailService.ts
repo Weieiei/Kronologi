@@ -1,5 +1,4 @@
 import * as nodemailer from 'nodemailer';
-import * as config from './config.json';
 
 export class EmailService {
 
@@ -9,10 +8,9 @@ export class EmailService {
     private transporter;
 
     constructor() {
-        // set to default credentials(credentials of test email account)
-        this.service = config.service;
-        this.userEmail = config.email;
-        this.password = config.password;
+        this.service = process.env.EMAIL_SERVICE;
+        this.userEmail = process.env.EMAIL;
+        this.password = process.env.EMAIL_PASSWORD;
         this.updateTransport();
     }
 
