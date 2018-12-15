@@ -6,7 +6,7 @@ import { Logger } from '../../models/logger';
 import { EmailService } from '../../models/email/emailService';
 import { validatePassword } from '../../helpers/helper_functions';
 import { ValidationError } from 'objection';
-import { JWTWrapper } from '../../models/JWTWrapper';
+import { JWTWrapper } from '../../wrappers/JWTWrapper';
 
 const logger = Logger.Instance.getGrayLog();
 

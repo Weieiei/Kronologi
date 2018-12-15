@@ -1,4 +1,4 @@
-import { JWTWrapper } from '../models/JWTWrapper';
+import { JWTWrapper } from '../wrappers/JWTWrapper';
 const error = 'Unauthorized request.';
 
 /**
