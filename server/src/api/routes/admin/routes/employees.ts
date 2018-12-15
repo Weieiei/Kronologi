@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../../../models/logger';
 import { User } from '../../../../models/user/User';
 import { UserType } from '../../../../models/user/UserType';
-import { validatePassword } from '../../../../helpers';
+import { validatePassword } from '../../../../helpers/helper_functions';
 import { ValidationError } from 'objection';
 
 const employees = express.Router();
@@ -44,13 +44,13 @@ employees.post('/register', async (req, res) => {
             }
             catch (error) {
 
+                logger.error('employee registration failed', { error } );
+
                 if (error instanceof ValidationError) {
                     const message: string = error.message;
-                    logger.error('employee registration failed', { error } );
                     return res.status(400).send({ message });
                 }
                 else {
-                    logger.error('employee registration failed', { error } );
                     return res.status(500).send({ error });
                 }
 
