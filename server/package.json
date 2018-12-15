@@ -43,7 +43,6 @@
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "chai": "^4.2.0",
-    "concurrently": "^3.5.1",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "mocha": "^5.2.0",
