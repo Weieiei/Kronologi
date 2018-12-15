@@ -1,18 +1,4 @@
-import knex = require('knex');
-import { Config } from 'knex';
+import knex from 'knex';
+import * as knexfile from './knexfile';
 
-// TODO getInstance()
-
-/**
- * Class to set up the knex connection to allow access to our db instance
- */
-export class Connection {
-    public knex(): knex {
-        return knex(exportConfig());
-    }
-}
-
-function exportConfig(): Config {
-    const environment = process.env.NODE_ENV || 'development';
-    return require('./knexfile')[environment];
-}
+export const db: knex = knex(knexfile[process.env.NODE_ENV]);

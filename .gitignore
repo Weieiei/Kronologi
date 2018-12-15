@@ -40,3 +40,4 @@ dist/
 Thumbs.db
 
 # User Specified
+.env

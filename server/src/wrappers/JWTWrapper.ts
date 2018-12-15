@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken';
-const secretKey = 'secretKey';
+
+const secretKey = process.env.JWT_SECRET;
 
 export class JWTWrapper {
 
