@@ -1,0 +1,9 @@
+.mat-horizontal-stepper-content[aria-expanded='false'] {
+  height: 0;
+  overflow: hidden;
+}
+
+.mat-horizontal-content-container {
+  overflow: hidden;
+  padding: 0;
+}
