@@ -65,35 +65,18 @@ export class User extends Model {
     }
 
     async $beforeInsert() {
-        await this.validateUserData();
+        this.validateUserData();
+        await this.checkIfUserExists();
         this.createdAt = new Date();
     }
 
     async $beforeUpdate() {
-        await this.validateUserData();
+        this.validateUserData();
+        await this.checkIfUserExists();
         this.updatedAt = new Date();
     }
 
-    async validateUserData() {
-
-        const user = await User
-            .query().where({ username: this.username }).orWhere({ email: this.email })
-            .first();
-
-        if (user) {
-            if (user.username === this.username) {
-                throw new ValidationError({
-                    message: 'This username is taken.',
-                    type: 'UniqueUsernameError'
-                });
-            }
-            else if (user.email === this.email) {
-                throw new ValidationError({
-                    message: 'An account with this email already exists.',
-                    type: 'UniqueEmailError'
-                });
-            }
-        }
+    validateUserData() {
 
         if (!this.firstName.length) {
             throw new ValidationError({
@@ -118,6 +101,29 @@ export class User extends Model {
                 message: 'Please make sure to provide a valid email.',
                 type: 'EmailError'
             });
+        }
+
+    }
+
+    async checkIfUserExists() {
+
+        const user = await User
+            .query().where({ username: this.username }).orWhere({ email: this.email })
+            .first();
+
+        if (user) {
+            if (user.username === this.username) {
+                throw new ValidationError({
+                    message: 'This username is taken.',
+                    type: 'UniqueUsernameError'
+                });
+            }
+            else if (user.email === this.email) {
+                throw new ValidationError({
+                    message: 'An account with this email already exists.',
+                    type: 'UniqueEmailError'
+                });
+            }
         }
 
     }

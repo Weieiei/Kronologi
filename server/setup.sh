@@ -25,11 +25,11 @@ bash -c '
     if </dev/tcp/$DB_HOST/5432 ;
     then
         (
-            cd ./db/
-            ../../node_modules/.bin/knex migrate:latest
-            ../../node_modules/.bin/knex seed:run
+            cd ./dist/db/
+            npx knex migrate:latest
+            npx knex seed:run
         )
 
-        node app.js
+        node ./dist/app.js
     fi
 '

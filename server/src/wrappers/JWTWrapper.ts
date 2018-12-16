@@ -1,7 +1,8 @@
 import * as jwt from 'jsonwebtoken';
-const secretKey = 'secretKey';
 
-class JWTWrapper {
+const secretKey = process.env.JWT_SECRET;
+
+export class JWTWrapper {
 
     static generateToken(payload): string {
         return jwt.sign(payload, secretKey);
@@ -12,5 +13,3 @@ class JWTWrapper {
     }
 
 }
-
-module.exports = JWTWrapper;

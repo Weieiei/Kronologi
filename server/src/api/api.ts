@@ -1,5 +1,4 @@
 import express from 'express';
-const jwtWrapper = require('../models/JWTWrapper');
 
 const authenticate = require('./routes/authenticate');
 const services = require('./routes/services');
@@ -7,43 +6,15 @@ const services = require('./routes/services');
 const user = require('./routes/user/user');
 const admin = require('./routes/admin/admin');
 
-import { UserType } from '../models/user/UserType';
+import { db } from '../db/knex';
 import { Model } from 'objection';
-import { Connection } from '../db/knex';
+
+import { userMiddleware } from '../middlewares/user';
+import { adminMiddleware } from '../middlewares/admin';
 
 const api = express.Router();
-const error = 'Unauthorized request.';
 
-function userMiddleware(req, res, next) {
-    if (!req.headers.authorization) {
-        return res.status(401).send({ error });
-    }
-
-    const token = req.headers.authorization.split(' ')[1];
-    if (token === 'null') {
-        return res.status(401).send({ error });
-    }
-
-    const payload = jwtWrapper.verifyToken(token);
-    if (!payload) {
-        return res.status(401).send({ error });
-    }
-
-    req.userId = payload.subject;
-    req.userType = payload.type;
-
-    next();
-}
-
-function adminMiddleware(req, res, next) {
-    if (req.userType !== UserType.admin) {
-        return res.status(401).send({ error });
-    }
-
-    next();
-}
-
-Model.knex(new Connection().knex());
+Model.knex(db);
 
 ///////////////
 // START OF API

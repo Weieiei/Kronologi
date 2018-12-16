@@ -4,10 +4,10 @@ import { UserType } from '../../models/user/UserType';
 import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../models/logger';
 import { EmailService } from '../../models/email/emailService';
-import { validatePassword } from '../../helpers';
+import { validatePassword } from '../../helpers/helper_functions';
 import { ValidationError } from 'objection';
+import { JWTWrapper } from '../../wrappers/JWTWrapper';
 
-const jwtWrapper = require('../../models/JWTWrapper');
 const logger = Logger.Instance.getGrayLog();
 
 const saltRounds = 10;
@@ -51,15 +51,17 @@ authenticate.post('/register', async (req, res) => {
 
             }
             catch (error) {
+
+                logger.error('client registration failed', { error } );
+
                 if (error instanceof ValidationError) {
                     const message: string = error.message;
-                    logger.error('client registration failed', { error } );
                     return res.status(400).send({ message });
                 }
                 else {
-                    logger.error('client registration failed', { error } );
                     return res.status(500).send({ error });
                 }
+
             }
 
         });
@@ -103,7 +105,7 @@ authenticate.post('/login', async (req, res) => {
 
 function generateToken(userId: number, userType: string): string {
     const payload: string | Buffer | object = { subject: userId, type: userType };
-    return jwtWrapper.generateToken(payload);
+    return JWTWrapper.generateToken(payload);
 }
 
 module.exports = authenticate;
