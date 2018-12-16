@@ -1,52 +1,8 @@
-<div class="main">
-
-	<form #appointmentForm="ngForm" (ngSubmit)="makeAppointment()" autocomplete="off">
-
-		<div>
-			<!-- Service -->
-			<mat-form-field>
-				<mat-select placeholder="Choose a service" name="serviceId" id="serviceId" [(ngModel)]="appointment.service_id" (selectionChange)="updateEndTime()" required>
-					<mat-option *ngFor="let service of services" [value]="service.id">
-						{{ service.name }} // {{ service.duration }}
-					</mat-option>
-				</mat-select>
-				<mat-hint>Here's the drop-down arrow ^</mat-hint>
-			</mat-form-field>
-		</div>
-
-		<div>
-			<!-- Calendar -->
-			<mat-form-field>
-				<input matInput [matDatepicker]="picker" [matDatepickerFilter]="dateFilter" placeholder="Choose a date" [(ngModel)]="date"
-					name="start_date" required>
-				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-				<mat-datepicker #picker></mat-datepicker>
-			</mat-form-field>
-
-			<!-- Start time and end time (latter is only used to show user when appointment will end) -->
-			<div>
-				<mat-form-field class="field" hintLabel="Choose a start time" floatLabel="never">
-					<input matInput placeholder="Time" type="time" id="appt" name="appt" required [(ngModel)]="startTime"
-						name="start_time" (change)="updateEndTime()" required>
-				</mat-form-field>
-		
-				<mat-form-field class="field" hintLabel="Will end at" floatLabel="never">
-					<input matInput placeholder="Time" type="time" id="appt" name="appt" [(ngModel)]="endTime"
-						name="endTime" disabled>
-				</mat-form-field>
-			</div>
-
-		</div>
-
-		<div>
-			<!-- Notes -->
-			<mat-form-field>
-				<textarea matInput placeholder="Leave a note" [(ngModel)]="appointment.notes" name="notes"></textarea>
-			</mat-form-field>
-		</div>
-
-		<button mat-stroked-button color="primary" type="submit" [disabled]="appointmentForm.form.invalid">Confirm Reservation</button>
-
-	</form>
-
-</div>
+<app-custom-stepper #stepper>
+  <cdk-step>
+    <app-scheduler (dateChange)="setDate($event)"></app-scheduler>
+  </cdk-step>
+  <cdk-step>
+    The date you chose: {{ date }}
+  </cdk-step>
+</app-custom-stepper>

@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material';
+import { FlexModule } from '@angular/flex-layout';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +21,10 @@ import { AppointmentsComponent } from './components/appointments/appointments.co
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
 import { AdminGuard } from './guards/admin.guard';
+import { SchedulerComponent } from './components/scheduler/scheduler.component';
+import { CalendarComponent } from './components/scheduler/calendar/calendar.component';
+import { MonthPickerComponent } from './components/scheduler/month-picker/month-picker.component';
+import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +35,11 @@ import { AdminGuard } from './guards/admin.guard';
     AppointmentsComponent,
     LoginComponent,
     ReserveComponent,
-    MyAppointmentsComponent
+    MyAppointmentsComponent,
+    SchedulerComponent,
+    CalendarComponent,
+    MonthPickerComponent,
+    CustomStepperComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +47,7 @@ import { AdminGuard } from './guards/admin.guard';
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
+    FlexModule,
     HttpClientModule,
     BrowserModule
   ],

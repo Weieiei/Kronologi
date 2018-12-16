@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment/appointment.service';
 import { ServicesService } from 'src/app/services/services/services.service';
 import { Service } from 'src/app/interfaces/service';
 import * as moment from 'moment';
 import { Appointment } from 'src/app/models/appointment/appointment';
 import { Router } from '@angular/router';
+import { CustomStepperComponent } from '../custom-stepper/custom-stepper.component';
 
 @Component({
   selector: 'app-reserve',
@@ -14,10 +15,12 @@ import { Router } from '@angular/router';
 
 export class ReserveComponent implements OnInit {
 
+  @ViewChild('stepper') stepper: CustomStepperComponent;
+
   services: any[];
 
   appointment: Appointment;
-  date: string;
+  date: Date;
   startTime: string;
   endTime: string;
 
@@ -36,7 +39,7 @@ export class ReserveComponent implements OnInit {
     this.servicesService.getServices().subscribe(
       res => this.services = res,
       err => console.log(err)
-    )
+    );
   }
 
   private findServiceById(id: number): Service {
@@ -52,12 +55,17 @@ export class ReserveComponent implements OnInit {
   }
 
   makeAppointment(): void {
-    let date = moment(this.date).format('YYYY-MM-DD');
+    const date = moment(this.date).format('YYYY-MM-DD');
     this.appointment.start_time = moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss');
     this.appointmentService.reserveAppointment(this.appointment).subscribe(
       res => this.router.navigate(['/my/appts']),
       err => console.log(err)
-    )
+    );
+  }
+
+  setDate(date: Date): void {
+    this.date = date;
+    this.stepper.next();
   }
 
 }

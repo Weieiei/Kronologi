@@ -1,0 +1,18 @@
+<!--<mat-progress-bar mode="determinate" [value]="selectedIndex * (100 / (_steps.length - 1))" style="height: 8px"></mat-progress-bar>-->
+<div fxLayout="row">
+  <ng-container *ngFor="let step of _steps; let i = index; let last = last">
+    <mat-progress-bar mode="determinate" [value]="selectedIndex >= i ? 100 : 0" style="height: 8px"></mat-progress-bar>
+    <div *ngIf="!last" style="background-color: black; width: 4px;"></div>
+  </ng-container>
+</div>
+
+<div class="mat-horizontal-content-container">
+  <div *ngFor="let step of _steps; let i = index"
+       class="mat-horizontal-stepper-content" role="tabpanel"
+       [@stepTransition]="_getAnimationDirection(i)"
+       [id]="_getStepContentId(i)"
+       [attr.aria-labelledby]="_getStepLabelId(i)"
+       [attr.aria-expanded]="selectedIndex === i">
+    <ng-container [ngTemplateOutlet]="step.content"></ng-container>
+  </div>
+</div>
