@@ -1,4 +1,6 @@
 import { JWTWrapper } from '../wrappers/JWTWrapper';
+import { RequestWrapper } from '../wrappers/RequestWrapper';
+
 const error = 'Unauthorized request.';
 
 /**
@@ -6,7 +8,7 @@ const error = 'Unauthorized request.';
  * If it is, store the user ID and type in the request, and move on to the next function in the request-response cycle.
  * If it's not, return an error.
  */
-export function userMiddleware(req, res, next) {
+export function userMiddleware(req: RequestWrapper, res, next) {
 
     if (!req.headers.authorization) {
         return res.status(401).send({ error });

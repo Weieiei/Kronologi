@@ -10,14 +10,6 @@ const app = express();
 
 const PORT = process.env.PORT;
 
-declare global {
-    namespace Express {
-        interface Request {
-            userId: number;
-        }
-    }
-}
-
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

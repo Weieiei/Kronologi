@@ -2,6 +2,7 @@ import express from 'express';
 import moment from 'moment';
 import { Appointment } from '../../../../models/appointment/Appointment';
 import { Service } from '../../../../models/service/Service';
+import { RequestWrapper } from '../../../../wrappers/RequestWrapper';
 
 const appointments = express.Router();
 
@@ -10,7 +11,7 @@ const appointments = express.Router();
  * @description Get all of you appointments that are either today or in the future.
  * @access      Private
  */
-appointments.get('/', async (req, res) => {
+appointments.get('/', async (req: RequestWrapper, res) => {
 
     const userId: number = req.userId;
     const today: Date = new Date();
@@ -38,7 +39,7 @@ appointments.get('/', async (req, res) => {
  * @description Make an appointment.
  * @access      Private
  */
-appointments.post('/', async (req, res) => {
+appointments.post('/', async (req: RequestWrapper, res) => {
 
     const userId: number = req.userId;
     const serviceId: number = req.body.service_id;
