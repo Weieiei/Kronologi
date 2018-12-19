@@ -1,16 +1,8 @@
-import express from 'express';
-import { Appointment } from '../../../../models/appointment/Appointment';
-import { RequestWrapper } from '../../../../wrappers/RequestWrapper';
+import { Appointment } from '../models/appointment/Appointment';
+import { RequestWrapper } from '../wrappers/RequestWrapper';
 import { ValidationError } from 'objection';
 
-const appointments = express.Router();
-
-/**
- * @route       GET api/user/appointments
- * @description Get all of you appointments that are either today or in the future.
- * @access      Private
- */
-appointments.get('/', async (req: RequestWrapper, res) => {
+export const getMyAppointments = async (req: RequestWrapper, res) => {
 
     const userId: number = req.userId;
     const today: Date = new Date();
@@ -31,14 +23,9 @@ appointments.get('/', async (req: RequestWrapper, res) => {
         return res.status(500).send({ error });
     }
 
-});
+};
 
-/**
- * @route       POST api/user/appointments
- * @description Make an appointment.
- * @access      Private
- */
-appointments.post('/', async (req: RequestWrapper, res) => {
+export const bookAppointment = async (req: RequestWrapper, res) => {
 
     const userId: number = req.userId;
     const { employeeId, serviceId, startTime, notes } = req.body;
@@ -63,6 +50,14 @@ appointments.post('/', async (req: RequestWrapper, res) => {
 
     }
 
-});
+};
 
-module.exports = appointments;
+export const getAllAppointments = async (req, res) => {
+
+    const appointments = await Appointment
+        .query()
+        .eager('[user, service]');
+
+    res.status(200).send({ appointments });
+
+};

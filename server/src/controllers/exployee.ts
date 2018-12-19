@@ -1,20 +1,12 @@
-import express from 'express';
-import { Logger } from '../../../../models/logger';
-import { User } from '../../../../models/user/User';
-import { UserType } from '../../../../models/user/UserType';
-import { hashPassword, validatePassword } from '../../../../helpers/helper_functions';
+import { hashPassword, validatePassword } from '../helpers/helper_functions';
+import { Logger } from '..//models/logger';
+import { User } from '../models/user/User';
+import { UserType } from '../models/user/UserType';
 import { ValidationError } from 'objection';
-
-const employees = express.Router();
 
 const logger = Logger.Instance.getGrayLog();
 
-/**
- * @route       POST api/admin/employees/register
- * @description Create a user of type employee.
- * @access      Private
- */
-employees.post('/register', async (req, res) => {
+export const createEmployee = async (req, res) => {
 
     const { firstName, lastName, email, username, password } = req.body;
 
@@ -47,6 +39,4 @@ employees.post('/register', async (req, res) => {
 
     }
 
-});
-
-module.exports = employees;
+};
