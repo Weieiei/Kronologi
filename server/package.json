@@ -15,7 +15,6 @@
     "@types/knex": "^0.15.1",
     "@types/nodemailer": "^4.6.5",
     "bcrypt-nodejs": "0.0.3",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "chai-http": "^4.2.0",
     "debug": "^4.1.0",

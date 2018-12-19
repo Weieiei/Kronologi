@@ -1,6 +1,6 @@
 import { Model, JsonSchema, RelationMappings, snakeCaseMappers } from 'objection';
 import { User } from '../user/User';
-import {Service} from "../service/Service";
+import { Service } from '../service/Service';
 
 export class Appointment extends Model {
 

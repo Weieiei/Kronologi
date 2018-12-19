@@ -1,20 +1,15 @@
 import express from 'express';
 import { User } from '../../models/user/User';
 import { UserType } from '../../models/user/UserType';
-import * as bcrypt from 'bcrypt-nodejs';
 import { Logger } from '../../models/logger';
 import { EmailService } from '../../models/email/emailService';
-import { validatePassword } from '../../helpers/helper_functions';
+import { generateToken, hashPassword, passwordsMatch, validatePassword } from '../../helpers/helper_functions';
 import { ValidationError } from 'objection';
-import { JWTWrapper } from '../../wrappers/JWTWrapper';
 
-const logger = Logger.Instance.getGrayLog();
-
-const saltRounds = 10;
 const authenticate = express.Router();
 
+const logger = Logger.Instance.getGrayLog();
 const emailService = new EmailService();
-
 const invalidCredentials = 'Incorrect username and/or password.';
 
 /**
@@ -26,47 +21,36 @@ authenticate.post('/register', async (req, res) => {
 
     const { firstName, lastName, email, username, password } = req.body;
 
-    const pw = validatePassword(password);
-    if (!pw['isValid']) return res.status(400).send({ error: pw['errors'] });
+    try {
+        validatePassword(password);
+    }
+    catch (error) {
+        return res.status(400).send({ error: error.message });
+    }
 
-    bcrypt.genSalt(saltRounds, async (err, salt) => {
+    try {
 
-        bcrypt.hash(password, salt, undefined, async (err, hash) => {
+        const user = await User
+            .query()
+            .insert({ firstName, lastName, email, username, password: await hashPassword(password), userType: UserType.client });
 
-            if (err) {
-                console.log(err);
-                logger.error('error with bcrypt', { error: err });
-                return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
-            }
+        const token: string = generateToken(user.id, user.userType);
+        emailService.sendEmail(email, 'Registration Successful', 'Congratulations!!');
+        return res.status(200).send({ token });
 
-            try {
+    }
+    catch (error) {
 
-                const user = await User
-                    .query()
-                    .insert({ firstName, lastName, email, username, password: hash, userType: UserType.client });
+        logger.error('client registration failed', { error } );
 
-                const token: string = generateToken(user.id, user.userType);
-                emailService.sendEmail(email, 'Registration Successful', 'Congratulations!!');
-                return res.status(200).send({ token });
+        if (error instanceof ValidationError) {
+            return res.status(400).send({ error: error.message });
+        }
+        else {
+            return res.status(500).send({ error });
+        }
 
-            }
-            catch (error) {
-
-                logger.error('client registration failed', { error } );
-
-                if (error instanceof ValidationError) {
-                    const message: string = error.message;
-                    return res.status(400).send({ message });
-                }
-                else {
-                    return res.status(500).send({ error });
-                }
-
-            }
-
-        });
-
-    });
+    }
 
 });
 
@@ -80,32 +64,16 @@ authenticate.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     const user = await User.query().where({ username }).first();
-
     if (!user) return res.status(401).send({ invalidCredentials });
 
-    bcrypt.compare(password, user.password, (err, match) => {
-
-        if (err) {
-            console.log(err);
-            logger.error('error with bcrypt', { error: err });
-            return res.status(500).send({ error: 'Something went wrong with bcrypt.' });
-        }
-
-        if (match) {
-            const token: string = generateToken(user.id, user.userType);
-            return res.status(200).send({ token });
-        }
-        else {
-            return res.status(401).send({ invalidCredentials });
-        }
-
-    });
+    if (await passwordsMatch(password, user.password)) {
+        const token: string = generateToken(user.id, user.userType);
+        return res.status(200).send({ token });
+    }
+    else {
+        return res.status(401).send({ invalidCredentials });
+    }
 
 });
-
-function generateToken(userId: number, userType: string): string {
-    const payload: string | Buffer | object = { subject: userId, type: userType };
-    return JWTWrapper.generateToken(payload);
-}
 
 module.exports = authenticate;
