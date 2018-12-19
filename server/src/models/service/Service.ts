@@ -1,5 +1,6 @@
 import { Model, JsonSchema, snakeCaseMappers, RelationMappings } from 'objection';
 import { Appointment } from '../appointment/Appointment';
+import { User } from '../user/User';
 
 export class Service extends Model {
 
@@ -41,6 +42,18 @@ export class Service extends Model {
                 join: {
                     from: 'services.id',
                     to: 'appointments.service_id'
+                }
+            },
+            employees: {
+                relation: Model.ManyToManyRelation,
+                modelClass: User,
+                join: {
+                    from: 'services.id',
+                    through: {
+                        from: 'employee_service.service_id',
+                        to: 'employee_service.employee_id'
+                    },
+                    to: 'users.id'
                 }
             }
         };

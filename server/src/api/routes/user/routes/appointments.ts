@@ -1,8 +1,7 @@
 import express from 'express';
-import moment from 'moment';
 import { Appointment } from '../../../../models/appointment/Appointment';
-import { Service } from '../../../../models/service/Service';
 import { RequestWrapper } from '../../../../wrappers/RequestWrapper';
+import { ValidationError } from 'objection';
 
 const appointments = express.Router();
 
@@ -43,32 +42,27 @@ appointments.post('/', async (req: RequestWrapper, res) => {
 
     const userId: number = req.userId;
     const serviceId: number = req.body.service_id;
-    let startTime: string = req.body.start_time;
+    const startTime: string = req.body.start_time;
     const notes: string = req.body.notes;
-
-    const service = await Service
-        .query()
-        .where({ id: serviceId })
-        .first();
-
-    if (!service) res.status(404).send({ error: 'Service not found.' });
-
-    let endTime: string = moment(startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss');
-
-    startTime += '-05';
-    endTime += '-05';
 
     try {
 
         await Appointment
             .query()
-            .insert({ userId, serviceId, startTime, endTime, notes });
+            .insert({ userId, serviceId, startTime, notes });
 
         res.status(200).send({ message: 'Successfully booked.' });
 
     }
     catch (error) {
-        res.status(500).send({ error });
+
+        if (error instanceof ValidationError) {
+            return res.status(400).send({ error: error.message });
+        }
+        else {
+            res.status(500).send({ error });
+        }
+
     }
 
 });

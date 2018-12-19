@@ -1,6 +1,7 @@
-import { Model, JsonSchema, RelationMappings, snakeCaseMappers } from 'objection';
+import { Model, JsonSchema, RelationMappings, snakeCaseMappers, ValidationError } from 'objection';
 import { User } from '../user/User';
 import { Service } from '../service/Service';
+import moment from 'moment';
 
 export class Appointment extends Model {
 
@@ -24,7 +25,7 @@ export class Appointment extends Model {
     static get jsonSchema(): JsonSchema {
         return {
             type: 'object',
-            required: ['userId', 'serviceId', 'startTime', 'endTime'],
+            required: ['userId', 'serviceId', 'startTime'],
             properties: {
                 id: { type: 'integer' },
                 userId: { type: 'integer' },
@@ -62,6 +63,22 @@ export class Appointment extends Model {
     }
 
     async $beforeInsert() {
+
+        const service = await Service
+            .query()
+            .where({ id: this.serviceId })
+            .first();
+
+        if (!service) {
+            throw new ValidationError({
+                message: 'You must provide a valid service.',
+                type: 'InvalidService'
+            });
+        }
+
+        this.endTime = moment(this.startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss');
+        this.startTime += '-05';
+        this.endTime += '-05';
 
         /**
          * TODO
