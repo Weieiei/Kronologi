@@ -41,15 +41,13 @@ appointments.get('/', async (req: RequestWrapper, res) => {
 appointments.post('/', async (req: RequestWrapper, res) => {
 
     const userId: number = req.userId;
-    const serviceId: number = req.body.service_id;
-    const startTime: string = req.body.start_time;
-    const notes: string = req.body.notes;
+    const { employeeId, serviceId, startTime, notes } = req.body;
 
     try {
 
         await Appointment
             .query()
-            .insert({ userId, serviceId, startTime, notes });
+            .insert({ userId, employeeId, serviceId, startTime, notes });
 
         res.status(200).send({ message: 'Successfully booked.' });
 

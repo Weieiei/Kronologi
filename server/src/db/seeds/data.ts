@@ -47,8 +47,8 @@ exports.seed = async () => {
         ]);
 
 		await Appointment.query().insertGraph([
-            { userId: users[1].id, serviceId: services[6].id, startTime: '2019-11-30 18:00:00', notes: 'Hello world' },
-            { userId: users[0].id, serviceId: services[11].id, startTime: '2019-12-02 19:30:00', notes: 'Some note' }
+            { userId: users[1].id, employeeId: employee.id, serviceId: services[6].id, startTime: '2019-11-30 18:00:00', notes: 'Hello world' },
+            { userId: users[0].id, employeeId: employee.id, serviceId: services[11].id, startTime: '2019-12-02 19:30:00', notes: 'Some note' }
         ]);
 
 	}
