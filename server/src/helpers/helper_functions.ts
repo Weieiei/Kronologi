@@ -4,7 +4,7 @@ import { JWTWrapper } from '../wrappers/JWTWrapper';
 const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$/;
 const saltRounds: number = 10;
 
-export function validatePassword(password: string): void {
+export const validatePassword = (password: string): void => {
 
     if (password.length < 6 || password.length > 30) {
         throw Error('Password must be between 6 and 30 characters.');
@@ -13,9 +13,9 @@ export function validatePassword(password: string): void {
         throw Error('Password must contain at least 1 letter and 1 digit.');
     }
 
-}
+};
 
-export function hashPassword(password: string): Promise<string> {
+export const hashPassword = (password: string): Promise<string> => {
 
     return new Promise<string>((resolve, reject) => {
 
@@ -32,9 +32,9 @@ export function hashPassword(password: string): Promise<string> {
 
     });
 
-}
+};
 
-export function passwordsMatch(attemptedPassword, correctPassword): Promise<boolean> {
+export const passwordsMatch = (attemptedPassword, correctPassword): Promise<boolean> => {
 
     return new Promise<boolean>((resolve, reject) => {
 
@@ -47,9 +47,9 @@ export function passwordsMatch(attemptedPassword, correctPassword): Promise<bool
 
     });
 
-}
+};
 
-export function generateToken(userId: number, userType: string): string {
+export const generateToken = (userId: number, userType: string): string => {
     const payload: string | Buffer | object = { subject: userId, type: userType };
     return JWTWrapper.generateToken(payload);
-}
+};
