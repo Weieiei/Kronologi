@@ -1,4 +1,4 @@
-import {generateToken, hashPassword, passwordsMatch, validatePassword} from '../helpers/helper_functions';
+import { generateToken, hashPassword, passwordsMatch, validatePassword } from '../helpers/helper_functions';
 import { User } from '../models/user/User';
 import { UserType } from '../models/user/UserType';
 import { ValidationError } from 'objection';
@@ -11,7 +11,7 @@ const invalidCredentials = 'Incorrect username and/or password.';
 
 export const register = async (req, res) => {
 
-    const { firstName, lastName, email, username, password } = req.body;
+    const { firstName, lastName, email, username, password } = req.body.user;
 
     try {
         validatePassword(password);
@@ -48,7 +48,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
 
-    const { username, password } = req.body;
+    const { username, password } = req.body.user;
 
     const user = await User.query().where({ username }).first();
     if (!user) return res.status(401).send({ invalidCredentials });

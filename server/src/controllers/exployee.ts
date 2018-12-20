@@ -8,7 +8,7 @@ const logger = Logger.Instance.getGrayLog();
 
 export const createEmployee = async (req, res) => {
 
-    const { firstName, lastName, email, username, password } = req.body;
+    const { firstName, lastName, email, username, password } = req.body.employee;
 
     try {
         validatePassword(password);

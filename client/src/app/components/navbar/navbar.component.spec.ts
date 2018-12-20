@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { By } from '@angular/platform-browser';
 import { MaterialModule } from 'src/app/material';
 import { Subject } from 'rxjs';
+import { UserType } from '../../models/user/UserType';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -116,7 +117,7 @@ class MockAuthService {
 
   isAdmin(): boolean {
     const tokenClaims: any = this.getTokenClaims(this.getToken());
-    const isAdmin: boolean = tokenClaims === null ? false : tokenClaims.type === 'admin';
+    const isAdmin: boolean = tokenClaims === null ? false : tokenClaims.type === UserType.admin;
     return isAdmin;
   }
 }
