@@ -1,6 +1,6 @@
 import express from 'express';
 import { getAllAppointments } from '../../../controllers/appointment';
-import { createEmployee } from '../../../controllers/exployee';
+import { createEmployee } from '../../../controllers/employee';
 
 export const admin = express.Router();
 

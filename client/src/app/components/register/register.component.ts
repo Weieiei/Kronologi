@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { UserRegister } from '../../models/user/UserRegister';
+import { Service } from '../../models/service/Service';
+import { ServiceService } from '../../services/service/service.service';
+import { EmployeeRegister } from '../../models/user/EmployeeRegister';
 
 @Component({
     selector: 'app-register',
@@ -19,6 +22,7 @@ export class RegisterComponent implements OnInit {
     data: Data;
 
     user: UserRegister;
+    employee: EmployeeRegister;
 
     firstName: string;
     lastName: string;
@@ -28,17 +32,31 @@ export class RegisterComponent implements OnInit {
 
     repeatPassword: string;
 
+    /**
+     * First get the list of all services offered by the spa.
+     * Then keep track of just the id's of those services that the employee will be assigned.
+     */
+    services: Service[];
+    employeeServices: number[];
+
     @ViewChild('firstNameInput') firstNameInput: ElementRef;
 
     constructor(
         private authService: AuthService,
+        private serviceService: ServiceService,
         private router: Router,
         private route: ActivatedRoute
     ) {
     }
 
     ngOnInit() {
-        this.route.data.subscribe(data => this.data = data);
+        this.route.data.subscribe(data => {
+            this.data = data;
+            if (this.data.type === AuthService.registerEmployee) {
+                this.getServices();
+                this.employeeServices = [];
+            }
+        });
         this.firstNameInput.nativeElement.focus();
     }
 
@@ -46,9 +64,9 @@ export class RegisterComponent implements OnInit {
 
         if (this.password === this.repeatPassword) {
 
-            if (this.data.type === 'register-client') {
+            if (this.data.type === AuthService.registerClient) {
                 this.registerClient();
-            } else if (this.data.type === 'register-employee') {
+            } else if (this.data.type === AuthService.registerEmployee) {
                 this.registerEmployee();
             }
 
@@ -75,15 +93,28 @@ export class RegisterComponent implements OnInit {
 
     registerEmployee() {
 
-        this.user = new UserRegister(this.firstName, this.lastName, this.email, this.username, this.password);
+        this.employee = new EmployeeRegister(
+            this.firstName, this.lastName, this.email, this.username, this.password, this.employeeServices
+        );
 
-        this.authService.registerEmployee(this.user).subscribe(
+        this.authService.registerEmployee(this.employee).subscribe(
             res => {
                 alert('Successfully created employee.');
             },
             err => console.log(err)
         );
 
+    }
+
+    getServices() {
+        this.serviceService.getServices().subscribe(
+            res => this.services = res,
+            err => console.log(err)
+        );
+    }
+
+    addService(id: number) {
+        console.log('fds');
     }
 
 }

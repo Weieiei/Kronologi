@@ -12,6 +12,9 @@ import { UserType } from '../../models/user/UserType';
 })
 export class AuthService {
 
+    static registerClient = 'register-client';
+    static registerEmployee = 'register-employee';
+
     /**
      * Observable that will take notice of app initialization, as well as
      * users registering, logging in, or logging out.

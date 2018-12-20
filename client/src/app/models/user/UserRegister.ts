@@ -6,7 +6,6 @@ export class UserRegister {
     private username: string;
     private password: string;
 
-
     public constructor(firstName: string, lastName: string, email: string, username: string, password: string) {
         this.firstName = firstName;
         this.lastName = lastName;
