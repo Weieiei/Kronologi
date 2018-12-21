@@ -1,6 +1,7 @@
 import { Model, JsonSchema, RelationMappings, snakeCaseMappers, ValidationError } from 'objection';
 import { Appointment } from '../appointment/Appointment';
 import { Service } from '../service/Service';
+import { EmployeeShift } from '../shift/EmployeeShift';
 
 export class User extends Model {
 
@@ -68,6 +69,14 @@ export class User extends Model {
                         to: 'employee_service.service_id'
                     },
                     to: 'services.id'
+                }
+            },
+            shifts: {
+                relation: Model.HasManyRelation,
+                modelClass: EmployeeShift,
+                join: {
+                    from: 'users.id',
+                    to: 'employee_shifts.employee_id'
                 }
             }
         };

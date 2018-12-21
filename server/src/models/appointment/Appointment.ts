@@ -55,7 +55,7 @@ export class Appointment extends Model {
                 }
             },
             employee: {
-                relation: Model.HasOneRelation,
+                relation: Model.BelongsToOneRelation,
                 modelClass: User,
                 join: {
                     from: 'appointments.employee_id',
