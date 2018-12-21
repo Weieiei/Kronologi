@@ -16,7 +16,7 @@ export class AppointmentToBook {
         return this.employeeId;
     }
 
-    public setEmployeeId(employeeId: number) {
+    public setEmployeeId(employeeId: number): void {
         this.employeeId = employeeId;
     }
 
@@ -24,7 +24,7 @@ export class AppointmentToBook {
         return this.serviceId;
     }
 
-    public setServiceId(serviceId: number) {
+    public setServiceId(serviceId: number): void {
         this.serviceId = serviceId;
     }
 
@@ -32,7 +32,7 @@ export class AppointmentToBook {
         return this.startTime;
     }
 
-    public setStartTime(startTime: Date) {
+    public setStartTime(startTime: Date): void {
         this.startTime = startTime;
     }
 
@@ -40,7 +40,7 @@ export class AppointmentToBook {
         return this.notes;
     }
 
-    public setNotes(notes: string) {
+    public setNotes(notes: string): void {
         this.notes = notes;
     }
 

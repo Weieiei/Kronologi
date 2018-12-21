@@ -18,7 +18,7 @@ export class Service {
         return this.name;
     }
 
-    public setName(name: string) {
+    public setName(name: string): void {
         this.name = name;
     }
 
@@ -26,7 +26,7 @@ export class Service {
         return this.duration;
     }
 
-    public setDuration(duration: number) {
+    public setDuration(duration: number): void {
         this.duration = duration;
     }
 }

@@ -34,7 +34,7 @@ export class User {
         return this.firstName;
     }
 
-    public setFirstName(firstName: string) {
+    public setFirstName(firstName: string): void {
         this.firstName = firstName;
     }
 
@@ -42,7 +42,7 @@ export class User {
         return this.lastName;
     }
 
-    public setLastName(lastName: string) {
+    public setLastName(lastName: string): void {
         this.lastName = lastName;
     }
 
@@ -50,7 +50,7 @@ export class User {
         return this.email;
     }
 
-    public setEmail(email: string) {
+    public setEmail(email: string): void {
         this.email = email;
     }
 
@@ -58,7 +58,7 @@ export class User {
         return this.username;
     }
 
-    public setUsername(username: string) {
+    public setUsername(username: string): void {
         this.username = username;
     }
 
@@ -66,7 +66,7 @@ export class User {
         return this.password;
     }
 
-    public setPassword(password: string) {
+    public setPassword(password: string): void {
         this.password = password;
     }
 
@@ -74,7 +74,7 @@ export class User {
         return this.userType;
     }
 
-    public setUserType(userType: string) {
+    public setUserType(userType: string): void {
         this.userType = userType;
     }
 

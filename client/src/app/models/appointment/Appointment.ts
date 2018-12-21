@@ -34,7 +34,7 @@ export class Appointment {
         return this.userId;
     }
 
-    public setUserId(userId: number) {
+    public setUserId(userId: number): void {
         this.userId = userId;
     }
 
@@ -42,7 +42,7 @@ export class Appointment {
         return this.employeeId;
     }
 
-    public setEmployeeId(employeeId: number) {
+    public setEmployeeId(employeeId: number): void {
         this.employeeId = employeeId;
     }
 
@@ -50,7 +50,7 @@ export class Appointment {
         return this.serviceId;
     }
 
-    public setServiceId(serviceId: number) {
+    public setServiceId(serviceId: number): void {
         this.serviceId = serviceId;
     }
 
@@ -58,7 +58,7 @@ export class Appointment {
         return this.startTime;
     }
 
-    public setStartTime(startTime: Date) {
+    public setStartTime(startTime: Date): void {
         this.startTime = startTime;
     }
 
@@ -66,7 +66,7 @@ export class Appointment {
         return this.endTime;
     }
 
-    public setEndTime(endTime: Date) {
+    public setEndTime(endTime: Date): void {
         this.endTime = endTime;
     }
 
@@ -74,7 +74,7 @@ export class Appointment {
         return this.notes;
     }
 
-    public setNotes(notes: string) {
+    public setNotes(notes: string): void {
         this.notes = notes;
     }
 

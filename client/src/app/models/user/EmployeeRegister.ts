@@ -16,7 +16,7 @@ export class EmployeeRegister extends UserRegister {
         return this.services;
     }
 
-    public setServices(services: number[]) {
+    public setServices(services: number[]): void {
         this.services = services;
     }
 

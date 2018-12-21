@@ -22,7 +22,7 @@ export class MyAppointment extends Appointment {
         return this.employee;
     }
 
-    public setEmployee(employee: User) {
+    public setEmployee(employee: User): void {
         this.employee = employee;
     }
 
@@ -30,7 +30,7 @@ export class MyAppointment extends Appointment {
         return this.service;
     }
 
-    public setService(service: Service) {
+    public setService(service: Service): void {
         this.service = service;
     }
 

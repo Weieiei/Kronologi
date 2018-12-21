@@ -24,7 +24,7 @@ export class AppointmentDetailed extends Appointment {
         return this.customer;
     }
 
-    public setCustomer(customer: User) {
+    public setCustomer(customer: User): void {
         this.customer = customer;
     }
 
@@ -32,7 +32,7 @@ export class AppointmentDetailed extends Appointment {
         return this.employee;
     }
 
-    public setEmployee(employee: User) {
+    public setEmployee(employee: User): void {
         this.employee = employee;
     }
 
@@ -40,7 +40,7 @@ export class AppointmentDetailed extends Appointment {
         return this.service;
     }
 
-    public setService(service: Service) {
+    public setService(service: Service): void {
         this.service = service;
     }
 
