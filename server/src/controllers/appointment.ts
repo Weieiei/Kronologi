@@ -56,7 +56,7 @@ export const getAllAppointments = async (req, res) => {
 
     const appointments = await Appointment
         .query()
-        .eager('[user, service]');
+        .eager('[customer, employee, service]');
 
     res.status(200).send({ appointments });
 

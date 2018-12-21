@@ -46,11 +46,19 @@ export class Appointment extends Model {
 
     static get relationMappings(): RelationMappings {
         return {
-            user: {
+            customer: {
                 relation: Model.BelongsToOneRelation,
                 modelClass: User,
                 join: {
                     from: 'appointments.user_id',
+                    to: 'users.id'
+                }
+            },
+            employee: {
+                relation: Model.HasOneRelation,
+                modelClass: User,
+                join: {
+                    from: 'appointments.employee_id',
                     to: 'users.id'
                 }
             },

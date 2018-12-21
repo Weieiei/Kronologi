@@ -5,19 +5,19 @@ export class EmployeeRegister extends UserRegister {
     /**
      * List of id's of the services assigned to the employee.
      */
-    private employeeServices: number[];
+    private services: number[];
 
-    public constructor(firstName: string, lastName: string, email: string, username: string, password: string, employeeServices: number[]) {
+    public constructor(firstName: string, lastName: string, email: string, username: string, password: string, services: number[]) {
         super(firstName, lastName, email, username, password);
-        this.employeeServices = employeeServices;
+        this.services = services;
     }
 
-    public getEmployeeServices(): number[] {
-        return this.employeeServices;
+    public getServices(): number[] {
+        return this.services;
     }
 
-    public setEmployeeServices(employeeServices: number[]) {
-        this.employeeServices = employeeServices;
+    public setServices(services: number[]) {
+        this.services = services;
     }
 
 }

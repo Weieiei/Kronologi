@@ -8,7 +8,7 @@ const logger = Logger.Instance.getGrayLog();
 
 export const createEmployee = async (req, res) => {
 
-    const { firstName, lastName, email, username, password, employeeServices } = req.body.employee;
+    const { firstName, lastName, email, username, password, services } = req.body.employee;
 
     try {
         validatePassword(password);
@@ -23,7 +23,7 @@ export const createEmployee = async (req, res) => {
             .insert({ firstName, lastName, email, username, password: await hashPassword(password), userType: UserType.employee });
 
         await employee.$relatedQuery('services')
-            .relate(employeeServices);
+            .relate(services);
 
         return res.status(200).send({ message: 'Successfully registered an employee.' });
 
