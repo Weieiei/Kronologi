@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../services/appointment/appointment.service';
+import { MyAppointment } from '../../models/appointment/MyAppointment';
 
 @Component({
   selector: 'app-my-appointments',
@@ -8,8 +9,8 @@ import { AppointmentService } from '../../services/appointment/appointment.servi
 })
 export class MyAppointmentsComponent implements OnInit {
 
-  displayedColumns: string[] = ['service', 'day', 'start', 'end', 'duration', 'notes'];
-  appointments: any[] = [];
+  displayedColumns: string[] = ['service', 'employee', 'day', 'start', 'end', 'duration', 'notes'];
+  appointments: MyAppointment[] = [];
 
   constructor(private appointmentService: AppointmentService) { }
 
@@ -19,7 +20,7 @@ export class MyAppointmentsComponent implements OnInit {
 
   getMyAppointments(): void {
     this.appointmentService.getMyAppointments().subscribe(
-      res => this.appointments = res['appointments'],
+      res => this.appointments = res,
       err => console.log(err)
     );
   }

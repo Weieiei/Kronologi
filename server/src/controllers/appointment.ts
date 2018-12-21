@@ -14,9 +14,9 @@ export const getMyAppointments = async (req: RequestWrapper, res) => {
             .query()
             .where({ userId })
             .andWhereRaw(`appointments.start_time >= '${todayString}'::date`)
-            .eager('service');
+            .eager('[customer, employee, service]');
 
-        return res.status(200).send({ appointments });
+        return res.status(200).send(appointments);
 
     }
     catch (error) {
@@ -58,6 +58,6 @@ export const getAllAppointments = async (req, res) => {
         .query()
         .eager('[customer, employee, service]');
 
-    res.status(200).send({ appointments });
+    res.status(200).send(appointments);
 
 };

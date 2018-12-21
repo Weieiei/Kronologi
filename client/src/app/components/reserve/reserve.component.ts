@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment/appointment.service';
 import { ServiceService } from 'src/app/services/service/service.service';
 import * as moment from 'moment';
-import { Appointment } from 'src/app/models/appointment/appointment';
 import { Router } from '@angular/router';
 import { CustomStepperComponent } from '../custom-stepper/custom-stepper.component';
 import { Service } from '../../models/service/Service';
+import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
 
 @Component({
     selector: 'app-reserve',
@@ -18,10 +18,14 @@ export class ReserveComponent implements OnInit {
 
     services: Service[] = [];
 
-    appointment: Appointment;
+    appointment: AppointmentToBook;
     date: Date;
-    startTime: string;
     endTime: string;
+
+    employeeId: number;
+    serviceId: number;
+    startTime: Date;
+    notes: string;
 
     constructor(
         private appointmentService: AppointmentService,
@@ -31,7 +35,6 @@ export class ReserveComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.appointment = new Appointment();
         this.getServices();
     }
 
@@ -47,8 +50,8 @@ export class ReserveComponent implements OnInit {
     }
 
     updateEndTime() {
-        if (this.appointment.service_id !== undefined && this.startTime !== undefined) {
-            const service: Service = this.findServiceById(this.appointment.service_id);
+        if (this.appointment.getServiceId() !== undefined && this.startTime !== undefined) {
+            const service: Service = this.findServiceById(this.appointment.getServiceId());
             const date = moment('2012-12-12 ' + this.startTime).add(service.getDuration(), 'm');
             this.endTime = date.format('HH:mm:ss');
         }
@@ -56,7 +59,7 @@ export class ReserveComponent implements OnInit {
 
     makeAppointment(): void {
         const date = moment(this.date).format('YYYY-MM-DD');
-        this.appointment.start_time = moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss');
+        this.appointment.setStartTime(new Date(moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss')));
         this.appointmentService.reserveAppointment(this.appointment).subscribe(
             res => this.router.navigate(['/my/appts']),
             err => console.log(err)

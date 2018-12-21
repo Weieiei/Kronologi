@@ -98,9 +98,7 @@ export class RegisterComponent implements OnInit {
         );
 
         this.authService.registerEmployee(this.employee).subscribe(
-            res => {
-                alert('Successfully created employee.');
-            },
+            res => alert('Successfully created employee.'),
             err => console.log(err)
         );
 
