@@ -7,64 +7,66 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MaterialModule } from '../../material';
+import { User } from '../../models/user/User';
+import { UserType } from '../../models/user/UserType';
+import { Service } from '../../models/service/Service';
+import { MyAppointment } from '../../models/appointment/MyAppointment';
 
-@Component({ selector: 'app-appointment', template: '' })
-class AppointmentStubComponent { }
+@Component({selector: 'app-appointment', template: ''})
+class AppointmentStubComponent {
+}
 
 describe('MyAppointmentsComponent', () => {
-  let component: MyAppointmentsComponent;
-  let fixture: ComponentFixture<MyAppointmentsComponent>;
+    let component: MyAppointmentsComponent;
+    let fixture: ComponentFixture<MyAppointmentsComponent>;
 
-  let table: DebugElement;
+    let table: DebugElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        RouterTestingModule,
-        MaterialModule,
-        FormsModule
-      ],
-      declarations: [
-        MyAppointmentsComponent,
-        AppointmentStubComponent
-      ],
-      schemas: [
-        NO_ERRORS_SCHEMA
-      ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                HttpClientModule,
+                RouterTestingModule,
+                MaterialModule,
+                FormsModule
+            ],
+            declarations: [
+                MyAppointmentsComponent,
+                AppointmentStubComponent
+            ],
+            schemas: [
+                NO_ERRORS_SCHEMA
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(MyAppointmentsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(MyAppointmentsComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 
-  it('should display n appointments if appointments array has n items', () => {
+    it('should display n appointments if appointments array has n items', () => {
 
-    const service = {
-      name: 'Some service',
-      duration: 120
-    };
+        const employee = new User(2, 'Test', 'Employee', 'test@test.com', 'testing', '', UserType.employee, new Date(), null);
+        const service = new Service(1, 'Some service', 120);
 
-    component.appointments = [
-      { startTime: '2018-11-14 19:00', endTime: '2018-11-14 21:00', notes: 'notes', service },
-      { startTime: '2018-11-14 19:00', endTime: '2018-11-14 21:00', notes: 'notes', service },
-      { startTime: '2018-11-14 19:00', endTime: '2018-11-14 21:00', notes: 'notes', service }
-    ];
+        const appointment1 = new MyAppointment(1, 1, 2, 1, new Date(), new Date(), '', new Date(), null, employee, service);
+        const appointment2 = new MyAppointment(2, 1, 2, 1, new Date(), new Date(), '', new Date(), null, employee, service);
 
-    fixture.detectChanges();
+        component.appointments = [appointment1, appointment2];
 
-    table = fixture.debugElement.query(By.css('table'));
-    // count the number of tags with attribute class="mat-row"
-    // the header is mat-header-row so it won't show up
-    expect((table.nativeElement.innerHTML.match(/class="mat-row"/g) || []).length).toEqual(component.appointments.length);
+        fixture.detectChanges();
 
-  });
+        table = fixture.debugElement.query(By.css('table'));
+        // count the number of tags with attribute class="mat-row"
+        // the header is mat-header-row so it won't show up
+        expect((table.nativeElement.innerHTML.match(/class="mat-row"/g) || []).length).toEqual(component.appointments.length);
+
+    });
 });

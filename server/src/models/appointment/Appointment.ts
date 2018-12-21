@@ -46,7 +46,7 @@ export class Appointment extends Model {
 
     static get relationMappings(): RelationMappings {
         return {
-            customer: {
+            client: {
                 relation: Model.BelongsToOneRelation,
                 modelClass: User,
                 join: {

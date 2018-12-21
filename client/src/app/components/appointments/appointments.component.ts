@@ -9,7 +9,7 @@ import { AppointmentDetailed } from '../../models/appointment/AppointmentDetaile
 })
 export class AppointmentsComponent implements OnInit {
 
-  displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'customer', 'employee'];
+  displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee'];
   appointments: AppointmentDetailed[];
 
   constructor(private appointmentService: AppointmentService) { }

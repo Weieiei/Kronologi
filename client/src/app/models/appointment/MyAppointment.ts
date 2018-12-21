@@ -11,7 +11,7 @@ export class MyAppointment extends Appointment {
         id: number, userId: number, employeeId: number, serviceId: number,
         startTime: Date, endTime: Date, notes: string,
         createdAt: Date, updatedAt: Date,
-        customer: User, employee: User, service: Service
+        employee: User, service: Service
     ) {
         super(id, userId, employeeId, serviceId, startTime, endTime, notes, createdAt, updatedAt);
         this.employee = employee;

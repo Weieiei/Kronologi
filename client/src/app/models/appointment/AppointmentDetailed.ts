@@ -4,7 +4,7 @@ import { Service } from '../service/Service';
 
 export class AppointmentDetailed extends Appointment {
 
-    private customer: User;
+    private client: User;
     private employee: User;
     private service: Service;
 
@@ -12,20 +12,20 @@ export class AppointmentDetailed extends Appointment {
         id: number, userId: number, employeeId: number, serviceId: number,
         startTime: Date, endTime: Date, notes: string,
         createdAt: Date, updatedAt: Date,
-        customer: User, employee: User, service: Service
+        client: User, employee: User, service: Service
     ) {
         super(id, userId, employeeId, serviceId, startTime, endTime, notes, createdAt, updatedAt);
-        this.customer = customer;
+        this.client = client;
         this.employee = employee;
         this.service = service;
     }
 
-    public getCustomer(): User {
-        return this.customer;
+    public getClient(): User {
+        return this.client;
     }
 
-    public setCustomer(customer: User): void {
-        this.customer = customer;
+    public setClient(client: User): void {
+        this.client = client;
     }
 
     public getEmployee(): User {
