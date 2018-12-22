@@ -5,6 +5,7 @@ import { UserRegister } from '../../models/user/UserRegister';
 import { Service } from '../../models/service/Service';
 import { ServiceService } from '../../services/service/service.service';
 import { EmployeeRegister } from '../../models/user/EmployeeRegister';
+import { EmployeeShiftTimes } from '../../models/shift/EmployeeShiftTimes';
 
 @Component({
     selector: 'app-register',
@@ -38,6 +39,7 @@ export class RegisterComponent implements OnInit {
      */
     services: Service[];
     employeeServices: number[];
+    employeeShifts: EmployeeShiftTimes[];
 
     @ViewChild('firstNameInput') firstNameInput: ElementRef;
 
@@ -93,12 +95,14 @@ export class RegisterComponent implements OnInit {
 
     registerEmployee() {
 
+        this.employeeShifts = [new EmployeeShiftTimes(new Date(), new Date('2019-11-11 11:00:00'))];
+
         this.employee = new EmployeeRegister(
-            this.firstName, this.lastName, this.email, this.username, this.password, this.employeeServices
+            this.firstName, this.lastName, this.email, this.username, this.password, this.employeeServices, this.employeeShifts
         );
 
         this.authService.registerEmployee(this.employee).subscribe(
-            res => alert('Successfully created employee.'),
+            res => alert(res['message']),
             err => console.log(err)
         );
 

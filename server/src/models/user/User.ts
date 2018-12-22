@@ -15,7 +15,9 @@ export class User extends Model {
     createdAt?: Date;
     updatedAt?: Date;
 
-    appointments: Appointment[];
+    appointments?: Appointment[];
+    services?: Service[];
+    shifts?: EmployeeShift[];
 
     static get tableName(): string {
         return 'users';

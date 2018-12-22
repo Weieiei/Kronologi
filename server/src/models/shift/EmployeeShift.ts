@@ -50,9 +50,9 @@ export class EmployeeShift extends Model {
 
     async $beforeInsert() {
 
-        if (new Date(this.endTime) <= new Date(this.startTime)) {
+        if (this.endTime <= this.startTime) {
             throw new ValidationError({
-                message: 'A shift\'s end time should be before its start time.',
+                message: 'A shift\'s start time should be before its end time.',
                 type: 'InvalidShift'
             });
         }

@@ -30,15 +30,15 @@ export class AuthService {
     }
 
     registerClient(user: UserRegister): Observable<UserRegister> {
-        return this.http.post<UserRegister>(['api', 'authenticate', 'register'].join('/'), {user});
+        return this.http.post<UserRegister>(['api', 'authenticate', 'register'].join('/'), { user });
     }
 
     registerEmployee(employee: UserRegister): Observable<UserRegister> {
-        return this.http.post<UserRegister>(['api', 'admin', 'employees', 'register'].join('/'), {employee});
+        return this.http.post<UserRegister>(['api', 'admin', 'employees', 'register'].join('/'), { employee });
     }
 
     loginUser(user: UserLogin): Observable<UserLogin> {
-        return this.http.post<UserLogin>(['api', 'authenticate', 'login'].join('/'), {user});
+        return this.http.post<UserLogin>(['api', 'authenticate', 'login'].join('/'), { user });
     }
 
     loggedIn(): boolean {
