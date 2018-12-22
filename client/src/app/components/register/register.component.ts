@@ -113,8 +113,4 @@ export class RegisterComponent implements OnInit {
         );
     }
 
-    addService(id: number) {
-        console.log('fds');
-    }
-
 }
