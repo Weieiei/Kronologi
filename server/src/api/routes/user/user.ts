@@ -1,8 +1,18 @@
 import express from 'express';
+import { bookAppointment, getMyAppointments } from '../../../controllers/appointment';
 
-const user = express.Router();
-const appointments = require('./routes/appointments');
+export const user = express.Router();
 
-user.use('/appointments', appointments);
+/**
+ * @route       GET api/user/appointments
+ * @description Get all of your appointments that are either today or in the future.
+ * @access      Private
+ */
+user.get('/appointments', getMyAppointments);
 
-module.exports = user;
+/**
+ * @route       POST api/user/appointments
+ * @description Book an appointment.
+ * @access      Private
+ */
+user.post('/appointments', bookAppointment);

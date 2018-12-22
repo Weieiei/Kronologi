@@ -1,17 +1,17 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { ServicesService } from './services.service';
+import { ServiceService } from './service.service';
 import { HttpClientModule } from '@angular/common/http';
 
-describe('ServicesService', () => {
+describe('ServiceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ServicesService],
+      providers: [ServiceService],
       imports: [HttpClientModule]
     });
   });
 
-  it('should be created', inject([ServicesService], (service: ServicesService) => {
+  it('should be created', inject([ServiceService], (service: ServiceService) => {
     expect(service).toBeTruthy();
   }));
 });
