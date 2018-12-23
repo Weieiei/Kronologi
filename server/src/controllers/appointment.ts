@@ -12,7 +12,7 @@ export const getMyAppointments = async (req: RequestWrapper, res) => {
 
         const appointments = await Appointment
             .query()
-            .where({ userId })
+            .where({ clientId: userId })
             .andWhereRaw(`appointments.start_time >= '${todayString}'::date`)
             .eager('[client, employee, service]');
 
@@ -37,7 +37,7 @@ export const bookAppointment = async (req: RequestWrapper, res) => {
          */
         await Appointment
             .query()
-            .insert({ userId, employeeId, serviceId, startTime: new Date(startTime), notes });
+            .insert({ clientId: userId, employeeId, serviceId, startTime: new Date(startTime), notes });
 
         res.status(200).send({ message: 'Successfully booked.' });
 

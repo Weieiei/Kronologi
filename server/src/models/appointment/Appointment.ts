@@ -7,7 +7,7 @@ import { UserType } from '../user/UserType';
 export class Appointment extends Model {
 
     readonly id!: number;
-    userId?: number;
+    clientId?: number;
     employeeId?: number;
     serviceId?: number;
     startTime?: Date;
@@ -27,10 +27,10 @@ export class Appointment extends Model {
     static get jsonSchema(): JsonSchema {
         return {
             type: 'object',
-            required: ['userId', 'employeeId', 'serviceId', 'startTime'],
+            required: ['clientId', 'employeeId', 'serviceId', 'startTime'],
             properties: {
                 id: { type: 'integer' },
-                userId: { type: 'integer' },
+                clientId: { type: 'integer' },
                 employeeId: { type: 'integer' },
                 serviceId: { type: 'integer' },
                 startTime: { type: 'date' },
@@ -50,7 +50,7 @@ export class Appointment extends Model {
                 relation: Model.BelongsToOneRelation,
                 modelClass: User,
                 join: {
-                    from: 'appointments.user_id',
+                    from: 'appointments.client_id',
                     to: 'users.id'
                 }
             },
@@ -79,7 +79,7 @@ export class Appointment extends Model {
         const employee = await User.query()
             .where({ id: this.employeeId })
             .first()
-            .eager('[appointments, services, shifts]');
+            .eager('[employeeAppointments, services, shifts]');
 
         if (!employee || employee.userType !== UserType.employee) {
             throw new ValidationError({
@@ -108,14 +108,21 @@ export class Appointment extends Model {
             });
         }
 
-        /**
-         * TODO
-         * appointment validation
-         * if we've gotten this far, it means that the appointment fits into the employee's shift
-         * but does it conflict with other appointments?
-         */
+        // Check if appointment conflicts with another in the employee's schedule.
+        const appointmentIndex = employee.employeeAppointments.findIndex(appointment => {
+            return !((appointment.startTime >= this.startTime && appointment.startTime >= this.endTime) ||
+                (appointment.endTime <= this.startTime && appointment.endTime <= this.endTime));
+        });
+
+        if (appointmentIndex !== -1) {
+            throw new ValidationError({
+                message: `This appointment conflicts with another in ${employee.fullName}'s schedule.`,
+                type: 'AppointmentConflictError'
+            });
+        }
 
         this.createdAt = new Date();
+
     }
     async $beforeUpdate() {
         this.updatedAt = new Date();

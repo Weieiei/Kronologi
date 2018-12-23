@@ -15,7 +15,8 @@ export class User extends Model {
     createdAt?: Date;
     updatedAt?: Date;
 
-    appointments?: Appointment[];
+    clientAppointments?: Appointment[];
+    employeeAppointments?: Appointment[];
     services?: Service[];
     shifts?: EmployeeShift[];
 
@@ -53,12 +54,20 @@ export class User extends Model {
 
     static get relationMappings(): RelationMappings {
         return {
-            appointments: {
+            clientAppointments: {
                 relation: Model.HasManyRelation,
                 modelClass: Appointment,
                 join: {
                     from: 'users.id',
-                    to: 'appointments.user_id'
+                    to: 'appointments.client_id'
+                }
+            },
+            employeeAppointments: {
+                relation: Model.HasManyRelation,
+                modelClass: Appointment,
+                join: {
+                    from: 'users.id',
+                    to: 'appointments.employee_id'
                 }
             },
             services: {
