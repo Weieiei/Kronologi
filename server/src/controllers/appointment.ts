@@ -32,9 +32,12 @@ export const bookAppointment = async (req: RequestWrapper, res) => {
 
     try {
 
+        /**
+         * Even though we get a Date object from the frontend, we still wrap it in a new Date() object so that it gets converted to UTC.
+         */
         await Appointment
             .query()
-            .insert({ userId, employeeId, serviceId, startTime, notes });
+            .insert({ userId, employeeId, serviceId, startTime: new Date(startTime), notes });
 
         res.status(200).send({ message: 'Successfully booked.' });
 
