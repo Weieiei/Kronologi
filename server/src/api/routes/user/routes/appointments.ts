@@ -57,22 +57,15 @@ appointments.post('/', async (req: RequestWrapper, res) => {
 
     startTime += '-05';
     endTime += '-05';
-
     try {
-
         await Appointment
             .query()
-
-            // .whereRaw(`not exists appointment.start_time >= '${startTime}' and appointment.end_time <= '${endTime}'`)
             .insert({ userId, serviceId, startTime, endTime, notes });
-            // .whereRaw(`appointments.start_time <= '2019-12-22 23:00:00+00'`);
         res.status(200).send({ message: 'Successfully booked.' });
-
     }
     catch (error) {
-        res.status(500).send({ error });
+        res.status(500).send({ error: error });
     }
-
 });
 
 module.exports = appointments;
