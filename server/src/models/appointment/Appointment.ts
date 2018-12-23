@@ -79,10 +79,6 @@ export class Appointment extends Model {
             for (let i = 0; i < appointments.length; i++) {
                 const appointment_start_time =  new Date(appointments[i].startTime);
                 const appointment_end_time =  new Date(appointments[i].endTime);
-                console.log ('Old start time: ' + appointment_start_time);
-                console.log ('Old end time: ' + appointment_end_time);
-                console.log ('New start time: ' + startTime);
-                console.log ('New end time: ' + endTime);
                 // case 1: there exists an appointment that starts after this appointment and is still ongoing when this appointment ends
                 // (the end time of this appointment is within an already an existing appointment)
                 if (appointment_start_time <= endTime && appointment_end_time >= endTime) {
