@@ -75,6 +75,14 @@ export class Appointment extends Model {
 
     async $beforeInsert() {
 
+        // Check if you booked an appointment with yourself.
+        if (this.clientId === this.employeeId) {
+            throw new ValidationError({
+                message: 'You cannot book an appointment with yourself.',
+                type: 'ClientIsEmployeeError'
+            });
+        }
+
         // Check if id of employee provided points to a user of type employee.
         const employee = await User.query()
             .where({ id: this.employeeId })
