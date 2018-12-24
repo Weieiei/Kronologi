@@ -99,8 +99,6 @@ export class RegisterComponent implements OnInit {
 
     registerEmployee(): void {
 
-        this.employeeShifts = [new EmployeeShiftTimes(new Date(), new Date('2019-11-11 11:00:00'))];
-
         this.employee = new EmployeeRegister(
             this.firstName, this.lastName, this.email, this.username, this.password, this.employeeServices, this.employeeShifts
         );
@@ -119,8 +117,22 @@ export class RegisterComponent implements OnInit {
         );
     }
 
-    addShift(): void {
+    addShiftComponent(): void {
         this.numberOfShifts++;
+    }
+
+    addShift(shift: EmployeeShiftTimes): void {
+
+        /**
+         * A user might modify an already set shift, so if that's the case, we delete the old one first.
+         */
+        const shiftIndex = this.employeeShifts.findIndex(s => s.getNumber() === shift.getNumber());
+        if (shiftIndex !== -1) {
+            this.employeeShifts.splice(shiftIndex, 1);
+        }
+
+        this.employeeShifts.push(shift);
+
     }
 
 }

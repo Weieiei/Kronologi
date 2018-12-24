@@ -1,11 +1,21 @@
 export class EmployeeShiftTimes {
 
+    private number: number;
     private startTime: Date;
     private endTime: Date;
 
-    public constructor(startTime: Date, endTime: Date) {
+    public constructor(number: number, startTime: Date, endTime: Date) {
+        this.number = number;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public getNumber(): number {
+        return this.number;
+    }
+
+    public setNumber(number: number): void {
+        this.number = number;
     }
 
     public getStartTime(): Date {

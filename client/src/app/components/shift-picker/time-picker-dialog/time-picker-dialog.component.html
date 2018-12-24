@@ -6,7 +6,7 @@
             <button mat-button type="button"
                     (click)="pickTime(i, $event.target.innerText)"
                     [ngClass]="{ 'startTime': selectedStartTime === i, 'endTime': selectedEndTime === i }"
-                    [disabled]="selectedStartTime ? i < selectedStartTime : selectedEndTime ? i > selectedEndTime : false">
+                    [disabled]="selectedStartTime !== undefined ? i < selectedStartTime : selectedEndTime !== undefined ? i > selectedEndTime : false">
                 {{ time }}
             </button>
 
@@ -15,5 +15,5 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button type="button" (click)="cancel()">Cancel</button>
-    <button mat-button [mat-dialog-close]="dialogData" type="button" [disabled]="!(selectedStartTime && selectedEndTime)">OK</button>
+    <button mat-button [mat-dialog-close]="dialogData" type="button" [disabled]="!(selectedStartTime !== undefined && selectedEndTime !== undefined)">OK</button>
 </div>

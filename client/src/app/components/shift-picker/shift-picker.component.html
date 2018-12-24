@@ -3,4 +3,4 @@
     <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
     <mat-datepicker #date disabled="false"></mat-datepicker>
 </mat-form-field>
-<button mat-raised-button type="button" (click)="openTimePicker()">Pick Times</button>
+<button mat-raised-button type="button" (click)="openTimePicker()" [disabled]="!dateInput.value">Pick Times</button>

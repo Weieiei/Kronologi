@@ -26,8 +26,15 @@ export const createEmployee = async (req, res) => {
         await employee.$relatedQuery('services')
             .relate(services);
 
-        shifts.forEach(shift => shift.employeeId = employee.id);
-        await EmployeeShift.query().insertGraph(shifts);
+        await EmployeeShift.query().insertGraph(
+            shifts.map(shift => {
+                return {
+                    employeeId: employee.id,
+                    startTime: shift.startTime,
+                    endTime: shift.endTime
+                };
+            })
+        );
 
         return res.status(200).send({ message: `Successfully registered ${employee.fullName} as an employee.` });
 
