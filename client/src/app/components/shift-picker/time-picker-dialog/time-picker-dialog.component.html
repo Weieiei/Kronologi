@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{ !selectedStartTime ? 'Pick a Start Time' : 'Pick an End Time' }}</h1>
+<div mat-dialog-content>
+    <mat-grid-list cols="7" rowHeight="40px">
+        <mat-grid-tile *ngFor="let time of times; let i = index;" [colspan]="1" [rowspan]="1">
+
+            <button mat-button type="button"
+                    (click)="pickTime(i, $event.target.innerText)"
+                    [ngClass]="{ 'startTime': selectedStartTime === i, 'endTime': selectedEndTime === i }"
+                    [disabled]="selectedStartTime ? i < selectedStartTime : selectedEndTime ? i > selectedEndTime : false">
+                {{ time }}
+            </button>
+
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
+<div mat-dialog-actions>
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+    <button mat-button [mat-dialog-close]="dialogData" type="button" [disabled]="!(selectedStartTime && selectedEndTime)">OK</button>
+</div>

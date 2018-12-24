@@ -41,6 +41,9 @@ export class RegisterComponent implements OnInit {
     employeeServices: number[];
     employeeShifts: EmployeeShiftTimes[];
 
+    arr = Array;
+    numberOfShifts = 1;
+
     @ViewChild('firstNameInput') firstNameInput: ElementRef;
 
     constructor(
@@ -57,12 +60,13 @@ export class RegisterComponent implements OnInit {
             if (this.data.type === AuthService.registerEmployee) {
                 this.getServices();
                 this.employeeServices = [];
+                this.employeeShifts = [];
             }
         });
         this.firstNameInput.nativeElement.focus();
     }
 
-    registerUser() {
+    registerUser(): void {
 
         if (this.password === this.repeatPassword) {
 
@@ -78,7 +82,7 @@ export class RegisterComponent implements OnInit {
 
     }
 
-    registerClient() {
+    registerClient(): void {
 
         this.user = new UserRegister(this.firstName, this.lastName, this.email, this.username, this.password);
 
@@ -93,7 +97,7 @@ export class RegisterComponent implements OnInit {
 
     }
 
-    registerEmployee() {
+    registerEmployee(): void {
 
         this.employeeShifts = [new EmployeeShiftTimes(new Date(), new Date('2019-11-11 11:00:00'))];
 
@@ -108,11 +112,15 @@ export class RegisterComponent implements OnInit {
 
     }
 
-    getServices() {
+    getServices(): void {
         this.serviceService.getServices().subscribe(
             res => this.services = res,
             err => console.log(err)
         );
+    }
+
+    addShift(): void {
+        this.numberOfShifts++;
     }
 
 }
