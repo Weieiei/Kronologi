@@ -1,13 +1,12 @@
 import express from 'express';
 
-const authenticate = require('./routes/authenticate');
-const services = require('./routes/services');
-
-const user = require('./routes/user/user');
-const admin = require('./routes/admin/admin');
-
 import { db } from '../db/knex';
 import { Model } from 'objection';
+
+import { authenticate } from './routes/authenticate';
+import { services } from './routes/services';
+import { user } from './routes/user/user';
+import { admin } from './routes/admin/admin';
 
 import { userMiddleware } from '../middlewares/user';
 import { adminMiddleware } from '../middlewares/admin';
@@ -26,4 +25,4 @@ api.use('/services', services);
 api.use('/user', userMiddleware, user);
 api.use('/admin', userMiddleware, adminMiddleware, admin);
 
-module.exports = api;
+export = api;

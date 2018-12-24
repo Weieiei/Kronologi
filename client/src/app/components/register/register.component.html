@@ -53,6 +53,18 @@
 				<mat-icon matSuffix>visibility_off</mat-icon>
 			</mat-form-field>
 
+            <div *ngIf="services?.length">
+
+                <mat-selection-list #serviceList [(ngModel)]="employeeServices" name="employeeServices">
+                    <mat-list-option *ngFor="let service of services" [value]="service.id">
+                        {{ service.name }}
+                    </mat-list-option>
+                </mat-selection-list>
+
+                <p>Services selected: {{ serviceList.selectedOptions.selected.length }}</p>
+
+            </div>
+
 			<button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">{{ data.button }}</button>
 
 		</form>
