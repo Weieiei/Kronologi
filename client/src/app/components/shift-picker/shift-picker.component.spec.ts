@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ShiftPickerComponent } from './shift-picker.component';
 import { MaterialModule } from '../../material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 describe('ShiftPickerComponent', () => {
     let component: ShiftPickerComponent;
@@ -12,7 +13,8 @@ describe('ShiftPickerComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 MaterialModule,
-                BrowserAnimationsModule
+                BrowserAnimationsModule,
+                FormsModule
             ],
             declarations: [ShiftPickerComponent]
         })

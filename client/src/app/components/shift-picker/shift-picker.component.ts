@@ -16,20 +16,19 @@ export interface DialogData {
 })
 export class ShiftPickerComponent implements OnInit {
 
+    minDate: Date = new Date();
+    maxDate: Date = new Date(moment(this.minDate).add(5, 'months').format());
+
     /**
      * Since the register component (for adding an employee) contains multiple shift-picker components, we need a way to track which one
      * we're manipulating. We can do this by attaching a unique number to each individual shift object emitted by the component.
      */
     @Input() number: number;
-
-    minDate: Date = new Date();
-    maxDate: Date = new Date(moment(this.minDate).add(5, 'months').format('YYYY-MM-DD'));
+    defaultDate: Date;
 
     date: string;
     startTime: string;
     endTime: string;
-
-    @ViewChild('dateInput') dateInput: ElementRef;
 
     @Output() shiftOutput = new EventEmitter();
 
@@ -37,6 +36,7 @@ export class ShiftPickerComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.defaultDate = new Date(moment(this.minDate).add(this.number, 'days').format());
     }
 
     openTimePicker(): void {
@@ -50,13 +50,14 @@ export class ShiftPickerComponent implements OnInit {
 
             try {
 
-                this.date = moment(new Date(this.dateInput.nativeElement.value)).format('YYYY-MM-DD');
+                this.date = moment(new Date(this.defaultDate)).format('YYYY-MM-DD');
                 this.startTime = `${this.date} ${result.startTime}`;
                 this.endTime = `${this.date} ${result.endTime}`;
 
                 this.shiftOutput.emit(new EmployeeShiftTimes(this.number, new Date(this.startTime), new Date(this.endTime)));
 
             } catch (e) {
+                alert('Please make sure to properly pick start and end times.');
             }
 
         });
