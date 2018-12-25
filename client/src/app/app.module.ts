@@ -52,8 +52,7 @@ import { TimePickerDialogComponent } from './components/shift-picker/time-picker
         BrowserAnimationsModule,
         MaterialModule,
         FlexModule,
-        HttpClientModule,
-        BrowserModule
+        HttpClientModule
     ],
     entryComponents: [
         TimePickerDialogComponent
