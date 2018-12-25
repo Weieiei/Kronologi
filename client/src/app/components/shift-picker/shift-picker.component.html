@@ -1,0 +1,6 @@
+<mat-form-field class="example-full-width">
+    <input #dateInput matInput [min]="minDate" [max]="maxDate" [matDatepicker]="date" [(ngModel)]="defaultDate" placeholder="Pick a Date" readonly>
+    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+    <mat-datepicker #date disabled="false"></mat-datepicker>
+</mat-form-field>
+<button mat-raised-button type="button" (click)="openTimePicker()" [disabled]="!dateInput.value">Pick Times</button>

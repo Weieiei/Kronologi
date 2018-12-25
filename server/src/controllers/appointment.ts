@@ -12,11 +12,11 @@ export const getMyAppointments = async (req: RequestWrapper, res) => {
 
         const appointments = await Appointment
             .query()
-            .where({ userId })
+            .where({ clientId: userId })
             .andWhereRaw(`appointments.start_time >= '${todayString}'::date`)
-            .eager('service');
+            .eager('[client, employee, service]');
 
-        return res.status(200).send({ appointments });
+        return res.status(200).send(appointments);
 
     }
     catch (error) {
@@ -32,9 +32,12 @@ export const bookAppointment = async (req: RequestWrapper, res) => {
 
     try {
 
+        /**
+         * Even though we get a Date object from the frontend, we still wrap it in a new Date() object so that it gets converted to UTC.
+         */
         await Appointment
             .query()
-            .insert({ userId, employeeId, serviceId, startTime, notes });
+            .insert({ clientId: userId, employeeId, serviceId, startTime: new Date(startTime), notes });
 
         res.status(200).send({ message: 'Successfully booked.' });
 
@@ -56,8 +59,8 @@ export const getAllAppointments = async (req, res) => {
 
     const appointments = await Appointment
         .query()
-        .eager('[user, service]');
+        .eager('[client, employee, service]');
 
-    res.status(200).send({ appointments });
+    res.status(200).send(appointments);
 
 };

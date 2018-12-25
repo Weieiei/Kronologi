@@ -22,7 +22,7 @@ exports.up = async knex => {
         })
         .createTable('appointments', table => {
             table.increments('id');
-            table.integer('user_id').unsigned().references('id').inTable('users');
+            table.integer('client_id').unsigned().references('id').inTable('users');
             table.integer('employee_id').unsigned().references('id').inTable('users');
             table.integer('service_id').unsigned().references('id').inTable('services');
             table.timestamp('start_time').notNullable();

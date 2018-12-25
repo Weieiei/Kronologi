@@ -5,6 +5,7 @@ import { UserRegister } from '../../models/user/UserRegister';
 import { Service } from '../../models/service/Service';
 import { ServiceService } from '../../services/service/service.service';
 import { EmployeeRegister } from '../../models/user/EmployeeRegister';
+import { EmployeeShiftTimes } from '../../models/shift/EmployeeShiftTimes';
 
 @Component({
     selector: 'app-register',
@@ -38,6 +39,10 @@ export class RegisterComponent implements OnInit {
      */
     services: Service[];
     employeeServices: number[];
+    employeeShifts: EmployeeShiftTimes[];
+
+    arr = Array;
+    numberOfShifts = 1;
 
     @ViewChild('firstNameInput') firstNameInput: ElementRef;
 
@@ -55,12 +60,13 @@ export class RegisterComponent implements OnInit {
             if (this.data.type === AuthService.registerEmployee) {
                 this.getServices();
                 this.employeeServices = [];
+                this.employeeShifts = [];
             }
         });
         this.firstNameInput.nativeElement.focus();
     }
 
-    registerUser() {
+    registerUser(): void {
 
         if (this.password === this.repeatPassword) {
 
@@ -76,7 +82,7 @@ export class RegisterComponent implements OnInit {
 
     }
 
-    registerClient() {
+    registerClient(): void {
 
         this.user = new UserRegister(this.firstName, this.lastName, this.email, this.username, this.password);
 
@@ -91,26 +97,42 @@ export class RegisterComponent implements OnInit {
 
     }
 
-    registerEmployee() {
+    registerEmployee(): void {
 
         this.employee = new EmployeeRegister(
-            this.firstName, this.lastName, this.email, this.username, this.password, this.employeeServices
+            this.firstName, this.lastName, this.email, this.username, this.password, this.employeeServices, this.employeeShifts
         );
 
         this.authService.registerEmployee(this.employee).subscribe(
-            res => {
-                alert('Successfully created employee.');
-            },
+            res => alert(res['message']),
             err => console.log(err)
         );
 
     }
 
-    getServices() {
+    getServices(): void {
         this.serviceService.getServices().subscribe(
             res => this.services = res,
             err => console.log(err)
         );
+    }
+
+    addShiftComponent(): void {
+        this.numberOfShifts++;
+    }
+
+    addShift(shift: EmployeeShiftTimes): void {
+
+        /**
+         * A user might modify an already set shift, so if that's the case, we delete the old one first.
+         */
+        const shiftIndex = this.employeeShifts.findIndex(s => s.getNumber() === shift.getNumber());
+        if (shiftIndex !== -1) {
+            this.employeeShifts.splice(shiftIndex, 1);
+        }
+
+        this.employeeShifts.push(shift);
+
     }
 
 }

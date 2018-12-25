@@ -5,6 +5,7 @@ import { Model } from 'objection';
 import { User } from '../../models/user/User';
 import { Appointment } from '../../models/appointment/Appointment';
 import { hashPassword } from '../../helpers/helper_functions';
+import { EmployeeShift } from '../../models/shift/EmployeeShift';
 
 Model.knex(db);
 
@@ -41,14 +42,20 @@ exports.seed = async () => {
             { name: 'RECONNECT WITH YOUR BODY', duration: 210 }
         ]);
 
-		const employee = users[3];
+		const employee = users.find(user => user.userType === UserType.employee);
+
 		await employee.$relatedQuery('services').relate([
 		    services[0].id, services[1].id, services[3].id, services[6].id, services[8].id, services[11].id
         ]);
 
+        await EmployeeShift.query().insertGraph([
+            { employeeId: employee.id, startTime: new Date('2019-11-30 12:00:00'), endTime: new Date('2019-11-30 21:00:00') },
+            { employeeId: employee.id, startTime: new Date('2019-12-02 12:00:00'), endTime: new Date('2019-12-02 21:00:00') },
+        ]);
+
 		await Appointment.query().insertGraph([
-            { userId: users[1].id, employeeId: employee.id, serviceId: services[6].id, startTime: '2019-11-30 18:00:00', notes: 'Hello world' },
-            { userId: users[0].id, employeeId: employee.id, serviceId: services[11].id, startTime: '2019-12-02 19:30:00', notes: 'Some note' }
+            { clientId: users[1].id, employeeId: employee.id, serviceId: services[6].id, startTime: new Date('2019-11-30 18:00:00'), notes: 'Hello world' },
+            { clientId: users[0].id, employeeId: employee.id, serviceId: services[11].id, startTime: new Date('2019-12-02 12:30:00'), notes: 'Some note' }
         ]);
 
 	}

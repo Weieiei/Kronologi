@@ -7,11 +7,11 @@ import { UserType } from '../user/UserType';
 export class Appointment extends Model {
 
     readonly id!: number;
-    userId?: number;
+    clientId?: number;
     employeeId?: number;
     serviceId?: number;
-    startTime?: string;
-    endTime?: string;
+    startTime?: Date;
+    endTime?: Date;
     notes?: string;
     createdAt?: Date;
     updatedAt?: Date;
@@ -27,15 +27,15 @@ export class Appointment extends Model {
     static get jsonSchema(): JsonSchema {
         return {
             type: 'object',
-            required: ['userId', 'employeeId', 'serviceId', 'startTime'],
+            required: ['clientId', 'employeeId', 'serviceId', 'startTime'],
             properties: {
-                id: {type: 'integer'},
-                userId: {type: 'integer'},
-                employeeId: {type: 'integer'},
-                serviceId: {type: 'integer'},
-                startTime: {type: 'string'},
-                endTime: {type: 'string'},
-                notes: {type: 'string'}
+                id: { type: 'integer' },
+                clientId: { type: 'integer' },
+                employeeId: { type: 'integer' },
+                serviceId: { type: 'integer' },
+                startTime: { type: 'date' },
+                endTime: { type: 'date' },
+                notes: { type: 'string' }
             }
         };
     }
@@ -46,11 +46,19 @@ export class Appointment extends Model {
 
     static get relationMappings(): RelationMappings {
         return {
-            user: {
+            client: {
                 relation: Model.BelongsToOneRelation,
                 modelClass: User,
                 join: {
-                    from: 'appointments.user_id',
+                    from: 'appointments.client_id',
+                    to: 'users.id'
+                }
+            },
+            employee: {
+                relation: Model.BelongsToOneRelation,
+                modelClass: User,
+                join: {
+                    from: 'appointments.employee_id',
                     to: 'users.id'
                 }
             },
@@ -65,81 +73,66 @@ export class Appointment extends Model {
         };
     }
 
-    async $beforeInsert(queryContext) {
-        /**
-         * Get employee that we chose for the appointment.
-         * If this 'employee' (user) isn't actually an employee, throw an error.
-         * Get the services that this employee offers.
-         * From those services, find the one with the serviceId assigned to the appointment model.
-         * If we get nothing, it means either the employee doesn't offer it, or it just doesn't exist; throw an error.
-         */
-        const employee = await User
-            .query()
-            .where({id: this.employeeId})
-            .first()
-            .eager('[services]');
+    async $beforeInsert() {
 
-        if (employee.userType !== UserType.employee) {
+        // Check if you booked an appointment with yourself.
+        if (this.clientId === this.employeeId) {
+            throw new ValidationError({
+                message: 'You cannot book an appointment with yourself.',
+                type: 'ClientIsEmployeeError'
+            });
+        }
+
+        // Check if id of employee provided points to a user of type employee.
+        const employee = await User.query()
+            .where({ id: this.employeeId })
+            .first()
+            .eager('[employeeAppointments, services, shifts]');
+
+        if (!employee || employee.userType !== UserType.employee) {
             throw new ValidationError({
                 message: 'You must choose a user of type employee.',
                 type: 'InvalidUser'
             });
         }
 
-        const services = employee['services'];
-        const service = services.find(service => service.id === this.serviceId);
-
+        // Check if id of service provided exists in the employee's offered services.
+        const service = employee.services.find(service => service.id === this.serviceId);
         if (!service) {
             throw new ValidationError({
-                message: 'You must provide a valid service.',
+                message: `${employee.fullName} doesn't provided the desired service.`,
                 type: 'InvalidService'
             });
         }
 
-        this.endTime = moment(this.startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss');
-        this.startTime += '-05';
-        this.endTime += '-05';
+        this.endTime = new Date(moment(this.startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss'));
 
-        const appointments = await Appointment
-            .query().select();
-        if (appointments.length > 0) {
-            const startTime = new Date(this.startTime);
-            const endTime = new Date(this.endTime);
-            for (let i = 0; i < appointments.length; i++) {
-                const appointment_start_time = new Date(appointments[i].startTime);
-                const appointment_end_time = new Date(appointments[i].endTime);
-                // case 1: there exists an appointment that starts after this appointment and is still ongoing when this appointment ends
-                // (the end time of this appointment is within an already an existing appointment)
-                if (appointment_start_time <= endTime && appointment_end_time >= endTime) {
-                    throw new ValidationError({
-                        message: 'There is an already existing appointment creating a conflict',
-                        type: 'appointment'
-                    });
-                }
-                // case 2: there exists an appointment that starts before this appointment and ends after the start of this appointment
-                // (the start time of this appointment is within an existing appointment)
-                else if (appointment_start_time <= startTime && appointment_end_time >= startTime) {
-                    throw new ValidationError({
-                        message: 'There is an already existing appointment creating a conflict',
-                        type: 'appointment'
-                    });
-                }
-                // case 3: there exists an appointment that starts after this appointment and ends before the end of this appointment
-                // (this appointment "surrounds" an existing appointment)
-                else if (appointment_start_time >= startTime && appointment_end_time <= endTime) {
-                    throw new ValidationError({
-                        message: 'There is an already existing appointment creating a conflict',
-                        type: 'appointment'
-                    });
-                }
-            }
-            this.createdAt = new Date();
+        // Check if appointment's start and end times fit into one of the employee's shifts.
+        const shiftIndex = employee.shifts.findIndex(shift => shift.startTime <= this.startTime && shift.endTime >= this.endTime);
+        if (shiftIndex === -1) {
+            throw new ValidationError({
+                message: `This appointment does not fit into ${employee.fullName}'s schedule.`,
+                type: 'EmployeeNotAvailable'
+            });
         }
+
+        // Check if appointment conflicts with another in the employee's schedule.
+        const appointmentIndex = employee.employeeAppointments.findIndex(appointment => {
+            return !((appointment.startTime >= this.startTime && appointment.startTime >= this.endTime) ||
+                (appointment.endTime <= this.startTime && appointment.endTime <= this.endTime));
+        });
+
+        if (appointmentIndex !== -1) {
+            throw new ValidationError({
+                message: `This appointment conflicts with another in ${employee.fullName}'s schedule.`,
+                type: 'AppointmentConflictError'
+            });
+        }
+
+        this.createdAt = new Date();
+
     }
     async $beforeUpdate() {
         this.updatedAt = new Date();
     }
 }
-
-
-

@@ -12,7 +12,7 @@ export class UserLogin {
         return this.username;
     }
 
-    public setUsername(username: string) {
+    public setUsername(username: string): void {
         this.username = username;
     }
 
@@ -20,7 +20,7 @@ export class UserLogin {
         return this.password;
     }
 
-    public setPassword(password: string) {
+    public setPassword(password: string): void {
         this.password = password;
     }
 

@@ -3,12 +3,13 @@ import { Logger } from '../models/logger';
 import { User } from '../models/user/User';
 import { UserType } from '../models/user/UserType';
 import { ValidationError } from 'objection';
+import { EmployeeShift } from '../models/shift/EmployeeShift';
 
 const logger = Logger.Instance.getGrayLog();
 
 export const createEmployee = async (req, res) => {
 
-    const { firstName, lastName, email, username, password, employeeServices } = req.body.employee;
+    const { firstName, lastName, email, username, password, services, shifts } = req.body.employee;
 
     try {
         validatePassword(password);
@@ -23,9 +24,19 @@ export const createEmployee = async (req, res) => {
             .insert({ firstName, lastName, email, username, password: await hashPassword(password), userType: UserType.employee });
 
         await employee.$relatedQuery('services')
-            .relate(employeeServices);
+            .relate(services);
 
-        return res.status(200).send({ message: 'Successfully registered an employee.' });
+        await EmployeeShift.query().insertGraph(
+            shifts.map(shift => {
+                return {
+                    employeeId: employee.id,
+                    startTime: shift.startTime,
+                    endTime: shift.endTime
+                };
+            })
+        );
+
+        return res.status(200).send({ message: `Successfully registered ${employee.fullName} as an employee.` });
 
     }
     catch (error) {

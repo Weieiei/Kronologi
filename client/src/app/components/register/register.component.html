@@ -63,6 +63,12 @@
 
                 <p>Services selected: {{ serviceList.selectedOptions.selected.length }}</p>
 
+                <div *ngFor="let i of arr(numberOfShifts).fill(1); let j = index;">
+                    <app-shift-picker [number]="j" (shiftOutput)="addShift($event)"></app-shift-picker>
+                </div>
+
+                <button mat-raised-button type="button" (click)="addShiftComponent()">Add Shift</button>
+
             </div>
 
 			<button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">{{ data.button }}</button>
