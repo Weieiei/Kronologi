@@ -1,8 +1,17 @@
 import { NgModule } from '@angular/core';
 
 import {
-    MatButtonModule, MatCheckboxModule, MatIconModule, MatInputModule, MatListModule,
-    MatMenuModule, MatNativeDateModule, MatProgressBarModule, MatSelectModule, MatTableModule, MatSidenavModule
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatTableModule
 } from '@angular/material';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
