@@ -1,6 +1,8 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import {RouterTestingModule} from '@angular/router/testing';
 
 @Component({ selector: 'app-navbar', template: '' })
 class NavbarStubComponent { }
@@ -11,6 +13,10 @@ class RouterOutletStubComponent { }
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule,
+        RouterTestingModule
+      ],
       declarations: [
         AppComponent,
         NavbarStubComponent,
@@ -29,5 +35,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(NavbarStubComponent);
     const navbar = fixture.debugElement.componentInstance;
     expect(navbar).toBeTruthy();
-  }))
+  }));
 });

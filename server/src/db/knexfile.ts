@@ -1,21 +1,43 @@
-import * as config from './config.json';
+import * as dotenv from 'dotenv';
+import { knexSnakeCaseMappers } from 'objection';
+
+dotenv.config({ path: '../../.env' });
 
 module.exports = {
-    development: {
+
+    test: {
         client: 'pg',
         connection: {
-            host: process.env.DB_HOST || config.host,
-            port: config.port,
-            user: config.user,
-            password: config.password,
-            database: config.database
+            host: process.env.DB_HOST,
+            port: process.env.DB_PORT,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME_TEST
         },
         migrations: {
             directory: __dirname + '/migrations'
         },
         seeds: {
             directory: __dirname + '/seeds'
-        }
+        },
+        ...knexSnakeCaseMappers()
+    },
+    development: {
+        client: 'pg',
+        connection: {
+            host: process.env.DB_HOST,
+            port: process.env.DB_PORT,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME
+        },
+        migrations: {
+            directory: __dirname + '/migrations'
+        },
+        seeds: {
+            directory: __dirname + '/seeds'
+        },
+        ...knexSnakeCaseMappers()
     },
     production: {
         client: 'pg',
@@ -31,6 +53,8 @@ module.exports = {
         },
         seeds: {
             directory: __dirname + '/seeds/production'
-        }
+        },
+        ...knexSnakeCaseMappers()
     }
+
 };

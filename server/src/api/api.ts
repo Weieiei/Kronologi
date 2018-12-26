@@ -1,58 +1,19 @@
+import express from 'express';
 
-import express from 'express'
-import { Admin } from '../models/user/Admin'
-const knex = require('../db/knex');
-import { Connection } from '../db/knex';
-const jwtWrapper = require('../models/JWTWrapper');
+import { db } from '../db/knex';
+import { Model } from 'objection';
 
-const authenticate = require('./routes/authenticate');
-const services = require('./routes/services');
+import { authenticate } from './routes/authenticate';
+import { services } from './routes/services';
+import { user } from './routes/user/user';
+import { admin } from './routes/admin/admin';
 
-const user = require('./routes/user/user');
-const admin = require('./routes/admin/admin');
+import { userMiddleware } from '../middlewares/user';
+import { adminMiddleware } from '../middlewares/admin';
 
 const api = express.Router();
-const error = 'Unauthorized request.';
 
-function userMiddleware(req, res, next) {
-    if (!req.headers.authorization) {
-        return res.status(401).send({ error });
-    }
-    
-    let token = req.headers.authorization.split(' ')[1];
-    if (token === 'null') {
-        return res.status(401).send({ error });
-    }
-    let payload = jwtWrapper.verifyToken(token);
-    if (!payload) {
-        return res.status(401).send({ error });
-    }
-    
-    req.userId = payload.subject;
-    next();
-}
-
-function adminMiddleware(req, res, next) {
-    const userId = req.userId;
-
-    const knex = new Connection().knex();
-
-    knex.select().from('users').where('id', userId).then(users => {
-        if (users.length === 0) {
-            res.status(401).send({ error });
-        }
-        else {
-            const user = users[0];
-            if (user.user_type === Admin.name) {
-                next();
-            }
-            else {
-                res.status(401).send({ error });
-            }
-        }
-    });
-}
-
+Model.knex(db);
 
 ///////////////
 // START OF API
@@ -64,4 +25,4 @@ api.use('/services', services);
 api.use('/user', userMiddleware, user);
 api.use('/admin', userMiddleware, adminMiddleware, admin);
 
-module.exports = api;
+export = api;

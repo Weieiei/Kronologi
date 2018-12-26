@@ -1,64 +1,164 @@
-export abstract class User{
+import { Model, JsonSchema, RelationMappings, snakeCaseMappers, ValidationError } from 'objection';
+import { Appointment } from '../appointment/Appointment';
+import { Service } from '../service/Service';
+import { EmployeeShift } from '../shift/EmployeeShift';
 
-	private _id: number;
-	private _firstName: string;
-	private _lastName: string;
-	private _email: string;
-	private _username: string;
-	private _password: string;
-	
-	constructor(firstName: string , lastName: string, email: string, username: string, password: string) {
-		this._firstName = firstName;
-		this._lastName = lastName;
-		this._email = email;
-		this._username = username;
-		this._password = password;
-	}
+export class User extends Model {
 
-	public getId(): number {
-		return this._id;
-	}
+    readonly id!: number;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    username?: string;
+    password?: string;
+    userType?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 
-	public getFirstName(): string {
-		return this._firstName;
-	}
+    clientAppointments?: Appointment[];
+    employeeAppointments?: Appointment[];
+    services?: Service[];
+    shifts?: EmployeeShift[];
 
-	public setFirstName(firstName: string) {
-		this._firstName = firstName;
-	}
+    static get tableName(): string {
+        return 'users';
+    }
 
-	public getLastName(): string {
-		return this._lastName;
-	}
+    static get columnNameMappers() {
+        return snakeCaseMappers();
+    }
 
-	public setLastName(lastName: string) {
-		this._lastName = lastName;
-	}
+    /**
+     * This is just a JSON schema, not the database schema.
+     * It's only used for validation, i.e. whenever a model instance is created.
+     */
+    static get jsonSchema(): JsonSchema {
+        return {
+            type: 'object',
+            required: ['firstName', 'lastName', 'email', 'username', 'password', 'userType'],
+            properties: {
+                id: { type: 'integer' },
+                firstName: { type: 'string' },
+                lastName: { type: 'string' },
+                email: { type: 'string' },
+                username: { type: 'string' },
+                password: { type: 'string' },
+                userType: { type: 'string' }
+            }
+        };
+    }
 
-	public getEmail(): string {
-		return this._email;
-	}
+    static get idColumn(): string {
+        return 'id';
+    }
 
-	public setEmail(email: string) {
-		this._email = email;
-	}
+    static get relationMappings(): RelationMappings {
+        return {
+            clientAppointments: {
+                relation: Model.HasManyRelation,
+                modelClass: Appointment,
+                join: {
+                    from: 'users.id',
+                    to: 'appointments.client_id'
+                }
+            },
+            employeeAppointments: {
+                relation: Model.HasManyRelation,
+                modelClass: Appointment,
+                join: {
+                    from: 'users.id',
+                    to: 'appointments.employee_id'
+                }
+            },
+            services: {
+                relation: Model.ManyToManyRelation,
+                modelClass: Service,
+                join: {
+                    from: 'users.id',
+                    through: {
+                        from: 'employee_service.employee_id',
+                        to: 'employee_service.service_id'
+                    },
+                    to: 'services.id'
+                }
+            },
+            shifts: {
+                relation: Model.HasManyRelation,
+                modelClass: EmployeeShift,
+                join: {
+                    from: 'users.id',
+                    to: 'employee_shifts.employee_id'
+                }
+            }
+        };
+    }
 
-	public getUsername(): string {
-		return this._username;
-	}
+    get fullName() {
+        return `${this.firstName} ${this.lastName}`;
+    }
 
-	public setUsername(username: string): void {
-		this._username = username;
-	}
+    async $beforeInsert() {
+        this.validateUserData();
+        await this.checkIfUserExists();
+        this.createdAt = new Date();
+    }
 
-	public getPassword(): string {
-		return this._password;
-	}
+    async $beforeUpdate() {
+        this.validateUserData();
+        await this.checkIfUserExists();
+        this.updatedAt = new Date();
+    }
 
-	public setPassword(password: string) {
-		this._password = password;
-	}
+    validateUserData() {
 
-	abstract getType(): string;
+        if (!this.firstName.length) {
+            throw new ValidationError({
+                message: 'First name should be at least 1 character long.',
+                type: 'FirstNameError'
+            });
+        }
+        else if (!this.lastName.length) {
+            throw new ValidationError({
+                message: 'Last name should be at least 1 character long.',
+                type: 'LastNameError'
+            });
+        }
+        else if (this.username.length < 4 || this.username.length > 30) {
+            throw new ValidationError({
+                message: 'Username should be between 4 and 30 characters.',
+                type: 'UsernameError'
+            });
+        }
+        else if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$/.test(this.email)) {
+            throw new ValidationError({
+                message: 'Please make sure to provide a valid email.',
+                type: 'EmailError'
+            });
+        }
+
+    }
+
+    async checkIfUserExists() {
+
+        const user = await User
+            .query().where({ username: this.username }).orWhere({ email: this.email })
+            .first();
+
+        if (user) {
+            if (user.username === this.username) {
+                throw new ValidationError({
+                    message: 'This username is taken.',
+                    type: 'UniqueUsernameError'
+                });
+            }
+            else if (user.email === this.email) {
+                throw new ValidationError({
+                    message: 'An account with this email already exists.',
+                    type: 'UniqueEmailError'
+                });
+            }
+        }
+
+    }
 
 }

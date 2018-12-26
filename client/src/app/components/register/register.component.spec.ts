@@ -6,45 +6,37 @@ import { MaterialModule } from 'src/app/material';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { User } from 'src/app/models/user/user';
+import { ShiftPickerComponent } from '../shift-picker/shift-picker.component';
 
 describe('RegisterComponent', () => {
-  let component: RegisterComponent;
-  let fixture: ComponentFixture<RegisterComponent>;
+    let component: RegisterComponent;
+    let fixture: ComponentFixture<RegisterComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        MaterialModule,
-        HttpClientModule,
-        RouterTestingModule,
-        BrowserAnimationsModule
-      ],
-      declarations: [ RegisterComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                FormsModule,
+                MaterialModule,
+                HttpClientModule,
+                RouterTestingModule,
+                BrowserAnimationsModule
+            ],
+            declarations: [
+                RegisterComponent,
+                ShiftPickerComponent
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(RegisterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(RegisterComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 
-  it('should register user', () => {
-    const user: User = new User();
-    user.firstName = 'Hello';
-    user.lastName = 'World';
-    user.email = 'test@test.com';
-    user.password = 'capstone';
-    component.repeatPassword = 'capstone';
-    component.registerUser();
-
-    expect(component.user).toBeTruthy();
-  });
 });

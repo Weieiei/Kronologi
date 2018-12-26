@@ -1,63 +1,74 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment/appointment.service';
-import { ServicesService } from 'src/app/services/services/services.service';
-import { Service } from 'src/app/interfaces/service';
+import { ServiceService } from 'src/app/services/service/service.service';
 import * as moment from 'moment';
-import { Appointment } from 'src/app/models/appointment/appointment';
 import { Router } from '@angular/router';
+import { CustomStepperComponent } from '../custom-stepper/custom-stepper.component';
+import { Service } from '../../models/service/Service';
+import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
 
 @Component({
-  selector: 'app-reserve',
-  templateUrl: './reserve.component.html',
-  styleUrls: ['./reserve.component.scss']
+    selector: 'app-reserve',
+    templateUrl: './reserve.component.html',
+    styleUrls: ['./reserve.component.scss']
 })
-
 export class ReserveComponent implements OnInit {
 
-  services: any[];
+    @ViewChild('stepper') stepper: CustomStepperComponent;
 
-  appointment: Appointment;
-  date: string;
-  startTime: string;
-  endTime: string;
+    services: Service[] = [];
 
-  constructor(
-    private appointmentService: AppointmentService,
-    private servicesService: ServicesService,
-    private router: Router
-  ) { }
+    appointment: AppointmentToBook;
+    date: Date;
+    endTime: string;
 
-  ngOnInit() {
-    this.appointment = new Appointment();
-    this.getServices();
-  }
+    employeeId: number;
+    serviceId: number;
+    startTime: Date;
+    notes: string;
 
-  getServices() {
-    this.servicesService.getServices().subscribe(
-      res => this.services = res,
-      err => console.log(err)
-    )
-  }
-
-  private findServiceById(id: number): Service {
-    return this.services.find(service => service.id == id);
-  }
-
-  updateEndTime() {
-    if (this.appointment.service_id != undefined && this.startTime != undefined) {
-      const service: Service = this.findServiceById(this.appointment.service_id);
-      const date = moment('2012-12-12 ' + this.startTime).add(service.duration, 'm');
-      this.endTime = date.format('HH:mm:ss');
+    constructor(
+        private appointmentService: AppointmentService,
+        private serviceService: ServiceService,
+        private router: Router
+    ) {
     }
-  }
 
-  makeAppointment(): void {
-    let date = moment(this.date).format('YYYY-MM-DD');
-    this.appointment.start_time = moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss');
-    this.appointmentService.reserveAppointment(this.appointment).subscribe(
-      res => this.router.navigate(['/my/appts']),
-      err => console.log(err)
-    )
-  }
+    ngOnInit() {
+        this.getServices();
+    }
+
+    getServices() {
+        this.serviceService.getServices().subscribe(
+            res => this.services = res,
+            err => console.log(err)
+        );
+    }
+
+    private findServiceById(id: number): Service {
+        return this.services.find(service => service.getId() === id);
+    }
+
+    updateEndTime() {
+        if (this.appointment.getServiceId() !== undefined && this.startTime !== undefined) {
+            const service: Service = this.findServiceById(this.appointment.getServiceId());
+            const date = moment('2012-12-12 ' + this.startTime).add(service.getDuration(), 'm');
+            this.endTime = date.format('HH:mm:ss');
+        }
+    }
+
+    makeAppointment(): void {
+        const date = moment(this.date).format('YYYY-MM-DD');
+        this.appointment.setStartTime(new Date(moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss')));
+        this.appointmentService.reserveAppointment(this.appointment).subscribe(
+            res => this.router.navigate(['/my/appts']),
+            err => console.log(err)
+        );
+    }
+
+    setDate(date: Date): void {
+        this.date = date;
+        this.stepper.next();
+    }
 
 }

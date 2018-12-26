@@ -20,21 +20,14 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
-    customLaunchers: {
-      Chrome_travis_ci: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', 'ChromeCanary'],
-    singleRun: true
+    browsers: ['Chrome'],
+    singleRun: false
   });
-  if(process.env.TRAVIS){
-    config.browsers = ['Chrome_travis_ci'];
-}
+
 };
+

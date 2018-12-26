@@ -1,0 +1,15 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button mat-icon-button (click)="previousMonth()">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+  </button>
+
+  <mat-form-field appearance="outline" fxFlex="30">
+    <mat-select [(ngModel)]="dropdownIndex" (selectionChange)="update()">
+      <mat-option *ngFor="let option of options" [value]="option.index">{{ MONTHS[option.month] }} {{ option.year }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-icon-button (click)="nextMonth()">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+</div>

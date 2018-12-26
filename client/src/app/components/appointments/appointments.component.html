@@ -1,44 +1,52 @@
-<div *ngIf="dataSource?.length">
+<div *ngIf="appointments?.length">
 
-  <p>You have {{ dataSource?.length }} client appointment(s):</p>
+    <p>You have {{ appointments?.length }} client appointment(s):</p>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <table mat-table [dataSource]="appointments" class="mat-elevation-z8">
 
-    <!-- Service Column -->
-    <ng-container matColumnDef="service">
-      <th mat-header-cell *matHeaderCellDef> Service </th>
-      <td mat-cell *matCellDef="let element"> {{element.service}} </td>
-    </ng-container>
+        <!-- Service Column -->
+        <ng-container matColumnDef="service">
+          <th mat-header-cell *matHeaderCellDef> Service </th>
+          <td mat-cell *matCellDef="let appointment"> {{ appointment.service.name }} </td>
+        </ng-container>
 
-    <!-- Date Column -->
-    <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef> Date </th>
-      <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-    </ng-container>
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let appointment"> {{ appointment.startTime | date: 'mediumDate' }} </td>
+        </ng-container>
 
-    <!-- Time Column -->
-    <ng-container matColumnDef="time">
-      <th mat-header-cell *matHeaderCellDef> Starts at </th>
-      <td mat-cell *matCellDef="let element"> {{element.time}} </td>
-    </ng-container>
+        <!-- Time Column -->
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef> Starts at </th>
+          <td mat-cell *matCellDef="let appointment"> {{ appointment.startTime | date: 'h:mm a' }} </td>
+        </ng-container>
 
-    <!-- Duration Column -->
-    <ng-container matColumnDef="duration">
-      <th mat-header-cell *matHeaderCellDef> Duration </th>
-      <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
-    </ng-container>
+        <!-- Duration Column -->
+        <ng-container matColumnDef="duration">
+          <th mat-header-cell *matHeaderCellDef> Duration </th>
+          <td mat-cell *matCellDef="let appointment"> {{ appointment.service.duration }} min. </td>
+        </ng-container>
 
-    <!-- User Column -->
-    <ng-container matColumnDef="user">
-      <th mat-header-cell *matHeaderCellDef> Customer </th>
-      <td mat-cell *matCellDef="let element"> {{element.user}} </td>
-    </ng-container>
+        <!-- Client Column -->
+        <ng-container matColumnDef="client">
+          <th mat-header-cell *matHeaderCellDef> Client </th>
+          <td mat-cell *matCellDef="let appointment"> {{ appointment.client.firstName + ' ' + appointment.client.lastName}} </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <!-- Employee Column -->
+        <ng-container matColumnDef="employee">
+            <th mat-header-cell *matHeaderCellDef> Employee </th>
+            <td mat-cell *matCellDef="let appointment"> {{ appointment.employee.firstName + ' ' + appointment.employee.lastName}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
 </div>
 
-<div *ngIf="!dataSource?.length">
-  <p>You currently do not have any client appointments.</p>
+<div *ngIf="!appointments?.length">
+    <p>You currently do not have any client appointments.</p>
 </div>
