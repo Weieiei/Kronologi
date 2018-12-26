@@ -19,7 +19,6 @@ import { UrlInterceptor } from './interceptor';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { ReserveComponent } from './components/reserve/reserve.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
-import { SidenavbarComponent } from './components/sidenavbar/sidenavbar.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,7 @@ import { SidenavbarComponent } from './components/sidenavbar/sidenavbar.componen
     AppointmentsComponent,
     LoginComponent,
     ReserveComponent,
-    MyAppointmentsComponent,
-    SidenavbarComponent
+    MyAppointmentsComponent
   ],
   imports: [
     BrowserModule,
