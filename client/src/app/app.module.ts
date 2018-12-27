@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material';
-import { FlexModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
@@ -51,7 +51,7 @@ import { TimePickerDialogComponent } from './components/shift-picker/time-picker
         FormsModule,
         BrowserAnimationsModule,
         MaterialModule,
-        FlexModule,
+        FlexLayoutModule,
         HttpClientModule
     ],
     entryComponents: [

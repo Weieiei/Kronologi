@@ -13,23 +13,25 @@ import { AdminGuard } from './guards/admin.guard';
 import { AuthService } from './services/auth/auth.service';
 
 const routes: Routes = [
-    { path: '', component: HomeComponent },
+    {path: '', component: HomeComponent},
+    {path: 'home', redirectTo: '', pathMatch: 'full'},
 
-    { path: 'home', redirectTo: '', pathMatch: 'full' },
-    { path: 'appointments', component: AppointmentsComponent, canActivate: [AuthGuard, AdminGuard] },
+    {path: 'appointments', component: AppointmentsComponent, canActivate: [AuthGuard, AdminGuard]},
 
-    { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
-    { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard], data: {
+    {path: 'login', component: LoginComponent, canActivate: [AnonymousGuard]},
+    {
+        path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard], data: {
             type: AuthService.registerClient,
             header: 'Sign Up for an Account',
             button: 'Create Account'
         }
     },
 
-    { path: 'reserve', component: ReserveComponent, canActivate: [AuthGuard] },
-    { path: 'my/appts', component: MyAppointmentsComponent, canActivate: [AuthGuard] },
+    {path: 'reserve', component: ReserveComponent, canActivate: [AuthGuard]},
+    {path: 'my/appts', component: MyAppointmentsComponent, canActivate: [AuthGuard]},
 
-    { path: 'add/employee', component: RegisterComponent, canActivate: [AuthGuard, AdminGuard], data: {
+    {
+        path: 'add/employee', component: RegisterComponent, canActivate: [AuthGuard, AdminGuard], data: {
             type: AuthService.registerEmployee,
             header: 'Create an Employee Account',
             button: 'Create Employee'

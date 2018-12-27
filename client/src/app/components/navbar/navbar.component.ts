@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { MatSidenav } from "@angular/material";
 
 @Component({
   selector: 'app-navbar',
@@ -7,6 +8,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+
+  @Input() sidenav: MatSidenav;
 
   constructor(public authService: AuthService) { }
 

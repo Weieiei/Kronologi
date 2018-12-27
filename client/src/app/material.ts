@@ -1,8 +1,17 @@
 import { NgModule } from '@angular/core';
 
 import {
-    MatButtonModule, MatCheckboxModule, MatIconModule, MatInputModule, MatListModule,
-    MatMenuModule, MatNativeDateModule, MatProgressBarModule, MatSelectModule, MatTableModule
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatTableModule
 } from '@angular/material';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,7 +39,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatProgressBarModule,
         MatListModule,
         MatDialogModule,
-        CdkStepperModule
+        CdkStepperModule,
+        MatSidenavModule
     ],
     exports: [
         MatButtonModule,
@@ -49,7 +59,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatProgressBarModule,
         MatListModule,
         MatDialogModule,
-        CdkStepperModule
+        CdkStepperModule,
+        MatSidenavModule
     ]
 })
 export class MaterialModule {
