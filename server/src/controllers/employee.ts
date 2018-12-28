@@ -15,7 +15,7 @@ export const createEmployee = async (req, res) => {
         validatePassword(password);
     }
     catch (error) {
-        return res.status(400).send({ error: error.message });
+        return res.status(400).send({ message: error.message });
     }
 
     try {
@@ -44,7 +44,7 @@ export const createEmployee = async (req, res) => {
         logger.error('employee registration failed', { error } );
 
         if (error instanceof ValidationError) {
-            return res.status(400).send({ error: error.message });
+            return res.status(400).send({ message: error.message });
         }
         else {
             return res.status(500).send({ error });

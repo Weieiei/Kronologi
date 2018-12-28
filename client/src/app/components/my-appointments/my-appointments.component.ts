@@ -3,26 +3,34 @@ import { AppointmentService } from '../../services/appointment/appointment.servi
 import { MyAppointment } from '../../models/appointment/MyAppointment';
 
 @Component({
-  selector: 'app-my-appointments',
-  templateUrl: './my-appointments.component.html',
-  styleUrls: ['./my-appointments.component.scss']
+    selector: 'app-my-appointments',
+    templateUrl: './my-appointments.component.html',
+    styleUrls: ['./my-appointments.component.scss']
 })
 export class MyAppointmentsComponent implements OnInit {
 
-  displayedColumns: string[] = ['service', 'employee', 'day', 'start', 'end', 'duration', 'notes'];
-  appointments: MyAppointment[] = [];
+    displayedColumns: string[] = ['service', 'employee', 'day', 'start', 'end', 'duration', 'notes', 'cancel'];
+    appointments: MyAppointment[] = [];
 
-  constructor(private appointmentService: AppointmentService) { }
+    constructor(private appointmentService: AppointmentService) {
+    }
 
-  ngOnInit() {
-    this.getMyAppointments();
-  }
+    ngOnInit() {
+        this.getMyAppointments();
+    }
 
-  getMyAppointments(): void {
-    this.appointmentService.getMyAppointments().subscribe(
-      res => this.appointments = res,
-      err => console.log(err)
-    );
-  }
+    getMyAppointments(): void {
+        this.appointmentService.getMyAppointments().subscribe(
+            res => this.appointments = res,
+            err => console.log(err)
+        );
+    }
+
+    cancelAppointment(appointmentId: number): void {
+        this.appointmentService.cancelAppointment(appointmentId).subscribe(
+            res => alert(res['message']),
+            err => alert(err.error.message)
+        );
+    }
 
 }

@@ -18,9 +18,9 @@ user.get('/appointments', getMyAppointments);
 user.post('/appointments', bookAppointment);
 
 /**
- * @route       POST api/user/appointments/:id/cancel
+ * @route       PUT api/user/appointments/:id/cancel
  * @description Cancel an appointment.
  * @param       id: id of the appointment.
  * @access      Private
  */
-user.post('/appointments/:id/cancel', cancelAppointment);
+user.put('/appointments/:id/cancel', cancelAppointment);
