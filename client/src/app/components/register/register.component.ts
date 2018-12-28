@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
     employeeShifts: EmployeeShiftTimes[];
 
     arr = Array;
-    numberOfShifts = 1;
+    numberOfShifts = 0;
 
     @ViewChild('firstNameInput') firstNameInput: ElementRef;
 

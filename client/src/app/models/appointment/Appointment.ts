@@ -7,12 +7,13 @@ export class Appointment {
     private startTime: Date;
     private endTime: Date;
     private notes: string;
+    private status: string;
     private readonly createdAt: Date;
     private readonly updatedAt: Date;
 
     public constructor(
         id: number, userId: number, employeeId: number, serviceId: number,
-        startTime: Date, endTime: Date, notes: string,
+        startTime: Date, endTime: Date, notes: string, status: string,
         createdAt: Date, updatedAt: Date
     ) {
         this.id = id;
@@ -22,6 +23,7 @@ export class Appointment {
         this.startTime = startTime;
         this.endTime = endTime;
         this.notes = notes;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -76,6 +78,14 @@ export class Appointment {
 
     public setNotes(notes: string): void {
         this.notes = notes;
+    }
+
+    public getStatus(): string {
+        return this.status;
+    }
+
+    public setStatus(status: string): void {
+        this.status = status;
     }
 
     public getCreatedAt(): Date {

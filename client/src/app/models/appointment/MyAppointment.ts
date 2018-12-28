@@ -9,11 +9,11 @@ export class MyAppointment extends Appointment {
 
     public constructor(
         id: number, userId: number, employeeId: number, serviceId: number,
-        startTime: Date, endTime: Date, notes: string,
+        startTime: Date, endTime: Date, notes: string, status: string,
         createdAt: Date, updatedAt: Date,
         employee: User, service: Service
     ) {
-        super(id, userId, employeeId, serviceId, startTime, endTime, notes, createdAt, updatedAt);
+        super(id, userId, employeeId, serviceId, startTime, endTime, notes, status, createdAt, updatedAt);
         this.employee = employee;
         this.service = service;
     }

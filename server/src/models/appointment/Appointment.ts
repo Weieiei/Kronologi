@@ -3,6 +3,7 @@ import { User } from '../user/User';
 import { Service } from '../service/Service';
 import moment from 'moment';
 import { UserType } from '../user/UserType';
+import { AppointmentStatus } from './AppointmentStatus';
 
 export class Appointment extends Model {
 
@@ -13,6 +14,7 @@ export class Appointment extends Model {
     startTime?: Date;
     endTime?: Date;
     notes?: string;
+    status?: string;
     createdAt?: Date;
     updatedAt?: Date;
 
@@ -129,6 +131,7 @@ export class Appointment extends Model {
             });
         }
 
+        this.status = AppointmentStatus.confirmed;
         this.createdAt = new Date();
 
     }
