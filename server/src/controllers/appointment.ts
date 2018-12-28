@@ -39,7 +39,7 @@ export const bookAppointment = async (req: RequestWrapper, res) => {
             .query()
             .insert({ clientId: userId, employeeId, serviceId, startTime: new Date(startTime), notes });
 
-        res.status(200).send({ message: 'Successfully booked.' });
+        return res.status(200).send({ message: 'Successfully booked.' });
 
     } catch (error) {
 
@@ -47,7 +47,7 @@ export const bookAppointment = async (req: RequestWrapper, res) => {
             return res.status(400).send({ error: error.message });
         }
         else {
-            res.status(500).send({ error });
+            return res.status(500).send({ error });
         }
 
     }
@@ -61,19 +61,36 @@ export const cancelAppointment = async (req: RequestWrapper, res) => {
 
     try {
 
+        /**
+         * In the beforeUpdate() method of the Appointment model, we will validate whether it's possible to cancel the appointment (i.e. if
+         * it's at least 24 hours in advance).
+         * The problem is that Objection.js doesn't have a way to update a row while grabbing the old values and use them in the
+         * beforeUpdate() method. So first we query the appointment, then patch (i.e. update) it.
+         * This will be solved in Objection 2.0.
+         */
+
         const appointment = await Appointment.query()
-            .patch({ status: AppointmentStatus.cancelled })
             .where({ id, clientId: userId, status: AppointmentStatus.confirmed })
             .first();
 
-        if (appointment) {
-            res.status(200).send({ message: 'Successfully cancelled appointment.' });
-        } else {
-            res.status(400).send({ error: 'Appointment not found.' });
+        if (!appointment) {
+            return res.status(400).send({ error: 'Appointment not found.' });
         }
 
+        await appointment.$query()
+            .patch({ status: AppointmentStatus.cancelled });
+
+        return res.status(200).send({ message: 'Successfully cancelled appointment.' });
+
     } catch (error) {
-        res.status(500).send({ error });
+
+        if (error instanceof ValidationError) {
+            return res.status(400).send({ error: error.message });
+        }
+        else {
+            return res.status(500).send({ error });
+        }
+
     }
 
 };
@@ -84,6 +101,6 @@ export const getAllAppointments = async (req, res) => {
         .query()
         .eager('[client, employee, service]');
 
-    res.status(200).send(appointments);
+    return res.status(200).send(appointments);
 
 };

@@ -77,7 +77,60 @@ export class Appointment extends Model {
 
     async $beforeInsert() {
 
-        // Check if you booked an appointment with yourself.
+        this.checkIfClientAndEmployeeAreTheSame();
+
+        const employee = await this.getEmployee();
+
+        const service = this.getService(employee);
+
+        this.endTime = new Date(moment(this.startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss'));
+
+        this.checkIfAppointmentFitsInShift(employee);
+
+        this.checkIfAppointmentConflictsWithAnother(employee);
+
+        this.status = AppointmentStatus.confirmed;
+        this.createdAt = new Date();
+
+    }
+
+    async $beforeUpdate(options) {
+
+        if (this.status !== AppointmentStatus.cancelled) {
+
+            this.checkIfClientAndEmployeeAreTheSame();
+
+            const employee = await this.getEmployee();
+
+            const service = this.getService(employee);
+
+            this.endTime = new Date(moment(this.startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss'));
+
+            this.checkIfAppointmentFitsInShift(employee);
+
+            this.checkIfAppointmentConflictsWithAnother(employee);
+
+        } else {
+
+            const oldAppointmentValues: Appointment = options.old;
+
+            if (oldAppointmentValues.startTime < new Date(moment(new Date()).add(24, 'hours').format())) {
+
+                throw new ValidationError({
+                    message: 'Appointments can only be cancelled at least 24 hours in advance.',
+                    type: 'CancellationError'
+                });
+
+            }
+
+        }
+
+        this.updatedAt = new Date();
+
+    }
+
+    checkIfClientAndEmployeeAreTheSame() {
+
         if (this.clientId === this.employeeId) {
             throw new ValidationError({
                 message: 'You cannot book an appointment with yourself.',
@@ -85,7 +138,10 @@ export class Appointment extends Model {
             });
         }
 
-        // Check if id of employee provided points to a user of type employee.
+    }
+
+    async getEmployee() {
+
         const employee = await User.query()
             .where({ id: this.employeeId })
             .first()
@@ -98,8 +154,14 @@ export class Appointment extends Model {
             });
         }
 
-        // Check if id of service provided exists in the employee's offered services.
+        return employee;
+
+    }
+
+    getService(employee: User) {
+
         const service = employee.services.find(service => service.id === this.serviceId);
+
         if (!service) {
             throw new ValidationError({
                 message: `${employee.fullName} doesn't provided the desired service.`,
@@ -107,10 +169,14 @@ export class Appointment extends Model {
             });
         }
 
-        this.endTime = new Date(moment(this.startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss'));
+        return service;
 
-        // Check if appointment's start and end times fit into one of the employee's shifts.
+    }
+
+    checkIfAppointmentFitsInShift(employee: User) {
+
         const shiftIndex = employee.shifts.findIndex(shift => shift.startTime <= this.startTime && shift.endTime >= this.endTime);
+
         if (shiftIndex === -1) {
             throw new ValidationError({
                 message: `This appointment does not fit into ${employee.fullName}'s schedule.`,
@@ -118,10 +184,14 @@ export class Appointment extends Model {
             });
         }
 
-        // Check if appointment conflicts with another in the employee's schedule.
+    }
+
+    checkIfAppointmentConflictsWithAnother(employee: User) {
+
         const appointmentIndex = employee.employeeAppointments.findIndex(appointment => {
             return !((appointment.startTime >= this.startTime && appointment.startTime >= this.endTime) ||
-                (appointment.endTime <= this.startTime && appointment.endTime <= this.endTime));
+                (appointment.endTime <= this.startTime && appointment.endTime <= this.endTime))
+                && appointment.status !== AppointmentStatus.cancelled;
         });
 
         if (appointmentIndex !== -1) {
@@ -131,11 +201,6 @@ export class Appointment extends Model {
             });
         }
 
-        this.status = AppointmentStatus.confirmed;
-        this.createdAt = new Date();
+    }
 
-    }
-    async $beforeUpdate() {
-        this.updatedAt = new Date();
-    }
 }
