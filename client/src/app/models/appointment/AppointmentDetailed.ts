@@ -4,9 +4,9 @@ import { Service } from '../service/Service';
 
 export class AppointmentDetailed extends Appointment {
 
-    private client: User;
-    private employee: User;
-    private service: Service;
+    public client: User;
+    public employee: User;
+    public service: Service;
 
     public constructor(
         id: number, userId: number, employeeId: number, serviceId: number,
@@ -17,30 +17,6 @@ export class AppointmentDetailed extends Appointment {
         super(id, userId, employeeId, serviceId, startTime, endTime, notes, status, createdAt, updatedAt);
         this.client = client;
         this.employee = employee;
-        this.service = service;
-    }
-
-    public getClient(): User {
-        return this.client;
-    }
-
-    public setClient(client: User): void {
-        this.client = client;
-    }
-
-    public getEmployee(): User {
-        return this.employee;
-    }
-
-    public setEmployee(employee: User): void {
-        this.employee = employee;
-    }
-
-    public getService(): Service {
-        return this.service;
-    }
-
-    public setService(service: Service): void {
         this.service = service;
     }
 

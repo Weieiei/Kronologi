@@ -1,16 +1,9 @@
+import { Appointment } from './Appointment';
 import { User } from '../user/User';
 import { Service } from '../service/Service';
 
-export class MyAppointment {
+export class MyAppointment extends Appointment {
 
-    public id: number;
-    public userId: number;
-    public employeeId: number;
-    public serviceId: number;
-    public startTime: Date;
-    public endTime: Date;
-    public notes: string;
-    public status: string;
     public employee: User;
     public service: Service;
 
@@ -20,14 +13,7 @@ export class MyAppointment {
         createdAt: Date, updatedAt: Date,
         employee: User, service: Service
     ) {
-        this.id = id;
-        this.userId = userId;
-        this.employeeId = employeeId;
-        this.serviceId = serviceId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.notes = notes;
-        this.status = status;
+        super(id, userId, employeeId, serviceId, startTime, endTime, notes, status, createdAt, updatedAt);
         this.employee = employee;
         this.service = service;
     }
