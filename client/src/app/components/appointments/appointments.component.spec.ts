@@ -10,6 +10,7 @@ import { Service } from '../../models/service/Service';
 import { User } from '../../models/user/User';
 import { UserType } from '../../models/user/UserType';
 import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
+import { AppointmentStatus } from '../../models/appointment/AppointmentStatus';
 
 describe('AppointmentsComponent', () => {
     let component: AppointmentsComponent;
@@ -43,10 +44,10 @@ describe('AppointmentsComponent', () => {
 
         const client = new User(1, 'John', 'Doe', 'john@doe.com', 'johndoe', '', UserType.client, new Date(), null);
         const employee = new User(2, 'Test', 'Employee', 'test@test.com', 'testing', '', UserType.employee, new Date(), null);
-        const service = new Service(1, 'Some service', 120);
+        const service = new Service(1, 'Some service', 120, new Date(), null);
 
-        const appointment1 = new AppointmentDetailed(1, 1, 2, 1, new Date(), new Date(), '', new Date(), null, client, employee, service);
-        const appointment2 = new AppointmentDetailed(2, 1, 2, 1, new Date(), new Date(), '', new Date(), null, client, employee, service);
+        const appointment1 = new AppointmentDetailed(1, 1, 2, 1, new Date(), new Date(), '', AppointmentStatus.confirmed, new Date(), null, client, employee, service);
+        const appointment2 = new AppointmentDetailed(2, 1, 2, 1, new Date(), new Date(), '', AppointmentStatus.confirmed, new Date(), null, client, employee, service);
 
         component.appointments = [appointment1, appointment2];
 
