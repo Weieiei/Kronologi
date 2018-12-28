@@ -8,12 +8,12 @@ export class MyAppointment extends Appointment {
     public service: Service;
 
     public constructor(
-        id: number, userId: number, employeeId: number, serviceId: number,
+        id: number, clientId: number, employeeId: number, serviceId: number,
         startTime: Date, endTime: Date, notes: string, status: string,
         createdAt: Date, updatedAt: Date,
         employee: User, service: Service
     ) {
-        super(id, userId, employeeId, serviceId, startTime, endTime, notes, status, createdAt, updatedAt);
+        super(id, clientId, employeeId, serviceId, startTime, endTime, notes, status, createdAt, updatedAt);
         this.employee = employee;
         this.service = service;
     }

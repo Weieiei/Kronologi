@@ -1,7 +1,7 @@
 export class Appointment {
 
     public readonly id: number;
-    public userId: number;
+    public clientId: number;
     public employeeId: number;
     public serviceId: number;
     public startTime: Date;
@@ -12,12 +12,12 @@ export class Appointment {
     public readonly updatedAt: Date;
 
     public constructor(
-        id: number, userId: number, employeeId: number, serviceId: number,
+        id: number, clientId: number, employeeId: number, serviceId: number,
         startTime: Date, endTime: Date, notes: string, status: string,
         createdAt: Date, updatedAt: Date
     ) {
         this.id = id;
-        this.userId = userId;
+        this.clientId = clientId;
         this.employeeId = employeeId;
         this.serviceId = serviceId;
         this.startTime = startTime;

@@ -34,7 +34,7 @@ export class MyAppointmentsComponent implements OnInit {
                     const service = a.service;
 
                     return new MyAppointment(
-                        a.id, a.userId, a.employeeId, a.serviceId,
+                        a.id, a.clientId, a.employeeId, a.serviceId,
                         a.startTime, a.endTime, a.notes, a.status,
                         a.createdAt, a.updatedAt,
                         new User(
