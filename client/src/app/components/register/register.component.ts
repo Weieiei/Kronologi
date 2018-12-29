@@ -6,6 +6,7 @@ import { Service } from '../../models/service/Service';
 import { ServiceService } from '../../services/service/service.service';
 import { EmployeeRegister } from '../../models/user/EmployeeRegister';
 import { EmployeeShiftTimes } from '../../models/shift/EmployeeShiftTimes';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-register',
@@ -42,7 +43,7 @@ export class RegisterComponent implements OnInit {
     employeeShifts: EmployeeShiftTimes[];
 
     arr = Array;
-    numberOfShifts = 1;
+    numberOfShifts = 0;
 
     @ViewChild('firstNameInput') firstNameInput: ElementRef;
 
@@ -111,7 +112,9 @@ export class RegisterComponent implements OnInit {
     }
 
     getServices(): void {
-        this.serviceService.getServices().subscribe(
+        this.serviceService.getServices().pipe(
+            map(data => data.map(s => new Service(s.id, s.name, s.duration, s.createdAt, s.updatedAt)))
+        ).subscribe(
             res => this.services = res,
             err => console.log(err)
         );
@@ -126,7 +129,7 @@ export class RegisterComponent implements OnInit {
         /**
          * A user might modify an already set shift, so if that's the case, we delete the old one first.
          */
-        const shiftIndex = this.employeeShifts.findIndex(s => s.getNumber() === shift.getNumber());
+        const shiftIndex = this.employeeShifts.findIndex(s => s.number === shift.number);
         if (shiftIndex !== -1) {
             this.employeeShifts.splice(shiftIndex, 1);
         }

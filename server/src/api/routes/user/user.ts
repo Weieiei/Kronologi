@@ -1,5 +1,5 @@
 import express from 'express';
-import { bookAppointment, getMyAppointments } from '../../../controllers/appointment';
+import { bookAppointment, cancelAppointment, getMyAppointments } from '../../../controllers/appointment';
 
 export const user = express.Router();
 
@@ -16,3 +16,11 @@ user.get('/appointments', getMyAppointments);
  * @access      Private
  */
 user.post('/appointments', bookAppointment);
+
+/**
+ * @route       PUT api/user/appointments/:id/cancel
+ * @description Cancel an appointment.
+ * @param       id: id of the appointment.
+ * @access      Private
+ */
+user.put('/appointments/:id/cancel', cancelAppointment);
