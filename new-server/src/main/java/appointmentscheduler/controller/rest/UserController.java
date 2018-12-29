@@ -46,7 +46,7 @@ public class UserController {
                     // todo return a tokenDTO instead of a user, because we don't want to store the password (and maybe other fields) in the token
                     final String token = jwtHelper.createJWT("1", "Me", mapper.writeValueAsString(user), 1000);
 
-                    return ResponseEntity.ok(token);
+                    return ResponseEntity.ok("{\"token\" : \"" + token + "\"}");
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
