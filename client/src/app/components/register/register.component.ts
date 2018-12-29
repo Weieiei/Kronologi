@@ -113,11 +113,9 @@ export class RegisterComponent implements OnInit {
 
     getServices(): void {
         this.serviceService.getServices().pipe(
-            map(data => {
-                this.services = data.map(s => new Service(s.id, s.name, s.duration, s.createdAt, s.updatedAt));
-            })
+            map(data => data.map(s => new Service(s.id, s.name, s.duration, s.createdAt, s.updatedAt)))
         ).subscribe(
-            res => void 0,
+            res => this.services = res,
             err => console.log(err)
         );
     }

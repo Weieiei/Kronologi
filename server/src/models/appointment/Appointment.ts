@@ -78,15 +78,12 @@ export class Appointment extends Model {
     async $beforeInsert() {
 
         this.checkIfClientAndEmployeeAreTheSame();
-
         const employee = await this.getEmployee();
-
         const service = this.getService(employee);
 
         this.endTime = new Date(moment(this.startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss'));
 
         this.checkIfAppointmentFitsInShift(employee);
-
         this.checkIfAppointmentConflictsWithAnother(employee);
 
         this.status = AppointmentStatus.confirmed;
@@ -99,15 +96,12 @@ export class Appointment extends Model {
         if (this.status !== AppointmentStatus.cancelled) {
 
             this.checkIfClientAndEmployeeAreTheSame();
-
             const employee = await this.getEmployee();
-
             const service = this.getService(employee);
 
             this.endTime = new Date(moment(this.startTime).add(service.duration, 'm').format('YYYY-MM-DD HH:mm:ss'));
 
             this.checkIfAppointmentFitsInShift(employee);
-
             this.checkIfAppointmentConflictsWithAnother(employee);
 
         } else {

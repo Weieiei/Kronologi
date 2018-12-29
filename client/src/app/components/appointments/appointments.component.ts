@@ -26,7 +26,7 @@ export class AppointmentsComponent implements OnInit {
         this.appointmentService.getAllAppointments().pipe(
             map(data => {
 
-                this.appointments = data.map(a => {
+                return data.map(a => {
 
                     const client = a.client;
                     const employee = a.employee;
@@ -56,7 +56,7 @@ export class AppointmentsComponent implements OnInit {
 
             })
         ).subscribe(
-            res => void 0,
+            res => this.appointments = res,
             err => console.log(err)
         );
     }
