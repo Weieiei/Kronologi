@@ -1,15 +1,10 @@
-import * as dotenv from 'dotenv';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { db } from '../src/db/knex';
-import { User } from '../src/models/user/User';
 import { Model } from 'objection';
+import { User } from '../src/models/user/User';
 
 Model.knex(db);
-
-dotenv.config({ path: '../.env' });
-process.env.NODE_ENV = 'test';
-
 chai.use(chaiHttp);
 
 describe('the functionality of POST api/authenticate/login', () => {
