@@ -27,6 +27,7 @@ import { MonthPickerComponent } from './components/scheduler/month-picker/month-
 import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
 import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
 import { TimePickerDialogComponent } from './components/shift-picker/time-picker-dialog/time-picker-dialog.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { TimePickerDialogComponent } from './components/shift-picker/time-picker
         MonthPickerComponent,
         CustomStepperComponent,
         ShiftPickerComponent,
-        TimePickerDialogComponent
+        TimePickerDialogComponent,
+        DashboardComponent
     ],
     imports: [
         BrowserModule,

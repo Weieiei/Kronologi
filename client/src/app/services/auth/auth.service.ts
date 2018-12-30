@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import * as decode from 'jwt-decode';
-import { UserLogin } from '../../models/user/UserLogin';
 import { UserRegister } from '../../models/user/UserRegister';
 import { UserType } from '../../models/user/UserType';
+import { UserLoginDTO } from '../../interfaces/login-user-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -37,8 +37,9 @@ export class AuthService {
         return this.http.post<UserRegister>(['api', 'admin', 'employees', 'register'].join('/'), { employee });
     }
 
-    loginUser(user: UserLogin): Observable<UserLogin> {
-        return this.http.post<UserLogin>(['api', 'authenticate', 'login'].join('/'), { user });
+    login(username: string, password: string): Observable<any> {
+        const payload: UserLoginDTO = {username, password};
+        return this.http.post(['api', 'user', 'login'].join('/'), payload);
     }
 
     loggedIn(): boolean {

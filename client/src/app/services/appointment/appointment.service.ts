@@ -6,21 +6,22 @@ import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
 import { MyAppointment } from '../../models/appointment/MyAppointment';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AppointmentService {
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
-  public getMyAppointments(): Observable<MyAppointment[]> {
-    return this.http.get<MyAppointment[]>(['api', 'user', 'appointments'].join('/'));
-  }
+    public getMyAppointments(): Observable<MyAppointment[]> {
+        return this.http.get<MyAppointment[]>(['api', 'user', 'appointments'].join('/'));
+    }
 
-  public getAllAppointments(): Observable<AppointmentDetailed[]> {
-    return this.http.get<AppointmentDetailed[]>(['api', 'admin', 'appointments'].join('/'));
-  }
+    public getAllAppointments(): Observable<AppointmentDetailed[]> {
+        return this.http.get<AppointmentDetailed[]>(['api', 'admin', 'appointments'].join('/'));
+    }
 
-  public reserveAppointment(appointment: AppointmentToBook): Observable<any> {
-    return this.http.post<AppointmentToBook>(['api', 'user', 'appointments'].join('/'), appointment);
-  }
+    public reserveAppointment(appointment: AppointmentToBook): Observable<any> {
+        return this.http.post<AppointmentToBook>(['api', 'user', 'appointments'].join('/'), appointment);
+    }
 }
