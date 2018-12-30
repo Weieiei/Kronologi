@@ -1,7 +1,7 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.UserLoginDTO;
-import appointmentscheduler.entity.User;
+import appointmentscheduler.entity.user.User;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;

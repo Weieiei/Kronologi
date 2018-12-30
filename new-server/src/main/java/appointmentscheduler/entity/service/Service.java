@@ -1,7 +1,8 @@
-package appointmentscheduler.entity;
+package appointmentscheduler.entity.service;
+
+import appointmentscheduler.entity.Timestamps;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "services")

@@ -1,4 +1,4 @@
-package appointmentscheduler.entity;
+package appointmentscheduler.entity.user;
 
 public enum UserType {
 

@@ -1,9 +1,9 @@
 package appointmentscheduler.repository;
 
-import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.appointment.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ServiceRepository extends JpaRepository<Service, Long> {
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 }

@@ -1,8 +1,10 @@
 package appointmentscheduler.seed;
 
-import appointmentscheduler.entity.Service;
-import appointmentscheduler.entity.User;
-import appointmentscheduler.entity.UserType;
+import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.user.UserType;
+import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Component
 public class Seed {
@@ -25,21 +26,25 @@ public class Seed {
     private ServiceRepository serviceRepository;
 
     @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @EventListener
     public void seed(ContextRefreshedEvent event) {
 
-        boolean adminExists = userRepository.findUserByUserType(UserType.admin) != null;
+        boolean adminExists = userRepository.findUserByUserType(UserType.admin).size() > 0;
 
         if (!adminExists) {
-            seedUsers();
-            seedServices();
+            seedAdminAndClients();
+            seedEmployeeAndServices();
+            seedAppointments();
         }
 
     }
 
-    public void seedUsers() {
+    public void seedAdminAndClients() {
 
         User admin = new User(
                 "Admin", "User", "admin@admin.com",
@@ -56,16 +61,11 @@ public class Seed {
                 "test", hash("test123"), UserType.client
         );
 
-        User employee = new User(
-                "Employee", "User", "employee@employee.com",
-                "employee", hash("employee123"), UserType.employee
-        );
-
-        userRepository.saveAll(Arrays.asList(admin, client1, client2, employee));
+        userRepository.saveAll(Arrays.asList(admin, client1, client2));
 
     }
 
-    public void seedServices() {
+    public void seedEmployeeAndServices() {
 
         List<Service> services = new ArrayList<>();
 
@@ -87,6 +87,38 @@ public class Seed {
         services.add(new Service("RECONNECT WITH YOUR BODY", 210));
 
         serviceRepository.saveAll(services);
+
+        User employee = new User(
+                "Employee", "User", "employee@employee.com",
+                "employee", hash("employee123"), UserType.employee
+        );
+
+        employee.setEmployeeServices(Arrays.asList(
+                services.get(0), services.get(1), services.get(3),
+                services.get(6), services.get(8), services.get(11)
+        ));
+
+        userRepository.save(employee);
+
+    }
+
+    public void seedAppointments() {
+
+        List<User> clients = userRepository.findUserByUserType(UserType.client);
+        User employee = userRepository.findUserByUserType(UserType.employee).get(0);
+        List<Service> services = serviceRepository.findAll();
+
+        Appointment appointment = new Appointment(
+                clients.get(0), employee, services.get(11),
+                LocalDateTime.of(2019, 11, 30, 12, 0), "Some note"
+        );
+
+        Appointment appointment2 = new Appointment(
+                clients.get(1), employee, services.get(6),
+                LocalDateTime.of(2019, 12, 2, 12, 0), "Some note"
+        );
+
+        appointmentRepository.saveAll(Arrays.asList(appointment, appointment2));
 
     }
 
