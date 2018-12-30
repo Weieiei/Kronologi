@@ -5,7 +5,8 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends Timestamps {
+
     @Id
     @GeneratedValue(generator = "users_id_sequence", strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "users_id_sequence", sequenceName = "users_id_seq")
@@ -27,13 +28,20 @@ public class User {
     private String password;
 
     @Column(name = "user_type")
-    private String userType;
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
-    @Column(name = "created_at")
-    private Timestamp createdAt;
+    // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
+    public User() { }
 
-    @Column(name = "updated_at")
-    private Timestamp updatedAt;
+    public User(String firstName, String lastName, String email, String username, String password, UserType userType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.userType = userType;
+    }
 
     public long getId() {
         return id;
@@ -83,27 +91,12 @@ public class User {
         this.password = password;
     }
 
-    public String getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

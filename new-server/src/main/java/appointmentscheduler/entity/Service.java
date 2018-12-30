@@ -5,7 +5,8 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "services")
-public class Service {
+public class Service extends Timestamps {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -16,11 +17,12 @@ public class Service {
     @Column(name = "duration")
     private int duration;
 
-    @Column(name = "created_at")
-    private Timestamp createdAt;
+    public Service() { }
 
-    @Column(name = "updated_at")
-    private Timestamp updatedAt;
+    public Service(String name, int duration) {
+        this.name = name;
+        this.duration = duration;
+    }
 
     public long getId() {
         return id;
@@ -46,19 +48,4 @@ public class Service {
         this.duration = duration;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
