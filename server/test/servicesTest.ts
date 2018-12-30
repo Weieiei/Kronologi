@@ -1,4 +1,3 @@
-import * as dotenv from 'dotenv';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { db } from '../src/db/knex';
@@ -6,10 +5,6 @@ import { Model } from 'objection';
 import { Service } from '../src/models/service/Service';
 
 Model.knex(db);
-
-dotenv.config({ path: '../.env' });
-process.env.NODE_ENV = 'test';
-
 chai.use(chaiHttp);
 
 describe('the functionality of GET api/services', () => {

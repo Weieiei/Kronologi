@@ -1,11 +1,8 @@
 import * as dotenv from 'dotenv';
 import { knexSnakeCaseMappers } from 'objection';
 
-// adding these 2 variables to have the full path, otherwise the file cannot be read when running the mocha tests
-const fullpath = __dirname;
-const path = fullpath.substring(0, fullpath.indexOf('AppointmentScheduler') + 'AppointmentScheduler'.length) + '/server/.env';
-
-dotenv.config({ path });
+dotenv.config({ path: '../../.env' });
+dotenv.config();            // need this line for tests
 
 module.exports = {
 
