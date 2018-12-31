@@ -33,12 +33,6 @@ public class User extends Timestamps {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
-    private List<Appointment> clientAppointments;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-    private List<Appointment> employeeAppointments;
-
     @JoinTable(
             name = "employee_services",
             joinColumns = { @JoinColumn(name = "employee_id") },
@@ -46,9 +40,6 @@ public class User extends Timestamps {
     )
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Service> employeeServices;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-    private List<Shift> employeeShifts;
 
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
@@ -109,36 +100,12 @@ public class User extends Timestamps {
         this.userType = userType;
     }
 
-    public List<Appointment> getClientAppointments() {
-        return clientAppointments;
-    }
-
-    public void setClientAppointments(List<Appointment> clientAppointments) {
-        this.clientAppointments = clientAppointments;
-    }
-
-    public List<Appointment> getEmployeeAppointments() {
-        return employeeAppointments;
-    }
-
-    public void setEmployeeAppointments(List<Appointment> employeeAppointments) {
-        this.employeeAppointments = employeeAppointments;
-    }
-
     public List<Service> getEmployeeServices() {
         return employeeServices;
     }
 
     public void setEmployeeServices(List<Service> employeeServices) {
         this.employeeServices = employeeServices;
-    }
-
-    public List<Shift> getEmployeeShifts() {
-        return employeeShifts;
-    }
-
-    public void setEmployeeShifts(List<Shift> employeeShifts) {
-        this.employeeShifts = employeeShifts;
     }
 
 }
