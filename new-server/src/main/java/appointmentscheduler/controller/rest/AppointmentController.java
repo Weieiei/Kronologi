@@ -1,5 +1,7 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.converters.appointment.AppointmentDTOToAppointment;
+import appointmentscheduler.dto.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.service.appointment.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,10 @@ import org.springframework.web.bind.annotation.*;
 public class AppointmentController {
 
     @Autowired
-    AppointmentService appointmentService;
+    private AppointmentService appointmentService;
+
+    @Autowired
+    private AppointmentDTOToAppointment appointmentConverter;
 
     @GetMapping
     public Page<Appointment> findAll(Pageable pageable) {
@@ -26,12 +31,14 @@ public class AppointmentController {
     }
 
     @PostMapping
-    public Appointment add(@RequestBody Appointment appointment) {
+    public Appointment add(@RequestBody AppointmentDTO appointmentDTO) {
+        Appointment appointment = appointmentConverter.convert(appointmentDTO);
         return appointmentService.add(appointment);
     }
 
     @PutMapping("/{id}")
-    public Appointment update(@PathVariable long id, Appointment appointment) {
+    public Appointment update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) {
+        Appointment appointment = appointmentConverter.convert(appointmentDTO);
         return appointmentService.update(id, appointment);
     }
 
