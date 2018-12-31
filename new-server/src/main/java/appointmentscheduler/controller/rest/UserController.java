@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping("login")
     public ResponseEntity<String> login(@RequestBody UserLoginDTO userLoginDTO) {
         // find user by email
-        final User user = userRepository.findUserByEmail(userLoginDTO.getUsername());
+        final User user = userRepository.findUserByEmail(userLoginDTO.getEmail());
 
         if (user != null) {
             // check password

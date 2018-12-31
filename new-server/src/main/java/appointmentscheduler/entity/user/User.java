@@ -26,9 +26,6 @@ public class User extends Timestamps {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "password")
     private String password;
 
@@ -56,11 +53,10 @@ public class User extends Timestamps {
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
 
-    public User(String firstName, String lastName, String email, String username, String password, UserType userType) {
+    public User(String firstName, String lastName, String email, String password, UserType userType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.username = username;
         this.password = password;
         this.userType = userType;
     }
@@ -95,14 +91,6 @@ public class User extends Timestamps {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {

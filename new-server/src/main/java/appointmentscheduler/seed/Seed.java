@@ -52,18 +52,18 @@ public class Seed {
     public void seedAdminAndClients() {
 
         User admin = new User(
-                "Admin", "User", "admin@admin.com",
-                "admin", hash("admin123"), UserType.admin
+                "Admin", "User",
+                "admin@admin.com", hash("admin123"), UserType.admin
         );
 
         User client1 = new User(
-                "John", "Doe", "johndoe@johndoe.com",
-                "johndoe", hash("johndoe123"), UserType.client
+                "John", "Doe",
+                "johndoe@johndoe.com", hash("johndoe123"), UserType.client
         );
 
         User client2 = new User(
-                "Test", "User", "test@test.com",
-                "test", hash("test123"), UserType.client
+                "Test", "User",
+                "test@test.com", hash("test123"), UserType.client
         );
 
         userRepository.saveAll(Arrays.asList(admin, client1, client2));
@@ -94,8 +94,8 @@ public class Seed {
         serviceRepository.saveAll(services);
 
         User employee = new User(
-                "Employee", "User", "employee@employee.com",
-                "employee", hash("employee123"), UserType.employee
+                "Employee", "User",
+                "employee@employee.com", hash("employee123"), UserType.employee
         );
 
         employee.setEmployeeServices(Arrays.asList(
