@@ -120,15 +120,17 @@ public class Appointment extends Timestamps {
 
     @PrePersist
     public void beforeInsert() {
-        this.endTime = startTime.plusMinutes(this.service.getDuration());
+        adjustEndTime();
         this.status = AppointmentStatus.confirmed;
     }
 
     @PreUpdate
     public void beforeUpdate() {
-        // TODO
-        // no need to specify this.updatedAt = new Date()
-        // Spring will do that for us
+        adjustEndTime();
+    }
+
+    private void adjustEndTime() {
+        this.endTime = startTime.plusMinutes(this.service.getDuration());
     }
 
 }

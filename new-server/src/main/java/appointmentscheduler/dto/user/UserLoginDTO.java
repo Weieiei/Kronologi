@@ -1,4 +1,4 @@
-package appointmentscheduler.dto;
+package appointmentscheduler.dto.user;
 
 public class UserLoginDTO {
 

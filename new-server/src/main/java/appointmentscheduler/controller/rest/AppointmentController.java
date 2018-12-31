@@ -1,7 +1,7 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.converters.appointment.AppointmentDTOToAppointment;
-import appointmentscheduler.dto.AppointmentDTO;
+import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.service.appointment.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;

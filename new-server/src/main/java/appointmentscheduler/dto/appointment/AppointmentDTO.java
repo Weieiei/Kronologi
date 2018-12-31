@@ -1,4 +1,4 @@
-package appointmentscheduler.dto;
+package appointmentscheduler.dto.appointment;
 
 public class AppointmentDTO {
 
