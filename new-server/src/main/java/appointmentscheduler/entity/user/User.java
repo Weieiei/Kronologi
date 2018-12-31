@@ -3,6 +3,7 @@ package appointmentscheduler.entity.user;
 import appointmentscheduler.entity.Timestamps;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.shift.Shift;
 
 import javax.persistence.*;
 import java.util.List;
@@ -48,6 +49,9 @@ public class User extends Timestamps {
     )
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Service> employeeServices;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    private List<Shift> employeeShifts;
 
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
@@ -139,6 +143,14 @@ public class User extends Timestamps {
 
     public void setEmployeeServices(List<Service> employeeServices) {
         this.employeeServices = employeeServices;
+    }
+
+    public List<Shift> getEmployeeShifts() {
+        return employeeShifts;
+    }
+
+    public void setEmployeeShifts(List<Shift> employeeShifts) {
+        this.employeeShifts = employeeShifts;
     }
 
 }

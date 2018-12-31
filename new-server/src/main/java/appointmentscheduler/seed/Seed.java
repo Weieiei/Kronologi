@@ -2,10 +2,12 @@ package appointmentscheduler.seed;
 
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.user.UserType;
 import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.ServiceRepository;
+import appointmentscheduler.repository.ShiftRepository;
 import appointmentscheduler.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -29,6 +31,9 @@ public class Seed {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
+    private ShiftRepository shiftRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @EventListener
@@ -38,7 +43,7 @@ public class Seed {
 
         if (!adminExists) {
             seedAdminAndClients();
-            seedEmployeeAndServices();
+            seedEmployeeServicesAndShifts();
             seedAppointments();
         }
 
@@ -65,7 +70,7 @@ public class Seed {
 
     }
 
-    public void seedEmployeeAndServices() {
+    public void seedEmployeeServicesAndShifts() {
 
         List<Service> services = new ArrayList<>();
 
@@ -98,7 +103,33 @@ public class Seed {
                 services.get(6), services.get(8), services.get(11)
         ));
 
+        employee.setEmployeeShifts(Arrays.asList(
+                new Shift(
+                        employee,
+                        LocalDateTime.of(2019, 11, 30, 12, 0),
+                        LocalDateTime.of(2019, 11, 30, 21, 0)
+                ),
+                new Shift(
+                        employee,
+                        LocalDateTime.of(2019, 12, 02, 12, 0),
+                        LocalDateTime.of(2019, 12, 02, 21, 0)
+                )
+        ));
+
+        List<Shift> shifts = new ArrayList<>();
+        shifts.add(new Shift(
+                employee,
+                LocalDateTime.of(2019, 11, 30, 12, 0),
+                LocalDateTime.of(2019, 11, 30, 21, 0)
+        ));
+        shifts.add(new Shift(
+                employee,
+                LocalDateTime.of(2019, 12, 02, 12, 0),
+                LocalDateTime.of(2019, 12, 01, 21, 0)
+        ));
+
         userRepository.save(employee);
+        shiftRepository.saveAll(shifts);
 
     }
 
