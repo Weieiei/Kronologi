@@ -18,7 +18,7 @@ public class UserLoginDTOToUser implements Converter<UserLoginDTO, User> {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final String INCORRECT_CREDENTIALS = "Incorrect email and/or password";
+    private final String INCORRECT_CREDENTIALS = "Incorrect email and/or password.";
 
     @Override
     public User convert(UserLoginDTO userLoginDTO) {
