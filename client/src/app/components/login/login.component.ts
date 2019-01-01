@@ -1,8 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
-import { UserLogin } from '../../models/user/UserLogin';
-import { UserLoginDTO } from '../../interfaces/login-user-dto';
 
 @Component({
     selector: 'app-login',
@@ -14,7 +12,7 @@ export class LoginComponent implements OnInit {
     username: string;
     password: string;
 
-    private isPasswordVisible = false;
+    isPasswordVisible = false;
 
     constructor(private authService: AuthService,
                 private router: Router) {

@@ -1,30 +1,37 @@
-.user.form {
-    display: flex;
-    flex-direction: column;
-}
+.container {
+    padding: 50px;
 
-.user.form .field {
-    padding-bottom: .3rem;
-}
+    .visibility-icon {
+        margin-top: 16px;
+    }
 
-.user.form button[type=submit] {
-    margin-top: 1rem;
-}
+    .hint {
+        font-size: 12px;
+        padding-left: 12px;
+        color: rgba(0, 0, 0, 0.6);
+    }
 
-.name.fields {
-    display: flex;
-    flex-direction: row;
-    padding-bottom: .3rem;
-}
+    .title {
+        font-size: 20px;
+    }
 
-.name.fields > * {
-    width: 50%;
-}
+    .buttons {
+        margin-top: 20px;
 
-.name.fields > #firstname {
-    padding-right: 0.25em;
-}
+        button {
+            font-weight: bold;
+        }
+    }
 
-.name.fields > #lastname {
-    padding-left: 0.25em;
+    .passwords-container {
+        margin-top: 12px;
+
+        .no-mat-padding {
+            ::ng-deep {
+                .mat-form-field-wrapper {
+                    padding-bottom: 0;
+                }
+            }
+        }
+    }
 }

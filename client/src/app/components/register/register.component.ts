@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ActivatedRoute, Data, Router } from '@angular/router';
-import { UserRegister } from '../../models/user/UserRegister';
 import { Service } from '../../models/service/Service';
 import { ServiceService } from '../../services/service/service.service';
-import { EmployeeRegister } from '../../models/user/EmployeeRegister';
 import { EmployeeShiftTimes } from '../../models/shift/EmployeeShiftTimes';
+import { UserRegisterDTO } from '../../interfaces/user-register-dto';
 
 @Component({
     selector: 'app-register',
@@ -22,16 +21,14 @@ export class RegisterComponent implements OnInit {
      */
     data: Data;
 
-    user: UserRegister;
-    employee: EmployeeRegister;
+    user: UserRegisterDTO;
 
     firstName: string;
     lastName: string;
     email: string;
-    username: string;
     password: string;
 
-    repeatPassword: string;
+    confirmPassword: string;
 
     /**
      * First get the list of all services offered by the spa.
@@ -44,7 +41,7 @@ export class RegisterComponent implements OnInit {
     arr = Array;
     numberOfShifts = 1;
 
-    @ViewChild('firstNameInput') firstNameInput: ElementRef;
+    isPasswordVisible = false;
 
     constructor(
         private authService: AuthService,
@@ -63,15 +60,14 @@ export class RegisterComponent implements OnInit {
                 this.employeeShifts = [];
             }
         });
-        this.firstNameInput.nativeElement.focus();
     }
 
     registerUser(): void {
 
-        if (this.password === this.repeatPassword) {
+        if (this.password === this.confirmPassword) {
 
             if (this.data.type === AuthService.registerClient) {
-                this.registerClient();
+                this.register();
             } else if (this.data.type === AuthService.registerEmployee) {
                 this.registerEmployee();
             }
@@ -82,11 +78,15 @@ export class RegisterComponent implements OnInit {
 
     }
 
-    registerClient(): void {
+    register(): void {
+        this.user = {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            password: this.password
+        };
 
-        this.user = new UserRegister(this.firstName, this.lastName, this.email, this.username, this.password);
-
-        this.authService.registerClient(this.user).subscribe(
+        this.authService.register(this.user).subscribe(
             res => {
                 this.authService.setToken(res['token']);
                 this.authService.verifyAdminStatus();
@@ -94,19 +94,18 @@ export class RegisterComponent implements OnInit {
             },
             err => console.log(err)
         );
-
     }
 
     registerEmployee(): void {
 
-        this.employee = new EmployeeRegister(
-            this.firstName, this.lastName, this.email, this.username, this.password, this.employeeServices, this.employeeShifts
-        );
-
+        // this.employee = new EmployeeRegister(
+        //     this.firstName, this.lastName, this.email, this.password, this.employeeServices, this.employeeShifts
+        // );
+/*
         this.authService.registerEmployee(this.employee).subscribe(
             res => alert(res['message']),
             err => console.log(err)
-        );
+        );*/
 
     }
 
@@ -135,4 +134,7 @@ export class RegisterComponent implements OnInit {
 
     }
 
+    togglePasswordVisibility() {
+        this.isPasswordVisible = !this.isPasswordVisible;
+    }
 }
