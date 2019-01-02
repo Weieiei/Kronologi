@@ -41,7 +41,7 @@ public class UserService implements IUserService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public ResponseEntity<?> register(UserRegisterDTO userRegisterDTO) {
+    public Token register(UserRegisterDTO userRegisterDTO) {
 
         if (userRepository.findByEmail(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("An account under %s already exists.", userRegisterDTO.getEmail()));
@@ -58,19 +58,19 @@ public class UserService implements IUserService {
 
         String token = generateToken(savedUser.getId(), userRegisterDTO.getPassword());
 
-        return ResponseEntity.ok(new Token(token));
+        return new Token(token);
 
     }
 
     @Override
-    public ResponseEntity<?> login(UserLoginDTO userLoginDTO) {
+    public Token login(UserLoginDTO userLoginDTO) {
 
         User user = userRepository.findByEmail(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
 
         String token = generateToken(user.getId(), userLoginDTO.getPassword());
 
-        return ResponseEntity.ok(new Token(token));
+        return new Token(token);
 
     }
 

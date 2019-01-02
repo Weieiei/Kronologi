@@ -5,10 +5,10 @@ import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AppointmentService implements IAppointmentService {
@@ -17,8 +17,8 @@ public class AppointmentService implements IAppointmentService {
     private AppointmentRepository appointmentRepository;
 
     @Override
-    public Page<Appointment> findAll(Pageable pageable) {
-        return appointmentRepository.findAll(pageable);
+    public List<Appointment> findAll() {
+        return appointmentRepository.findAll();
     }
 
     @Override

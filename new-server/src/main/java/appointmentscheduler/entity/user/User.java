@@ -12,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+// todo user is not a timestamp, change implementation
 public class User extends Timestamps {
 
     @Id

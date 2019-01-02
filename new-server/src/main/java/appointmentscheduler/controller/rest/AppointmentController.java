@@ -5,14 +5,14 @@ import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.service.appointment.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/${rest.api.path}/appointments")
-public class AppointmentController {
+public class AppointmentController implements IRestController<Appointment, AppointmentDTO> {
 
     @Autowired
     private AppointmentService appointmentService;
@@ -21,35 +21,35 @@ public class AppointmentController {
     private AppointmentDTOToAppointment appointmentConverter;
 
     @GetMapping
-    public Page<Appointment> findAll(Pageable pageable) {
-        return appointmentService.findAll(pageable);
+    @Override
+    public List<Appointment> findAll() {
+        return appointmentService.findAll();
     }
 
     @GetMapping("/{id}")
+    @Override
     public Appointment findById(@PathVariable long id) {
         return appointmentService.findById(id);
     }
 
     @PostMapping
+    @Override
     public Appointment add(@RequestBody AppointmentDTO appointmentDTO) {
         Appointment appointment = appointmentConverter.convert(appointmentDTO);
         return appointmentService.add(appointment);
     }
 
     @PutMapping("/{id}")
+    @Override
     public Appointment update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) {
         Appointment appointment = appointmentConverter.convert(appointmentDTO);
         return appointmentService.update(id, appointment);
     }
 
-    @PutMapping("/{id}/cancel")
-    public ResponseEntity<?> cancel(@PathVariable long id) {
-        return appointmentService.cancel(id);
-    }
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable long id) {
-        return appointmentService.delete(id);
+    @Override
+    public ResponseEntity delete(@PathVariable long id) {
+        return appointmentService.cancel(id);
     }
 
 }
