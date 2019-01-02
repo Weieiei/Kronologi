@@ -23,7 +23,7 @@ public class UserLoginDTOToUser implements Converter<UserLoginDTO, User> {
     @Override
     public User convert(UserLoginDTO userLoginDTO) {
 
-        User user = userRepository.findUserByEmail(userLoginDTO.getEmail())
+        User user = userRepository.findByEmail(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException(INCORRECT_CREDENTIALS));
 
         boolean match = bCryptPasswordEncoder.matches(userLoginDTO.getPassword(), user.getPassword());
