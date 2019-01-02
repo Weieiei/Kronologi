@@ -1,7 +1,7 @@
 package appointmentscheduler.repository;
 
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.entity.user.UserType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByEmail(String email);
-    Optional<User> findUserByIdAndUserType(long id, UserType type);
-    List<User> findUserByUserType(UserType userType);
+    List<User> findByRoles_Role(RoleEnum role);
+    Optional<User> findByIdAndRoles_Role(long id, RoleEnum role);
 
 }

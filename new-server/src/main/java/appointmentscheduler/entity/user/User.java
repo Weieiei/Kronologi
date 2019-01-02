@@ -2,11 +2,13 @@ package appointmentscheduler.entity.user;
 
 import appointmentscheduler.entity.Timestamps;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -29,9 +31,13 @@ public class User extends Timestamps {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "user_type")
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+    )
+    private Set<Role> roles;
 
     @JoinTable(
             name = "employee_services",
@@ -44,12 +50,11 @@ public class User extends Timestamps {
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
 
-    public User(String firstName, String lastName, String email, String password, UserType userType) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.userType = userType;
     }
 
     public long getId() {
@@ -92,12 +97,12 @@ public class User extends Timestamps {
         this.password = password;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public List<Service> getEmployeeServices() {

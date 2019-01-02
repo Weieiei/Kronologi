@@ -1,7 +1,8 @@
 package appointmentscheduler.service.user;
 
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.entity.user.UserType;
+import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Service
 public class UserService implements IUserService {
 
@@ -18,11 +22,14 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private JwtHelper jwtHelper;
 
     @Override
     public ResponseEntity<String> register(User user) {
-        user.setUserType(UserType.client);
+        user.setRoles(Stream.of(roleRepository.findByRole(RoleEnum.CLIENT)).collect(Collectors.toSet()));
         userRepository.save(user);
         return token(user);
     }

@@ -2,15 +2,15 @@ package appointmentscheduler.converters.appointment;
 
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.entity.user.UserType;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
@@ -31,7 +31,7 @@ public class AppointmentDTOToAppointment implements Converter<AppointmentDTO, Ap
         User client = userRepository.findById(appointmentDTO.getClientId())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Client with id %d not found.", appointmentDTO.getClientId())));
 
-        User employee = userRepository.findUserByIdAndUserType(appointmentDTO.getEmployeeId(), UserType.employee)
+        User employee = userRepository.findByIdAndRoles_Role(appointmentDTO.getEmployeeId(), RoleEnum.EMPLOYEE)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.", appointmentDTO.getEmployeeId())));
 
         Service service = serviceRepository.findById(appointmentDTO.getServiceId())

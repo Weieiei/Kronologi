@@ -1,14 +1,12 @@
 package appointmentscheduler.seed;
 
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.role.Role;
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.entity.user.UserType;
-import appointmentscheduler.repository.AppointmentRepository;
-import appointmentscheduler.repository.ServiceRepository;
-import appointmentscheduler.repository.ShiftRepository;
-import appointmentscheduler.repository.UserRepository;
+import appointmentscheduler.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -16,7 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class Seed {
@@ -39,7 +41,7 @@ public class Seed {
     @EventListener
     public void seed(ContextRefreshedEvent event) {
 
-        boolean noAdmin = userRepository.findUserByUserType(UserType.admin).isEmpty();
+        boolean noAdmin = userRepository.findByRoles_Role(RoleEnum.ADMIN).isEmpty();
 
         if (noAdmin) {
             seedAdminAndClients();
@@ -51,20 +53,17 @@ public class Seed {
 
     public void seedAdminAndClients() {
 
-        User admin = new User(
-                "Admin", "User",
-                "admin@admin.com", hash("admin123"), UserType.admin
-        );
+        Role adminRole = new Role(RoleEnum.ADMIN);
+        Role clientRole = new Role(RoleEnum.CLIENT);
 
-        User client1 = new User(
-                "John", "Doe",
-                "johndoe@johndoe.com", hash("johndoe123"), UserType.client
-        );
+        User admin = new User("Admin", "User", "admin@admin.com", hash("admin123"));
+        admin.setRoles(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
 
-        User client2 = new User(
-                "Test", "User",
-                "test@test.com", hash("test123"), UserType.client
-        );
+        User client1 = new User("John", "Doe", "johndoe@johndoe.com", hash("johndoe123"));
+        client1.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
+
+        User client2 = new User("Test", "User", "test@test.com", hash("test123"));
+        client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         userRepository.saveAll(Arrays.asList(admin, client1, client2));
 
@@ -93,10 +92,11 @@ public class Seed {
 
         serviceRepository.saveAll(services);
 
-        User employee = new User(
-                "Employee", "User",
-                "employee@employee.com", hash("employee123"), UserType.employee
-        );
+        Role employeeRole = new Role(RoleEnum.EMPLOYEE);
+
+        User employee = new User("Employee", "User", "employee@employee.com", hash("employee123"));
+
+        employee.setRoles(Stream.of(employeeRole).collect(Collectors.toSet()));
 
         employee.setEmployeeServices(Arrays.asList(
                 services.get(0), services.get(1), services.get(3),
@@ -122,8 +122,8 @@ public class Seed {
 
     public void seedAppointments() {
 
-        List<User> clients = userRepository.findUserByUserType(UserType.client);
-        User employee = userRepository.findUserByUserType(UserType.employee).get(0);
+        List<User> clients = userRepository.findByRoles_Role(RoleEnum.CLIENT);
+        User employee = userRepository.findByRoles_Role(RoleEnum.EMPLOYEE).get(0);
         List<Service> services = serviceRepository.findAll();
 
         Appointment appointment = new Appointment(
