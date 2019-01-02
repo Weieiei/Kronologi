@@ -33,10 +33,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             token = header.split(" ")[1];
 
-            try {
-                userId = jwtProvider.getUserIdFromToken(token);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (!token.equals("null")) {
+                try {
+                    userId = jwtProvider.getUserIdFromToken(token);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         } else {
