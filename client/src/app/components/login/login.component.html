@@ -1,29 +1,25 @@
-<div class="main">
+<div fxLayout="row" fxLayoutAlign="center">
+    <div fxLayout="column" fxFlex.gt-sm="600px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
+        <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5px">
+            <span class="title">Sign In</span>
+            <span class="sub-title">with your ASAPP Account</span>
+        </div>
+        <form autocomplete="off" (submit)="submit()" fxLayout="column">
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" [(ngModel)]="username" name="username" required autofocus>
+            </mat-form-field>
 
-	<div class="column">
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password" required>
+                <mat-icon matSuffix style="cursor: pointer" (click)="togglePasswordVisibility()">{{ isPasswordVisible ? 'visibility_on' : 'visibility_off' }}</mat-icon>
+            </mat-form-field>
 
-		<h3>Login</h3>
-
-		<form class="user form" #userForm="ngForm" (ngSubmit)="loginUser()" autocomplete="off">
-
-			<mat-form-field class="field" floatLabel="never">
-				<input matInput #usernameInput [(ngModel)]="username"
-					type="text" name="username" id="username"
-					placeholder="Username">
-				<mat-icon matSuffix>person</mat-icon>
-			</mat-form-field>
-
-			<mat-form-field class="field" floatLabel="never">
-				<input matInput [(ngModel)]="password"
-					type="password" name="password" id="password"
-					placeholder="Password">
-				<mat-icon matSuffix>visibility_off</mat-icon>
-			</mat-form-field>
-
-			<button mat-stroked-button color="primary" type="submit" [disabled]="userForm.form.invalid">Login</button>
-
-		</form>
-
-	</div>
-
+            <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
+                <button mat-button color="primary" type="button" routerLink="/register">Create an account</button>
+                <button mat-raised-button color="primary" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
 </div>
