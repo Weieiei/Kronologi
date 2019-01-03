@@ -13,8 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TODO not quite
- * Need this because the users in our application have emails, not usernames.
+ * Need this because we're loading our user with their id, not username.
+ * So we need to override the loadUserByUsername method and provide the id as the parameter instead.
  */
 @Service
 public class UserDetailsEmailService implements UserDetailsService {
@@ -27,7 +27,7 @@ public class UserDetailsEmailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
-        User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new UsernameNotFoundException("Email not found."));
+        User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new UsernameNotFoundException("User not found."));
         return new org.springframework.security.core.userdetails.User(String.valueOf(user.getId()), user.getPassword(), getAuthorities(user));
 
     }

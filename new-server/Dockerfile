@@ -11,4 +11,4 @@ WORKDIR /home/appointmentscheduler/target/
 
 EXPOSE 3000
 
-CMD ["java", "-jar", "appointment-scheduler-1.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "appointment-scheduler-server.jar"]

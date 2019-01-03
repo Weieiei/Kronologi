@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Component
 public class AppointmentDTOToAppointment implements Converter<AppointmentDTO, Appointment> {
@@ -40,12 +41,8 @@ public class AppointmentDTOToAppointment implements Converter<AppointmentDTO, Ap
         appointment.setClient(client);
         appointment.setEmployee(employee);
         appointment.setService(service);
-
-        appointment.setStartTime(LocalDateTime.of(
-                appointmentDTO.getYear(), appointmentDTO.getMonth(), appointmentDTO.getDay(),
-                appointmentDTO.getHour(), appointmentDTO.getMinute()
-        ));
-
+        appointment.setDate(LocalDate.of(appointmentDTO.getYear(), appointmentDTO.getMonth(), appointmentDTO.getDay()));
+        appointment.setStartTime(LocalTime.of(appointmentDTO.getHour(), appointmentDTO.getMinute()));
         appointment.setNotes(appointmentDTO.getNotes());
 
         return appointment;

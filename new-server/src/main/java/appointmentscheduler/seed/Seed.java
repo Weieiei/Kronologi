@@ -13,7 +13,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -128,12 +130,12 @@ public class Seed {
 
         Appointment appointment = new Appointment(
                 clients.get(0), employee, services.get(11),
-                LocalDateTime.of(2019, 11, 30, 12, 0), "Some note"
+                LocalDate.of(2019, 12, 12), LocalTime.of(12, 0), "Some note"
         );
 
         Appointment appointment2 = new Appointment(
                 clients.get(1), employee, services.get(6),
-                LocalDateTime.of(2019, 12, 2, 12, 0), "Some note"
+                LocalDate.of(2019, 12, 2), LocalTime.of(12, 0), "Some note"
         );
 
         appointmentRepository.saveAll(Arrays.asList(appointment, appointment2));

@@ -6,7 +6,8 @@ import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "appointments")
@@ -31,11 +32,14 @@ public class Appointment extends Timestamps {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Service service;
 
+    @Column(name = "date")
+    private LocalDate date;
+
     @Column(name = "start_time")
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
     @Column(name = "end_time")
-    private LocalDateTime endTime;
+    private LocalTime endTime;
 
     @Column(name = "notes")
     private String notes;
@@ -46,10 +50,11 @@ public class Appointment extends Timestamps {
 
     public Appointment() { }
 
-    public Appointment(User client, User employee, Service service, LocalDateTime startTime, String notes) {
+    public Appointment(User client, User employee, Service service, LocalDate date, LocalTime startTime, String notes) {
         this.client = client;
         this.employee = employee;
         this.service = service;
+        this.date = date;
         this.startTime = startTime;
         this.notes = notes;
     }
@@ -86,19 +91,27 @@ public class Appointment extends Timestamps {
         this.service = service;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
