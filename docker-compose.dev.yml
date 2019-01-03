@@ -15,7 +15,7 @@ services:
   web-server:
     depends_on:
       - db
-    build: ./server
+    build: ./new-server
     image: appointment-scheduler-server
     container_name: appointment-scheduler-server
     environment:
