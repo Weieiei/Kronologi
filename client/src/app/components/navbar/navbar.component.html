@@ -1,10 +1,22 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-        <div fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="start center">
-            <button mat-icon-button (click)="sidenav.open()">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
+            <!--<button mat-icon-button (click)="sidenav.open()">
                 <mat-icon>menu</mat-icon>
-            </button>
+            </button>-->
             <div>Appointment Scheduler</div>
+            <div>
+                <button mat-button [matMenuTriggerFor]="menu">
+                    <span fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+                        <span>{{ user.firstName }}</span>
+                        <mat-icon>account_circle</mat-icon>
+                    </span>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>Account</button>
+                    <button mat-menu-item (click)="logout()">Logout</button>
+                </mat-menu>
+            </div>
         </div>
     </mat-toolbar-row>
 </mat-toolbar>

@@ -2,14 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { RegisterComponent } from './components/register/register.component';
-import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { LoginComponent } from './pages/login/login.component';
 import { AnonymousGuard } from './guards/anonymous.guard';
-import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { ReserveComponent } from './components/reserve/reserve.component';
-import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
+import { AppointmentsComponent } from './pages/appointments/appointments.component';
 import { AuthGuard } from './guards/auth.guard';
-import { AdminGuard } from './guards/admin.guard';
 import { AuthService } from './services/auth/auth.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
@@ -30,24 +28,19 @@ const routes: Routes = [
     {
         path: '',
         component: DashboardComponent,
+        canActivate: [AuthGuard],
         children: [
 
             // Home page
             {path: '', component: HomeComponent},
 
             // Appointments
-            {path: 'appointments', component: AppointmentsComponent, canActivate: [AuthGuard]},
+            {path: 'appointments', component: AppointmentsComponent},
 
-            {path: 'reserve', component: ReserveComponent, canActivate: [AuthGuard]},
-            {path: 'my/appts', component: MyAppointmentsComponent, canActivate: [AuthGuard]},
+            {path: 'reserve', component: ReserveComponent},
+            {path: 'my/appts', component: AppointmentsComponent},
 
-            {
-                path: 'add/employee', component: RegisterComponent, canActivate: [AuthGuard, AdminGuard], data: {
-                    type: AuthService.registerEmployee,
-                    header: 'Create an Employee Account',
-                    button: 'Create Employee'
-                }
-            }
+            {path: 'add/employee', component: RegisterComponent}
         ]
     },
 ];

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
     selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
 
     isPasswordVisible = false;
 
-    constructor(private authService: AuthService,
+    constructor(private userService: UserService,
                 private router: Router) {
     }
 
@@ -22,10 +22,14 @@ export class LoginComponent implements OnInit {
     }
 
     submit() {
-        this.authService.login(this.username, this.password).subscribe(
+        this.userService.login(this.username, this.password).subscribe(
             res => {
-                this.authService.setToken(res['token']);
-                this.authService.verifyAdminStatus();
+                const user = res['user'];
+                const token = res['token'];
+
+                this.userService.setUser(user);
+                this.userService.setToken(token);
+
                 this.router.navigate(['']);
             },
             err => console.log(err)
