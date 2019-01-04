@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { AuthService } from './services/auth/auth.service';
+import { UserService } from './services/user/user.service';
 
 @Injectable()
 export class UrlInterceptor implements HttpInterceptor {
@@ -17,7 +17,7 @@ export class UrlInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
 
-        const authService = this.injector.get(AuthService);
+        const userService = this.injector.get(UserService);
 
         // Forward all api/ paths to server path.
         if (request.url.startsWith('api/')) {
@@ -25,7 +25,7 @@ export class UrlInterceptor implements HttpInterceptor {
             request = request.clone({
                 url: url + request.url,
                 setHeaders: {
-                    Authorization: `Bearer ${authService.getToken()}`
+                    Authorization: `Bearer ${userService.getToken()}`
                 }
             });
         }
