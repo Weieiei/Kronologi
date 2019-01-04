@@ -1,6 +1,5 @@
 package appointmentscheduler.service.user;
 
-import appointmentscheduler.dto.Token;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.role.RoleEnum;
@@ -19,29 +18,33 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class UserService implements IUserService {
+public class UserService {
+    private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
+
+    private final JwtProvider jwtProvider;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider, BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.jwtProvider = jwtProvider;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
 
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private JwtProvider jwtProvider;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Override
-    public Token register(UserRegisterDTO userRegisterDTO) {
+    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) {
 
         if (userRepository.findByEmail(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("An account under %s already exists.", userRegisterDTO.getEmail()));
@@ -58,29 +61,30 @@ public class UserService implements IUserService {
 
         String token = generateToken(savedUser.getId(), userRegisterDTO.getPassword());
 
-        return new Token(token);
-
+        return buildUserTokenMap(savedUser, token);
     }
 
-    @Override
-    public Token login(UserLoginDTO userLoginDTO) {
-
+    public Map<String, Object> login(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmail(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
 
         String token = generateToken(user.getId(), userLoginDTO.getPassword());
 
-        return new Token(token);
+        return buildUserTokenMap(user, token);
+    }
 
+    private Map<String, Object> buildUserTokenMap(User user, String token) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", user);
+        map.put("token", token);
+
+        return map;
     }
 
     private String generateToken(long userId, String password) {
-
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userId, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return jwtProvider.generateToken(authentication);
-
     }
-
 }

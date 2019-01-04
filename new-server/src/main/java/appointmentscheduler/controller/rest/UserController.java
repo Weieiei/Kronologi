@@ -1,17 +1,18 @@
 package appointmentscheduler.controller.rest;
 
-import appointmentscheduler.dto.Token;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
-import appointmentscheduler.entity.user.User;
-import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/${rest.api.path}/user")
@@ -25,12 +26,22 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public Token register(@RequestBody UserRegisterDTO userRegisterDTO) {
-        return userService.register(userRegisterDTO);
+    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) {
+        try {
+            return ResponseEntity.ok(userService.register(userRegisterDTO));
+        } catch (BadCredentialsException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
     @PostMapping("/login")
-    public Token login(@RequestBody UserLoginDTO userLoginDTO) {
-        return userService.login(userLoginDTO);
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserLoginDTO userLoginDTO) {
+        try {
+            return ResponseEntity.ok(userService.login(userLoginDTO));
+        } catch (BadCredentialsException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 }
