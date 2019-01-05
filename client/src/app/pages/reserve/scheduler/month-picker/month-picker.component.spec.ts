@@ -1,15 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SchedulerComponent } from './scheduler.component';
-import { MaterialModule } from '../../material';
-import { CalendarComponent } from './calendar/calendar.component';
-import { MonthPickerComponent } from './month-picker/month-picker.component';
+import { MonthPickerComponent } from './month-picker.component';
+import { MaterialModule } from '../../../../material';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('SchedulerComponent', () => {
-  let component: SchedulerComponent;
-  let fixture: ComponentFixture<SchedulerComponent>;
+describe('MonthPickerComponent', () => {
+  let component: MonthPickerComponent;
+  let fixture: ComponentFixture<MonthPickerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,17 +16,13 @@ describe('SchedulerComponent', () => {
         FormsModule,
         BrowserAnimationsModule
       ],
-      declarations: [
-        SchedulerComponent,
-        CalendarComponent,
-        MonthPickerComponent
-      ]
+      declarations: [ MonthPickerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SchedulerComponent);
+    fixture = TestBed.createComponent(MonthPickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

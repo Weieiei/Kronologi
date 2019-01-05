@@ -17,12 +17,12 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
-import { ReserveComponent } from './components/reserve/reserve.component';
-import { AppointmentsComponent } from './components/appointments/appointments.component';
+import { ReserveComponent } from './pages/reserve/reserve.component';
+import { AppointmentsComponent } from './pages/appointments/appointments.component';
 import { AdminGuard } from './guards/admin.guard';
-import { SchedulerComponent } from './components/scheduler/scheduler.component';
-import { CalendarComponent } from './components/scheduler/calendar/calendar.component';
-import { MonthPickerComponent } from './components/scheduler/month-picker/month-picker.component';
+import { SchedulerComponent } from './pages/reserve/scheduler/scheduler.component';
+import { CalendarComponent } from './pages/reserve/scheduler/calendar/calendar.component';
+import { MonthPickerComponent } from './pages/reserve/scheduler/month-picker/month-picker.component';
 import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
 import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
 import { TimePickerDialogComponent } from './components/shift-picker/time-picker-dialog/time-picker-dialog.component';
@@ -34,6 +34,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
         NavbarComponent,
         RegisterComponent,
         HomeComponent,
+        AppointmentsComponent,
         LoginComponent,
         ReserveComponent,
         AppointmentsComponent,
