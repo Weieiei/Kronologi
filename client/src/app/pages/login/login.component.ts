@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
+import { UserLoginDTO } from '../../interfaces/user-login-dto';
 
 @Component({
     selector: 'app-login',
@@ -22,7 +23,12 @@ export class LoginComponent implements OnInit {
     }
 
     submit() {
-        this.userService.login(this.username, this.password).subscribe(
+        const payload: UserLoginDTO = {
+            email: this.username,
+            password: this.password
+        };
+
+        this.userService.login(payload).subscribe(
             res => {
                 const user = res['user'];
                 const token = res['token'];

@@ -5,6 +5,7 @@ import { Service } from '../../models/service/Service';
 import { ServiceService } from '../../services/service/service.service';
 import { EmployeeShiftTimes } from '../../models/shift/EmployeeShiftTimes';
 import { UserRegisterDTO } from '../../interfaces/user-register-dto';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
     selector: 'app-register',
@@ -20,8 +21,6 @@ export class RegisterComponent implements OnInit {
      * data to determine which one we're going for.
      */
     data: Data;
-
-    user: UserRegisterDTO;
 
     firstName: string;
     lastName: string;
@@ -44,7 +43,7 @@ export class RegisterComponent implements OnInit {
     isPasswordVisible = false;
 
     constructor(
-        private authService: AuthService,
+        private userService: UserService,
         private serviceService: ServiceService,
         private router: Router,
         private route: ActivatedRoute
@@ -79,17 +78,21 @@ export class RegisterComponent implements OnInit {
     }
 
     register(): void {
-        this.user = {
+        const payload: UserRegisterDTO = {
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
             password: this.password
         };
 
-        this.authService.register(this.user).subscribe(
+        this.userService.register(payload).subscribe(
             res => {
-                this.authService.setToken(res['token']);
-                this.authService.verifyAdminStatus();
+                const user = res['user'];
+                const token = res['token'];
+
+                this.userService.setUser(user);
+                this.userService.setToken(token);
+
                 this.router.navigate(['']);
             },
             err => console.log(err)
