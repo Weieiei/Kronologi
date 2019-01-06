@@ -3,7 +3,7 @@
     <mat-icon>keyboard_arrow_left</mat-icon>
   </button>
 
-  <mat-form-field appearance="outline" fxFlex="30">
+  <mat-form-field appearance="outline">
     <mat-select [(ngModel)]="dropdownIndex" (selectionChange)="update()">
       <mat-option *ngFor="let option of options" [value]="option.index">{{ MONTHS[option.month] }} {{ option.year }}</mat-option>
     </mat-select>

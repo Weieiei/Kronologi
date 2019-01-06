@@ -3,7 +3,7 @@ import { AppointmentService } from 'src/app/services/appointment/appointment.ser
 import { ServiceService } from 'src/app/services/service/service.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
-import { CustomStepperComponent } from '../custom-stepper/custom-stepper.component';
+import { CustomStepperComponent } from '../../components/custom-stepper/custom-stepper.component';
 import { Service } from '../../models/service/Service';
 import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
 import { map } from 'rxjs/operators';
