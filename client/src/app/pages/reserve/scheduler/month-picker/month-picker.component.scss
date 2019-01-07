@@ -1,16 +1,18 @@
-::ng-deep {
-  .mat-form-field-wrapper {
-    padding-bottom: 0;
-  }
+.month-dropdown {
+    ::ng-deep {
+        .mat-form-field-wrapper {
+            padding-bottom: 0;
+        }
 
-  .mat-form-field-infix {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
-    margin-top: 8px;
-    border-top: none;
-  }
+        .mat-form-field-infix {
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
+            margin-top: 8px;
+            border-top: none;
+        }
 
-  .mat-select-arrow-wrapper {
-    border-top: 8px solid transparent !important;
-  }
+        .mat-select-arrow-wrapper {
+            border-top: 8px solid transparent !important;
+        }
+    }
 }
