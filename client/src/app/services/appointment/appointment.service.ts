@@ -21,12 +21,7 @@ export class AppointmentService {
         return this.http.get<AppointmentDetailed[]>(['api', 'admin', 'appointments'].join('/'));
     }
 
-    public reserveAppointment(appointment: AppointmentToBook): Observable<AppointmentToBook> {
+    public reserveAppointment(appointment: AppointmentToBook): Observable<any> {
         return this.http.post<AppointmentToBook>(['api', 'user', 'appointments'].join('/'), appointment);
     }
-
-    public cancelAppointment(id: number): Observable<string> {
-        return this.http.put<string>(['api', 'user', 'appointments', id, 'cancel'].join('/'), { });
-    }
-
 }

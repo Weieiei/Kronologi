@@ -1,21 +1,14 @@
-FROM node:10-stretch
+FROM maven:3-jdk-8
 
-RUN npm install typescript tsc -g
+WORKDIR /home/appointmentscheduler/
 
-WORKDIR /home/node/
+COPY . .
+COPY src/main/resources/application.docker.properties src/main/resources/application.properties
 
-COPY package.json /home/node/
-RUN npm install
+RUN mvn package --quiet
 
-COPY . /home/node
-RUN chmod +x setup.sh && \
-    tsc
-
-# There used to be a 'WORKDIR /home/node/dist' instruction on this line.
-# The reason it's taken out is that we need to call the 'node' command from the directory the .env file is in.
-# We could still cd into dist/ and run 'node app.js' from there, but we'd first need to run 'cp .env dist/.env'
-# Figured it was just simpler this way.
+WORKDIR /home/appointmentscheduler/target/
 
 EXPOSE 3000
 
-CMD [ "./setup.sh" ]
+CMD ["java", "-jar", "appointment-scheduler-server.jar"]

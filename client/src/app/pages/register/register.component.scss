@@ -1,0 +1,37 @@
+.container {
+    padding: 50px;
+
+    .visibility-icon {
+        margin-top: 16px;
+    }
+
+    .hint {
+        font-size: 12px;
+        padding-left: 12px;
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .buttons {
+        margin-top: 20px;
+
+        button {
+            font-weight: bold;
+        }
+    }
+
+    .passwords-container {
+        margin-top: 12px;
+
+        .no-mat-padding {
+            ::ng-deep {
+                .mat-form-field-wrapper {
+                    padding-bottom: 0;
+                }
+            }
+        }
+    }
+}
