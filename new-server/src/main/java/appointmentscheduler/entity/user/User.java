@@ -81,6 +81,10 @@ public class User extends AuditableEntity {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -112,5 +116,4 @@ public class User extends AuditableEntity {
     public void setEmployeeServices(List<Service> employeeServices) {
         this.employeeServices = employeeServices;
     }
-
 }

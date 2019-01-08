@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -44,7 +45,7 @@ public class Appointment extends AuditableEntity {
     @Column(name = "notes")
     private String notes;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
@@ -113,6 +114,14 @@ public class Appointment extends AuditableEntity {
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
+    }
+
+    public LocalDateTime getStartDateTime() {
+        return LocalDateTime.of(getDate(), getStartTime());
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return LocalDateTime.of(getDate(), getEndTime());
     }
 
     public String getNotes() {

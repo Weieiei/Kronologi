@@ -106,16 +106,8 @@ public class Seed {
         ));
 
         List<Shift> shifts = new ArrayList<>();
-        shifts.add(new Shift(
-                employee,
-                LocalDateTime.of(2019, 11, 30, 12, 0),
-                LocalDateTime.of(2019, 11, 30, 21, 0)
-        ));
-        shifts.add(new Shift(
-                employee,
-                LocalDateTime.of(2019, 12, 02, 12, 0),
-                LocalDateTime.of(2019, 12, 01, 21, 0)
-        ));
+        shifts.add(new Shift(employee, LocalDate.of(2019, 11, 30), LocalTime.of(12, 0), LocalTime.of(21, 0)));
+        shifts.add(new Shift(employee, LocalDate.of(2019, 12, 2), LocalTime.of(12, 0), LocalTime.of(21, 0)));
 
         userRepository.save(employee);
         shiftRepository.saveAll(shifts);
@@ -130,7 +122,7 @@ public class Seed {
 
         Appointment appointment = new Appointment(
                 clients.get(0), employee, services.get(11),
-                LocalDate.of(2019, 12, 12), LocalTime.of(12, 0), "Some note"
+                LocalDate.of(2019, 11, 30), LocalTime.of(12, 0), "Some note"
         );
 
         Appointment appointment2 = new Appointment(
