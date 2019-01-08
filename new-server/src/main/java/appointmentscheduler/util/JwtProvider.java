@@ -24,7 +24,7 @@ public class JwtProvider implements Serializable {
     private final String ROLES = "roles";
 
     // min * sec * ms == 1 hour
-    private final int EXPIRATION = 60 * 60 * 1000;
+    private final int EXPIRATION = 60 * 60 * 1000 * 24;
 
     public String generateToken(Authentication authentication) {
 
