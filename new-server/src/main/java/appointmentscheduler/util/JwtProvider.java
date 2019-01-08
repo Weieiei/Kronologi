@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider implements Serializable {
 
-    private final String KEY = "JuFXDen8amvNPnTE4zwJ7jE2U7VufugLhEfJK8McxhHKcVd4dmJZu9GwPRuTcCTb2MxN68htue9WuPV5HL6H3nr6p4tdQuTg7vm2";
+    private final String KEY = generateRandomSecret();
     private final String ROLES = "roles";
 
     // min * sec * ms == 1 hour
@@ -79,6 +80,17 @@ public class JwtProvider implements Serializable {
         String userId = getUserIdFromToken(token);
         // userDetails.getUsername() is actually the id
         return userId.equals(userDetails.getUsername()) && !tokenIsExpired(token);
+    }
+
+    private static String generateRandomSecret() {
+        RandomStringGenerator.Builder builder = new RandomStringGenerator.Builder();
+        char[] numbers = new char[]{'0', '9'};
+        char[] lowercase = new char[]{'a', 'z'};
+        char[] uppercase = new char[]{'A', 'Z'};
+        builder.withinRange(numbers, lowercase, uppercase);
+        RandomStringGenerator generator = builder.build();
+
+        return generator.generate(128);
     }
 
 }
