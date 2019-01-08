@@ -1,6 +1,6 @@
 package appointmentscheduler.entity.shift;
 
-import appointmentscheduler.entity.Timestamps;
+import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.user.User;
 
 import javax.persistence.*;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "employee_shifts")
-public class Shift extends Timestamps {
+public class Shift extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

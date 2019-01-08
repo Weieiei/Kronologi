@@ -15,7 +15,7 @@ import java.util.Date;
         value = { "createdAt", "updatedAt" },
         allowGetters = true
 )
-public class Timestamps implements Serializable {
+public class AuditableEntity implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)

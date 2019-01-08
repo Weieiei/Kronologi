@@ -1,10 +1,8 @@
 package appointmentscheduler.entity.user;
 
-import appointmentscheduler.entity.Timestamps;
-import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.service.Service;
-import appointmentscheduler.entity.shift.Shift;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -13,8 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-// todo user is not a timestamp, change implementation
-public class User extends Timestamps {
+public class User extends AuditableEntity {
 
     @Id
     @GeneratedValue(generator = "users_id_sequence", strategy = GenerationType.IDENTITY)

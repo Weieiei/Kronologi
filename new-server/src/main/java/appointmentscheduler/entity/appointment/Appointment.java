@@ -1,6 +1,6 @@
 package appointmentscheduler.entity.appointment;
 
-import appointmentscheduler.entity.Timestamps;
+import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -11,7 +11,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "appointments")
-public class Appointment extends Timestamps {
+public class Appointment extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,12 +1,12 @@
 package appointmentscheduler.entity.service;
 
-import appointmentscheduler.entity.Timestamps;
+import appointmentscheduler.entity.AuditableEntity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "services")
-public class Service extends Timestamps {
+public class Service extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
