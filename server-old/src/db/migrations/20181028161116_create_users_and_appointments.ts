@@ -28,6 +28,7 @@ exports.up = async knex => {
             table.timestamp('start_time').notNullable();
             table.timestamp('end_time').notNullable();
             table.string('notes');
+            table.string('status').notNullable();
             table.timestamp('created_at').defaultTo(knex.fn.now());
             table.timestamp('updated_at');
         });

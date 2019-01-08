@@ -1,28 +1,30 @@
-process.env.NODE_ENV = "test";
-import 'mocha';
-import {Connection} from "../src/db/knex";
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import { db } from '../src/db/knex';
+import { Model } from 'objection';
+import { Service } from '../src/models/service/Service';
 
-const chai = require('chai'), chaiHttp = require('chai-http');
-const express = require('express');
+Model.knex(db);
 chai.use(chaiHttp);
 
-describe('this set of tests will verify the functionality of GET api/services', () => {
-    let connector = new Connection().knex();
-    it('login should return status 401 if password for existing username is wrong', () => {
-        return chai.request('http://localhost:3000/')
-            .get('api/services')
-            .then(res => {
-                let resArray=Array.of(res.body)[0];
-                console.log("****");
-                console.log(resArray[0]["id"]);
-                (connector.select().from('services').then((data) => {
-                let dbArray=Array.of(data)[0];
-               // console.log(Array.of(data));
-            //    console.log(dbArray[0]);
-                }));
-               // chai.expect(res.status).to.eql(401);
-              //  chai.expect(JSON.parse(res.text).invalidCredentials == ("Incorrect username and/or password."));
+describe('the functionality of GET api/services', () => {
+
+    it('should return status 200 on call and match the data retrieved directly from the test database', () => {
+
+        return chai.request('http://localhost:3000/').get('api/services').then(async res => {
+
+            const services = await Service.query();
+
+            services.forEach((service, i) => {
+                chai.expect(service.id).to.equal(res.body[i].id);
+                chai.expect(service.name).to.equal(res.body[i].name);
+                chai.expect(service.duration).to.equal(res.body[i].duration);
             });
+
+            chai.expect(res.status).to.eql(200);
+
+        });
+
     });
 
 });

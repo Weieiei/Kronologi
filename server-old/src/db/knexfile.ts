@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import { knexSnakeCaseMappers } from 'objection';
 
 dotenv.config({ path: '../../.env' });
+dotenv.config();            // need this line for tests
 
 module.exports = {
 

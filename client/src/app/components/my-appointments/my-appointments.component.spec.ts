@@ -11,6 +11,7 @@ import { User } from '../../models/user/User';
 import { UserType } from '../../models/user/UserType';
 import { Service } from '../../models/service/Service';
 import { MyAppointment } from '../../models/appointment/MyAppointment';
+import { AppointmentStatus } from '../../models/appointment/AppointmentStatus';
 
 @Component({selector: 'app-appointment', template: ''})
 class AppointmentStubComponent {
@@ -54,10 +55,10 @@ describe('MyAppointmentsComponent', () => {
     it('should display n appointments if appointments array has n items', () => {
 
         const employee = new User(2, 'Test', 'Employee', 'test@test.com', 'testing', '', UserType.employee, new Date(), null);
-        const service = new Service(1, 'Some service', 120);
+        const service = new Service(1, 'Some service', 120, new Date(), null);
 
-        const appointment1 = new MyAppointment(1, 1, 2, 1, new Date(), new Date(), '', new Date(), null, employee, service);
-        const appointment2 = new MyAppointment(2, 1, 2, 1, new Date(), new Date(), '', new Date(), null, employee, service);
+        const appointment1 = new MyAppointment(1, 1, 2, 1, new Date(), new Date(), '', AppointmentStatus.confirmed, new Date(), null, employee, service);
+        const appointment2 = new MyAppointment(2, 1, 2, 1, new Date(), new Date(), '', AppointmentStatus.confirmed, new Date(), null, employee, service);
 
         component.appointments = [appointment1, appointment2];
 

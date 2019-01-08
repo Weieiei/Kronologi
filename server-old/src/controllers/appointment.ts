@@ -1,6 +1,7 @@
 import { Appointment } from '../models/appointment/Appointment';
 import { RequestWrapper } from '../wrappers/RequestWrapper';
 import { ValidationError } from 'objection';
+import { AppointmentStatus } from '../models/appointment/AppointmentStatus';
 
 export const getMyAppointments = async (req: RequestWrapper, res) => {
 
@@ -18,8 +19,7 @@ export const getMyAppointments = async (req: RequestWrapper, res) => {
 
         return res.status(200).send(appointments);
 
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(500).send({ error });
     }
 
@@ -39,16 +39,60 @@ export const bookAppointment = async (req: RequestWrapper, res) => {
             .query()
             .insert({ clientId: userId, employeeId, serviceId, startTime: new Date(startTime), notes });
 
-        res.status(200).send({ message: 'Successfully booked.' });
+        return res.status(200).send({ message: 'Successfully booked.' });
 
-    }
-    catch (error) {
+    } catch (error) {
 
         if (error instanceof ValidationError) {
-            return res.status(400).send({ error: error.message });
+            return res.status(400).send({ message: error.message });
         }
         else {
-            res.status(500).send({ error });
+            return res.status(500).send({ error });
+        }
+
+    }
+
+};
+
+export const cancelAppointment = async (req: RequestWrapper, res) => {
+
+    const userId: number = req.userId;
+    const { id } = req.params;
+
+    try {
+
+        /**
+         * In the beforeUpdate() method of the Appointment model, we will validate whether it's possible to cancel the appointment (i.e. if
+         * it's at least 24 hours in advance).
+         * The problem is that Objection.js doesn't have a way to update a row, all while grabbing the old values and using them in the
+         * beforeUpdate() method. So first we query the appointment, then patch (i.e. update) it.
+         * This will be solved in Objection 2.0, we currently use 1.4.0.
+         */
+
+        const appointment = await Appointment.query()
+            .where({ id, clientId: userId })
+            .first();
+
+        if (!appointment) {
+            return res.status(400).send({ message: 'Appointment not found.' });
+        }
+
+        if (appointment.status === AppointmentStatus.cancelled) {
+            return res.status(400).send({ message: 'Appointment already cancelled.' });
+        }
+
+        await appointment.$query()
+            .patch({ status: AppointmentStatus.cancelled });
+
+        return res.status(200).send({ message: 'Successfully cancelled appointment.' });
+
+    } catch (error) {
+
+        if (error instanceof ValidationError) {
+            return res.status(400).send({ message: error.message });
+        }
+        else {
+            return res.status(500).send({ error });
         }
 
     }
@@ -61,6 +105,6 @@ export const getAllAppointments = async (req, res) => {
         .query()
         .eager('[client, employee, service]');
 
-    res.status(200).send(appointments);
+    return res.status(200).send(appointments);
 
 };
