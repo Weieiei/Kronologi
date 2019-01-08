@@ -6,7 +6,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { ReserveComponent } from './components/reserve/reserve.component';
-import { AppointmentsComponent } from './pages/appointments/appointments.component';
+import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth/auth.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';

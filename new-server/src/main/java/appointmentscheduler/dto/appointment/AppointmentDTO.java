@@ -2,12 +2,12 @@ package appointmentscheduler.dto.appointment;
 
 public class AppointmentDTO {
 
-    private long clientId;              // TODO should get this from the JWT, but using this for now
+    private long clientId;
     private long employeeId;
     private long serviceId;
 
     // Appointment start time
-    // Can easily convert these values into the appropriate date using LocalDateTime.of()
+    // Can easily convert these values into the appropriate date/time using LocalDate.of() and LocalTime.of()
     private int year;
     private int month;
     private int day;

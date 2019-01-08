@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("${rest.api.path}/services")
 @PreAuthorize("hasRole('CLIENT')")
-public class ServiceController implements IRestController {
+public class ServiceController extends IRestController {
 
     private final ServiceRepository serviceRepository;
 

@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
 @RequestMapping("/${rest.api.path}/appointments")
-public class AppointmentController implements IRestController<Appointment, AppointmentDTO> {
+public class AppointmentController extends IRestController<Appointment, AppointmentDTO> {
 
     @Autowired
     private AppointmentService appointmentService;
@@ -35,6 +36,7 @@ public class AppointmentController implements IRestController<Appointment, Appoi
     @PostMapping
     @Override
     public Appointment add(@RequestBody AppointmentDTO appointmentDTO) {
+        appointmentDTO.setClientId(getUserId());
         Appointment appointment = appointmentConverter.convert(appointmentDTO);
         return appointmentService.add(appointment);
     }

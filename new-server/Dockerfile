@@ -5,7 +5,7 @@ WORKDIR /home/appointmentscheduler/
 COPY . .
 COPY src/main/resources/application.docker.properties src/main/resources/application.properties
 
-RUN mvn package
+RUN mvn package --quiet
 
 WORKDIR /home/appointmentscheduler/target/
 

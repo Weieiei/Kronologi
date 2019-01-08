@@ -18,7 +18,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
 import { ReserveComponent } from './components/reserve/reserve.component';
-import { AppointmentsComponent } from './pages/appointments/appointments.component';
+import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { AdminGuard } from './guards/admin.guard';
 import { SchedulerComponent } from './components/scheduler/scheduler.component';
 import { CalendarComponent } from './components/scheduler/calendar/calendar.component';
@@ -34,7 +34,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
         NavbarComponent,
         RegisterComponent,
         HomeComponent,
-        AppointmentsComponent,
         LoginComponent,
         ReserveComponent,
         AppointmentsComponent,
