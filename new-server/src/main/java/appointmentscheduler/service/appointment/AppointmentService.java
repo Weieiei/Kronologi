@@ -11,28 +11,24 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AppointmentService implements IAppointmentService {
+public class AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    @Override
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
     }
 
-    @Override
     public Appointment findById(long id) {
         return appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
     }
 
-    @Override
     public Appointment add(Appointment appointment) {
         return appointmentRepository.save(appointment);
     }
 
-    @Override
     public Appointment update(long id, Appointment appointment) {
 
         return appointmentRepository.findById(id).map(a -> {
@@ -50,7 +46,6 @@ public class AppointmentService implements IAppointmentService {
 
     }
 
-    @Override
     public ResponseEntity<?> cancel(long id) {
 
         return appointmentRepository.findById(id).map(a -> {
@@ -64,7 +59,6 @@ public class AppointmentService implements IAppointmentService {
 
     }
 
-    @Override
     public ResponseEntity<?> delete(long id) {
 
         return appointmentRepository.findById(id).map(a -> {
