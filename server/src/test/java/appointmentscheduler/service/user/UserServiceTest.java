@@ -8,6 +8,7 @@ import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
@@ -67,6 +68,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @Ignore
     public void registerSucceeded() {
         fail("todo");
     }
