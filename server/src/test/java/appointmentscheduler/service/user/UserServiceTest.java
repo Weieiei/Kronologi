@@ -80,7 +80,6 @@ public class UserServiceTest {
 
         // mock methods
         when(userLoginDTO.getEmail()).thenReturn("testEmail");
-        when(userLoginDTO.getPassword()).thenReturn("testPassword");
 
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
 
