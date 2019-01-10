@@ -1,25 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MyAppointmentsComponent } from './my-appointments.component';
+import { AppointmentsComponent } from './appointments.component';
 import { Component, NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { MaterialModule } from '../../material';
-import { User } from '../../models/user/User';
-import { UserType } from '../../models/user/UserType';
-import { Service } from '../../models/service/Service';
-import { MyAppointment } from '../../models/appointment/MyAppointment';
-import { AppointmentStatus } from '../../models/appointment/AppointmentStatus';
+import { MaterialModule } from '../../../../material';
+import { User } from '../../../../models/user/User';
+import { UserType } from '../../../../models/user/UserType';
+import { Service } from '../../../../models/service/Service';
+import { MyAppointment } from '../../../../models/appointment/MyAppointment';
+import { AppointmentStatus } from '../../../../models/appointment/AppointmentStatus';
 
 @Component({selector: 'app-appointment', template: ''})
 class AppointmentStubComponent {
 }
 
-describe('MyAppointmentsComponent', () => {
-    let component: MyAppointmentsComponent;
-    let fixture: ComponentFixture<MyAppointmentsComponent>;
+describe('AppointmentsComponent', () => {
+    let component: AppointmentsComponent;
+    let fixture: ComponentFixture<AppointmentsComponent>;
 
     let table: DebugElement;
 
@@ -32,7 +32,7 @@ describe('MyAppointmentsComponent', () => {
                 FormsModule
             ],
             declarations: [
-                MyAppointmentsComponent,
+                AppointmentsComponent,
                 AppointmentStubComponent
             ],
             schemas: [
@@ -43,7 +43,7 @@ describe('MyAppointmentsComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(MyAppointmentsComponent);
+        fixture = TestBed.createComponent(AppointmentsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

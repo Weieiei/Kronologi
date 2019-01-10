@@ -123,11 +123,11 @@ export class RegisterComponent implements OnInit {
         this.numberOfShifts++;
     }
 
-    addShift(shift: EmployeeShiftTimes): void {
+    /*addShift(shift: EmployeeShiftTimes): void {
 
-        /**
+        /!**
          * A user might modify an already set shift, so if that's the case, we delete the old one first.
-         */
+         *!/
         const shiftIndex = this.employeeShifts.findIndex(s => s.getNumber() === shift.getNumber());
         if (shiftIndex !== -1) {
             this.employeeShifts.splice(shiftIndex, 1);
@@ -135,7 +135,7 @@ export class RegisterComponent implements OnInit {
 
         this.employeeShifts.push(shift);
 
-    }
+    }*/
 
     togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;

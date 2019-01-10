@@ -12,13 +12,13 @@ import { RegisterComponent } from './pages/register/register.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './pages/dashboard/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
 import { ReserveComponent } from './pages/reserve/reserve.component';
-import { AppointmentsComponent } from './pages/appointments/appointments.component';
+import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AdminGuard } from './guards/admin.guard';
 import { SchedulerComponent } from './pages/reserve/scheduler/scheduler.component';
 import { CalendarComponent } from './pages/reserve/scheduler/calendar/calendar.component';
@@ -26,7 +26,14 @@ import { MonthPickerComponent } from './pages/reserve/scheduler/month-picker/mon
 import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
 import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
 import { TimePickerDialogComponent } from './components/shift-picker/time-picker-dialog/time-picker-dialog.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { AppointmentCardComponent } from './pages/dashboard/home/appointments/appointments-section/appointment-card/appointment-card.component';
+import { FabBottomRightDirective } from './directives/fab-bottom-right/fab-bottom-right.directive';
+import { ButtonIconDirective } from './directives/button-icon/button-icon.directive';
+import { ServiceSelectionComponent } from './pages/reserve/service-selection/service-selection.component';
+import { EmployeePickerComponent } from './pages/reserve/employee-picker/employee-picker.component';
+import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
+import { CardSizeDirective } from './directives/card-size/card-size.directive';
 
 @NgModule({
     declarations: [
@@ -44,7 +51,14 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
         CustomStepperComponent,
         ShiftPickerComponent,
         TimePickerDialogComponent,
-        DashboardComponent
+        DashboardComponent,
+        AppointmentCardComponent,
+        FabBottomRightDirective,
+        ButtonIconDirective,
+        ServiceSelectionComponent,
+        EmployeePickerComponent,
+        AppointmentsSectionComponent,
+        CardSizeDirective
     ],
     imports: [
         BrowserModule,
