@@ -6,7 +6,7 @@ import { User } from '../../models/user/User';
 import { Service } from '../../models/service/Service';
 
 @Component({
-    selector: 'app-appointments',
+    selector: 'app-admin-appointments',
     templateUrl: './appointments.component.html',
     styleUrls: ['./appointments.component.scss']
 })
