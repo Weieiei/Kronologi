@@ -6,15 +6,6 @@ SOEN 490 (Capstone) project for Concordia University.
 
 # Running the stack
 
-First, clone the repository and run the following:
-
-```
-cd server/
-cp .env-example .env
-```
-
-Then assign appropriate values to the environment variables defined in the `.env` file.
-
 ## Docker
 
 1. Make sure you have [docker](https://docs.docker.com/install/#supported-platforms) installed.

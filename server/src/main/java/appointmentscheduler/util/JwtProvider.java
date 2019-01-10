@@ -1,5 +1,6 @@
 package appointmentscheduler.util;
 
+import appointmentscheduler.entity.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -22,21 +23,22 @@ import java.util.stream.Collectors;
 public class JwtProvider implements Serializable {
 
     private final String KEY = generateRandomSecret();
-    private final String ROLES = "roles";
 
     // min * sec * ms == 1 hour
     private final int EXPIRATION = 60 * 60 * 1000 * 24;
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(User user, Authentication authentication) {
 
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         return Jwts.builder()
-                // putting the user id as the subject
-                .setSubject(authentication.getName())
-                .claim(ROLES, authorities)
+                .claim("sub", user.getId())
+                .claim("roles", authorities)
+                .claim("firstName", user.getFirstName())
+                .claim("lastName", user.getLastName())
+                .claim("email", user.getEmail())
                 .signWith(SignatureAlgorithm.HS256, KEY)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
@@ -44,14 +46,12 @@ public class JwtProvider implements Serializable {
 
     }
 
-    // TODO remove authentication from params
-    public UsernamePasswordAuthenticationToken getAuthentication(String token, Authentication authentication, UserDetails userDetails) {
+    public UsernamePasswordAuthenticationToken getAuthentication(String token, UserDetails userDetails) {
 
         JwtParser jwtParser = Jwts.parser().setSigningKey(KEY);
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
 
-        // TODO stream.of
-        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get(ROLES).toString().split(","))
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
 

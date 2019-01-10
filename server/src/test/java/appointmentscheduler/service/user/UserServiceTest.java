@@ -102,7 +102,7 @@ public class UserServiceTest {
         when(userLoginDTO.getPassword()).thenReturn("testPassword");
 
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(mockedUser));
-        when(jwtProvider.generateToken(any())).thenReturn("testToken");
+        when(jwtProvider.generateToken(any(), any())).thenReturn("testToken");
 
         // run method and get result
         Map map = userService.login(userLoginDTO);
