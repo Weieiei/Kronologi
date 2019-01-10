@@ -9,7 +9,7 @@ public class UserTest {
     private static final ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    public void chechUserMapping() {
+    public void checkUserMapping() {
         UserLoginDTO userLoginDTO = new UserLoginDTO("admin@admin.com", "admin123");
 
         User user = modelMapper.map(userLoginDTO, User.class);
