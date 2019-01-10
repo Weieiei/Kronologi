@@ -1,3 +1,4 @@
+/*
 import { FabBottomRightDirective } from './fab-bottom-right.directive';
 
 describe('FabBottomRightDirective', () => {
@@ -6,3 +7,4 @@ describe('FabBottomRightDirective', () => {
     expect(directive).toBeTruthy();
   });
 });
+*/

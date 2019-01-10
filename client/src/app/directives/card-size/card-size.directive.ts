@@ -1,12 +1,17 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[appCardSize]'
+    selector: '[appCardSize]'
 })
-export class CardSizeDirective {
+export class CardSizeDirective implements OnInit {
 
-  constructor(element: ElementRef) {
-      element.nativeElement.style.width = '344px';
-  }
+    constructor(
+        private element: ElementRef,
+        private renderer: Renderer2) {
+    }
+
+    ngOnInit(): void {
+        this.renderer.setStyle(this.element.nativeElement, 'width', '344px');
+    }
 
 }

@@ -1,14 +1,18 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: 'button[appFabBottomRight]'
+    selector: 'button[appFabBottomRight]'
 })
-export class FabBottomRightDirective {
+export class FabBottomRightDirective implements OnInit {
+    constructor(
+        private element: ElementRef,
+        private renderer: Renderer2
+    ) { }
 
-  constructor(element: ElementRef) {
-      element.nativeElement.style.position = 'fixed';
-      element.nativeElement.style.bottom = '16px';
-      element.nativeElement.style.right = '16px';
-  }
+    ngOnInit(): void {
+        this.renderer.setStyle(this.element.nativeElement, 'position', 'fixed');
+        this.renderer.setStyle(this.element.nativeElement, 'bottom', '16px');
+        this.renderer.setStyle(this.element.nativeElement, 'right', '16px');
+    }
 
 }

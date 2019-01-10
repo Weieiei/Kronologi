@@ -1,3 +1,4 @@
+/*
 import { ButtonIconDirective } from './button-icon.directive';
 
 describe('ButtonIconDirective', () => {
@@ -6,3 +7,4 @@ describe('ButtonIconDirective', () => {
     expect(directive).toBeTruthy();
   });
 });
+*/
