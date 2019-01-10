@@ -30,8 +30,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AppointmentCardComponent } from './pages/dashboard/home/appointments/appointments-section/appointment-card/appointment-card.component';
 import { FabBottomRightDirective } from './directives/fab-bottom-right/fab-bottom-right.directive';
 import { ButtonIconDirective } from './directives/button-icon/button-icon.directive';
-import { ServiceSelectionComponent } from './pages/reserve/service-selection/service-selection.component';
-import { EmployeePickerComponent } from './pages/reserve/employee-picker/employee-picker.component';
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
 
@@ -55,8 +53,6 @@ import { CardSizeDirective } from './directives/card-size/card-size.directive';
         AppointmentCardComponent,
         FabBottomRightDirective,
         ButtonIconDirective,
-        ServiceSelectionComponent,
-        EmployeePickerComponent,
         AppointmentsSectionComponent,
         CardSizeDirective
     ],
