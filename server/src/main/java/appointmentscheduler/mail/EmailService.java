@@ -13,15 +13,15 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class EmailService{
     @Autowired
     private Environment env;
     Properties props;
-    String username;
+    String username = "schedulerTester123@outlook.com";
+    String password = "testing123";
+    String logoPath = "src/assets/images/asapp_logo.png";
 
     EmailService () {
         props = new Properties();
@@ -30,39 +30,44 @@ public class EmailService{
         props.put("mail.smtp.host", "smtp.outlook.com");
         props.put("mail.smtp.port", "587");
     }
-    public void sendmail() throws AddressException, MessagingException, IOException {
-        Resource resource = new ClassPathResource("");
-        System.out.println(resource.getFile().getAbsolutePath());
+
+    private Session getSession() {
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("schedulerTester123@outlook.com", "testing123");
+                return new PasswordAuthentication(username, password);
             }
         });
-        MimeMessage msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress("schedulerTester123@outlook.com", false));
+        return session;
+    }
 
-        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("schedulerTester123@outlook.com"));
-        msg.setSubject("Tutorials point email");
-        msg.setContent("Tutorials point email", "text/html");
-        msg.setSentDate(new Date());
-
-        MimeBodyPart messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setContent("Tutorials point email", "text/html");
-
-        Multipart multipart = new MimeMultipart();
-        multipart.addBodyPart(messageBodyPart);
-       // MimeBodyPart attachPart = new MimeBodyPart();
-
-        //attachPart.attachFile("src/assets/images/asapp_logo.png");
-        //multipart.addBodyPart(attachPart);
+    private void addLogo(MimeMessage msg, String bodyContent) throws MessagingException {
         MimeMessageHelper helper = new MimeMessageHelper( msg,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                 StandardCharsets.UTF_8.name());
 
-        helper.addAttachment("asapp_logo.png", new File("src/assets/images/asapp_logo.png"));
+        helper.addAttachment("asapp_logo.png", new File(logoPath));
         String inlineImage = "<img src=\"cid:asapp_logo.png\"></img><br/>";
-        helper.setText(messageBodyPart.getContent()+ inlineImage, true);
-        //msg.setContent(multipart);
-        Transport.send(msg);
+        helper.setText(bodyContent + inlineImage, true);
     }
+
+    public boolean sendmail(String receiver, String subject, String content, boolean addLogo) throws  MessagingException, IOException {
+        Session session = getSession();
+        MimeMessage msg = new MimeMessage(session);
+        msg.setFrom(new InternetAddress(username , false));
+
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
+        msg.setSubject(subject);
+        msg.setSentDate(new Date());
+
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setContent(content, "text/html");
+
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+
+        addLogo(msg, content);
+        Transport.send(msg);
+        return true;
+    }
+
 }

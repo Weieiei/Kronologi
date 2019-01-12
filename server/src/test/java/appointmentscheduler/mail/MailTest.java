@@ -9,7 +9,7 @@ import java.io.IOException;
 public class MailTest {
     EmailService mail = new EmailService();
     @Test
-    public void testConstructor() throws IOException, MessagingException {
-        mail.sendmail();
+    public void testEmailSending() throws IOException, MessagingException {
+        Assert.assertTrue(mail.sendmail("schedulerTester123@outlook.com", "test email", "email testing", true));
     }
 }
