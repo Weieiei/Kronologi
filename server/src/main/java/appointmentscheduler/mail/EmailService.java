@@ -45,11 +45,11 @@ public class EmailService{
 
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
-//        MimeBodyPart attachPart = new MimeBodyPart();
-//
-//        attachPart.attachFile("/var/tmp/image19.png");
-//        multipart.addBodyPart(attachPart);
-//        msg.setContent(multipart);
+        MimeBodyPart attachPart = new MimeBodyPart();
+
+        attachPart.attachFile("src/assets/images/asapp_logo.png");
+        multipart.addBodyPart(attachPart);
+        msg.setContent(multipart);
         Transport.send(msg);
     }
 }
