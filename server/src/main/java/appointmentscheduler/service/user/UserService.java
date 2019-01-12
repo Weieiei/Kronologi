@@ -59,7 +59,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        String token = generateToken(savedUser.getId(), userRegisterDTO.getPassword());
+        String token = generateToken(savedUser, userRegisterDTO.getPassword());
 
         return buildUserTokenMap(savedUser, token);
     }
@@ -68,7 +68,7 @@ public class UserService {
         User user = userRepository.findByEmail(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
 
-        String token = generateToken(user.getId(), userLoginDTO.getPassword());
+        String token = generateToken(user, userLoginDTO.getPassword());
 
         return buildUserTokenMap(user, token);
     }
@@ -81,10 +81,10 @@ public class UserService {
         return map;
     }
 
-    private String generateToken(long userId, String password) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userId, password));
+    private String generateToken(User user, String unhashedPassword) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), unhashedPassword));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return jwtProvider.generateToken(authentication);
+        return jwtProvider.generateToken(user, authentication);
     }
 }

@@ -1,0 +1,12 @@
+@import "../../../../../variables";
+
+.date {
+  &:hover:not(.disabled) {
+    background-color: $accent-color;
+    cursor: pointer;
+  }
+
+  &.disabled {
+    color: lightgrey;
+  }
+}

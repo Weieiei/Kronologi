@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './pages/dashboard/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AnonymousGuard } from './guards/anonymous.guard';
-import { ReserveComponent } from './components/reserve/reserve.component';
-import { AppointmentsComponent } from './components/appointments/appointments.component';
+import { ReserveComponent } from './pages/reserve/reserve.component';
+import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth/auth.service';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 const routes: Routes = [
     // Login

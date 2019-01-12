@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserLoginDTO } from '../../interfaces/user-login-dto';
 import { HttpClient } from '@angular/common/http';
+import { UserRegisterDTO } from '../../interfaces/user-register-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +15,11 @@ export class UserService {
     constructor(private http: HttpClient) {
     }
 
-    login(email: string, password: string): Observable<any> {
-        const payload: UserLoginDTO = {email, password};
+    register(payload: UserRegisterDTO): Observable<any> {
+        return this.http.post<any>(['api', 'user', 'register'].join('/'), payload);
+    }
+
+    login(payload: UserLoginDTO): Observable<any> {
         return this.http.post(['api', 'user', 'login'].join('/'), payload);
     }
 
