@@ -44,18 +44,8 @@ public class User extends AuditableEntity {
             joinColumns = { @JoinColumn(name = "employee_id") },
             inverseJoinColumns = { @JoinColumn(name = "service_id") }
     )
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Service> employeeServices;
-
-    // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
-    public User() { }
-
-    public User(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
+    @ManyToMany
+    private List<Service> services;
 
     public long getId() {
         return id;
@@ -79,10 +69,6 @@ public class User extends AuditableEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getFullName() {
-        return this.firstName + " " + this.lastName;
     }
 
     public String getEmail() {
@@ -109,11 +95,11 @@ public class User extends AuditableEntity {
         this.roles = roles;
     }
 
-    public List<Service> getEmployeeServices() {
-        return employeeServices;
+    public List<Service> getServices() {
+        return services;
     }
 
-    public void setEmployeeServices(List<Service> employeeServices) {
-        this.employeeServices = employeeServices;
+    public void setServices(List<Service> services) {
+        this.services = services;
     }
 }

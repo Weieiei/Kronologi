@@ -1,8 +1,12 @@
 package appointmentscheduler.entity.service;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.room.Room;
+import appointmentscheduler.entity.user.User;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "services")
@@ -17,6 +21,22 @@ public class Service extends AuditableEntity {
 
     @Column(name = "duration")
     private int duration;
+
+    @JoinTable(
+            name = "employee_services",
+            joinColumns = { @JoinColumn(name = "service_id") },
+            inverseJoinColumns = { @JoinColumn(name = "employee_id") }
+    )
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<User> employees;
+
+    @JoinTable(
+            name = "service_rooms",
+            joinColumns = { @JoinColumn(name = "service_id") },
+            inverseJoinColumns = { @JoinColumn(name = "room_id") }
+    )
+    @ManyToMany
+    private Set<Room> rooms;
 
     public Service() { }
 
@@ -49,4 +69,19 @@ public class Service extends AuditableEntity {
         this.duration = duration;
     }
 
+    public List<User> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<User> employees) {
+        this.employees = employees;
+    }
+
+    public Set<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
+    }
 }
