@@ -1,6 +1,6 @@
 package appointmentscheduler.controller.rest;
 
-import appointmentscheduler.converters.appointment.h;
+import appointmentscheduler.converters.appointment.AppointmentDTOToAppointment;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.service.appointment.AppointmentService;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/${rest.api.path}/appointments")
-public class AppointmentController extends IRestIRestControllerController<Appointment, AppointmentDTO> {
+public class AppointmentController extends IRestController<Appointment, AppointmentDTO> {
 
     @Autowired
     private AppointmentService appointmentService;
