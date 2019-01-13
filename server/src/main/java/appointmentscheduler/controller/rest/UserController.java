@@ -2,16 +2,18 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.service.AuthenticationService;
+import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.user.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,9 +22,15 @@ public class UserController {
 
     private final UserService userService;
 
+    private final AuthenticationService authenticationService;
+
+    private final AppointmentService appointmentService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthenticationService authenticationService, AppointmentService appointmentService) {
         this.userService = userService;
+        this.authenticationService = authenticationService;
+        this.appointmentService = appointmentService;
     }
 
     @PostMapping("/register")
@@ -43,5 +51,12 @@ public class UserController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+    }
+
+    @GetMapping("/appointments")
+    public ResponseEntity<List<Appointment>> findAllAppointments() {
+        final List<Appointment> appointments = appointmentService.findByClientId(Integer.valueOf(authenticationService.getCurrentUserId()));
+
+        return ResponseEntity.ok(appointments);
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     List<Appointment> findByClientId(long clientId);
+
     List<Appointment> findByClientIdAndStatus(long clientId, AppointmentStatus status);
 
     List<Appointment> findByEmployeeId(long employeeId);
