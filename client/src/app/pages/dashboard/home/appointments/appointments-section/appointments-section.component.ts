@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class AppointmentsSectionComponent implements OnInit {
 
     @Input() appointments = [];
+    @Input() historyAppointments = [];
     @Input() title: string;
 
     constructor() {

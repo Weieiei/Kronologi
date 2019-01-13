@@ -6,6 +6,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { ReserveComponent } from './pages/reserve/reserve.component';
+import { ReviewComponent } from './pages/review/review.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth/auth.service';
@@ -39,7 +40,7 @@ const routes: Routes = [
 
             {path: 'reserve', component: ReserveComponent},
             {path: 'my/appts', component: AppointmentsComponent},
-
+            {path: 'review', component: ReviewComponent, canActivate: [AuthGuard] },
             {path: 'add/employee', component: RegisterComponent}
         ]
     },

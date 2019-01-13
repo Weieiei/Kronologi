@@ -8,4 +8,10 @@
             <app-appointment-card *ngFor="let appointment of appointments" appCardSize [appointment]="appointment"></app-appointment-card>
         </div>
     </div>
+
+    <div fxFlex="row" fxLayoutAlign="center">
+        <div gdColumns="repeat(auto-fill, 344px)" gdGap="16px" gdAlignRows="space-evenly" fxFlex.gt-sm="90" fxFlex.lt-md="100">
+            <app-appointment-card *ngFor="let historyAppointment of historyAppointments" appCardSize [historyAppointment]="historyAppointment"></app-appointment-card>
+        </div>
+    </div>
 </div>

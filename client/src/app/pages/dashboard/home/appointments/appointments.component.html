@@ -6,5 +6,5 @@
         <mat-divider fxFlex="60"></mat-divider>
     </div>
 
-    <app-appointments-section [appointments]="historyAppointments" title="Previous Appointments"></app-appointments-section>
+    <app-appointments-section [historyAppointments]="historyAppointments" [title]="historyAppointments.length | i18nPlural: historyMessageMapping"></app-appointments-section>
 </div>

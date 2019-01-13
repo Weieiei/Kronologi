@@ -9,6 +9,8 @@ export class AppointmentCardComponent implements OnInit {
 
     @Input()
     appointment;
+    @Input()
+    historyAppointment;
 
     constructor() {
     }
