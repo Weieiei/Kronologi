@@ -3,6 +3,7 @@ package appointmentscheduler.controller.rest;
 import appointmentscheduler.converters.appointment.AppointmentDTOToAppointment;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.service.AuthenticationService;
 import appointmentscheduler.service.appointment.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class AppointmentController extends IRestController<Appointment, Appointm
     @Autowired
     private AppointmentDTOToAppointment appointmentConverter;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @GetMapping
     @Override
     public List<Appointment> findAll() {
@@ -36,7 +40,8 @@ public class AppointmentController extends IRestController<Appointment, Appointm
     @PostMapping
     @Override
     public Appointment add(@RequestBody AppointmentDTO appointmentDTO) {
-        appointmentDTO.setClientId(getUserId());
+        long userId = authenticationService.getCurrentUserId();
+
         Appointment appointment = appointmentConverter.convert(appointmentDTO);
         return appointmentService.add(appointment);
     }

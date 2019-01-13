@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthenticationService {
-    public String getCurrentUserId() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    public long getCurrentUserId() {
+        return Long.valueOf(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }

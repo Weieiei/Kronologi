@@ -55,7 +55,7 @@ public class UserController {
 
     @GetMapping("/appointments")
     public ResponseEntity<List<Appointment>> findAllAppointments() {
-        final List<Appointment> appointments = appointmentService.findByClientId(Integer.valueOf(authenticationService.getCurrentUserId()));
+        final List<Appointment> appointments = appointmentService.findByClientId(authenticationService.getCurrentUserId());
 
         return ResponseEntity.ok(appointments);
     }
