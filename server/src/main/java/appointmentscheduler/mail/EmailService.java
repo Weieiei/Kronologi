@@ -13,6 +13,8 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class EmailService{
@@ -21,7 +23,7 @@ public class EmailService{
     Properties props;
     String username = "schedulerTester123@outlook.com";
     String password = "testing123";
-    String logoPath = "src/assets/images/asapp_logo.png";
+    String logoPath = "server/src/assets/images/asapp_logo.png";
 
     public EmailService () {
         props = new Properties();
