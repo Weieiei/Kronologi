@@ -23,7 +23,7 @@ public class EmailService{
     String password = "testing123";
     String logoPath = "src/assets/images/asapp_logo.png";
 
-    EmailService () {
+    public EmailService () {
         props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -50,7 +50,7 @@ public class EmailService{
         helper.setText(bodyContent + inlineImage, true);
     }
 
-    public boolean sendmail(String receiver, String subject, String content, boolean addLogo) throws  MessagingException, IOException {
+    public boolean sendmail(String receiver, String subject, String content, boolean attachLogo) throws  MessagingException, IOException {
         Session session = getSession();
         MimeMessage msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(username , false));
@@ -65,7 +65,10 @@ public class EmailService{
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
 
-        addLogo(msg, content);
+        if(attachLogo)
+            addLogo(msg, content);
+        else
+            msg.setContent(content, "text/html");
         Transport.send(msg);
         return true;
     }

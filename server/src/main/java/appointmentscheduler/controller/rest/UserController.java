@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -26,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) {
+    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
         try {
             return ResponseEntity.ok(userService.register(userRegisterDTO));
         } catch (BadCredentialsException e) {
