@@ -1,28 +1,17 @@
 package appointmentscheduler.dto.appointment;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class AppointmentDTO {
 
-    private long clientId;
     private long employeeId;
     private long serviceId;
 
-    // Appointment start time
-    // Can easily convert these values into the appropriate date/time using LocalDate.of() and LocalTime.of()
-    private int year;
-    private int month;
-    private int day;
-    private int hour;
-    private int minute;
+    private LocalDate date;
+    private LocalTime time;
 
     private String notes;
-
-    public long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(long clientId) {
-        this.clientId = clientId;
-    }
 
     public long getEmployeeId() {
         return employeeId;
@@ -40,44 +29,20 @@ public class AppointmentDTO {
         this.serviceId = serviceId;
     }
 
-    public int getYear() {
-        return year;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public int getMonth() {
-        return month;
+    public LocalTime getTime() {
+        return time;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public String getNotes() {
@@ -87,5 +52,4 @@ public class AppointmentDTO {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-
 }
