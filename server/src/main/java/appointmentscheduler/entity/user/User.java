@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User extends AuditableEntity {
 
     @Id
@@ -39,13 +40,10 @@ public class User extends AuditableEntity {
     )
     private Set<Role> roles;
 
-    @JoinTable(
-            name = "employee_services",
-            joinColumns = { @JoinColumn(name = "employee_id") },
-            inverseJoinColumns = { @JoinColumn(name = "service_id") }
-    )
-    @ManyToMany
-    private List<Service> services;
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof User && ((User) obj).id == this.id;
+    }
 
     public long getId() {
         return id;
@@ -95,11 +93,4 @@ public class User extends AuditableEntity {
         this.roles = roles;
     }
 
-    public List<Service> getServices() {
-        return services;
-    }
-
-    public void setServices(List<Service> services) {
-        this.services = services;
-    }
 }

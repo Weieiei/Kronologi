@@ -3,8 +3,11 @@ package appointmentscheduler.seed;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
+import appointmentscheduler.entity.room.Room;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.entity.shift.ShiftFactory;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +19,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +39,9 @@ public class Seed {
     private ShiftRepository shiftRepository;
 
     @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @EventListener
@@ -51,6 +55,10 @@ public class Seed {
             seedAppointments();
         }
 
+        if (roomRepository.count() == 0) {
+            seedRooms();
+        }
+
     }
 
     public void seedAdminAndClients() {
@@ -58,17 +66,39 @@ public class Seed {
         Role adminRole = new Role(RoleEnum.ADMIN);
         Role clientRole = new Role(RoleEnum.CLIENT);
 
-        User admin = new User("Admin", "User", "admin@admin.com", hash("admin123"));
+        User admin = createUser("Admin", "User", "admin@admin.com", hash("admin123"));
         admin.setRoles(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
 
-        User client1 = new User("John", "Doe", "johndoe@johndoe.com", hash("johndoe123"));
+        User client1 = createUser("John", "Doe", "johndoe@johndoe.com", hash("johndoe123"));
         client1.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
-        User client2 = new User("Test", "User", "test@test.com", hash("test123"));
+        User client2 = createUser("Test", "User", "test@test.com", hash("test123"));
         client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         userRepository.saveAll(Arrays.asList(admin, client1, client2));
 
+    }
+
+    private User createUser(String firstName, String lastName, String email, String passowrd) {
+        User user = new User();
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(passowrd);
+
+        return user;
+    }
+
+    private Employee createEmployee(String firstName, String lastName, String email, String passowrd) {
+        Employee user = new Employee();
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(passowrd);
+
+        return user;
     }
 
     public void seedEmployeeServicesAndShifts() {
@@ -96,21 +126,23 @@ public class Seed {
 
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
 
-        User employee = new User("Employee", "User", "employee@employee.com", hash("employee123"));
+        Employee employee = createEmployee("Employee", "User", "employee@employee.com", hash("employee123"));
 
         employee.setRoles(Stream.of(employeeRole).collect(Collectors.toSet()));
 
-        employee.setEmployeeServices(Arrays.asList(
+        Set<Service> set = new HashSet<>(Arrays.asList(
                 services.get(0), services.get(1), services.get(3),
                 services.get(6), services.get(8), services.get(11)
         ));
+        employee.setServices(set);
 
-        List<Shift> shifts = new ArrayList<>();
-        shifts.add(new Shift(employee, LocalDate.of(2019, 11, 30), LocalTime.of(12, 0), LocalTime.of(21, 0)));
-        shifts.add(new Shift(employee, LocalDate.of(2019, 12, 2), LocalTime.of(12, 0), LocalTime.of(21, 0)));
+        Set<Shift> shifts = new HashSet<>();
+        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, 11, 30), LocalTime.of(12, 0), LocalTime.of(21, 0)));
+        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, 12, 2), LocalTime.of(12, 0), LocalTime.of(21, 0)));
+
+        employee.setShifts(shifts);
 
         userRepository.save(employee);
-        shiftRepository.saveAll(shifts);
 
     }
 
@@ -138,4 +170,10 @@ public class Seed {
         return bCryptPasswordEncoder.encode(password);
     }
 
+    public void seedRooms() {
+        Room room = new Room();
+        room.setName("Laser Room");
+
+        roomRepository.save(room);
+    }
 }
