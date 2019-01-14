@@ -2,7 +2,7 @@ package appointmentscheduler.entity.service;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.room.Room;
-import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.user.Employee;
 
 import javax.persistence.*;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Service extends AuditableEntity {
             inverseJoinColumns = { @JoinColumn(name = "employee_id") }
     )
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<User> employees;
+    private List<Employee> employees;
 
     @JoinTable(
             name = "service_rooms",
@@ -69,11 +69,11 @@ public class Service extends AuditableEntity {
         this.duration = duration;
     }
 
-    public List<User> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<User> employees) {
+    public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
 

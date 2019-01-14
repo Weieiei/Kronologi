@@ -2,6 +2,7 @@ package appointmentscheduler.entity.appointment;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -24,7 +25,7 @@ public class Appointment extends AuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
-    private User employee;
+    private Employee employee;
 
     @ManyToOne
     @JoinColumn(name = "service_id", nullable = false)
@@ -48,7 +49,7 @@ public class Appointment extends AuditableEntity {
 
     public Appointment() { }
 
-    public Appointment(User client, User employee, Service service, LocalDate date, LocalTime startTime, String notes) {
+    public Appointment(User client, Employee employee, Service service, LocalDate date, LocalTime startTime, String notes) {
         this.client = client;
         this.employee = employee;
         this.service = service;
@@ -73,11 +74,11 @@ public class Appointment extends AuditableEntity {
         this.client = client;
     }
 
-    public User getEmployee() {
+    public Employee getEmployee() {
         return employee;
     }
 
-    public void setEmployee(User employee) {
+    public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 
