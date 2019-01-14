@@ -9,7 +9,7 @@ public class AppointmentDTO {
     private long serviceId;
 
     private LocalDate date;
-    private LocalTime time;
+    private LocalTime startTime;
 
     private String notes;
 
@@ -37,12 +37,12 @@ public class AppointmentDTO {
         this.date = date;
     }
 
-    public LocalTime getTime() {
-        return time;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setTime(LocalTime time) {
-        this.time = time;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
     public String getNotes() {
