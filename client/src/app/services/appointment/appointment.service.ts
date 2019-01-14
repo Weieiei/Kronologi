@@ -13,7 +13,7 @@ export class AppointmentService {
     }
 
     public getMyAppointments(): Observable<any> {
-        return this.http.get(['api', 'user', 'appointments'].join('/'));
+        return this.http.get(['api', 'appointments', 'current_user'].join('/'));
     }
 
     public getAllAppointments(): Observable<AppointmentDetailed[]> {
@@ -23,8 +23,4 @@ export class AppointmentService {
     public reserveAppointment(appointment: AppointmentToBook): Observable<any> {
         return this.http.post<AppointmentToBook>(['api', 'user', 'appointments'].join('/'), appointment);
     }
-    // public getMyPastAppointments(): Observable<any> {
-    //     return this.http.get(['api', 'user', 'appointments', 'old'].join('/'));
-    // }
-
 }
