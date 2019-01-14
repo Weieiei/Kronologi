@@ -48,8 +48,8 @@ public class EmailService{
                 StandardCharsets.UTF_8.name());
 
         helper.addAttachment("asapp_logo.png", new File(logoPath));
-        String inlineImage = "<img src=\"cid:asapp_logo.png\"></img><br/>";
-        helper.setText(bodyContent + inlineImage, true);
+        String inlineImage = "<img src=\"cid:asapp_logo.png\" width=\"10%\" height=\"10%\"></img><br/>";
+        helper.setText(bodyContent + "<p><br /><br />All the best, <br /> ASApp Team <br /></p>" + inlineImage, true);
     }
 
     public boolean sendmail(String receiver, String subject, String content, boolean attachLogo) throws  MessagingException, IOException {

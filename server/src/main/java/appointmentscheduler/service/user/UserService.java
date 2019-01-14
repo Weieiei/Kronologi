@@ -67,7 +67,7 @@ public class UserService {
 
         String token = generateToken(savedUser, userRegisterDTO.getPassword());
 
-        emailService.sendmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", "Welcome to ASApp", true);
+        emailService.sendmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", "Welcome to ASApp. <br />", true);
 
         return buildUserTokenMap(savedUser, token);
     }
