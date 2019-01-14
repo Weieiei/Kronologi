@@ -33,6 +33,10 @@ public class AppointmentController extends IRestController<Appointment, Appointm
         return appointmentService.findById(id);
     }
 
+    @GetMapping("/current_user")
+    public List<Appointment> findByCurrentUser() {return appointmentService.findByClientId(getUserId());
+    }
+
     @PostMapping
     @Override
     public Appointment add(@RequestBody AppointmentDTO appointmentDTO) {
