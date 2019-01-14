@@ -4,7 +4,6 @@ import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -46,17 +45,6 @@ public class Appointment extends AuditableEntity {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
-
-    public Appointment() { }
-
-    public Appointment(User client, Employee employee, Service service, LocalDate date, LocalTime startTime, String notes) {
-        this.client = client;
-        this.employee = employee;
-        this.service = service;
-        this.date = date;
-        this.startTime = startTime;
-        this.notes = notes;
-    }
 
     public long getId() {
         return id;

@@ -1,6 +1,7 @@
 package appointmentscheduler.seed;
 
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.appointment.AppointmentFactory;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.room.Room;
@@ -17,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -149,15 +149,15 @@ public class Seed {
     public void seedAppointments() {
 
         List<User> clients = userRepository.findByRoles_Role(RoleEnum.CLIENT);
-        User employee = userRepository.findByRoles_Role(RoleEnum.EMPLOYEE).get(0);
+        Employee employee = (Employee) userRepository.findByRoles_Role(RoleEnum.EMPLOYEE).get(0);
         List<Service> services = serviceRepository.findAll();
 
-        Appointment appointment = new Appointment(
+        Appointment appointment = AppointmentFactory.createAppointment(
                 clients.get(0), employee, services.get(11),
                 LocalDate.of(2019, 11, 30), LocalTime.of(12, 0), "Some note"
         );
 
-        Appointment appointment2 = new Appointment(
+        Appointment appointment2 = AppointmentFactory.createAppointment(
                 clients.get(1), employee, services.get(6),
                 LocalDate.of(2019, 12, 2), LocalTime.of(12, 0), "Some note"
         );
