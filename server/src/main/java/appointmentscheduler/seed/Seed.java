@@ -10,6 +10,7 @@ import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.shift.ShiftFactory;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -66,39 +67,17 @@ public class Seed {
         Role adminRole = new Role(RoleEnum.ADMIN);
         Role clientRole = new Role(RoleEnum.CLIENT);
 
-        User admin = createUser("Admin", "User", "admin@admin.com", hash("admin123"));
+        User admin = UserFactory.createUser(User.class, "Admin", "User", "admin@admin.com", hash("admin123"));
         admin.setRoles(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
 
-        User client1 = createUser("John", "Doe", "johndoe@johndoe.com", hash("johndoe123"));
+        User client1 = UserFactory.createUser(User.class, "John", "Doe", "johndoe@johndoe.com", hash("johndoe123"));
         client1.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
-        User client2 = createUser("Test", "User", "test@test.com", hash("test123"));
+        User client2 = UserFactory.createUser(User.class, "Test", "User", "test@test.com", hash("test123"));
         client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         userRepository.saveAll(Arrays.asList(admin, client1, client2));
 
-    }
-
-    private User createUser(String firstName, String lastName, String email, String passowrd) {
-        User user = new User();
-
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(passowrd);
-
-        return user;
-    }
-
-    private Employee createEmployee(String firstName, String lastName, String email, String passowrd) {
-        Employee user = new Employee();
-
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(passowrd);
-
-        return user;
     }
 
     public void seedEmployeeServicesAndShifts() {
@@ -126,7 +105,7 @@ public class Seed {
 
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
 
-        Employee employee = createEmployee("Employee", "User", "employee@employee.com", hash("employee123"));
+        Employee employee = (Employee) UserFactory.createUser(Employee.class, "Employee", "User", "employee@employee.com", hash("employee123"));
 
         employee.setRoles(Stream.of(employeeRole).collect(Collectors.toSet()));
 
