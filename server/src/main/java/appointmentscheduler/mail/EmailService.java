@@ -6,15 +6,12 @@ package appointmentscheduler.mail;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class EmailService{
@@ -31,6 +28,22 @@ public class EmailService{
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.outlook.com");
         props.put("mail.smtp.port", "587");
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     private Session getSession() {
@@ -52,9 +65,10 @@ public class EmailService{
         helper.setText(bodyContent + "<p><br /><br />All the best, <br /> ASApp Team <br /></p>" + inlineImage, true);
     }
 
-    public boolean sendmail(String receiver, String subject, String content, boolean attachLogo) throws  MessagingException, IOException {
-        Session session = getSession();
-        MimeMessage msg = new MimeMessage(session);
+
+    public boolean sendmail(String receiver, String subject, String content, boolean attachLogo) throws  MessagingException{
+        Session sess = getSession();
+        MimeMessage msg = new MimeMessage(sess);
         msg.setFrom(new InternetAddress(username , false));
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
