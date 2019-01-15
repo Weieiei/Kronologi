@@ -95,19 +95,14 @@ public class Appointment extends AuditableEntity {
     }
 
     public LocalTime getEndTime() {
+        if (endTime == null) {
+            adjustEndTime();
+        }
         return endTime;
     }
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
-    }
-
-    public LocalDateTime getStartDateTime() {
-        return LocalDateTime.of(getDate(), getStartTime());
-    }
-
-    public LocalDateTime getEndDateTime() {
-        return LocalDateTime.of(getDate(), getEndTime());
     }
 
     public String getNotes() {
