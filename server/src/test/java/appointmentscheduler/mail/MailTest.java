@@ -19,4 +19,9 @@ public class MailTest {
         Assert.assertEquals(user, mail.getUsername());
         Assert.assertEquals(pass, mail.getPassword());
     }
+
+    @Test
+    public void testEmailSending() throws IOException, MessagingException {
+        Assert.assertTrue(mail.sendmail("schedulerTester123@outlook.com", "test email", "email testing", false));
+    }
 }
