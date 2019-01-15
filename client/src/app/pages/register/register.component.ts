@@ -42,6 +42,8 @@ export class RegisterComponent implements OnInit {
 
     isPasswordVisible = false;
 
+    registerPhone = false;
+
     constructor(
         private userService: UserService,
         private serviceService: ServiceService,
@@ -140,4 +142,9 @@ export class RegisterComponent implements OnInit {
     togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;
     }
+
+    toggleRegisterPhone() {
+        this.registerPhone = !this.registerPhone;
+    }
+
 }

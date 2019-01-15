@@ -45,6 +45,28 @@
                 </span>
             </div>
 
+            <!-- Problem with (change) is that it's assumed that it starts at false -->
+            <mat-checkbox class="phone-checkbox" (change)="toggleRegisterPhone()">Add phone number? You can always add it later.</mat-checkbox>
+
+            <div fxLayout="column" class="phone-container" *ngIf="registerPhone">
+                <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25%">
+                        <mat-label>Country Code</mat-label>
+                        <input matInput name="country-code" value="+1" disabled required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25%">
+                        <mat-label>Area Code</mat-label>
+                        <input matInput name="area-code" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="50%">
+                        <mat-label>Phone Number</mat-label>
+                        <input matInput name="phone-number" required>
+                    </mat-form-field>
+                </div>
+            </div>
+
             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
             <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
             <button mat-raised-button color="primary" type="submit">Register</button>
