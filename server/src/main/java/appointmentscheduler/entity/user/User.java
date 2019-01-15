@@ -48,12 +48,12 @@ public class User extends AuditableEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Service> employeeServices;
 
-    @OneToMany(
+    @OneToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
             mappedBy = "user"
     )
-    private Set<PhoneNumber> phoneNumbers;
+    private PhoneNumber phoneNumber;
 
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
@@ -125,12 +125,12 @@ public class User extends AuditableEntity {
         this.employeeServices = employeeServices;
     }
 
-    public Set<PhoneNumber> getPhoneNumbers() {
-        return phoneNumbers;
+    public PhoneNumber getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+    public void setPhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
 }

@@ -106,7 +106,6 @@ public class Seed {
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
 
         User employee = new User("Employee", "User", "employee@employee.com", hash("employee123"));
-
         employee.setRoles(Stream.of(employeeRole).collect(Collectors.toSet()));
 
         employee.setEmployeeServices(Arrays.asList(
@@ -120,6 +119,9 @@ public class Seed {
 
         userRepository.save(employee);
         shiftRepository.saveAll(shifts);
+
+        PhoneNumber employeePhoneNumber = new PhoneNumber("+1", "514", "5554567", employee);
+        phoneRepository.save(employeePhoneNumber);
 
     }
 
