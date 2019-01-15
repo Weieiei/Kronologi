@@ -45,8 +45,7 @@
                 </span>
             </div>
 
-            <!-- Problem with (change) is that it's assumed that it starts at false -->
-            <mat-checkbox class="phone-checkbox" (change)="toggleRegisterPhone()">Add phone number? You can always add it later.</mat-checkbox>
+            <mat-checkbox class="phone-checkbox" color="primary" [(ngModel)]="registerPhone" name="registerPhone">Add phone number?</mat-checkbox>
 
             <div fxLayout="column" class="phone-container" *ngIf="registerPhone">
                 <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">
@@ -57,12 +56,12 @@
 
                     <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25%">
                         <mat-label>Area Code</mat-label>
-                        <input matInput name="area-code" required>
+                        <input matInput [(ngModel)]="areaCode" name="areCode" required>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="50%">
                         <mat-label>Phone Number</mat-label>
-                        <input matInput name="phone-number" required>
+                        <input matInput [(ngModel)]="number" name="number" required>
                     </mat-form-field>
                 </div>
             </div>

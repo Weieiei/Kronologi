@@ -27,6 +27,9 @@ export class RegisterComponent implements OnInit {
     email: string;
     password: string;
 
+    areaCode: string;
+    number: string;
+
     confirmPassword: string;
 
     /**
@@ -84,8 +87,16 @@ export class RegisterComponent implements OnInit {
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
-            password: this.password
+            password: this.password,
+            phoneNumber: null
         };
+
+        if (this.registerPhone) {
+            payload.phoneNumber = {
+                areaCode: this.areaCode,
+                number: this.number
+            };
+        }
 
         this.userService.register(payload).subscribe(
             res => {
@@ -141,10 +152,6 @@ export class RegisterComponent implements OnInit {
 
     togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;
-    }
-
-    toggleRegisterPhone() {
-        this.registerPhone = !this.registerPhone;
     }
 
 }
