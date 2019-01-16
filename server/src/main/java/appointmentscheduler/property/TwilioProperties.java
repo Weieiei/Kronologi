@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(name = "secrets", value = "secret.properties")
+@PropertySource(name = "secrets", value = "secret.properties", ignoreResourceNotFound = true)
 public class TwilioProperties {
 
     @Value("${twilio.account.sid}")

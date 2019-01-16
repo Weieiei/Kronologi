@@ -1,4 +1,4 @@
-import {PhoneNumberDTO} from "./phone-number-dto";
+import { PhoneNumberDTO } from "./phone-number-dto";
 
 export interface UserRegisterDTO {
     firstName: string;
