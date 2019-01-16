@@ -54,10 +54,10 @@
                     <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25">
                         <mat-label>Country</mat-label>
                         <input type="text" matInput [formControl]="countryControl" [matAutocomplete]="auto" autocomplete="noautocomplete" required>
-                        <mat-autocomplete [panelWidth]="auto" autoActiveFirstOption #auto="matAutocomplete">
-                            <mat-option *ngFor="let country of filteredCountries | async" [value]="country.code">
+                        <mat-autocomplete [panelWidth]="auto" autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectCountry($event.option.value)">
+                            <mat-option *ngFor="let country of filteredCountries | async" [value]="country.name">
                                 <span class="flag-icon flag-icon-{{ country.iso2 }}"></span>
-                                <span> {{ country.name }} | <span class="country-code">{{ country.code }}</span></span>
+                                <span> {{ country.name }} | <span class="country-code">+{{ country.dialCode }}</span></span>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>

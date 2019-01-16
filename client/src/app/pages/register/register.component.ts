@@ -10,18 +10,7 @@ import { Observable } from "rxjs";
 import { FormControl } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
 
-export interface Country {
-    iso2: string;
-    name: string;
-    code: string;
-}
-
-export const countries: Country[] = [
-    { iso2: 'ca', name: 'Canada', code: '+1' },
-    { iso2: 'us', name: 'United States', code: '+1' },
-    { iso2: 'be', name: 'Belgium', code: '+32' },
-    { iso2: 'eg', name: 'Egypt', code: '+20' }
-];
+export const countryData = require('country-telephone-data');
 
 @Component({
     selector: 'app-register',
@@ -43,12 +32,13 @@ export class RegisterComponent implements OnInit {
     email: string;
     password: string;
 
+    countryCode: string;
     areaCode: string;
     number: string;
 
     countryControl = new FormControl();
-    countries: Country[] = countries;
-    filteredCountries: Observable<Country[]>;
+    countries: Object[] = countryData.allCountries;
+    filteredCountries: Observable<Object[]>;
 
     confirmPassword: string;
 
@@ -76,6 +66,7 @@ export class RegisterComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.route.data.subscribe(data => {
             this.data = data;
             if (this.data.type === AuthService.registerEmployee) {
@@ -84,15 +75,17 @@ export class RegisterComponent implements OnInit {
                 this.employeeShifts = [];
             }
         });
+
         this.filteredCountries = this.countryControl.valueChanges.pipe(
             startWith(''),
             map(value => this.filterCountries(value))
         );
+
     }
 
-    filterCountries(value: string): Country[] {
+    filterCountries(value: string): Object[] {
         const filterValue = value.toLowerCase();
-        return this.countries.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+        return this.countries.filter(option => option['name'].toLowerCase().indexOf(filterValue) === 0);
     }
 
     registerUser(): void {
@@ -122,6 +115,7 @@ export class RegisterComponent implements OnInit {
 
         if (this.registerPhone) {
             payload.phoneNumber = {
+                countryCode: this.countryCode,
                 areaCode: this.areaCode,
                 number: this.number
             };
@@ -181,6 +175,10 @@ export class RegisterComponent implements OnInit {
 
     togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;
+    }
+
+    selectCountry(countryName: string) {
+        this.countryCode = '+' + this.countries.find(country => country['name'] === countryName)['dialCode'];
     }
 
 }

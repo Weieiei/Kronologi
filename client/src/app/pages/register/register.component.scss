@@ -23,7 +23,8 @@
         }
     }
 
-    .passwords-container {
+    .passwords-container,
+    .phone-container {
         margin-top: 12px;
 
         .no-mat-padding {
@@ -33,10 +34,6 @@
                 }
             }
         }
-    }
-
-    .phone-container {
-        margin-top: 12px;
     }
 }
 
