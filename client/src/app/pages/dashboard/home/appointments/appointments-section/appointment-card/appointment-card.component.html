@@ -34,34 +34,3 @@
     </mat-card-actions>
 
 </mat-card>
-
-<mat-card>
-    <mat-card-header>
-        <div mat-card-avatar>
-            <img src="assets/images/spa-logo.svg" style="width: inherit; height: inherit"/>
-        </div>
-        <mat-card-title>{{ historyAppointment.service.name }}</mat-card-title>
-        <mat-card-subtitle>Sylvia Pizzi Spa</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image src="https://interlude.com/wp-content/uploads/2016/03/spa-packages500-5.jpg" alt="Photo of a Shiba Inu" height="194" width="344">
-    <mat-card-content>
-        <div>
-            <b>Date:</b> {{ historyAppointment.date | date: 'fullDate'}}
-        </div>
-        <div>
-            <b>Start Time:</b> {{ historyAppointment.startTime }}
-        </div>
-        <div>
-            <b>End Time:</b> {{ historyAppointment.endTime }}
-        </div>
-    </mat-card-content>
-    <mat-card-actions fxLayout="row" fxLayoutGap="16px">
-        <button fxFlex color="primary" mat-flat-button>
-            <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
-                <mat-icon appButtonIcon>edit</mat-icon>
-                <span>REVIEW</span>
-            </span>
-        </button>
-    </mat-card-actions>
-
-</mat-card>

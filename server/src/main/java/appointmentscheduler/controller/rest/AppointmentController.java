@@ -33,6 +33,7 @@ public class AppointmentController extends IRestController<Appointment, Appointm
         return appointmentService.findById(id);
     }
 
+    //TODO  change it sections
     @GetMapping("/current_user")
     public List<Appointment> findByCurrentUser() {return appointmentService.findByClientId(getUserId());
     }
