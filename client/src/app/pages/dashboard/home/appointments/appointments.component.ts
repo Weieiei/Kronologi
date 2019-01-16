@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
     selector: 'app-appointments',
@@ -8,8 +9,9 @@ import { AppointmentService } from '../../../../services/appointment/appointment
 })
 export class AppointmentsComponent implements OnInit {
 
-    upcomingAppointments = [];
-    pastAppointments = [];
+    upcomingAppointments;
+    pastAppointments;
+    random = 0;
 
     upcomingMessageMapping: { [k: string]: string } = {
         '=0': 'No Upcoming Appointments',
@@ -23,41 +25,34 @@ export class AppointmentsComponent implements OnInit {
         'other': '# Previous Appointments'
     };
 
-    constructor(private appointmentService: AppointmentService) {
-    }
+    constructor(private appointmentService: AppointmentService, private ref: ChangeDetectorRef) {
+        this.upcomingAppointments = [];
+        this.pastAppointments = [];
+      }
 
     ngOnInit() {
         this.getMyAppointments();
-        this.getMyPastAppointments();
     }
 
     getMyAppointments(): void {
-        this.appointmentService.getMyAppointments().subscribe(
-            res => {
+        this.appointmentService.getMyAppointments().subscribe
+        (
+            (res) => {
                 const now = new Date();
 
                 for (const appointment of res) {
+                    this.ref.detectChanges();
                     const appointmentStart = new Date(appointment.date + ' ' + appointment.startTime);
+
 
                     if (now <= appointmentStart) {
                         this.upcomingAppointments.push(appointment);
-                    }
-                }
-            },
-            err => console.log(err)
-        );
-    }
+                        this.ref.detectChanges();
 
-    getMyPastAppointments(): void {
-        this.appointmentService.getMyAppointments().subscribe(
-            res => {
-                const now = new Date();
-
-                for (const appointment of res) {
-                    const appointmentStart = new Date(appointment.date + ' ' + appointment.startTime);
-
-                    if (now > appointmentStart) {
+                    } else {
                         this.pastAppointments.push(appointment);
+                        this.ref.detectChanges();
+
                     }
                 }
             },
