@@ -1,28 +1,28 @@
-package appointmentscheduler.mail;
+package appointmentscheduler.service.email;
 
-
-
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.mail.javamail.MimeMessageHelper;
+@Service
+public class EmailService {
 
-public class EmailService{
-    @Autowired
-    private Environment env;
-    Properties props;
-    String username = "schedulerTester123@outlook.com";
-    String password = "testing123";
-    String logoPath = "server/src/assets/images/asapp_logo.png";
+    private Properties props;
 
-    public EmailService () {
+    private String email = "schedulerTester123@outlook.com";
+    private String password = "testing123";
+    private String logoPath = "server/src/assets/images/asapp_logo.png";
+
+    public EmailService() {
         props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -30,12 +30,12 @@ public class EmailService{
         props.put("mail.smtp.port", "587");
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public void setPassword(String password) {
@@ -47,18 +47,19 @@ public class EmailService{
     }
 
     private Session getSession() {
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+        return Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
+                return new PasswordAuthentication(email, password);
             }
         });
-        return session;
     }
 
     private void addLogo(MimeMessage msg, String bodyContent) throws MessagingException {
-        MimeMessageHelper helper = new MimeMessageHelper( msg,
+        MimeMessageHelper helper = new MimeMessageHelper(
+                msg,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                StandardCharsets.UTF_8.name());
+                StandardCharsets.UTF_8.name()
+        );
 
         helper.addAttachment("asapp_logo.png", new File(logoPath));
         String inlineImage = "<img src=\"cid:asapp_logo.png\" width=\"10%\" height=\"10%\"></img><br/>";
@@ -66,10 +67,10 @@ public class EmailService{
     }
 
 
-    public boolean sendmail(String receiver, String subject, String content, boolean attachLogo) throws  MessagingException{
-        Session sess = getSession();
-        MimeMessage msg = new MimeMessage(sess);
-        msg.setFrom(new InternetAddress(username , false));
+    public boolean sendEmail(String receiver, String subject, String content, boolean attachLogo) throws MessagingException {
+        Session session = getSession();
+        MimeMessage msg = new MimeMessage(session);
+        msg.setFrom(new InternetAddress(email, false));
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
         msg.setSubject(subject);
@@ -81,11 +82,14 @@ public class EmailService{
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
 
-        if(attachLogo)
+        if (attachLogo) {
             addLogo(msg, content);
-        else
+        } else {
             msg.setContent(content, "text/html");
+        }
+
         Transport.send(msg);
+
         return true;
     }
 

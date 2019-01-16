@@ -5,12 +5,10 @@ import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.UserAlreadyExistsException;
-import appointmentscheduler.mail.EmailService;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,26 +26,23 @@ import java.util.stream.Stream;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
-
     private final RoleRepository roleRepository;
-
     private final JwtProvider jwtProvider;
-
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private final AuthenticationManager authenticationManager;
 
-    private final EmailService emailService;
-
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider, BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager) {
+    public UserService(
+            UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider,
+            BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager
+    ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.jwtProvider = jwtProvider;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
-        this.emailService = new EmailService();
     }
 
     public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
@@ -66,8 +61,6 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         String token = generateToken(savedUser, userRegisterDTO.getPassword());
-
-        emailService.sendmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", "Welcome to ASApp. <br />", true);
 
         return buildUserTokenMap(savedUser, token);
     }
