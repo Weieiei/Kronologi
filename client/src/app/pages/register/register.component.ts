@@ -6,6 +6,22 @@ import { ServiceService } from '../../services/service/service.service';
 import { EmployeeShiftTimes } from '../../models/shift/EmployeeShiftTimes';
 import { UserRegisterDTO } from '../../interfaces/user-register-dto';
 import { UserService } from '../../services/user/user.service';
+import { Observable } from "rxjs";
+import { FormControl } from "@angular/forms";
+import { map, startWith } from "rxjs/operators";
+
+export interface Country {
+    iso2: string;
+    name: string;
+    code: string;
+}
+
+export const countries: Country[] = [
+    { iso2: 'ca', name: 'Canada', code: '+1' },
+    { iso2: 'us', name: 'United States', code: '+1' },
+    { iso2: 'be', name: 'Belgium', code: '+32' },
+    { iso2: 'eg', name: 'Egypt', code: '+20' }
+];
 
 @Component({
     selector: 'app-register',
@@ -29,6 +45,10 @@ export class RegisterComponent implements OnInit {
 
     areaCode: string;
     number: string;
+
+    countryControl = new FormControl();
+    countries: Country[] = countries;
+    filteredCountries: Observable<Country[]>;
 
     confirmPassword: string;
 
@@ -64,6 +84,15 @@ export class RegisterComponent implements OnInit {
                 this.employeeShifts = [];
             }
         });
+        this.filteredCountries = this.countryControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this.filterCountries(value))
+        );
+    }
+
+    filterCountries(value: string): Country[] {
+        const filterValue = value.toLowerCase();
+        return this.countries.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
     }
 
     registerUser(): void {

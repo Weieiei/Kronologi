@@ -21,6 +21,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatDialogModule,
         CdkStepperModule,
         MatSidenavModule,
-        MatCardModule
+        MatCardModule,
+        MatAutocompleteModule
     ],
     exports: [
         MatButtonModule,
@@ -63,7 +65,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatDialogModule,
         CdkStepperModule,
         MatSidenavModule,
-        MatCardModule
+        MatCardModule,
+        MatAutocompleteModule
     ]
 })
 export class MaterialModule {

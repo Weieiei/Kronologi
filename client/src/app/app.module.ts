@@ -9,7 +9,7 @@ import { MaterialModule } from './material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { HomeComponent } from './pages/dashboard/home/home.component';
@@ -63,7 +63,8 @@ import { CardSizeDirective } from './directives/card-size/card-size.directive';
         BrowserAnimationsModule,
         MaterialModule,
         FlexLayoutModule,
-        HttpClientModule
+        HttpClientModule,
+        ReactiveFormsModule
     ],
     entryComponents: [
         TimePickerDialogComponent
