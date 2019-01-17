@@ -25,7 +25,7 @@ export class AppointmentsComponent implements OnInit {
         'other': '# Previous Appointments'
     };
 
-    constructor(private appointmentService: AppointmentService, private ref: ChangeDetectorRef) {
+    constructor(private appointmentService: AppointmentService) {
         this.upcomingAppointments = [];
         this.pastAppointments = [];
       }
@@ -41,17 +41,14 @@ export class AppointmentsComponent implements OnInit {
                 const now = new Date();
 
                 for (const appointment of res) {
-                    this.ref.detectChanges();
                     const appointmentStart = new Date(appointment.date + ' ' + appointment.startTime);
 
 
                     if (now <= appointmentStart) {
                         this.upcomingAppointments.push(appointment);
-                        this.ref.detectChanges();
 
                     } else {
                         this.pastAppointments.push(appointment);
-                        this.ref.detectChanges();
 
                     }
                 }
