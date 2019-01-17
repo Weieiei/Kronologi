@@ -38,4 +38,8 @@ public class PhoneNumberDTO {
         this.number = number;
     }
 
+    public String getRawPhoneNumber() {
+        return countryCode + areaCode + number;
+    }
+
 }
