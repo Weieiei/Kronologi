@@ -31,6 +31,9 @@ public class User extends AuditableEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "verified")
+    private boolean verified;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_role",
@@ -47,6 +50,7 @@ public class User extends AuditableEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Service> employeeServices;
 
+
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
 
@@ -55,6 +59,7 @@ public class User extends AuditableEntity {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.verified = false;
     }
 
     public long getId() {
@@ -115,5 +120,18 @@ public class User extends AuditableEntity {
 
     public void setEmployeeServices(List<Service> employeeServices) {
         this.employeeServices = employeeServices;
+    }
+
+    @PrePersist
+    public void beforeInsert(){
+        this.verified = false;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }
