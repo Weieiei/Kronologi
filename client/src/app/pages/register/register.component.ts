@@ -3,9 +3,7 @@ import { Router } from '@angular/router';
 import { ServiceService } from '../../services/service/service.service';
 import { UserRegisterDTO } from '../../interfaces/user-register-dto';
 import { UserService } from '../../services/user/user.service';
-import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
 import * as countryData from 'country-telephone-data';
 
 @Component({
@@ -26,7 +24,6 @@ export class RegisterComponent implements OnInit {
 
     countryControl = new FormControl();
     countries: Object[] = countryData.allCountries;
-    filteredCountries: Observable<Object[]>;
 
     confirmPassword: string;
     isPasswordVisible = false;
@@ -41,15 +38,6 @@ export class RegisterComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.filteredCountries = this.countryControl.valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterCountries(value))
-        );
-    }
-
-    filterCountries(value: string): Object[] {
-        const filterValue = value.toLowerCase();
-        return this.countries.filter(country => country['name'].toLowerCase().indexOf(filterValue) === 0);
     }
 
     register(): void {
@@ -95,8 +83,8 @@ export class RegisterComponent implements OnInit {
         this.isPasswordVisible = !this.isPasswordVisible;
     }
 
-    selectCountry(countryName: string) {
-        this.countryCode = '+' + this.countries.find(country => country['name'] === countryName)['dialCode'];
+    selectCountry(countryCode: string) {
+        this.countryCode = '+' + countryCode;
     }
 
 }

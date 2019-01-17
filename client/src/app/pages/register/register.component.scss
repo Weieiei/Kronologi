@@ -37,6 +37,11 @@
     }
 }
 
-.country-code {
+.country-code,
+.country-code-small {
     color: #999;
+}
+
+.country-code-small {
+    font-size: 0.75rem;
 }
