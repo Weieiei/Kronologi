@@ -32,6 +32,7 @@ import { FabBottomRightDirective } from './directives/fab-bottom-right/fab-botto
 import { ButtonIconDirective } from './directives/button-icon/button-icon.directive';
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
+import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import { CardSizeDirective } from './directives/card-size/card-size.directive';
         FabBottomRightDirective,
         ButtonIconDirective,
         AppointmentsSectionComponent,
-        CardSizeDirective
+        CardSizeDirective,
+        AutofocusDirective
     ],
     imports: [
         BrowserModule,
