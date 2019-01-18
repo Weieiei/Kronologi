@@ -27,6 +27,10 @@ public class Verification extends AuditableEntity {
 
     public Verification(User user) throws NoSuchAlgorithmException {
         this.user = user;
+    }
+
+    @PostPersist
+    public void beforeInsert() throws NoSuchAlgorithmException {
         generateHash();
     }
 

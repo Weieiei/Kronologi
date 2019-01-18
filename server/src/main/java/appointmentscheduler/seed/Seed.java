@@ -6,6 +6,7 @@ import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -13,6 +14,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -38,10 +40,13 @@ public class Seed {
     private ShiftRepository shiftRepository;
 
     @Autowired
+    private VerificationRepository verificationRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @EventListener
-    public void seed(ContextRefreshedEvent event) {
+    public void seed(ContextRefreshedEvent event) throws NoSuchAlgorithmException {
 
         boolean noAdmin = userRepository.findByRoles_Role(RoleEnum.ADMIN).isEmpty();
 
@@ -53,7 +58,7 @@ public class Seed {
 
     }
 
-    public void seedAdminAndClients() {
+    public void seedAdminAndClients() throws NoSuchAlgorithmException {
 
         Role adminRole = new Role(RoleEnum.ADMIN);
         Role clientRole = new Role(RoleEnum.CLIENT);
@@ -67,7 +72,11 @@ public class Seed {
         User client2 = new User("Test", "User", "test@test.com", hash("test123"));
         client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
+        Verification verifyUser1 = new Verification(client1);
+        Verification verifyUser2 = new Verification(client2);
+
         userRepository.saveAll(Arrays.asList(admin, client1, client2));
+        verificationRepository.saveAll(Arrays.asList(verifyUser1, verifyUser2));
 
     }
 
