@@ -26,7 +26,6 @@
     "@types/jwt-decode": "^2.2.1",
     "core-js": "^2.5.4",
     "country-telephone-data": "^0.6.0",
-    "flag-icon-css": "^3.2.1",
     "jwt-decode": "^2.2.0",
     "moment": "^2.22.2",
     "rxjs": "^6.0.0",
