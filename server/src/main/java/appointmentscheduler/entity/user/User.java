@@ -4,6 +4,7 @@ import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -54,6 +55,13 @@ public class User extends AuditableEntity {
             mappedBy = "user"
     )
     private PhoneNumber phoneNumber;
+
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
+    private Settings setting;
 
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
@@ -133,4 +141,16 @@ public class User extends AuditableEntity {
         this.phoneNumber = phoneNumber;
     }
 
+    public Settings getSetting() {
+        return setting;
+    }
+
+    public void setSetting(Settings setting) {
+        this.setting = setting;
+    }
+
+    @PrePersist
+    public void setDefaultSettings() {
+        this.setSetting(new Settings(false, false, this));
+    }
 }
