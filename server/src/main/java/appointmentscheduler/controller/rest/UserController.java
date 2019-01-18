@@ -34,12 +34,33 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
         try {
             Map<String, Object> userTokenMap = userService.register(userRegisterDTO);
-            emailService.sendEmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", "Welcome to ASApp.<br />", true);
+            emailService.sendEmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", generateRegistrationMessage(), true);
             return ResponseEntity.ok(userTokenMap);
         } catch (BadCredentialsException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+    }
+
+    public String generateRegistrationMessage()
+    {
+        String message = "Welcome to ASApp! Please Confirm your email by clicking on the button below.<br />" ;
+        String button = "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">\n" +
+                "  <tr>\n" +
+                "      <td>\n" +
+                "          <table cellspacing=\"0\" cellpadding=\"0\">\n" +
+                "              <tr>\n" +
+                "                  <td style=\"border-radius: 2px;\" bgcolor=\"#ED2939\">\n" +
+                "                      <a href=\"https://www.copernica.com\" target=\"_blank\" style=\"padding: 8px 12px; border: 1px solid #ED2939;border-radius: 2px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;\">\n" +
+                "                          Confirm Email             \n" +
+                "                      </a>\n" +
+                "                  </td>\n" +
+                "              </tr>\n" +
+                "          </table>\n" +
+                "      </td>\n" +
+                "  </tr>\n" +
+                "</table>";
+        return message + button;
     }
 
     @PostMapping("/login")
