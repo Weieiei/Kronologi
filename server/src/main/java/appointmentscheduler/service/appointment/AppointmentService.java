@@ -25,6 +25,11 @@ public class AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
     }
 
+    public List<Appointment> findByEmployeeId(long employeeId) {
+        return appointmentRepository.findByEmployeeId(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with employee id %d not found.", id)));
+    }
+
     public Appointment add(Appointment appointment) {
         return appointmentRepository.save(appointment);
     }
