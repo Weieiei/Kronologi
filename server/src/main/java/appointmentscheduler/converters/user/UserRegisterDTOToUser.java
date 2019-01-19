@@ -32,6 +32,7 @@ public class UserRegisterDTOToUser implements Converter<UserRegisterDTO, User> {
         user.setLastName(userRegisterDTO.getLastName());
         user.setEmail(userRegisterDTO.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
+        user.setVerified(userRegisterDTO.isVerified());
 
         return user;
 

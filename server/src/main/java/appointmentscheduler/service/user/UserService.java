@@ -4,9 +4,11 @@ import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.UserAlreadyExistsException;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
+import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,23 +33,25 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final VerificationRepository verificationRepository;
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
     public UserService(
-            UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider,
+            UserRepository userRepository, RoleRepository roleRepository, VerificationRepository verificationRepository,JwtProvider jwtProvider,
             BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.verificationRepository = verificationRepository;
         this.jwtProvider = jwtProvider;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
     }
 
-    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
+    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
 
         if (userRepository.findByEmail(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("An account under %s already exists.", userRegisterDTO.getEmail()));
@@ -60,9 +66,13 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
+        Verification verifyUser = new Verification(savedUser);
+
+        verificationRepository.save(verifyUser);
+
         String token = generateToken(savedUser, userRegisterDTO.getPassword());
 
-        return buildUserTokenMap(savedUser, token);
+        return buildUserTokenRegisterMap(savedUser,verifyUser, token);
     }
 
     public Map<String, Object> login(UserLoginDTO userLoginDTO) {
@@ -77,6 +87,15 @@ public class UserService {
     private Map<String, Object> buildUserTokenMap(User user, String token) {
         Map<String, Object> map = new HashMap<>();
         map.put("user", user);
+        map.put("token", token);
+
+        return map;
+    }
+
+    private Map<String, Object> buildUserTokenRegisterMap(User user, Verification verif, String token) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", user);
+        map.put("verification", verif);
         map.put("token", token);
 
         return map;

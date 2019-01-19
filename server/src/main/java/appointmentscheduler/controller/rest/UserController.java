@@ -2,6 +2,8 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.verification.Verification;
+import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 @RestController
@@ -25,16 +28,20 @@ public class UserController {
     private final EmailService emailService;
 
     @Autowired
+    VerificationRepository verificationRepository;
+
+    @Autowired
     public UserController(UserService userService, EmailService emailService) {
         this.userService = userService;
         this.emailService = emailService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
+    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
         try {
             Map<String, Object> userTokenMap = userService.register(userRegisterDTO);
-            emailService.sendEmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", generateRegistrationMessage(), true);
+            Verification verif = (Verification) userTokenMap.get("verification");
+            emailService.sendEmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", generateRegistrationMessage(verif.getHash()), true);
             return ResponseEntity.ok(userTokenMap);
         } catch (BadCredentialsException e) {
             e.printStackTrace();
@@ -42,7 +49,7 @@ public class UserController {
         }
     }
 
-    public String generateRegistrationMessage()
+    public String generateRegistrationMessage(String hash)
     {
         String message = "Welcome to ASApp! Please Confirm your email by clicking on the button below.<br />" ;
         String button = "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">\n" +
@@ -51,7 +58,7 @@ public class UserController {
                 "          <table cellspacing=\"0\" cellpadding=\"0\">\n" +
                 "              <tr>\n" +
                 "                  <td style=\"border-radius: 2px;\" bgcolor=\"#ED2939\">\n" +
-                "                      <a href=\"https://www.copernica.com\" target=\"_blank\" style=\"padding: 8px 12px; border: 1px solid #ED2939;border-radius: 2px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;\">\n" +
+                "                      <a href=\"http://localhost:4200/api/user/verification?hash=" + hash + "\" target=\"_blank\" style=\"padding: 8px 12px; border: 1px solid #ED2939;border-radius: 2px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;\">\n" +
                 "                          Confirm Email             \n" +
                 "                      </a>\n" +
                 "                  </td>\n" +

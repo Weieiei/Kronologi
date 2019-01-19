@@ -6,6 +6,7 @@ import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.UserAlreadyExistsException;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
+import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -37,6 +39,10 @@ public class UserServiceTest {
     private RoleRepository roleRepository;
 
     @Mock
+    private VerificationRepository verificationRepository;
+
+
+    @Mock
     private JwtProvider jwtProvider;
 
     @Mock
@@ -49,11 +55,11 @@ public class UserServiceTest {
 
     @Before
     public void before() {
-        userService = new UserService(userRepository, roleRepository, jwtProvider, bCryptPasswordEncoder, authenticationManager);
+        userService = new UserService(userRepository, roleRepository, verificationRepository,jwtProvider, bCryptPasswordEncoder, authenticationManager);
     }
 
     @Test(expected = UserAlreadyExistsException.class)
-    public void registerFailed() throws IOException, MessagingException {
+    public void registerFailed() throws IOException, MessagingException, NoSuchAlgorithmException {
         // create mocks
         final User mockedUser = mock(User.class);
         final UserRegisterDTO userRegisterDTO = mock(UserRegisterDTO.class);
