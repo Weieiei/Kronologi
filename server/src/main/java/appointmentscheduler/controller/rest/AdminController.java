@@ -27,7 +27,7 @@ public class AdminController {
         return String.format("You are an admin, your id is %d.", userId);
     }
 
-    @GetMapping()
+    @GetMapping("/employee/{id}")
     public List<Appointment> employeeAppointmentList(@RequestAttribute long employeeId) {
         return this.appointmentService.findByEmployeeId(employeeId);
     }
