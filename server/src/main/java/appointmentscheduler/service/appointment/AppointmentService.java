@@ -27,9 +27,10 @@ public class AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
     }
 
-    public List<Appointment> findByEmployeeId(User user) {
-        Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByEmployeeId(user.getId()));
-        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with employee id %d not found.", employeeId)));
+    //for admin to see employee's appointments
+    public List<Appointment> findByEmployeeId(long id) {
+        Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByEmployeeId(id));
+        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with employee id %d not found.", id)));
     }
 
     public Appointment add(Appointment appointment) {
