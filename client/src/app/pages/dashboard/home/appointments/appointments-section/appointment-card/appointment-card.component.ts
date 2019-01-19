@@ -8,14 +8,17 @@ import { Component, Input, OnInit } from '@angular/core';
 export class AppointmentCardComponent implements OnInit {
 
     @Input()
-    appointment;
+    appointment: any;
     @Input()
-    historyAppointment;
-
+    historyAppointment: any;
+    appointmentStart: Date;
+    now: Date;
     constructor() {
     }
 
     ngOnInit() {
+        this.now = new Date();
+        this.appointmentStart = new Date(this.appointment.date + ' ' + this.appointment.startTime);
     }
 
 }

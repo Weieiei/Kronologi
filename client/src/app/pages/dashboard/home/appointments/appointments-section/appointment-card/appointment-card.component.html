@@ -13,23 +13,37 @@
         </div>
         <div>
             <b>Start Time:</b> {{ appointment.startTime }}
+
         </div>
         <div>
             <b>End Time:</b> {{ appointment.endTime }}
         </div>
     </mat-card-content>
-    <mat-card-actions fxLayout="row" fxLayoutGap="16px">
-    <!--<button fxFlex color="primary" mat-stroked-button>
-    <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
-        <mat-icon appButtonIcon>delete</mat-icon>
-        <span>DELETE</span>
-    </span>
-</button>-->
-    <button fxFlex color="primary" mat-flat-button>
+    <div *ngIf="now <= appointmentStart">
+        <mat-card-actions fxLayout="row" fxLayoutGap="16px">
+        <button fxFlex color="primary" mat-stroked-button>
+            <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+                <mat-icon appButtonIcon>delete</mat-icon>
+                <span>DELETE</span>
+            </span>
+        </button>
+
+        <button fxFlex color="primary" mat-flat-button>
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
                 <mat-icon appButtonIcon>edit</mat-icon>
                 <span>MODIFY</span>
             </span>
-    </button>
-    </mat-card-actions>
+        </button>
+        </mat-card-actions>
+    </div>
+    <div *ngIf="now > appointmentStart">
+     <mat-card-actions fxLayout="row" fxLayoutGap="16px">
+        <button fxFlex color="primary" mat-stroked-button>
+            <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+                <mat-icon appButtonIcon>edit</mat-icon>
+                <span>REVIEW</span>
+            </span>
+        </button>
+         </mat-card-actions>
+    </div>
 </mat-card>

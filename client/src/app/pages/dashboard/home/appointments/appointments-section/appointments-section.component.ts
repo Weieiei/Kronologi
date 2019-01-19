@@ -15,6 +15,7 @@ export class AppointmentsSectionComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.appointments[0]);
     }
 
 }
