@@ -2,6 +2,7 @@ package appointmentscheduler.service.appointment;
 
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
+import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppointmentService {
@@ -25,9 +27,9 @@ public class AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
     }
 
-    public List<Appointment> findByEmployeeId(long employeeId) {
-        return appointmentRepository.findByEmployeeId(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with employee id %d not found.", id)));
+    public List<Appointment> findByEmployeeId(User user) {
+        Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByEmployeeId(user.getId()));
+        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with employee id %d not found.", employeeId)));
     }
 
     public Appointment add(Appointment appointment) {
