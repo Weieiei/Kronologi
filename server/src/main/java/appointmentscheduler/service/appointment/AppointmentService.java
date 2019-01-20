@@ -18,6 +18,10 @@ public class AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+    public AppointmentService(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
+
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
     }
