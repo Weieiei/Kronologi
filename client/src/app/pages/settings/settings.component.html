@@ -1,0 +1,17 @@
+<div class="container" fxLayout.lt-sm="column" fxLayout="row" fxLayoutAlign="center start" fxLayoutAlign.lt-sm="center" fxLayoutGap="24px">
+
+    <div class="menu" fxFlex="20" fxFlex.md="30" fxFlex.sm="40">
+        <mat-list>
+            <mat-list-item>Settings</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLink="account" routerLinkActive="active">Account</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLink="reminders" routerLinkActive="active">Reminders</mat-list-item>
+        </mat-list>
+    </div>
+
+    <div fxFlex="70" fxFlex.md="70" fxFlex.sm="60">
+        <router-outlet></router-outlet>
+    </div>
+
+</div>
