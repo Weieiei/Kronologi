@@ -10,31 +10,31 @@
         <div class="change-email-container" fxLayout="column" fxLayoutGap="10px">
 
             <div fxLayout="row">
-                <mat-hint fxFlex="50" fxFlex.lt-md>After changing your email, you will be logged out and prompted to log back in.</mat-hint>
+                <mat-hint fxFlex="60" fxFlex.lt-md>After changing your email, you will be logged out and prompted to log back in.</mat-hint>
             </div>
 
             <div *ngIf="updateEmailErrorMessage" class="error-message" fxLayout="row">
-                <mat-hint fxFlex="50" fxFlex.lt-md style="color: inherit;">{{ updateEmailErrorMessage }}</mat-hint>
+                <mat-hint fxFlex="60" fxFlex.lt-md style="color: inherit;">{{ updateEmailErrorMessage }}</mat-hint>
             </div>
 
             <form (submit)="changeEmail()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
                 <div fxLayout="row">
-                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md>
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
                         <mat-label>Password</mat-label>
                         <input matInput [(ngModel)]="password" type="password" name="password" required>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row">
-                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md>
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
                         <mat-label>New Email</mat-label>
                         <input matInput [(ngModel)]="newEmail" type="email" name="newemail" required>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row" class="submit-button-container">
-                    <button mat-raised-button color="primary" type="submit" fxFlex="50" fxFlex.lt-md>Change Email</button>
+                    <button mat-raised-button color="primary" type="submit" fxFlex="60" fxFlex.lt-md>Change Email</button>
                 </div>
 
             </form>
@@ -58,43 +58,46 @@
         <div class="change-password-container" fxLayout="column" fxLayoutGap="10px">
 
             <div fxLayout="row">
-                <mat-hint fxFlex="50" fxFlex.lt-md>After changing your password, you will be logged out and prompted to log back in.</mat-hint>
+                <mat-hint fxFlex="60" fxFlex.lt-md>After changing your password, you will be logged out and prompted to log back in.</mat-hint>
             </div>
 
-            <div fxLayout="column">
-                <mat-hint>Make sure your new password is at least 6 characters long.</mat-hint>
-                <mat-hint>Make sure your new password contains at least 1 letter and 1 number.</mat-hint>
+            <div fxLayout="row">
+                <mat-hint fxFlex="60" fxFlex.lt-md>Make sure your new password is at least 6 characters long.</mat-hint>
+            </div>
+
+            <div fxLayout="row">
+                <mat-hint fxFlex="60" fxFlex.lt-md>Make sure your new password contains at least 1 letter and 1 number.</mat-hint>
             </div>
 
             <div *ngIf="updatePasswordErrorMessage" class="error-message" fxLayout="row">
-                <mat-hint fxFlex="50" fxFlex.lt-md style="color: inherit;">{{ updatePasswordErrorMessage }}</mat-hint>
+                <mat-hint fxFlex="60" fxFlex.lt-md style="color: inherit;">{{ updatePasswordErrorMessage }}</mat-hint>
             </div>
 
             <form (submit)="changePassword()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
                 <div fxLayout="row">
-                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md>
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
                         <mat-label>Old Password</mat-label>
                         <input matInput [(ngModel)]="oldPassword" [type]="isPasswordVisible ? 'text' : 'password'" name="oldpassword" required>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row">
-                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md>
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
                         <mat-label>New Password</mat-label>
                         <input matInput [(ngModel)]="newPassword" [type]="isPasswordVisible ? 'text' : 'password'" name="newpassword" required>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row">
-                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md>
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
                         <mat-label>Confirm</mat-label>
                         <input matInput [(ngModel)]="confirmPassword" [type]="isPasswordVisible ? 'text' : 'password'" name="confirmpassword" required>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row" class="submit-button-container">
-                    <button mat-raised-button color="primary" type="submit" fxFlex="50" fxFlex.lt-md>Change Password</button>
+                    <button mat-raised-button color="primary" type="submit" fxFlex="60" fxFlex.lt-md>Change Password</button>
                 </div>
 
             </form>
