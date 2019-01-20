@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } else {
             logger.warn("Could not find valid authorization header.");
         }
-
+    //check this store userID in the context
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = userDetailsEmailService.loadUserByUsername(userId);

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
     selector: 'app-appointments',
@@ -8,8 +9,9 @@ import { AppointmentService } from '../../../../services/appointment/appointment
 })
 export class AppointmentsComponent implements OnInit {
 
-    upcomingAppointments = [];
-    historyAppointments = [];
+    upcomingAppointments;
+    pastAppointments;
+    random = 0;
 
     upcomingMessageMapping: { [k: string]: string } = {
         '=0': 'No Upcoming Appointments',
@@ -24,24 +26,30 @@ export class AppointmentsComponent implements OnInit {
     };
 
     constructor(private appointmentService: AppointmentService) {
-    }
+        this.upcomingAppointments = [];
+        this.pastAppointments = [];
+      }
 
     ngOnInit() {
         this.getMyAppointments();
     }
 
     getMyAppointments(): void {
-        this.appointmentService.getMyAppointments().subscribe(
-            res => {
+        this.appointmentService.getMyAppointments().subscribe
+        (
+            (res) => {
                 const now = new Date();
 
                 for (const appointment of res) {
                     const appointmentStart = new Date(appointment.date + ' ' + appointment.startTime);
 
+
                     if (now <= appointmentStart) {
                         this.upcomingAppointments.push(appointment);
+
                     } else {
-                        this.historyAppointments.push(appointment);
+                        this.pastAppointments.push(appointment);
+
                     }
                 }
             },
