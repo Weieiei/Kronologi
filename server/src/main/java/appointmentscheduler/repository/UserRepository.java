@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByIdAndEmail(long id, String email);
-    Optional<User> findByEmail(String email);
+    Optional<User> findByIdAndEmailIgnoreCase(long id, String email);
+    Optional<User> findByEmailIgnoreCase(String email);
     List<User> findByRoles_Role(RoleEnum role);
     Optional<User> findByIdAndRoles_Role(long id, RoleEnum role);
 

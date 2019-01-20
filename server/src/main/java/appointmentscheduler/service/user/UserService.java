@@ -54,7 +54,7 @@ public class UserService {
 
     public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
 
-        if (userRepository.findByEmail(userRegisterDTO.getEmail()).orElse(null) != null) {
+        if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
         }
 
@@ -87,7 +87,7 @@ public class UserService {
     }
 
     public Map<String, Object> login(UserLoginDTO userLoginDTO) {
-        User user = userRepository.findByEmail(userLoginDTO.getEmail())
+        User user = userRepository.findByEmailIgnoreCase(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
 
         String token = generateToken(user, userLoginDTO.getPassword());
@@ -112,7 +112,7 @@ public class UserService {
 
     public void updateEmail(long id, String oldEmail, NewEmailDTO newEmailDTO) {
 
-        User user = userRepository.findByIdAndEmail(id, oldEmail)
+        User user = userRepository.findByIdAndEmailIgnoreCase(id, oldEmail)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d and email %s not found.", id, oldEmail)));
 
         if (!bCryptPasswordEncoder.matches(newEmailDTO.getPassword(), user.getPassword())) {
@@ -123,7 +123,7 @@ public class UserService {
             throw new InvalidUpdateException(String.format("Your email is already %s.", user.getEmail()));
         }
 
-        if (userRepository.findByEmail(newEmailDTO.getNewEmail()).orElse(null) != null) {
+        if (userRepository.findByEmailIgnoreCase(newEmailDTO.getNewEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", newEmailDTO.getNewEmail()));
         }
 

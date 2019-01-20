@@ -65,7 +65,7 @@ public class UserServiceTest {
 
         // mock methods
         when(userRegisterDTO.getEmail()).thenReturn("testEmail");
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(mockedUser));
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(mockedUser));
 
         // run method
         userService.register(userRegisterDTO);
@@ -88,7 +88,7 @@ public class UserServiceTest {
         // mock methods
         when(userLoginDTO.getEmail()).thenReturn("testEmail");
 
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.empty());
 
         // run method
         userService.login(userLoginDTO);
@@ -109,7 +109,7 @@ public class UserServiceTest {
         when(userLoginDTO.getEmail()).thenReturn("testEmail");
         when(userLoginDTO.getPassword()).thenReturn("testPassword");
 
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(mockedUser));
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(mockedUser));
         when(jwtProvider.generateToken(any(), any())).thenReturn("testToken");
 
         // run method and get result
@@ -128,7 +128,7 @@ public class UserServiceTest {
     public void updateEmailFailUserNotFound() {
         final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
 
-        when(userRepository.findByIdAndEmail(anyLong(), anyString())).thenReturn(Optional.empty());
+        when(userRepository.findByIdAndEmailIgnoreCase(anyLong(), anyString())).thenReturn(Optional.empty());
         userService.updateEmail(1, "test", newEmailDTO);
 
         fail("Exception should have been thrown.");
@@ -139,7 +139,7 @@ public class UserServiceTest {
         final User user = mock(User.class);
         final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
 
-        when(userRepository.findByIdAndEmail(anyLong(), anyString())).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndEmailIgnoreCase(anyLong(), anyString())).thenReturn(Optional.of(user));
 
         String correctPassword = "password";
         when(user.getPassword()).thenReturn(correctPassword);
@@ -160,7 +160,7 @@ public class UserServiceTest {
         final User user = mock(User.class);
         final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
 
-        when(userRepository.findByIdAndEmail(anyLong(), anyString())).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndEmailIgnoreCase(anyLong(), anyString())).thenReturn(Optional.of(user));
 
         String correctPassword = "password";
         when(user.getPassword()).thenReturn(correctPassword);
@@ -182,7 +182,7 @@ public class UserServiceTest {
         final User user = mock(User.class);
         final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
 
-        when(userRepository.findByIdAndEmail(anyLong(), anyString())).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndEmailIgnoreCase(anyLong(), anyString())).thenReturn(Optional.of(user));
 
         String correctPassword = "password";
         when(user.getPassword()).thenReturn(correctPassword);
@@ -194,7 +194,7 @@ public class UserServiceTest {
         when(newEmailDTO.getNewEmail()).thenReturn("test2@email.com");
 
         final User anotherUser = mock(User.class);
-        when(userRepository.findByEmail(newEmailDTO.getNewEmail())).thenReturn(Optional.of(anotherUser));
+        when(userRepository.findByEmailIgnoreCase(newEmailDTO.getNewEmail())).thenReturn(Optional.of(anotherUser));
 
         userService.updateEmail(1, "test", newEmailDTO);
 
