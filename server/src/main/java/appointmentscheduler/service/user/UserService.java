@@ -2,6 +2,7 @@ package appointmentscheduler.service.user;
 
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.user.NewEmailDTO;
+import appointmentscheduler.dto.user.NewPasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
@@ -127,6 +128,20 @@ public class UserService {
         }
 
         user.setEmail(newEmailDTO.getNewEmail());
+        userRepository.save(user);
+
+    }
+
+    public void updatePassword(long id, NewPasswordDTO newPasswordDTO) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d not found.", id)));
+
+        if (!bCryptPasswordEncoder.matches(newPasswordDTO.getOldPassword(), user.getPassword())) {
+            throw new IncorrectPasswordException("The old password you provided is incorrect.");
+        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(newPasswordDTO.getNewPassword()));
         userRepository.save(user);
 
     }

@@ -1,6 +1,7 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.user.NewEmailDTO;
+import appointmentscheduler.dto.user.NewPasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.service.email.EmailService;
@@ -53,5 +54,10 @@ public class UserController {
     @PostMapping("/email")
     public void updateEmail(@RequestAttribute long userId, @RequestAttribute String email, @RequestBody NewEmailDTO newEmailDTO) {
         userService.updateEmail(userId, email, newEmailDTO);
+    }
+
+    @PostMapping("/password")
+    public void updatePassword(@RequestAttribute long userId, @RequestBody NewPasswordDTO newPasswordDTO) {
+        userService.updatePassword(userId, newPasswordDTO);
     }
 }
