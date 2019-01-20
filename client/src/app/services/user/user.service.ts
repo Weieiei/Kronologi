@@ -4,6 +4,7 @@ import { UserLoginDTO } from '../../interfaces/user-login-dto';
 import { HttpClient } from '@angular/common/http';
 import { UserRegisterDTO } from '../../interfaces/user-register-dto';
 import { NewEmailDTO } from '../../interfaces/new-email-dto';
+import {NewPasswordDTO} from "../../interfaces/new-password-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -60,4 +61,9 @@ export class UserService {
     updateEmail(payload: NewEmailDTO): Observable<any> {
         return this.http.post(['api', 'user', 'email'].join('/'), payload);
     }
+
+    updatePassword(payload: NewPasswordDTO): Observable<any> {
+        return this.http.post(['api', 'user', 'password'].join('/'), payload);
+    }
 }
+

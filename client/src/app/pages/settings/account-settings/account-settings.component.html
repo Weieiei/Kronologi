@@ -9,6 +9,10 @@
 
         <div class="change-email-container" fxLayout="column" fxLayoutGap="10px">
 
+            <div fxLayout="row">
+                <mat-hint fxFlex="50" fxFlex.lt-md>After changing your email, you will be logged out and prompted to log back in.</mat-hint>
+            </div>
+
             <div *ngIf="updateEmailErrorMessage" class="error-message" fxLayout="row">
                 <mat-hint fxFlex="50" fxFlex.lt-md style="color: inherit;">{{ updateEmailErrorMessage }}</mat-hint>
             </div>
@@ -27,10 +31,6 @@
                         <mat-label>New Email</mat-label>
                         <input matInput [(ngModel)]="newEmail" type="email" name="newemail" required>
                     </mat-form-field>
-                </div>
-
-                <div fxLayout="row">
-                    <mat-hint fxFlex="50" fxFlex.lt-md>After changing your email, you will be logged out and prompted to log back in.</mat-hint>
                 </div>
 
                 <div fxLayout="row" class="submit-button-container">
@@ -57,6 +57,19 @@
 
         <div class="change-password-container" fxLayout="column" fxLayoutGap="10px">
 
+            <div fxLayout="row">
+                <mat-hint fxFlex="50" fxFlex.lt-md>After changing your password, you will be logged out and prompted to log back in.</mat-hint>
+            </div>
+
+            <div fxLayout="column">
+                <mat-hint>Make sure your new password is at least 6 characters long.</mat-hint>
+                <mat-hint>Make sure your new password contains at least 1 letter and 1 number.</mat-hint>
+            </div>
+
+            <div *ngIf="updatePasswordErrorMessage" class="error-message" fxLayout="row">
+                <mat-hint fxFlex="50" fxFlex.lt-md style="color: inherit;">{{ updatePasswordErrorMessage }}</mat-hint>
+            </div>
+
             <form (submit)="changePassword()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
                 <div fxLayout="row">
@@ -78,11 +91,6 @@
                         <mat-label>Confirm</mat-label>
                         <input matInput [(ngModel)]="confirmPassword" [type]="isPasswordVisible ? 'text' : 'password'" name="confirmpassword" required>
                     </mat-form-field>
-                </div>
-
-                <div fxLayout="column">
-                    <mat-hint>Make sure your password is at least 6 characters long.</mat-hint>
-                    <mat-hint>Make sure your password contains at least 1 letter and 1 digit.</mat-hint>
                 </div>
 
                 <div fxLayout="row" class="submit-button-container">
