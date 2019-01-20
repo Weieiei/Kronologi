@@ -9,7 +9,6 @@ import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,18 +26,18 @@ import java.util.stream.Stream;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
-
     private final RoleRepository roleRepository;
-
     private final JwtProvider jwtProvider;
-
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider, BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager) {
+    public UserService(
+            UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider,
+            BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager
+    ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.jwtProvider = jwtProvider;
@@ -44,7 +45,7 @@ public class UserService {
         this.authenticationManager = authenticationManager;
     }
 
-    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) {
+    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
 
         if (userRepository.findByEmail(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("An account under %s already exists.", userRegisterDTO.getEmail()));
