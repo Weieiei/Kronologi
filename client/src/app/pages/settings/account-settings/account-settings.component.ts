@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NewEmailDTO } from '../../../interfaces/new-email-dto';
+import { UserService } from '../../../services/user/user.service';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-account-settings',
@@ -7,25 +11,46 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountSettingsComponent implements OnInit {
 
+    newEmail: string;
+
     oldPassword: string;
     newPassword: string;
     confirmPassword: string;
 
     isPasswordVisible = false;
 
-    newEmail: string;
+    errorMessage: string;
 
-    constructor() {
+    constructor(
+        private userService: UserService,
+        private router: Router
+    ) {
     }
 
     ngOnInit() {
     }
 
-    changePassword(): void {
-        // todo
+    changeEmail(): void {
+
+        const payload: NewEmailDTO = {
+            newEmail: this.newEmail
+        };
+
+        this.userService.updateEmail(payload).subscribe(
+            res => {
+                this.userService.logout();
+                this.router.navigate(['login']);
+            },
+            err => {
+                if (err instanceof HttpErrorResponse && err.status === 400) {
+                    this.errorMessage = err.error.message;
+                }
+            }
+        );
+
     }
 
-    changeEmail(): void {
+    changePassword(): void {
         // todo
     }
 

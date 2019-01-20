@@ -6,6 +6,8 @@ import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.exception.ModelValidationException;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.UserAlreadyExistsException;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
@@ -50,7 +52,7 @@ public class UserService {
     public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
 
         if (userRepository.findByEmail(userRegisterDTO.getEmail()).orElse(null) != null) {
-            throw new UserAlreadyExistsException(String.format("An account under %s already exists.", userRegisterDTO.getEmail()));
+            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
         }
 
         User user = new User(
@@ -103,5 +105,23 @@ public class UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return jwtProvider.generateToken(user, authentication);
+    }
+
+    public void updateEmail(long id, String oldEmail, String newEmail) {
+
+        if (oldEmail.equalsIgnoreCase(newEmail)) {
+            throw new ModelValidationException(String.format("Your email is already %s.", oldEmail));
+        }
+
+        if (userRepository.findByEmail(newEmail).orElse(null) != null) {
+            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", newEmail));
+        }
+
+        User user = userRepository.findByIdAndEmail(id, oldEmail)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d and email %s not found.", id, oldEmail)));
+
+        user.setEmail(newEmail);
+        userRepository.save(user);
+
     }
 }

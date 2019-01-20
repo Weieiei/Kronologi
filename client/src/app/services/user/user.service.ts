@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { UserLoginDTO } from '../../interfaces/user-login-dto';
 import { HttpClient } from '@angular/common/http';
 import { UserRegisterDTO } from '../../interfaces/user-register-dto';
+import { NewEmailDTO } from '../../interfaces/new-email-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -54,5 +55,9 @@ export class UserService {
 
     deleteToken(): void {
         localStorage.removeItem(UserService.TOKEN_KEY);
+    }
+
+    updateEmail(payload: NewEmailDTO): Observable<any> {
+        return this.http.post(['api', 'user', 'email'].join('/'), payload);
     }
 }
