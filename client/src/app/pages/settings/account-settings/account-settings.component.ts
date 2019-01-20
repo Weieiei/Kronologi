@@ -11,15 +11,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AccountSettingsComponent implements OnInit {
 
+    // Fields to update email
+    password: string;
     newEmail: string;
 
+    updateEmailErrorMessage: string;
+
+    // Fields to update password
     oldPassword: string;
     newPassword: string;
     confirmPassword: string;
 
     isPasswordVisible = false;
-
-    errorMessage: string;
 
     constructor(
         private userService: UserService,
@@ -33,6 +36,7 @@ export class AccountSettingsComponent implements OnInit {
     changeEmail(): void {
 
         const payload: NewEmailDTO = {
+            password: this.password,
             newEmail: this.newEmail
         };
 
@@ -43,7 +47,7 @@ export class AccountSettingsComponent implements OnInit {
             },
             err => {
                 if (err instanceof HttpErrorResponse && err.status === 400) {
-                    this.errorMessage = err.error.message;
+                    this.updateEmailErrorMessage = err.error.message;
                 }
             }
         );

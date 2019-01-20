@@ -1,12 +1,14 @@
 package appointmentscheduler.service.user;
 
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+import appointmentscheduler.dto.user.NewEmailDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.exception.ModelValidationException;
+import appointmentscheduler.exception.IncorrectPasswordException;
+import appointmentscheduler.exception.InvalidUpdateException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.UserAlreadyExistsException;
 import appointmentscheduler.repository.RoleRepository;
@@ -107,20 +109,24 @@ public class UserService {
         return jwtProvider.generateToken(user, authentication);
     }
 
-    public void updateEmail(long id, String oldEmail, String newEmail) {
-
-        if (oldEmail.equalsIgnoreCase(newEmail)) {
-            throw new ModelValidationException(String.format("Your email is already %s.", oldEmail));
-        }
-
-        if (userRepository.findByEmail(newEmail).orElse(null) != null) {
-            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", newEmail));
-        }
+    public void updateEmail(long id, String oldEmail, NewEmailDTO newEmailDTO) {
 
         User user = userRepository.findByIdAndEmail(id, oldEmail)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d and email %s not found.", id, oldEmail)));
 
-        user.setEmail(newEmail);
+        if (!bCryptPasswordEncoder.matches(newEmailDTO.getPassword(), user.getPassword())) {
+            throw new IncorrectPasswordException("Incorrect password.");
+        }
+
+        if (oldEmail.equalsIgnoreCase(newEmailDTO.getNewEmail())) {
+            throw new InvalidUpdateException(String.format("Your email is already %s.", oldEmail));
+        }
+
+        if (userRepository.findByEmail(newEmailDTO.getNewEmail()).orElse(null) != null) {
+            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", newEmailDTO.getNewEmail()));
+        }
+
+        user.setEmail(newEmailDTO.getNewEmail());
         userRepository.save(user);
 
     }

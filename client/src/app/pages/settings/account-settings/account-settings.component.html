@@ -9,11 +9,18 @@
 
         <div class="change-email-container" fxLayout="column" fxLayoutGap="10px">
 
-            <div *ngIf="errorMessage" class="error-message" fxLayout="row">
-                <mat-hint fxFlex="50" fxFlex.lt-md style="color: inherit;">{{ errorMessage }}</mat-hint>
+            <div *ngIf="updateEmailErrorMessage" class="error-message" fxLayout="row">
+                <mat-hint fxFlex="50" fxFlex.lt-md style="color: inherit;">{{ updateEmailErrorMessage }}</mat-hint>
             </div>
 
             <form (submit)="changeEmail()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
+
+                <div fxLayout="row">
+                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md>
+                        <mat-label>Password</mat-label>
+                        <input matInput [(ngModel)]="password" type="password" name="password" required>
+                    </mat-form-field>
+                </div>
 
                 <div fxLayout="row">
                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md>

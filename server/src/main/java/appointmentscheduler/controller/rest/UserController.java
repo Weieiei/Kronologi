@@ -52,6 +52,6 @@ public class UserController {
 
     @PostMapping("/email")
     public void updateEmail(@RequestAttribute long userId, @RequestAttribute String email, @RequestBody NewEmailDTO newEmailDTO) {
-        userService.updateEmail(userId, email, newEmailDTO.getNewEmail());
+        userService.updateEmail(userId, email, newEmailDTO);
     }
 }
