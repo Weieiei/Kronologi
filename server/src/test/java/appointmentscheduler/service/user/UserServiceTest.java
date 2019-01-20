@@ -1,8 +1,13 @@
 package appointmentscheduler.service.user;
 
+import appointmentscheduler.dto.user.NewEmailDTO;
+import appointmentscheduler.dto.user.NewPasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.exception.IncorrectPasswordException;
+import appointmentscheduler.exception.InvalidUpdateException;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.UserAlreadyExistsException;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
@@ -118,4 +123,112 @@ public class UserServiceTest {
         assertNotNull(map.get("token"));
         assertEquals("testToken", map.get("token"));
     }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void updateEmailFailUserNotFound() {
+        final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
+
+        when(userRepository.findByIdAndEmail(anyLong(), anyString())).thenReturn(Optional.empty());
+        userService.updateEmail(1, "test", newEmailDTO);
+
+        fail("Exception should have been thrown.");
+    }
+
+    @Test(expected = IncorrectPasswordException.class)
+    public void updateEmailFailIncorrectPassword() {
+        final User user = mock(User.class);
+        final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
+
+        when(userRepository.findByIdAndEmail(anyLong(), anyString())).thenReturn(Optional.of(user));
+
+        String correctPassword = "password";
+        when(user.getPassword()).thenReturn(correctPassword);
+
+        String incorrectPassword = "password123";
+        when(newEmailDTO.getPassword()).thenReturn(incorrectPassword);
+
+        when(bCryptPasswordEncoder.matches(incorrectPassword, correctPassword)).thenReturn(false);
+
+        userService.updateEmail(1, "test", newEmailDTO);
+
+        fail("Letting a user update their email with an incorrect provided password.");
+
+    }
+
+    @Test(expected = InvalidUpdateException.class)
+    public void updateEmailFailSameEmail() {
+        final User user = mock(User.class);
+        final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
+
+        when(userRepository.findByIdAndEmail(anyLong(), anyString())).thenReturn(Optional.of(user));
+
+        String correctPassword = "password";
+        when(user.getPassword()).thenReturn(correctPassword);
+        when(newEmailDTO.getPassword()).thenReturn(correctPassword);
+
+        when(bCryptPasswordEncoder.matches(correctPassword, correctPassword)).thenReturn(true);
+
+        when(user.getEmail()).thenReturn("test@email.com");
+        when(newEmailDTO.getNewEmail()).thenReturn("test@email.com");
+
+        userService.updateEmail(1, "test", newEmailDTO);
+
+        fail("Letting a user update to an email they already have.");
+
+    }
+
+    @Test(expected = UserAlreadyExistsException.class)
+    public void updateEmailFailEmailAlreadyTaken() {
+        final User user = mock(User.class);
+        final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
+
+        when(userRepository.findByIdAndEmail(anyLong(), anyString())).thenReturn(Optional.of(user));
+
+        String correctPassword = "password";
+        when(user.getPassword()).thenReturn(correctPassword);
+        when(newEmailDTO.getPassword()).thenReturn(correctPassword);
+
+        when(bCryptPasswordEncoder.matches(correctPassword, correctPassword)).thenReturn(true);
+
+        when(user.getEmail()).thenReturn("test@email.com");
+        when(newEmailDTO.getNewEmail()).thenReturn("test2@email.com");
+
+        final User anotherUser = mock(User.class);
+        when(userRepository.findByEmail(newEmailDTO.getNewEmail())).thenReturn(Optional.of(anotherUser));
+
+        userService.updateEmail(1, "test", newEmailDTO);
+
+        fail("Letting a user update to an email taken by another user.");
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void updatePasswordFailUserNotFound() {
+        final NewPasswordDTO newPasswordDTO = mock(NewPasswordDTO.class);
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+        userService.updatePassword(1, newPasswordDTO);
+
+        fail("Exception should have been thrown.");
+    }
+
+    @Test(expected = IncorrectPasswordException.class)
+    public void updatePasswordFailIncorrectPassword() {
+        final User user = mock(User.class);
+        final NewPasswordDTO newPasswordDTO = mock(NewPasswordDTO.class);
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+
+        String correctPassword = "password";
+        when(user.getPassword()).thenReturn(correctPassword);
+
+        String incorrectPassword = "password123";
+        when(newPasswordDTO.getOldPassword()).thenReturn(incorrectPassword);
+
+        when(bCryptPasswordEncoder.matches(incorrectPassword, correctPassword)).thenReturn(false);
+
+        userService.updatePassword(1, newPasswordDTO);
+
+        fail("Letting a user update their password even though they provided an incorrect original password.");
+    }
+
 }

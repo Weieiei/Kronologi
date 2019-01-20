@@ -119,8 +119,8 @@ public class UserService {
             throw new IncorrectPasswordException("Incorrect password.");
         }
 
-        if (oldEmail.equalsIgnoreCase(newEmailDTO.getNewEmail())) {
-            throw new InvalidUpdateException(String.format("Your email is already %s.", oldEmail));
+        if (user.getEmail().equalsIgnoreCase(newEmailDTO.getNewEmail())) {
+            throw new InvalidUpdateException(String.format("Your email is already %s.", user.getEmail()));
         }
 
         if (userRepository.findByEmail(newEmailDTO.getNewEmail()).orElse(null) != null) {
