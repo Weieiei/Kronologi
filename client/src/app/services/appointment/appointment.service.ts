@@ -13,7 +13,7 @@ export class AppointmentService {
     }
 
     public getMyAppointments(): Observable<any> {
-        return this.http.get(['api', 'appointments', 'current_user'].join('/'));
+        return this.http.get(['api', 'user', 'current', 'appointments'].join('/'));
     }
 
     public getAllAppointments(): Observable<AppointmentDetailed[]> {

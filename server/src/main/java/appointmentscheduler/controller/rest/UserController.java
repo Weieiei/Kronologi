@@ -2,16 +2,17 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.service.AuthenticationService;
+import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,10 +20,14 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final AppointmentService appointmentService;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AppointmentService appointmentService, AuthenticationService authenticationService) {
         this.userService = userService;
+        this.appointmentService = appointmentService;
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping("/register")
@@ -44,4 +49,10 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
+
+    @GetMapping("/current/appointments")
+    public List<Appointment> findByCurrentUser() {
+        return appointmentService.findByClientId(authenticationService.getCurrentUserId());
+    }
+
 }
