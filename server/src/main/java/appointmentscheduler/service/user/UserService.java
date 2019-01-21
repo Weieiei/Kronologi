@@ -5,6 +5,7 @@ import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.UserAlreadyExistsException;
+import appointmentscheduler.exception.UserDoesNotExistException;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtProvider;
@@ -72,6 +73,14 @@ public class UserService {
         String token = generateToken(user, userLoginDTO.getPassword());
 
         return buildUserTokenMap(user, token);
+    }
+
+    public User findUserByid(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserDoesNotExistException("User id: " + id + " does not exist."));
+    }
+
+    public void updateUser(User user) {
+            userRepository.save(user);
     }
 
     private Map<String, Object> buildUserTokenMap(User user, String token) {

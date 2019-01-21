@@ -109,6 +109,10 @@ public class User extends AuditableEntity {
         this.roles = roles;
     }
 
+    public void addRoles(Role role) {
+        this.roles.add(role);
+    }
+
     public List<Service> getEmployeeServices() {
         return employeeServices;
     }
