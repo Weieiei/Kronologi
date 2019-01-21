@@ -46,7 +46,8 @@ public class AdminController {
             }
         }
         user.addRoles(new Role(RoleEnum.EMPLOYEE));
-        userService.updateUser(user);
-        return "Successfully changed user to employee.";
+        if (userService.updateUser(user))
+            return "Successfully changed user to employee.";
+        return "Something went wrong while updating user, please check the server log.";
     }
 }

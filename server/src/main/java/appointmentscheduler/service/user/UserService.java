@@ -10,6 +10,7 @@ import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,12 +23,14 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class UserService {
 
+    private static final Logger logger = Logger.getLogger(UserService.class.getName());
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final JwtProvider jwtProvider;
@@ -79,8 +82,17 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new UserDoesNotExistException("User id: " + id + " does not exist."));
     }
 
-    public void updateUser(User user) {
-            userRepository.save(user);
+    public boolean updateUser(User user) {
+       try {
+           userRepository.save(user);
+           return true;
+       }
+       catch (DataAccessException e) {
+           logger.info("ERROR WHILE UPDATING USER: " + user.getId() + " ROLE TO EMPLOYEE");
+           return false;
+
+       }
+
     }
 
     private Map<String, Object> buildUserTokenMap(User user, String token) {
