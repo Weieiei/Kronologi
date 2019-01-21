@@ -3,11 +3,11 @@
         <img src="assets/images/asapp_logo.png" width="128"/>
         <span class="title">Create your ASAPP Account</span>
 
-        <form (submit)="registerUser()" autocomplete="off" fxLayout="column">
+        <form (submit)="register()" autocomplete="off" fxLayout="column">
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>First Name</mat-label>
-                    <input matInput [(ngModel)]="firstName" type="text" name="firstname" pattern=".{1,}" required autofocus>
+                    <input matInput [(ngModel)]="firstName" type="text" name="firstname" pattern=".{1,}" required appAutofocus>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex>
@@ -45,6 +45,41 @@
                 </span>
             </div>
 
+
+            <div class="phone-container" fxLayout="column" fxLayoutGap="20px">
+
+                <mat-checkbox class="phone-checkbox" color="primary" [(ngModel)]="registerPhone" name="registerPhone">Add phone number?</mat-checkbox>
+
+                <div fxLayout="column" fxLayoutGap="20px" *ngIf="registerPhone">
+                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25">
+                        <mat-label>Country</mat-label>
+                        <mat-select [formControl]="countryControl" [required]="true" (selectionChange)="selectCountry($event.value.dialCode)">
+                            <mat-select-trigger *ngIf="countryControl.value">
+                                {{ countryControl.value.name }} <span class="country-code-small">(+{{ countryControl.value.dialCode }})</span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let country of countries" [value]="country">
+                                <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;
+                                <span> {{ country.name }} | <span class="country-code">+{{ country.dialCode }}</span></span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="30">
+                            <mat-label>Area Code</mat-label>
+                            <input matInput [(ngModel)]="areaCode" name="areaCode" pattern="\d{3}" minlength="3" maxlength="3" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="70">
+                            <mat-label>Phone Number</mat-label>
+                            <input matInput [(ngModel)]="number" name="number" pattern="\d{7}" minlength="7" maxlength="7" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </div>
+
+
             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
             <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
             <button mat-raised-button color="primary" type="submit">Register</button>
@@ -52,21 +87,3 @@
         </form>
     </div>
 </div>
-
-<!--
-<div *ngIf="services?.length">
-    <mat-selection-list #serviceList [(ngModel)]="employeeServices" name="employeeServices">
-        <mat-list-option *ngFor="let service of services" [value]="service.id">
-            {{ service.name }}
-        </mat-list-option>
-    </mat-selection-list>
-
-    <p>Services selected: {{ serviceList.selectedOptions.selected.length }}</p>
-
-    <div *ngFor="let i of arr(numberOfShifts).fill(1); let j = index;">
-        <app-shift-picker [number]="j" (shiftOutput)="addShift($event)"></app-shift-picker>
-    </div>
-
-    <button mat-raised-button type="button" (click)="addShiftComponent()">Add Shift</button>
-
-</div>-->

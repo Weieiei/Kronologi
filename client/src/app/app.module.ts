@@ -9,7 +9,7 @@ import { MaterialModule } from './material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { HomeComponent } from './pages/dashboard/home/home.component';
@@ -32,6 +32,7 @@ import { FabBottomRightDirective } from './directives/fab-bottom-right/fab-botto
 import { ButtonIconDirective } from './directives/button-icon/button-icon.directive';
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
+import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import { CardSizeDirective } from './directives/card-size/card-size.directive';
         FabBottomRightDirective,
         ButtonIconDirective,
         AppointmentsSectionComponent,
-        CardSizeDirective
+        CardSizeDirective,
+        AutofocusDirective
     ],
     imports: [
         BrowserModule,
@@ -63,7 +65,8 @@ import { CardSizeDirective } from './directives/card-size/card-size.directive';
         BrowserAnimationsModule,
         MaterialModule,
         FlexLayoutModule,
-        HttpClientModule
+        HttpClientModule,
+        ReactiveFormsModule
     ],
     entryComponents: [
         TimePickerDialogComponent

@@ -1,7 +1,9 @@
 package appointmentscheduler.service.user;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.UserAlreadyExistsException;
@@ -55,6 +57,20 @@ public class UserService {
                 userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(),
                 userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword())
         );
+
+        if (userRegisterDTO.getPhoneNumber() != null) {
+
+            PhoneNumberDTO phoneNumberDTO = userRegisterDTO.getPhoneNumber();
+            PhoneNumber phoneNumber = new PhoneNumber(
+                    phoneNumberDTO.getCountryCode(),
+                    phoneNumberDTO.getAreaCode(),
+                    phoneNumberDTO.getNumber()
+            );
+
+            user.setPhoneNumber(phoneNumber);
+            phoneNumber.setUser(user);
+
+        }
 
         user.setRoles(Stream.of(roleRepository.findByRole(RoleEnum.CLIENT)).collect(Collectors.toSet()));
 

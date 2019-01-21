@@ -1,6 +1,7 @@
 package appointmentscheduler.seed;
 
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
@@ -14,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +27,9 @@ public class Seed {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PhoneNumberRepository phoneRepository;
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -46,14 +49,14 @@ public class Seed {
         boolean noAdmin = userRepository.findByRoles_Role(RoleEnum.ADMIN).isEmpty();
 
         if (noAdmin) {
-            seedAdminAndClients();
+            seedAdminAndClientsAndPhoneNumbers();
             seedEmployeeServicesAndShifts();
             seedAppointments();
         }
 
     }
 
-    public void seedAdminAndClients() {
+    public void seedAdminAndClientsAndPhoneNumbers() {
 
         Role adminRole = new Role(RoleEnum.ADMIN);
         Role clientRole = new Role(RoleEnum.CLIENT);
@@ -68,6 +71,12 @@ public class Seed {
         client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         userRepository.saveAll(Arrays.asList(admin, client1, client2));
+
+        PhoneNumber adminPhoneNumber = new PhoneNumber("+1", "514", "5551234", admin);
+        PhoneNumber client1PhoneNumber = new PhoneNumber("+1", "514", "5552345", client1);
+        PhoneNumber client2PhoneNumber = new PhoneNumber("+1", "514", "5553456", client2);
+
+        phoneRepository.saveAll(Arrays.asList(adminPhoneNumber, client1PhoneNumber, client2PhoneNumber));
 
     }
 
@@ -97,7 +106,6 @@ public class Seed {
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
 
         User employee = new User("Employee", "User", "employee@employee.com", hash("employee123"));
-
         employee.setRoles(Stream.of(employeeRole).collect(Collectors.toSet()));
 
         employee.setEmployeeServices(Arrays.asList(
@@ -111,6 +119,9 @@ public class Seed {
 
         userRepository.save(employee);
         shiftRepository.saveAll(shifts);
+
+        PhoneNumber employeePhoneNumber = new PhoneNumber("+1", "514", "5554567", employee);
+        phoneRepository.save(employeePhoneNumber);
 
     }
 
