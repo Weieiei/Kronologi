@@ -58,7 +58,7 @@
                                 {{ countryControl.value.name }} <span class="country-code-small">(+{{ countryControl.value.dialCode }})</span>
                             </mat-select-trigger>
                             <mat-option *ngFor="let country of countries" [value]="country">
-                                <img src="https://www.countryflags.io/{{ country.iso2 }}/flat/24.png" class="flag">&nbsp;
+                                <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;
                                 <span> {{ country.name }} | <span class="country-code">+{{ country.dialCode }}</span></span>
                             </mat-option>
                         </mat-select>
