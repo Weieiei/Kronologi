@@ -6,14 +6,12 @@ import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
+import appointmentscheduler.service.verification.VerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -26,14 +24,22 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
+    private final VerificationService verificationService;
 
     @Autowired
     VerificationRepository verificationRepository;
 
     @Autowired
-    public UserController(UserService userService, EmailService emailService) {
+    public UserController(UserService userService, EmailService emailService, VerificationService verificationService) {
         this.userService = userService;
         this.emailService = emailService;
+        this.verificationService = verificationService;
+    }
+
+    @GetMapping("/verification")
+    public int getAttr() {
+        verificationService.verify("b642b4217b34b1e8d3bd915fc65c4452");
+        return 0;
     }
 
     @PostMapping("/register")

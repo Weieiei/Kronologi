@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VerificationRepository extends JpaRepository<Verification, Long> {
     String findByUserId(long userId);
+    Verification findByHash(String hash);
 }

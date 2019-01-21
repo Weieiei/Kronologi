@@ -25,6 +25,8 @@ public class Verification extends AuditableEntity {
     @Column(name = "hash")
     private String hash;
 
+    public Verification() { }
+
     public Verification(User user) throws NoSuchAlgorithmException {
         this.user = user;
     }
