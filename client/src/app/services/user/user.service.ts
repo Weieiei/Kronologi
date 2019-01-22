@@ -4,9 +4,10 @@ import { UserLoginDTO } from '../../interfaces/user-login-dto';
 import { HttpClient } from '@angular/common/http';
 import { UserRegisterDTO } from '../../interfaces/user-register-dto';
 import { NewEmailDTO } from '../../interfaces/new-email-dto';
-import {NewPasswordDTO} from "../../interfaces/new-password-dto";
-import {SettingsDTO} from "../../interfaces/settings-dto";
-import {UpdateSettingsDTO} from "../../interfaces/update-settings-dto";
+import { NewPasswordDTO } from '../../interfaces/new-password-dto';
+import { SettingsDTO } from '../../interfaces/settings-dto';
+import { UpdateSettingsDTO } from '../../interfaces/update-settings-dto';
+import { PhoneNumberDTO } from '../../interfaces/phone-number-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -74,5 +75,13 @@ export class UserService {
 
     updateSettings(payload: UpdateSettingsDTO): Observable<any> {
         return this.http.post(['api', 'user', 'settings'].join('/'), payload);
+    }
+
+    getPhoneNumber(): Observable<PhoneNumberDTO> {
+        return this.http.get<PhoneNumberDTO>(['api', 'user', 'phone'].join('/'));
+    }
+
+    deletePhoneNumber(): Observable<any> {
+        return this.http.delete(['api', 'user', 'phone'].join('/'));
     }
 }

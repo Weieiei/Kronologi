@@ -11,6 +11,10 @@
         }
     }
 
+    .success-message {
+        color: $success-color;
+    }
+
     .error-message {
         color: $warn-color;
     }

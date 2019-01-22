@@ -34,7 +34,7 @@
                 </div>
 
                 <div fxLayout="row" class="submit-button-container">
-                    <button mat-raised-button color="primary" type="submit" fxFlex="30" fxFlex.lt-md>Change Email</button>
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md>Save</button>
                 </div>
 
             </form>
@@ -97,10 +97,46 @@
                 </div>
 
                 <div fxLayout="row" class="submit-button-container">
-                    <button mat-raised-button color="primary" type="submit" fxFlex="30" fxFlex.lt-md>Change Password</button>
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md>Save</button>
                 </div>
 
             </form>
+
+        </div>
+
+    </div>
+
+    <div fxLayout="column" fxLayoutGap="20px">
+
+        <div fxLayout="column" fxLayoutGap="8px">
+            <h5>Manage Your Phone Number</h5>
+            <mat-divider></mat-divider>
+        </div>
+
+        <div class="change-email-container" fxLayout="column" fxLayoutGap="10px">
+
+
+
+            <div fxLayout="row">
+                <mat-hint *ngIf="hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
+                    Your phone number is currently saved as {{ countryCode }} ({{ areaCode }}) {{ number | slice:0:3 }}-{{ number | slice:3:7 }}.
+                </mat-hint>
+                <mat-hint *ngIf="!hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
+                    You currently do not have a phone number saved with us.
+                </mat-hint>
+            </div>
+
+            <div *ngIf="successMessagePhone" class="success-message" fxLayout="row">
+                <mat-hint style="color: inherit;">{{ successMessagePhone }}</mat-hint>
+            </div>
+
+            <div *ngIf="errorMessagePhone" class="error-message" fxLayout="row">
+                <mat-hint style="color: inherit;">{{ errorMessagePhone }}</mat-hint>
+            </div>
+
+            <div *ngIf="hasPhoneNumber" fxLayout="row">
+                <button mat-raised-button color="primary" type="button" fxFlex="10" fxFlex.lt-md (click)="deletePhoneNumber()">Delete</button>
+            </div>
 
         </div>
 

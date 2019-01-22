@@ -3,7 +3,7 @@ import { NewEmailDTO } from '../../../interfaces/new-email-dto';
 import { UserService } from '../../../services/user/user.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import {NewPasswordDTO} from "../../../interfaces/new-password-dto";
+import { NewPasswordDTO } from '../../../interfaces/new-password-dto';
 
 @Component({
     selector: 'app-account-settings',
@@ -27,6 +27,14 @@ export class AccountSettingsComponent implements OnInit {
 
     updatePasswordErrorMessage: string;
 
+    hasPhoneNumber: boolean;
+    countryCode: string;
+    areaCode: string;
+    number: string;
+
+    successMessagePhone: string;
+    errorMessagePhone: string;
+
     constructor(
         private userService: UserService,
         private router: Router
@@ -34,6 +42,7 @@ export class AccountSettingsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getPhoneNumber();
     }
 
     updateEmail(): void {
@@ -85,5 +94,46 @@ export class AccountSettingsComponent implements OnInit {
 
     togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;
+    }
+
+    getPhoneNumber(): void {
+        this.userService.getPhoneNumber().subscribe(
+            res => {
+
+                // User might not have a phone number saved, so the returned phone number might just be null
+                if (res) {
+                    this.hasPhoneNumber = true;
+                    this.countryCode = res.countryCode;
+                    this.areaCode = res.areaCode;
+                    this.number = res.number;
+                } else {
+                    this.hasPhoneNumber = false;
+                }
+
+            },
+            err => console.log(err)
+        );
+    }
+
+    deletePhoneNumber(): void {
+
+        if (!confirm('Click OK to delete your phone number.')) {
+            return;
+        }
+
+        this.userService.deletePhoneNumber().subscribe(
+            res => {
+                this.hasPhoneNumber = false;
+                this.errorMessagePhone = void 0;
+                this.successMessagePhone = res['message'];
+            },
+            err => {
+                this.successMessagePhone = void 0;
+                if (err instanceof HttpErrorResponse) {
+                    this.errorMessagePhone = err.error.message;
+                }
+            }
+        );
+
     }
 }

@@ -10,12 +10,12 @@ import appointmentscheduler.exception.IncorrectPasswordException;
 import appointmentscheduler.exception.InvalidUpdateException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.UserAlreadyExistsException;
+import appointmentscheduler.repository.PhoneNumberRepository;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.SettingsRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,12 +40,13 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
     private final SettingsRepository settingsRepository;
+    private final PhoneNumberRepository phoneNumberRepository;
 
     @Autowired
     public UserService(
             UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider,
             BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager,
-            SettingsRepository settingsRepository
+            SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -53,6 +54,7 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
         this.settingsRepository = settingsRepository;
+        this.phoneNumberRepository = phoneNumberRepository;
     }
 
     public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
@@ -179,6 +181,22 @@ public class UserService {
 
         Map<String, String> map = new HashMap<>();
         map.put("message", message);
+
+        return map;
+    }
+
+    public PhoneNumber getPhoneNumber(long userId) {
+        return phoneNumberRepository.findByUserId(userId).orElse(null);
+    }
+
+    public Map<String, String> deletePhoneNumber(long userId) {
+        PhoneNumber phoneNumber = phoneNumberRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Phone number not found user used with ID %d.", userId)));
+
+        phoneNumberRepository.delete(phoneNumber);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("message", "You have successfully deleted your phone number.");
 
         return map;
     }

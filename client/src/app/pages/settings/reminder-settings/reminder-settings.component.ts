@@ -14,7 +14,7 @@ export class ReminderSettingsComponent implements OnInit {
     textReminder: boolean;
 
     successMessage: string;
-    failMessage: string;
+    errorMessage: string;
 
     constructor(private userService: UserService) {
     }
@@ -42,13 +42,13 @@ export class ReminderSettingsComponent implements OnInit {
 
         this.userService.updateSettings(payload).subscribe(
             res => {
-                this.failMessage = void 0;
+                this.errorMessage = void 0;
                 this.successMessage = res['message'];
             },
             err => {
                 this.successMessage = void 0;
                 if (err instanceof HttpErrorResponse) {
-                    this.failMessage = err.error.message;
+                    this.errorMessage = err.error.message;
                 }
             }
         );

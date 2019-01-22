@@ -1,6 +1,7 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.user.*;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
@@ -67,5 +68,15 @@ public class UserController {
     @PostMapping("/settings")
     public ResponseEntity<Map<String, String>> updateSettings(@RequestAttribute long userId, @RequestBody UpdateSettingsDTO updateSettingsDTO) {
         return ResponseEntity.ok(userService.updateSettings(userId, updateSettingsDTO));
+    }
+
+    @GetMapping("/phone")
+    public PhoneNumber getPhoneNumber(@RequestAttribute long userId) {
+        return userService.getPhoneNumber(userId);
+    }
+
+    @DeleteMapping("/phone")
+    public ResponseEntity<Map<String, String>> deletePhoneNumber(@RequestAttribute long userId) {
+        return ResponseEntity.ok(userService.deletePhoneNumber(userId));
     }
 }

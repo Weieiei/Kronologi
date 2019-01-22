@@ -9,6 +9,7 @@ import appointmentscheduler.exception.IncorrectPasswordException;
 import appointmentscheduler.exception.InvalidUpdateException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.UserAlreadyExistsException;
+import appointmentscheduler.repository.PhoneNumberRepository;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.SettingsRepository;
 import appointmentscheduler.repository.UserRepository;
@@ -54,13 +55,17 @@ public class UserServiceTest {
     @Mock
     private SettingsRepository settingsRepository;
 
+    @Mock
+    private PhoneNumberRepository phoneNumberRepository;
+
     private UserService userService;
 
     @Before
     public void before() {
         userService = new UserService(
                 userRepository, roleRepository, jwtProvider,
-                bCryptPasswordEncoder, authenticationManager, settingsRepository
+                bCryptPasswordEncoder, authenticationManager,
+                settingsRepository, phoneNumberRepository
         );
     }
 
