@@ -2,7 +2,10 @@ package appointmentscheduler.service.user;
 
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.settings.UpdateSettingsDTO;
-import appointmentscheduler.dto.user.*;
+import appointmentscheduler.dto.user.UpdateEmailDTO;
+import appointmentscheduler.dto.user.UpdatePasswordDTO;
+import appointmentscheduler.dto.user.UserLoginDTO;
+import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
@@ -158,8 +161,7 @@ public class UserService {
     }
 
     public Map<String, String> updateSettings(long userId, UpdateSettingsDTO updateSettingsDTO) {
-        Settings settings = settingsRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Settings not found under user with ID %d.", userId)));
+        Settings settings = getSettings(userId);
 
         settings.setEmailReminder(updateSettingsDTO.isEmailReminder());
         settings.setTextReminder(updateSettingsDTO.isTextReminder());

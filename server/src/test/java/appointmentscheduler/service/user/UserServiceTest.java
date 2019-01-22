@@ -1,9 +1,13 @@
 package appointmentscheduler.service.user;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+import appointmentscheduler.dto.settings.UpdateSettingsDTO;
 import appointmentscheduler.dto.user.UpdateEmailDTO;
 import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
+import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.IncorrectPasswordException;
 import appointmentscheduler.exception.InvalidUpdateException;
@@ -243,4 +247,83 @@ public class UserServiceTest {
         fail("Letting a user update their password even though they provided an incorrect original password.");
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void getSettingsFailSettingsDontExist() {
+        when(settingsRepository.findByUserId(1L)).thenReturn(Optional.empty());
+        userService.getSettings(1L);
+        fail("Exception should have been thrown. Could not find user settings, therefore cannot proceed.");
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void updateSettingsFailSettingsDontExist() {
+        final UpdateSettingsDTO updateSettingsDTO = mock(UpdateSettingsDTO.class);
+        when(settingsRepository.findByUserId(1L)).thenReturn(Optional.empty());
+        userService.updateSettings(1L, updateSettingsDTO);
+        fail("Exception should have been thrown. Could not find user settings, therefore cannot proceed.");
+    }
+
+    @Test
+    public void updateSettingsSuccessBothRemindersTrue() {
+        final Settings mockSettings = mock(Settings.class);
+        final UpdateSettingsDTO updateSettingsDTO = mock(UpdateSettingsDTO.class);
+
+        when(settingsRepository.findByUserId(1L)).thenReturn(Optional.of(mockSettings));
+        when(mockSettings.isEmailReminder()).thenReturn(true);
+        when(mockSettings.isTextReminder()).thenReturn(true);
+
+        Map<String, String> map = userService.updateSettings(1L, updateSettingsDTO);
+        assertEquals("You will now receive reminders for upcoming appointments via both email and text message.", map.get("message"));
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void updatePhoneNumberFail() {
+        final PhoneNumberDTO mockPhoneNumberDTO = mock(PhoneNumberDTO.class);
+
+        when(phoneNumberRepository.findByUserId(1L)).thenReturn(Optional.empty());
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        userService.saveOrUpdatePhoneNumber(1L, mockPhoneNumberDTO);
+
+        fail("Exception should have been thrown. Could not find user, therefore cannot proceed.");
+    }
+
+    @Test
+    public void updatePhoneNumberSuccess() {
+        final PhoneNumber mockPhoneNumber = mock(PhoneNumber.class);
+        final PhoneNumberDTO mockPhoneNumberDTO = mock(PhoneNumberDTO.class);
+
+        when(phoneNumberRepository.findByUserId(1L)).thenReturn(Optional.of(mockPhoneNumber));
+
+        Map<String, String> map = userService.saveOrUpdatePhoneNumber(1L, mockPhoneNumberDTO);
+        assertEquals("You've successfully updated your phone number.", map.get("message"));
+    }
+
+    @Test
+    public void savePhoneNumberSuccess() {
+        final User mockUser = mock(User.class);
+        final PhoneNumberDTO mockPhoneNumberDTO = mock(PhoneNumberDTO.class);
+
+        when(phoneNumberRepository.findByUserId(1L)).thenReturn(Optional.empty());
+        when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser));
+
+        Map<String, String> map = userService.saveOrUpdatePhoneNumber(1L, mockPhoneNumberDTO);
+        assertEquals("You've successfully saved your phone number.", map.get("message"));
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void deletePhoneNumberFailNotFound() {
+        when(phoneNumberRepository.findByUserId(1L)).thenReturn(Optional.empty());
+        userService.deletePhoneNumber(1L);
+        fail("Exception should have been thrown. Could not find phone number, therefore cannot proceed.");
+    }
+
+    @Test
+    public void deletePhoneNumberSuccess() {
+        PhoneNumber mockPhoneNumber = mock(PhoneNumber.class);
+
+        when(phoneNumberRepository.findByUserId(1L)).thenReturn(Optional.of(mockPhoneNumber));
+
+        Map<String, String> map = userService.deletePhoneNumber(1L);
+        assertEquals("You have successfully deleted your phone number.", map.get("message"));
+    }
 }
