@@ -163,8 +163,22 @@ public class UserService {
 
         settingsRepository.save(settings);
 
+        String message;
+        boolean emailReminder = settings.isEmailReminder();
+        boolean textReminder = settings.isTextReminder();
+
+        if (!emailReminder && !textReminder) {
+            message = "You will no longer receive reminders for upcoming appointments.";
+        } else if (emailReminder && !textReminder) {
+            message = "You will now only receive reminders for upcoming appointments via email.";
+        } else if (!emailReminder && textReminder) {
+            message = "You will now only receive reminders for upcoming appointments via text message.";
+        } else {
+            message = "You will now receive reminders for upcoming appointments via both email and text message.";
+        }
+
         Map<String, String> map = new HashMap<>();
-        map.put("message", "You've successfully updated your settings.");
+        map.put("message", message);
 
         return map;
     }

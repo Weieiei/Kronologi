@@ -59,6 +59,11 @@ export class AccountSettingsComponent implements OnInit {
 
     updatePassword(): void {
 
+        if (this.newPassword !== this.confirmPassword) {
+            this.updatePasswordErrorMessage = 'The passwords don\'t match.';
+            return;
+        }
+
         const payload: NewPasswordDTO = {
             oldPassword: this.oldPassword,
             newPassword: this.newPassword

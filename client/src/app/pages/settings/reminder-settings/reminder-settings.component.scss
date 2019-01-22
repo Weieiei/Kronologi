@@ -1,3 +1,5 @@
+@import "../../../../variables";
+
 .reminder-settings-container {
 
     ::ng-deep {
@@ -9,6 +11,10 @@
     .checkbox-hint {
         font-size: 0.9rem;
         margin-left: 24px;
+    }
+
+    .success-message {
+        color: $success-color;
     }
 
 }
