@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user/user.service';
-import { UpdateSettingsDTO } from '../../../interfaces/update-settings-dto';
+import { UpdateSettingsDTO } from '../../../interfaces/settings/update-settings-dto';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

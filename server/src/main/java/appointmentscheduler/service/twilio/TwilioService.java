@@ -22,7 +22,7 @@ public class TwilioService {
         try {
 
             Twilio.init(twilioProperties.getTwilioAccountSID(), twilioProperties.getTwilioAuthToken());
-            Message message = Message.creator(new PhoneNumber(to), twilioProperties.getTwilioFromNumber(), textMessage).create();
+            Message message = Message.creator(new PhoneNumber("+" + to), twilioProperties.getTwilioFromNumber(), textMessage).create();
 
             return true;
 

@@ -1,6 +1,7 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+import appointmentscheduler.dto.settings.UpdateSettingsDTO;
 import appointmentscheduler.dto.user.*;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
@@ -52,13 +53,13 @@ public class UserController {
     }
 
     @PostMapping("/email")
-    public void updateEmail(@RequestAttribute long userId, @RequestAttribute String email, @RequestBody NewEmailDTO newEmailDTO) {
-        userService.updateEmail(userId, email, newEmailDTO);
+    public void updateEmail(@RequestAttribute long userId, @RequestAttribute String email, @RequestBody UpdateEmailDTO updateEmailDTO) {
+        userService.updateEmail(userId, email, updateEmailDTO);
     }
 
     @PostMapping("/password")
-    public void updatePassword(@RequestAttribute long userId, @RequestBody NewPasswordDTO newPasswordDTO) {
-        userService.updatePassword(userId, newPasswordDTO);
+    public void updatePassword(@RequestAttribute long userId, @RequestBody UpdatePasswordDTO updatePasswordDTO) {
+        userService.updatePassword(userId, updatePasswordDTO);
     }
 
     @GetMapping("/settings")

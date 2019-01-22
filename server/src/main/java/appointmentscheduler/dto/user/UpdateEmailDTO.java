@@ -1,6 +1,6 @@
 package appointmentscheduler.dto.user;
 
-public class NewEmailDTO {
+public class UpdateEmailDTO {
 
     private String password;
     private String newEmail;

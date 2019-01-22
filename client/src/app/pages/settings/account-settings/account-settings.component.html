@@ -127,12 +127,12 @@
             <div *ngIf="hasPhoneNumber" fxLayout="column" fxLayoutGap="10px">
                 <div fxLayout="row">
                     <mat-hint fxFlex="60" fxFlex.lt-md>
-                        Your phone number is currently saved as {{ countryCode }} ({{ areaCode }}) {{ number | slice:0:3 }}-{{ number | slice:3:7 }}.
+                        Your phone number is currently saved as +{{ countryCode }} ({{ areaCode }}) {{ number | slice:0:3 }}-{{ number | slice:3:7 }}.
                     </mat-hint>
                 </div>
 
-                <div fxLayout="row">
-                    <button mat-raised-button color="primary" type="button" fxFlex="10" fxFlex.lt-md (click)="deletePhoneNumber()">Delete</button>
+                <div fxLayout="row" class="submit-button-container">
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md (click)="deletePhoneNumber()">Delete</button>
                 </div>
             </div>
 

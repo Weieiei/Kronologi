@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserLoginDTO } from '../../interfaces/user-login-dto';
+import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { HttpClient } from '@angular/common/http';
-import { UserRegisterDTO } from '../../interfaces/user-register-dto';
-import { NewEmailDTO } from '../../interfaces/new-email-dto';
-import { NewPasswordDTO } from '../../interfaces/new-password-dto';
-import { SettingsDTO } from '../../interfaces/settings-dto';
-import { UpdateSettingsDTO } from '../../interfaces/update-settings-dto';
-import { PhoneNumberDTO } from '../../interfaces/phone-number-dto';
+import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
+import { UpdateEmailDTO } from '../../interfaces/user/update-email-dto';
+import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
+import { SettingsDTO } from '../../interfaces/settings/settings-dto';
+import { UpdateSettingsDTO } from '../../interfaces/settings/update-settings-dto';
+import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -61,11 +61,11 @@ export class UserService {
         localStorage.removeItem(UserService.TOKEN_KEY);
     }
 
-    updateEmail(payload: NewEmailDTO): Observable<any> {
+    updateEmail(payload: UpdateEmailDTO): Observable<any> {
         return this.http.post(['api', 'user', 'email'].join('/'), payload);
     }
 
-    updatePassword(payload: NewPasswordDTO): Observable<any> {
+    updatePassword(payload: UpdatePasswordDTO): Observable<any> {
         return this.http.post(['api', 'user', 'password'].join('/'), payload);
     }
 

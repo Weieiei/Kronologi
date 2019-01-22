@@ -1,7 +1,7 @@
 package appointmentscheduler.service.user;
 
-import appointmentscheduler.dto.user.NewEmailDTO;
-import appointmentscheduler.dto.user.NewPasswordDTO;
+import appointmentscheduler.dto.user.UpdateEmailDTO;
+import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.user.User;
@@ -138,10 +138,10 @@ public class UserServiceTest {
 
     @Test(expected = ResourceNotFoundException.class)
     public void updateEmailFailUserNotFound() {
-        final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
+        final UpdateEmailDTO updateEmailDTO = mock(UpdateEmailDTO.class);
 
         when(userRepository.findByIdAndEmailIgnoreCase(anyLong(), anyString())).thenReturn(Optional.empty());
-        userService.updateEmail(1, "test", newEmailDTO);
+        userService.updateEmail(1, "test", updateEmailDTO);
 
         fail("Exception should have been thrown.");
     }
@@ -149,7 +149,7 @@ public class UserServiceTest {
     @Test(expected = IncorrectPasswordException.class)
     public void updateEmailFailIncorrectPassword() {
         final User user = mock(User.class);
-        final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
+        final UpdateEmailDTO updateEmailDTO = mock(UpdateEmailDTO.class);
 
         when(userRepository.findByIdAndEmailIgnoreCase(anyLong(), anyString())).thenReturn(Optional.of(user));
 
@@ -157,11 +157,11 @@ public class UserServiceTest {
         when(user.getPassword()).thenReturn(correctPassword);
 
         String incorrectPassword = "password123";
-        when(newEmailDTO.getPassword()).thenReturn(incorrectPassword);
+        when(updateEmailDTO.getPassword()).thenReturn(incorrectPassword);
 
         when(bCryptPasswordEncoder.matches(incorrectPassword, correctPassword)).thenReturn(false);
 
-        userService.updateEmail(1, "test", newEmailDTO);
+        userService.updateEmail(1, "test", updateEmailDTO);
 
         fail("Letting a user update their email with an incorrect provided password.");
 
@@ -170,20 +170,20 @@ public class UserServiceTest {
     @Test(expected = InvalidUpdateException.class)
     public void updateEmailFailSameEmail() {
         final User user = mock(User.class);
-        final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
+        final UpdateEmailDTO updateEmailDTO = mock(UpdateEmailDTO.class);
 
         when(userRepository.findByIdAndEmailIgnoreCase(anyLong(), anyString())).thenReturn(Optional.of(user));
 
         String correctPassword = "password";
         when(user.getPassword()).thenReturn(correctPassword);
-        when(newEmailDTO.getPassword()).thenReturn(correctPassword);
+        when(updateEmailDTO.getPassword()).thenReturn(correctPassword);
 
         when(bCryptPasswordEncoder.matches(correctPassword, correctPassword)).thenReturn(true);
 
         when(user.getEmail()).thenReturn("test@email.com");
-        when(newEmailDTO.getNewEmail()).thenReturn("test@email.com");
+        when(updateEmailDTO.getNewEmail()).thenReturn("test@email.com");
 
-        userService.updateEmail(1, "test", newEmailDTO);
+        userService.updateEmail(1, "test", updateEmailDTO);
 
         fail("Letting a user update to an email they already have.");
 
@@ -192,33 +192,33 @@ public class UserServiceTest {
     @Test(expected = UserAlreadyExistsException.class)
     public void updateEmailFailEmailAlreadyTaken() {
         final User user = mock(User.class);
-        final NewEmailDTO newEmailDTO = mock(NewEmailDTO.class);
+        final UpdateEmailDTO updateEmailDTO = mock(UpdateEmailDTO.class);
 
         when(userRepository.findByIdAndEmailIgnoreCase(anyLong(), anyString())).thenReturn(Optional.of(user));
 
         String correctPassword = "password";
         when(user.getPassword()).thenReturn(correctPassword);
-        when(newEmailDTO.getPassword()).thenReturn(correctPassword);
+        when(updateEmailDTO.getPassword()).thenReturn(correctPassword);
 
         when(bCryptPasswordEncoder.matches(correctPassword, correctPassword)).thenReturn(true);
 
         when(user.getEmail()).thenReturn("test@email.com");
-        when(newEmailDTO.getNewEmail()).thenReturn("test2@email.com");
+        when(updateEmailDTO.getNewEmail()).thenReturn("test2@email.com");
 
         final User anotherUser = mock(User.class);
-        when(userRepository.findByEmailIgnoreCase(newEmailDTO.getNewEmail())).thenReturn(Optional.of(anotherUser));
+        when(userRepository.findByEmailIgnoreCase(updateEmailDTO.getNewEmail())).thenReturn(Optional.of(anotherUser));
 
-        userService.updateEmail(1, "test", newEmailDTO);
+        userService.updateEmail(1, "test", updateEmailDTO);
 
         fail("Letting a user update to an email taken by another user.");
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void updatePasswordFailUserNotFound() {
-        final NewPasswordDTO newPasswordDTO = mock(NewPasswordDTO.class);
+        final UpdatePasswordDTO updatePasswordDTO = mock(UpdatePasswordDTO.class);
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
-        userService.updatePassword(1, newPasswordDTO);
+        userService.updatePassword(1, updatePasswordDTO);
 
         fail("Exception should have been thrown.");
     }
@@ -226,7 +226,7 @@ public class UserServiceTest {
     @Test(expected = IncorrectPasswordException.class)
     public void updatePasswordFailIncorrectPassword() {
         final User user = mock(User.class);
-        final NewPasswordDTO newPasswordDTO = mock(NewPasswordDTO.class);
+        final UpdatePasswordDTO updatePasswordDTO = mock(UpdatePasswordDTO.class);
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
 
@@ -234,11 +234,11 @@ public class UserServiceTest {
         when(user.getPassword()).thenReturn(correctPassword);
 
         String incorrectPassword = "password123";
-        when(newPasswordDTO.getOldPassword()).thenReturn(incorrectPassword);
+        when(updatePasswordDTO.getOldPassword()).thenReturn(incorrectPassword);
 
         when(bCryptPasswordEncoder.matches(incorrectPassword, correctPassword)).thenReturn(false);
 
-        userService.updatePassword(1, newPasswordDTO);
+        userService.updatePassword(1, updatePasswordDTO);
 
         fail("Letting a user update their password even though they provided an incorrect original password.");
     }

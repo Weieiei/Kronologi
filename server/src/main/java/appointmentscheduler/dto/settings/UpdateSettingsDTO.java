@@ -1,4 +1,4 @@
-package appointmentscheduler.dto.user;
+package appointmentscheduler.dto.settings;
 
 public class UpdateSettingsDTO {
 

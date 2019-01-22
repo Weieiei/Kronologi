@@ -1,6 +1,6 @@
 package appointmentscheduler.dto.user;
 
-public class NewPasswordDTO {
+public class UpdatePasswordDTO {
 
     private String oldPassword;
     private String newPassword;

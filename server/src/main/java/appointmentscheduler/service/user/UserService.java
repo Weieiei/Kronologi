@@ -1,6 +1,7 @@
 package appointmentscheduler.service.user;
 
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+import appointmentscheduler.dto.settings.UpdateSettingsDTO;
 import appointmentscheduler.dto.user.*;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
@@ -115,38 +116,38 @@ public class UserService {
         return jwtProvider.generateToken(user, authentication);
     }
 
-    public void updateEmail(long id, String oldEmail, NewEmailDTO newEmailDTO) {
+    public void updateEmail(long id, String oldEmail, UpdateEmailDTO updateEmailDTO) {
 
         User user = userRepository.findByIdAndEmailIgnoreCase(id, oldEmail)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d and email %s not found.", id, oldEmail)));
 
-        if (!bCryptPasswordEncoder.matches(newEmailDTO.getPassword(), user.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(updateEmailDTO.getPassword(), user.getPassword())) {
             throw new IncorrectPasswordException("Incorrect password.");
         }
 
-        if (user.getEmail().equalsIgnoreCase(newEmailDTO.getNewEmail())) {
+        if (user.getEmail().equalsIgnoreCase(updateEmailDTO.getNewEmail())) {
             throw new InvalidUpdateException(String.format("Your email is already %s.", user.getEmail()));
         }
 
-        if (userRepository.findByEmailIgnoreCase(newEmailDTO.getNewEmail()).orElse(null) != null) {
-            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", newEmailDTO.getNewEmail()));
+        if (userRepository.findByEmailIgnoreCase(updateEmailDTO.getNewEmail()).orElse(null) != null) {
+            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", updateEmailDTO.getNewEmail()));
         }
 
-        user.setEmail(newEmailDTO.getNewEmail());
+        user.setEmail(updateEmailDTO.getNewEmail());
         userRepository.save(user);
 
     }
 
-    public void updatePassword(long id, NewPasswordDTO newPasswordDTO) {
+    public void updatePassword(long id, UpdatePasswordDTO updatePasswordDTO) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d not found.", id)));
 
-        if (!bCryptPasswordEncoder.matches(newPasswordDTO.getOldPassword(), user.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
             throw new IncorrectPasswordException("The old password you provided is incorrect.");
         }
 
-        user.setPassword(bCryptPasswordEncoder.encode(newPasswordDTO.getNewPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword()));
         userRepository.save(user);
 
     }

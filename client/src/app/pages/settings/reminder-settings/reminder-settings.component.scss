@@ -17,4 +17,13 @@
         color: $success-color;
     }
 
+    .submit-button-container {
+
+        margin-top: 10px;
+
+        button[type=submit] {
+            font-weight: bold;
+        }
+    }
+
 }

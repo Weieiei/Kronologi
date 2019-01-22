@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NewEmailDTO } from '../../../interfaces/new-email-dto';
+import { UpdateEmailDTO } from '../../../interfaces/user/update-email-dto';
 import { UserService } from '../../../services/user/user.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { NewPasswordDTO } from '../../../interfaces/new-password-dto';
-import { PhoneNumberDTO } from '../../../interfaces/phone-number-dto';
+import { UpdatePasswordDTO } from '../../../interfaces/user/update-password-dto';
+import { PhoneNumberDTO } from '../../../interfaces/phonenumber/phone-number-dto';
 import * as countryData from 'country-telephone-data';
 
 @Component({
@@ -55,7 +55,7 @@ export class AccountSettingsComponent implements OnInit {
 
     updateEmail(): void {
 
-        const payload: NewEmailDTO = {
+        const payload: UpdateEmailDTO = {
             password: this.password,
             newEmail: this.newEmail
         };
@@ -81,7 +81,7 @@ export class AccountSettingsComponent implements OnInit {
             return;
         }
 
-        const payload: NewPasswordDTO = {
+        const payload: UpdatePasswordDTO = {
             oldPassword: this.oldPassword,
             newPassword: this.newPassword
         };
@@ -148,7 +148,7 @@ export class AccountSettingsComponent implements OnInit {
     updatePhoneNumber(): void {
 
         const payload: PhoneNumberDTO = {
-            countryCode: '+' + this.selectedCountry['dialCode'],
+            countryCode: this.selectedCountry['dialCode'],
             areaCode: this.newAreaCode,
             number: this.newNumber
         };

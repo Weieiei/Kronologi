@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from '../../services/service/service.service';
-import { UserRegisterDTO } from '../../interfaces/user-register-dto';
+import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
 import { UserService } from '../../services/user/user.service';
 import * as countryData from 'country-telephone-data';
 
@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit {
 
             if (this.registerPhone) {
                 payload.phoneNumber = {
-                    countryCode: '+' + this.selectedCountry['dialCode'],
+                    countryCode: this.selectedCountry['dialCode'],
                     areaCode: this.areaCode,
                     number: this.number
                 };
