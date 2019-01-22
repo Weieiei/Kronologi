@@ -4,6 +4,8 @@ import { UserService } from '../../../services/user/user.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NewPasswordDTO } from '../../../interfaces/new-password-dto';
+import { PhoneNumberDTO } from '../../../interfaces/phone-number-dto';
+import * as countryData from 'country-telephone-data';
 
 @Component({
     selector: 'app-account-settings',
@@ -31,6 +33,12 @@ export class AccountSettingsComponent implements OnInit {
     countryCode: string;
     areaCode: string;
     number: string;
+
+    countries: Object[] = countryData.allCountries;
+    selectedCountry: Object;
+
+    newAreaCode: string;
+    newNumber: string;
 
     successMessagePhone: string;
     errorMessagePhone: string;
@@ -135,5 +143,38 @@ export class AccountSettingsComponent implements OnInit {
             }
         );
 
+    }
+
+    updatePhoneNumber(): void {
+
+        const payload: PhoneNumberDTO = {
+            countryCode: '+' + this.selectedCountry['dialCode'],
+            areaCode: this.newAreaCode,
+            number: this.newNumber
+        };
+
+        this.userService.updatePhoneNumber(payload).subscribe(
+            res => {
+                this.errorMessagePhone = void 0;
+                this.successMessagePhone = res['message'];
+
+                // Update current number on the page
+                this.hasPhoneNumber = true;
+                this.countryCode = payload.countryCode;
+                this.areaCode = payload.areaCode;
+                this.number = payload.number;
+            },
+            err => {
+                this.successMessagePhone = void 0;
+                if (err instanceof HttpErrorResponse) {
+                    this.errorMessagePhone = err.error.message;
+                }
+            }
+        );
+
+    }
+
+    selectCountry(country: Object) {
+        this.selectedCountry = country;
     }
 }

@@ -113,29 +113,73 @@
             <mat-divider></mat-divider>
         </div>
 
-        <div class="change-email-container" fxLayout="column" fxLayoutGap="10px">
+        <div class="change-phone-container" fxLayout="column" fxLayoutGap="30px">
 
-
-
-            <div fxLayout="row">
-                <mat-hint *ngIf="hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
-                    Your phone number is currently saved as {{ countryCode }} ({{ areaCode }}) {{ number | slice:0:3 }}-{{ number | slice:3:7 }}.
-                </mat-hint>
-                <mat-hint *ngIf="!hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
-                    You currently do not have a phone number saved with us.
-                </mat-hint>
+            <div *ngIf="successMessagePhone || errorMessagePhone">
+                <div *ngIf="successMessagePhone" class="success-message" fxLayout="row">
+                    <mat-hint style="color: inherit;">{{ successMessagePhone }}</mat-hint>
+                </div>
+                <div *ngIf="errorMessagePhone" class="error-message" fxLayout="row">
+                    <mat-hint style="color: inherit;">{{ errorMessagePhone }}</mat-hint>
+                </div>
             </div>
 
-            <div *ngIf="successMessagePhone" class="success-message" fxLayout="row">
-                <mat-hint style="color: inherit;">{{ successMessagePhone }}</mat-hint>
+            <div *ngIf="hasPhoneNumber" fxLayout="column" fxLayoutGap="10px">
+                <div fxLayout="row">
+                    <mat-hint fxFlex="60" fxFlex.lt-md>
+                        Your phone number is currently saved as {{ countryCode }} ({{ areaCode }}) {{ number | slice:0:3 }}-{{ number | slice:3:7 }}.
+                    </mat-hint>
+                </div>
+
+                <div fxLayout="row">
+                    <button mat-raised-button color="primary" type="button" fxFlex="10" fxFlex.lt-md (click)="deletePhoneNumber()">Delete</button>
+                </div>
             </div>
 
-            <div *ngIf="errorMessagePhone" class="error-message" fxLayout="row">
-                <mat-hint style="color: inherit;">{{ errorMessagePhone }}</mat-hint>
-            </div>
+            <div fxLayout="column" fxLayoutGap="10px">
+                <div fxLayout="row">
+                    <mat-hint *ngIf="hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
+                        If you'd like to update your phone number, fill out the form below.
+                    </mat-hint>
+                    <mat-hint *ngIf="!hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
+                        If you'd like to add your phone number, fill out the form below.
+                    </mat-hint>
+                </div>
 
-            <div *ngIf="hasPhoneNumber" fxLayout="row">
-                <button mat-raised-button color="primary" type="button" fxFlex="10" fxFlex.lt-md (click)="deletePhoneNumber()">Delete</button>
+                <form (submit)="updatePhoneNumber()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
+
+                    <div fxLayout="row">
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="60" fxFlex.lt-md>
+                            <mat-label>Country</mat-label>
+                            <mat-select [required]="true" (selectionChange)="selectCountry($event.value)">
+                                <mat-select-trigger *ngIf="selectedCountry">
+                                    {{ selectedCountry.name }} <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>
+                                </mat-select-trigger>
+                                <mat-option *ngFor="let country of countries" [value]="country">
+                                    <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;
+                                    <span> {{ country.name }} | <span class="country-code">+{{ country.dialCode }}</span></span>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="1%">
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="20">
+                            <mat-label>Area Code</mat-label>
+                            <input matInput [(ngModel)]="newAreaCode" name="areaCode" pattern="\d{3}" minlength="3" maxlength="3" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="39">
+                            <mat-label>Phone Number</mat-label>
+                            <input matInput [(ngModel)]="newNumber" name="number" pattern="\d{7}" minlength="7" maxlength="7" required>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" class="submit-button-container">
+                        <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md>Save</button>
+                    </div>
+
+                </form>
             </div>
 
         </div>

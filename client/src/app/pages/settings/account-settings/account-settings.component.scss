@@ -3,7 +3,8 @@
 .account-settings-container {
 
     .change-password-container,
-    .change-email-container {
+    .change-email-container,
+    .change-phone-container {
         ::ng-deep {
             .mat-form-field-wrapper {
                 padding-bottom: 0;
@@ -30,5 +31,9 @@
         button[type=submit] {
             font-weight: bold;
         }
+    }
+
+    .phone-message {
+        margin-bottom: 10rem;
     }
 }

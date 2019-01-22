@@ -88,4 +88,11 @@ public class PhoneNumber extends AuditableEntity {
         return countryCode + areaCode + number;
     }
 
+    @PrePersist
+    public void adjustCountryCode() {
+        if (!countryCode.startsWith("+")) {
+            countryCode = "+" + countryCode;
+        }
+    }
+
 }

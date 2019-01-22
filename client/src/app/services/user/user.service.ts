@@ -84,4 +84,8 @@ export class UserService {
     deletePhoneNumber(): Observable<any> {
         return this.http.delete(['api', 'user', 'phone'].join('/'));
     }
+
+    updatePhoneNumber(payload: PhoneNumberDTO): Observable<any> {
+        return this.http.post(['api', 'user', 'phone'].join('/'), payload);
+    }
 }

@@ -179,14 +179,32 @@ public class UserService {
             message = "You will now receive reminders for upcoming appointments via both email and text message.";
         }
 
-        Map<String, String> map = new HashMap<>();
-        map.put("message", message);
-
-        return map;
+        return message(message);
     }
 
     public PhoneNumber getPhoneNumber(long userId) {
         return phoneNumberRepository.findByUserId(userId).orElse(null);
+    }
+
+    public Map<String, String> saveOrUpdatePhoneNumber(long userId, PhoneNumberDTO phoneNumberDTO) {
+        PhoneNumber phoneNumber = phoneNumberRepository.findByUserId(userId).orElse(null);
+        String message;
+
+        if (phoneNumber != null) {
+            phoneNumber.setCountryCode(phoneNumberDTO.getCountryCode());
+            phoneNumber.setAreaCode(phoneNumberDTO.getAreaCode());
+            phoneNumber.setNumber(phoneNumberDTO.getNumber());
+            message = "You've successfully updated your phone number.";
+        } else {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d not found.", userId)));
+            phoneNumber = new PhoneNumber(phoneNumberDTO.getCountryCode(), phoneNumberDTO.getAreaCode(), phoneNumberDTO.getAreaCode(), user);
+            message = "You've successfully saved your phone number.";
+        }
+
+        phoneNumberRepository.save(phoneNumber);
+
+        return message(message);
     }
 
     public Map<String, String> deletePhoneNumber(long userId) {
@@ -195,9 +213,12 @@ public class UserService {
 
         phoneNumberRepository.delete(phoneNumber);
 
-        Map<String, String> map = new HashMap<>();
-        map.put("message", "You have successfully deleted your phone number.");
+        return message("You have successfully deleted your phone number.");
+    }
 
+    private Map<String, String> message(String message) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", message);
         return map;
     }
 }

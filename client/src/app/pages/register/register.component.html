@@ -53,9 +53,9 @@
                 <div fxLayout="column" fxLayoutGap="20px" *ngIf="registerPhone">
                     <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25">
                         <mat-label>Country</mat-label>
-                        <mat-select [formControl]="countryControl" [required]="true" (selectionChange)="selectCountry($event.value.dialCode)">
-                            <mat-select-trigger *ngIf="countryControl.value">
-                                {{ countryControl.value.name }} <span class="country-code-small">(+{{ countryControl.value.dialCode }})</span>
+                        <mat-select [required]="true" (selectionChange)="selectCountry($event.value)">
+                            <mat-select-trigger *ngIf="selectedCountry">
+                                {{ selectedCountry.name }} <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>
                             </mat-select-trigger>
                             <mat-option *ngFor="let country of countries" [value]="country">
                                 <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;

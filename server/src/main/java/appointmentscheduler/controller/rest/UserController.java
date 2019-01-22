@@ -1,5 +1,6 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.user.*;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
@@ -73,6 +74,11 @@ public class UserController {
     @GetMapping("/phone")
     public PhoneNumber getPhoneNumber(@RequestAttribute long userId) {
         return userService.getPhoneNumber(userId);
+    }
+
+    @PostMapping("/phone")
+    public ResponseEntity<Map<String, String>> saveOrUpdatePhoneNumber(@RequestAttribute long userId, @RequestBody PhoneNumberDTO phoneNumberDTO) {
+        return ResponseEntity.ok(userService.saveOrUpdatePhoneNumber(userId, phoneNumberDTO));
     }
 
     @DeleteMapping("/phone")
