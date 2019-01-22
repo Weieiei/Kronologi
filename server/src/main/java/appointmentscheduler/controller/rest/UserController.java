@@ -1,9 +1,7 @@
 package appointmentscheduler.controller.rest;
 
-import appointmentscheduler.dto.user.NewEmailDTO;
-import appointmentscheduler.dto.user.NewPasswordDTO;
-import appointmentscheduler.dto.user.UserLoginDTO;
-import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.dto.user.*;
+import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +57,15 @@ public class UserController {
     @PostMapping("/password")
     public void updatePassword(@RequestAttribute long userId, @RequestBody NewPasswordDTO newPasswordDTO) {
         userService.updatePassword(userId, newPasswordDTO);
+    }
+
+    @GetMapping("/settings")
+    public Settings getSettings(@RequestAttribute long userId) {
+        return userService.getSettings(userId);
+    }
+
+    @PostMapping("/settings")
+    public ResponseEntity<Map<String, String>> updateSettings(@RequestAttribute long userId, @RequestBody UpdateSettingsDTO updateSettingsDTO) {
+        return ResponseEntity.ok(userService.updateSettings(userId, updateSettingsDTO));
     }
 }

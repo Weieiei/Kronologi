@@ -9,7 +9,7 @@
 
         <div class="set-reminders-container" fxLayout="column" fxLayoutGap="10px">
 
-            <form (submit)="updateReminders()" autocomplete="off" fxLayout="column" fxLayoutGap="12px">
+            <form (submit)="updateSettings()" autocomplete="off" fxLayout="column" fxLayoutGap="12px">
 
                 <div fxLayout="column" fxLayoutGap="2px">
                     <mat-checkbox color="primary" [(ngModel)]="emailReminder" name="emailReminder">
@@ -21,7 +21,7 @@
                 </div>
 
                 <div fxLayout="column" fxLayoutGap="2px">
-                    <mat-checkbox color="primary" [(ngModel)]="textReminder" name="emailReminder" fxFlex>
+                    <mat-checkbox color="primary" [(ngModel)]="textReminder" [checked]="textReminder" name="textReminder" fxFlex>
                         Send appointment reminders to my phone number
                     </mat-checkbox>
                     <mat-hint class="checkbox-hint">

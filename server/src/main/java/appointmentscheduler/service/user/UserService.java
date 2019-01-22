@@ -1,21 +1,21 @@
 package appointmentscheduler.service.user;
 
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
-import appointmentscheduler.dto.user.NewEmailDTO;
-import appointmentscheduler.dto.user.NewPasswordDTO;
-import appointmentscheduler.dto.user.UserLoginDTO;
-import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.dto.user.*;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
+import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.IncorrectPasswordException;
 import appointmentscheduler.exception.InvalidUpdateException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.UserAlreadyExistsException;
 import appointmentscheduler.repository.RoleRepository;
+import appointmentscheduler.repository.SettingsRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,17 +39,20 @@ public class UserService {
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final SettingsRepository settingsRepository;
 
     @Autowired
     public UserService(
             UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider,
-            BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager
+            BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager,
+            SettingsRepository settingsRepository
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.jwtProvider = jwtProvider;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
+        this.settingsRepository = settingsRepository;
     }
 
     public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
@@ -144,5 +147,25 @@ public class UserService {
         user.setPassword(bCryptPasswordEncoder.encode(newPasswordDTO.getNewPassword()));
         userRepository.save(user);
 
+    }
+
+    public Settings getSettings(long userId) {
+        return settingsRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Settings not found under user with ID %d.", userId)));
+    }
+
+    public Map<String, String> updateSettings(long userId, UpdateSettingsDTO updateSettingsDTO) {
+        Settings settings = settingsRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Settings not found under user with ID %d.", userId)));
+
+        settings.setEmailReminder(updateSettingsDTO.isEmailReminder());
+        settings.setTextReminder(updateSettingsDTO.isTextReminder());
+
+        settingsRepository.save(settings);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("message", "You've successfully updated your settings.");
+
+        return map;
     }
 }

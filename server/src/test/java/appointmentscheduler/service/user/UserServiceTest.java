@@ -10,6 +10,7 @@ import appointmentscheduler.exception.InvalidUpdateException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.UserAlreadyExistsException;
 import appointmentscheduler.repository.RoleRepository;
+import appointmentscheduler.repository.SettingsRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.junit.Before;
@@ -50,11 +51,17 @@ public class UserServiceTest {
     @Mock
     private AuthenticationManager authenticationManager;
 
+    @Mock
+    private SettingsRepository settingsRepository;
+
     private UserService userService;
 
     @Before
     public void before() {
-        userService = new UserService(userRepository, roleRepository, jwtProvider, bCryptPasswordEncoder, authenticationManager);
+        userService = new UserService(
+                userRepository, roleRepository, jwtProvider,
+                bCryptPasswordEncoder, authenticationManager, settingsRepository
+        );
     }
 
     @Test(expected = UserAlreadyExistsException.class)
