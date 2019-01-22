@@ -1,0 +1,14 @@
+.reminder-settings-container {
+
+    ::ng-deep {
+        .mat-checkbox-layout {
+            white-space: normal !important;
+        }
+    }
+
+    .checkbox-hint {
+        font-size: 0.9rem;
+        margin-left: 24px;
+    }
+
+}

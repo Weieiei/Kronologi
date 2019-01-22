@@ -36,7 +36,7 @@ export class AccountSettingsComponent implements OnInit {
     ngOnInit() {
     }
 
-    changeEmail(): void {
+    updateEmail(): void {
 
         const payload: NewEmailDTO = {
             password: this.password,
@@ -57,7 +57,7 @@ export class AccountSettingsComponent implements OnInit {
 
     }
 
-    changePassword(): void {
+    updatePassword(): void {
 
         const payload: NewPasswordDTO = {
             oldPassword: this.oldPassword,

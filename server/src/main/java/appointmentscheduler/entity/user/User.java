@@ -61,7 +61,7 @@ public class User extends AuditableEntity {
             fetch = FetchType.EAGER,
             mappedBy = "user"
     )
-    private Settings setting;
+    private Settings settings;
 
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
@@ -141,16 +141,16 @@ public class User extends AuditableEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public Settings getSetting() {
-        return setting;
+    public Settings getSettings() {
+        return settings;
     }
 
-    public void setSetting(Settings setting) {
-        this.setting = setting;
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 
     @PrePersist
     public void setDefaultSettings() {
-        this.setSetting(new Settings(false, false, this));
+        this.setSettings(new Settings(false, false, this));
     }
 }

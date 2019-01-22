@@ -7,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReminderSettingsComponent implements OnInit {
 
+    emailReminder: boolean;
+    textReminder: boolean;
+
     constructor() {
     }
 
     ngOnInit() {
+    }
+
+    updateReminders(): void {
+        console.log(this.emailReminder);
+        console.log(this.textReminder);
     }
 
 }
