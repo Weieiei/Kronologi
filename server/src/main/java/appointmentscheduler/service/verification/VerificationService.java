@@ -2,6 +2,7 @@ package appointmentscheduler.service.verification;
 
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.Verification;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.repository.VerificationRepository;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class VerificationService {
     public boolean verify(String hash)
     {
        Verification verif =  verificationRepository.findByHash(hash);
+       if (verif == null) {
+           throw new ResourceNotFoundException("Hash not found.");
+       }
        System.out.println("Hash: " + hash);
        Optional<User> userList = userRepository.findById(verif.getUser().getId());
        User currentUser = userList.get();

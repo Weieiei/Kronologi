@@ -3,6 +3,7 @@ package appointmentscheduler.controller.rest;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.verification.Verification;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
@@ -37,9 +38,13 @@ public class UserController {
     }
 
     @GetMapping("/verification")
-    public int getAttr() {
-        verificationService.verify("b642b4217b34b1e8d3bd915fc65c4452");
-        return 0;
+    public ResponseEntity getAttr(@RequestParam(name = "hash") String hash) {
+        try {
+            verificationService.verify(hash);
+            return ResponseEntity.ok().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PostMapping("/register")

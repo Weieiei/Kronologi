@@ -10,6 +10,7 @@ import { AppointmentsComponent } from './pages/dashboard/home/appointments/appoi
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth/auth.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { VerifiedComponent } from './pages/verified/verified.component';
 
 const routes: Routes = [
     // Login
@@ -23,7 +24,7 @@ const routes: Routes = [
             button: 'Create Account'
         }
     },
-
+    {path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard]},
     // Dashboard
     {
         path: '',
