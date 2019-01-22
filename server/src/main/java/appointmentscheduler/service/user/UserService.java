@@ -119,12 +119,12 @@ public class UserService {
         return jwtProvider.generateToken(user, authentication);
     }
 
-    public void updateEmail(long id, String oldEmail, UpdateEmailDTO updateEmailDTO) {
+    public Map<String, String> updateEmail(long id, String oldEmail, UpdateEmailDTO updateEmailDTO) {
 
         User user = userRepository.findByIdAndEmailIgnoreCase(id, oldEmail)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d and email %s not found.", id, oldEmail)));
 
-        if (!bCryptPasswordEncoder.matches(updateEmailDTO.getPassword(), user.getPassword())) {
+        if (updateEmailDTO.getPassword() == null || !bCryptPasswordEncoder.matches(updateEmailDTO.getPassword(), user.getPassword())) {
             throw new IncorrectPasswordException("Incorrect password.");
         }
 
@@ -139,9 +139,11 @@ public class UserService {
         user.setEmail(updateEmailDTO.getNewEmail());
         userRepository.save(user);
 
+        return message(String.format("You've successfully updated your email to %s.", user.getEmail()));
+
     }
 
-    public void updatePassword(long id, UpdatePasswordDTO updatePasswordDTO) {
+    public Map<String, String> updatePassword(long id, UpdatePasswordDTO updatePasswordDTO) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d not found.", id)));
@@ -152,6 +154,8 @@ public class UserService {
 
         user.setPassword(bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword()));
         userRepository.save(user);
+
+        return message("You've successfully updated your password.");
 
     }
 
