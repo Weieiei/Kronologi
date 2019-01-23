@@ -35,7 +35,7 @@ public class Service extends AuditableEntity {
             joinColumns = { @JoinColumn(name = "service_id") },
             inverseJoinColumns = { @JoinColumn(name = "room_id") }
     )
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private Set<Room> rooms;
 
     public Service() { }
