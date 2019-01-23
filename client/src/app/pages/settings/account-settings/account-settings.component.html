@@ -114,18 +114,19 @@
                     </mat-hint>
                 </div>
 
-                <div fxLayout="row" class="submit-button-container">
+                <div fxLayout="row" class="submit-button-container" fxLayoutGap="10px">
                     <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md (click)="deletePhoneNumber()">Delete</button>
+                    <button mat-raised-button color="primary" type="button" fxFlex="10" fxFlex.lt-md (click)="showPhoneNumberForm()">Change</button>
                 </div>
             </div>
 
-            <div fxLayout="column" fxLayoutGap="10px">
+            <div *ngIf="showForm" fxLayout="column" fxLayoutGap="10px">
                 <div fxLayout="row">
                     <mat-hint *ngIf="hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
                         If you'd like to change your phone number, please fill out the form below.
                     </mat-hint>
                     <mat-hint *ngIf="!hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
-                        If you'd like to add your phone number, fill out the form below.
+                        If you'd like to add your phone number, please fill out the form below.
                     </mat-hint>
                 </div>
 
@@ -158,7 +159,8 @@
                         </mat-form-field>
                     </div>
 
-                    <div fxLayout="row" class="submit-button-container">
+                    <div fxLayout="row" class="submit-button-container" fxLayoutGap="10px">
+                        <button *ngIf="hasPhoneNumber" mat-raised-button color="primary" type="button" fxFlex="10" fxFlex.lt-md (click)="hidePhoneNumberForm()">Cancel</button>
                         <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md>Save</button>
                     </div>
 

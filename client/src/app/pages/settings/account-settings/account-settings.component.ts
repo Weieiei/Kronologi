@@ -31,6 +31,8 @@ export class AccountSettingsComponent implements OnInit {
     areaCode: string;
     number: string;
 
+    showForm: boolean;
+
     countries: Object[] = countryData.allCountries;
     selectedCountry: Object;
 
@@ -115,6 +117,8 @@ export class AccountSettingsComponent implements OnInit {
                     this.hasPhoneNumber = false;
                 }
 
+                this.showForm = !this.hasPhoneNumber;
+
             },
             err => console.log(err)
         );
@@ -129,6 +133,7 @@ export class AccountSettingsComponent implements OnInit {
         this.userService.deletePhoneNumber().subscribe(
             res => {
                 this.hasPhoneNumber = false;
+                this.showForm = true;
                 this.snackBar.openSnackBarSuccess(res['message']);
             },
             err => {
@@ -150,13 +155,17 @@ export class AccountSettingsComponent implements OnInit {
 
         this.userService.updatePhoneNumber(payload).subscribe(
             res => {
-                this.snackBar.openSnackBarSuccess(res['message']);
-
                 // Update current number on the page
                 this.hasPhoneNumber = true;
                 this.countryCode = payload.countryCode;
                 this.areaCode = payload.areaCode;
                 this.number = payload.number;
+                this.showForm = false;
+
+                this.newAreaCode = void 0;
+                this.newNumber = void 0;
+
+                this.snackBar.openSnackBarSuccess(res['message']);
             },
             err => {
                 if (err instanceof HttpErrorResponse) {
@@ -169,5 +178,13 @@ export class AccountSettingsComponent implements OnInit {
 
     selectCountry(country: Object) {
         this.selectedCountry = country;
+    }
+
+    showPhoneNumberForm() {
+        this.showForm = true;
+    }
+
+    hidePhoneNumberForm() {
+        this.showForm = false;
     }
 }
