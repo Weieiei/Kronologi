@@ -1,5 +1,6 @@
 package appointmentscheduler.entity.settings;
 
+import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user_settings")
-public class Settings {
+public class Settings extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
