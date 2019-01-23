@@ -30,4 +30,8 @@ export class NavbarComponent implements OnInit {
     goToHome() {
         this.router.navigate(['']);
     }
+
+    goToSettings() {
+        this.router.navigate(['settings']);
+    }
 }

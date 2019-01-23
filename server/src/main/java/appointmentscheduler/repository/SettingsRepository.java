@@ -1,14 +1,14 @@
 package appointmentscheduler.repository;
 
-import appointmentscheduler.entity.phonenumber.PhoneNumber;
+import appointmentscheduler.entity.settings.Settings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface PhoneNumberRepository extends JpaRepository<PhoneNumber, Long> {
+public interface SettingsRepository extends JpaRepository<Settings, Long> {
 
-    Optional<PhoneNumber> findByUserId(long userId);
+    Optional<Settings> findByUserId(long userId);
 
 }

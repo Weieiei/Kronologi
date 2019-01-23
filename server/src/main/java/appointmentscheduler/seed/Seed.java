@@ -29,9 +29,6 @@ public class Seed {
     private UserRepository userRepository;
 
     @Autowired
-    private PhoneNumberRepository phoneRepository;
-
-    @Autowired
     private ServiceRepository serviceRepository;
 
     @Autowired
@@ -70,13 +67,11 @@ public class Seed {
         User client2 = new User("Test", "User", "test@test.com", hash("test123"));
         client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
+        admin.setPhoneNumber(new PhoneNumber("1", "514", "5551234", admin));
+        client1.setPhoneNumber(new PhoneNumber("1", "514", "5552345", client1));
+        client2.setPhoneNumber(new PhoneNumber("1", "514", "5553456", client2));
+
         userRepository.saveAll(Arrays.asList(admin, client1, client2));
-
-        PhoneNumber adminPhoneNumber = new PhoneNumber("+1", "514", "5551234", admin);
-        PhoneNumber client1PhoneNumber = new PhoneNumber("+1", "514", "5552345", client1);
-        PhoneNumber client2PhoneNumber = new PhoneNumber("+1", "514", "5553456", client2);
-
-        phoneRepository.saveAll(Arrays.asList(adminPhoneNumber, client1PhoneNumber, client2PhoneNumber));
 
     }
 
@@ -107,6 +102,7 @@ public class Seed {
 
         User employee = new User("Employee", "User", "employee@employee.com", hash("employee123"));
         employee.setRoles(Stream.of(employeeRole).collect(Collectors.toSet()));
+        employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
         employee.setEmployeeServices(Arrays.asList(
                 services.get(0), services.get(1), services.get(3),
@@ -119,9 +115,6 @@ public class Seed {
 
         userRepository.save(employee);
         shiftRepository.saveAll(shifts);
-
-        PhoneNumber employeePhoneNumber = new PhoneNumber("+1", "514", "5554567", employee);
-        phoneRepository.save(employeePhoneNumber);
 
     }
 

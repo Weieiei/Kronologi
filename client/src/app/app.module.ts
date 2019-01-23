@@ -33,6 +33,9 @@ import { ButtonIconDirective } from './directives/button-icon/button-icon.direct
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
 import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
+import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 
 @NgModule({
     declarations: [
@@ -56,7 +59,10 @@ import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
         ButtonIconDirective,
         AppointmentsSectionComponent,
         CardSizeDirective,
-        AutofocusDirective
+        AutofocusDirective,
+        SettingsComponent,
+        AccountSettingsComponent,
+        ReminderSettingsComponent
     ],
     imports: [
         BrowserModule,

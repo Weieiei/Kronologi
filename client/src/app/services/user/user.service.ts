@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserLoginDTO } from '../../interfaces/user-login-dto';
+import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { HttpClient } from '@angular/common/http';
-import { UserRegisterDTO } from '../../interfaces/user-register-dto';
+import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
+import { UpdateEmailDTO } from '../../interfaces/user/update-email-dto';
+import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
+import { SettingsDTO } from '../../interfaces/settings/settings-dto';
+import { UpdateSettingsDTO } from '../../interfaces/settings/update-settings-dto';
+import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -54,5 +59,33 @@ export class UserService {
 
     deleteToken(): void {
         localStorage.removeItem(UserService.TOKEN_KEY);
+    }
+
+    updateEmail(payload: UpdateEmailDTO): Observable<any> {
+        return this.http.post(['api', 'user', 'email'].join('/'), payload);
+    }
+
+    updatePassword(payload: UpdatePasswordDTO): Observable<any> {
+        return this.http.post(['api', 'user', 'password'].join('/'), payload);
+    }
+
+    getSettings(): Observable<SettingsDTO> {
+        return this.http.get<SettingsDTO>(['api', 'user', 'settings'].join('/'));
+    }
+
+    updateSettings(payload: UpdateSettingsDTO): Observable<any> {
+        return this.http.post(['api', 'user', 'settings'].join('/'), payload);
+    }
+
+    getPhoneNumber(): Observable<PhoneNumberDTO> {
+        return this.http.get<PhoneNumberDTO>(['api', 'user', 'phone'].join('/'));
+    }
+
+    deletePhoneNumber(): Observable<any> {
+        return this.http.delete(['api', 'user', 'phone'].join('/'));
+    }
+
+    updatePhoneNumber(payload: PhoneNumberDTO): Observable<any> {
+        return this.http.post(['api', 'user', 'phone'].join('/'), payload);
     }
 }
