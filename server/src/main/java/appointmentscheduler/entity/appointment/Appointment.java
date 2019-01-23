@@ -136,4 +136,8 @@ public class Appointment extends AuditableEntity {
         this.endTime = startTime.plusMinutes(this.service.getDuration());
     }
 
+    public boolean isConflicting(Appointment appointment) {
+        return appointment.getDate().equals(this.getDate()) &&
+                !(appointment.getEndTime().isBefore(this.getStartTime()) || appointment.getEndTime().equals(this.getStartTime()) || appointment.getStartTime().isAfter(this.getEndTime()) || appointment.getStartTime().equals(this.getEndTime()));
+    }
 }
