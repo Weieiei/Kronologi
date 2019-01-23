@@ -2,6 +2,7 @@ package appointmentscheduler.seed;
 
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentFactory;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.room.Room;
@@ -39,6 +40,9 @@ public class Seed {
     private EmployeeRepository employeeRepository;
 
     @Autowired
+    private PhoneNumberRepository phoneRepository;
+
+    @Autowired
     private ServiceRepository serviceRepository;
 
     @Autowired
@@ -59,14 +63,14 @@ public class Seed {
         boolean noAdmin = userRepository.findByRoles_Role(RoleEnum.ADMIN).isEmpty();
 
         if (noAdmin) {
-            seedAdminAndClients();
+            seedAdminAndClientsAndPhoneNumbers();
             seedEmployeeServicesAndShifts();
             seedAppointments();
         }
 
     }
 
-    public void seedAdminAndClients() {
+    public void seedAdminAndClientsAndPhoneNumbers() {
 
         Role adminRole = new Role(RoleEnum.ADMIN);
         Role clientRole = new Role(RoleEnum.CLIENT);
@@ -84,6 +88,12 @@ public class Seed {
         client3.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         userRepository.saveAll(Arrays.asList(admin, client1, client2, client3));
+
+        PhoneNumber adminPhoneNumber = new PhoneNumber("+1", "514", "5551234", admin);
+        PhoneNumber client1PhoneNumber = new PhoneNumber("+1", "514", "5552345", client1);
+        PhoneNumber client2PhoneNumber = new PhoneNumber("+1", "514", "5553456", client2);
+
+        phoneRepository.saveAll(Arrays.asList(adminPhoneNumber, client1PhoneNumber, client2PhoneNumber));
 
     }
 
@@ -157,6 +167,9 @@ public class Seed {
         employee4.setRoles(Sets.newHashSet(employeeRole));
 
         userRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
+
+        PhoneNumber employeePhoneNumber = new PhoneNumber("+1", "514", "5554567", employee);
+        phoneRepository.save(employeePhoneNumber);
     }
 
     public void seedAppointments() {

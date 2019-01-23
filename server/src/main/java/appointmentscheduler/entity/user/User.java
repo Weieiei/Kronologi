@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.user;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.service.Service;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,6 +41,13 @@ public class User extends AuditableEntity {
     )
     private Set<Role> roles;
 
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
+    private PhoneNumber phoneNumber;
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof User && ((User) obj).getId() == this.getId();
@@ -69,6 +77,10 @@ public class User extends AuditableEntity {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -91,6 +103,14 @@ public class User extends AuditableEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public PhoneNumber getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
 }

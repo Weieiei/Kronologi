@@ -3,6 +3,7 @@ package appointmentscheduler.controller.rest;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.AuthenticationService;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.user.UserService;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,22 +24,26 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final EmailService emailService;
 
     private final AuthenticationService authenticationService;
 
     private final AppointmentService appointmentService;
 
     @Autowired
-    public UserController(UserService userService, AuthenticationService authenticationService, AppointmentService appointmentService) {
+    public UserController(UserService userService, AuthenticationService authenticationService, AppointmentService appointmentService, EmailService emailService) {
         this.userService = userService;
         this.authenticationService = authenticationService;
         this.appointmentService = appointmentService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) {
+    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
         try {
-            return ResponseEntity.ok(userService.register(userRegisterDTO));
+            Map<String, Object> userTokenMap = userService.register(userRegisterDTO);
+            emailService.sendEmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", "Welcome to ASApp.<br />", true);
+            return ResponseEntity.ok(userTokenMap);
         } catch (BadCredentialsException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
