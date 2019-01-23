@@ -42,7 +42,7 @@ public class User extends AuditableEntity {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof User && ((User) obj).id == this.id;
+        return obj instanceof User && ((User) obj).getId() == this.getId();
     }
 
     public long getId() {
