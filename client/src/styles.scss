@@ -52,3 +52,12 @@ h6 {
     font-size: 20px;
     letter-spacing: 0.15px;
 }
+
+/* Success/error classes for snackbar messages. They have to be declared in styles.scss */
+.success-message {
+    color: $success-color;
+}
+
+.error-message {
+    color: $warn-color;
+}

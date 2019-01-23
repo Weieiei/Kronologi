@@ -13,10 +13,6 @@
                 <mat-hint fxFlex="60" fxFlex.lt-md>After changing your email, you will be logged out and prompted to log back in.</mat-hint>
             </div>
 
-            <div *ngIf="updateEmailErrorMessage" class="error-message" fxLayout="row">
-                <mat-hint fxFlex="60" fxFlex.lt-md style="color: inherit;">{{ updateEmailErrorMessage }}</mat-hint>
-            </div>
-
             <form (submit)="updateEmail()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
                 <div fxLayout="row">
@@ -69,10 +65,6 @@
                 <mat-hint fxFlex="60" fxFlex.lt-md>Make sure your new password contains at least 1 letter and 1 number.</mat-hint>
             </div>
 
-            <div *ngIf="updatePasswordErrorMessage" class="error-message" fxLayout="row">
-                <mat-hint fxFlex="60" fxFlex.lt-md style="color: inherit;">{{ updatePasswordErrorMessage }}</mat-hint>
-            </div>
-
             <form (submit)="updatePassword()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
                 <div fxLayout="row">
@@ -115,15 +107,6 @@
 
         <div class="change-phone-container" fxLayout="column" fxLayoutGap="30px">
 
-            <div *ngIf="successMessagePhone || errorMessagePhone">
-                <div *ngIf="successMessagePhone" class="success-message" fxLayout="row">
-                    <mat-hint style="color: inherit;">{{ successMessagePhone }}</mat-hint>
-                </div>
-                <div *ngIf="errorMessagePhone" class="error-message" fxLayout="row">
-                    <mat-hint style="color: inherit;">{{ errorMessagePhone }}</mat-hint>
-                </div>
-            </div>
-
             <div *ngIf="hasPhoneNumber" fxLayout="column" fxLayoutGap="10px">
                 <div fxLayout="row">
                     <mat-hint fxFlex="60" fxFlex.lt-md>
@@ -139,7 +122,7 @@
             <div fxLayout="column" fxLayoutGap="10px">
                 <div fxLayout="row">
                     <mat-hint *ngIf="hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
-                        If you'd like to update your phone number, fill out the form below.
+                        If you'd like to change your phone number, please fill out the form below.
                     </mat-hint>
                     <mat-hint *ngIf="!hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
                         If you'd like to add your phone number, fill out the form below.

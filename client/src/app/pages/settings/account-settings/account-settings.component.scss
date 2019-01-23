@@ -1,5 +1,3 @@
-@import "../../../../variables";
-
 .account-settings-container {
 
     .change-password-container,
@@ -10,14 +8,6 @@
                 padding-bottom: 0;
             }
         }
-    }
-
-    .success-message {
-        color: $success-color;
-    }
-
-    .error-message {
-        color: $warn-color;
     }
 
     .icon-button {

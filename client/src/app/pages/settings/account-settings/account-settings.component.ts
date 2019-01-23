@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UpdatePasswordDTO } from '../../../interfaces/user/update-password-dto';
 import { PhoneNumberDTO } from '../../../interfaces/phonenumber/phone-number-dto';
 import * as countryData from 'country-telephone-data';
+import { SnackBar } from '../../../snackbar';
 
 @Component({
     selector: 'app-account-settings',
@@ -18,16 +19,12 @@ export class AccountSettingsComponent implements OnInit {
     password: string;
     newEmail: string;
 
-    updateEmailErrorMessage: string;
-
     // Fields to update password
     oldPassword: string;
     newPassword: string;
     confirmPassword: string;
 
     isPasswordVisible = false;
-
-    updatePasswordErrorMessage: string;
 
     hasPhoneNumber: boolean;
     countryCode: string;
@@ -40,11 +37,9 @@ export class AccountSettingsComponent implements OnInit {
     newAreaCode: string;
     newNumber: string;
 
-    successMessagePhone: string;
-    errorMessagePhone: string;
-
     constructor(
         private userService: UserService,
+        private snackBar: SnackBar,
         private router: Router
     ) {
     }
@@ -62,12 +57,13 @@ export class AccountSettingsComponent implements OnInit {
 
         this.userService.updateEmail(payload).subscribe(
             res => {
+                this.snackBar.openSnackBarSuccess(res['message']);
                 this.userService.logout();
                 this.router.navigate(['login']);
             },
             err => {
                 if (err instanceof HttpErrorResponse && err.status === 400) {
-                    this.updateEmailErrorMessage = err.error.message;
+                    this.snackBar.openSnackBarError(err.error.message);
                 }
             }
         );
@@ -77,7 +73,7 @@ export class AccountSettingsComponent implements OnInit {
     updatePassword(): void {
 
         if (this.newPassword !== this.confirmPassword) {
-            this.updatePasswordErrorMessage = 'The passwords don\'t match.';
+            this.snackBar.openSnackBarError('The passwords don\'t match.');
             return;
         }
 
@@ -88,12 +84,13 @@ export class AccountSettingsComponent implements OnInit {
 
         this.userService.updatePassword(payload).subscribe(
             res => {
+                this.snackBar.openSnackBarSuccess(res['message']);
                 this.userService.logout();
                 this.router.navigate(['login']);
             },
             err => {
                 if (err instanceof HttpErrorResponse && err.status === 400) {
-                    this.updatePasswordErrorMessage = err.error.message;
+                    this.snackBar.openSnackBarError(err.error.message);
                 }
             }
         );
@@ -108,7 +105,7 @@ export class AccountSettingsComponent implements OnInit {
         this.userService.getPhoneNumber().subscribe(
             res => {
 
-                // User might not have a phone number saved, so the returned phone number might just be null
+                // If the user doesn't have a phone number saved, the response would be null
                 if (res) {
                     this.hasPhoneNumber = true;
                     this.countryCode = res.countryCode;
@@ -132,13 +129,11 @@ export class AccountSettingsComponent implements OnInit {
         this.userService.deletePhoneNumber().subscribe(
             res => {
                 this.hasPhoneNumber = false;
-                this.errorMessagePhone = void 0;
-                this.successMessagePhone = res['message'];
+                this.snackBar.openSnackBarSuccess(res['message']);
             },
             err => {
-                this.successMessagePhone = void 0;
                 if (err instanceof HttpErrorResponse) {
-                    this.errorMessagePhone = err.error.message;
+                    this.snackBar.openSnackBarError(err.error.message);
                 }
             }
         );
@@ -155,8 +150,7 @@ export class AccountSettingsComponent implements OnInit {
 
         this.userService.updatePhoneNumber(payload).subscribe(
             res => {
-                this.errorMessagePhone = void 0;
-                this.successMessagePhone = res['message'];
+                this.snackBar.openSnackBarSuccess(res['message']);
 
                 // Update current number on the page
                 this.hasPhoneNumber = true;
@@ -165,9 +159,8 @@ export class AccountSettingsComponent implements OnInit {
                 this.number = payload.number;
             },
             err => {
-                this.successMessagePhone = void 0;
                 if (err instanceof HttpErrorResponse) {
-                    this.errorMessagePhone = err.error.message;
+                    this.snackBar.openSnackBarError(err.error.message);
                 }
             }
         );

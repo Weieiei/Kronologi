@@ -324,6 +324,6 @@ public class UserServiceTest {
         when(phoneNumberRepository.findByUserId(1L)).thenReturn(Optional.of(mockPhoneNumber));
 
         Map<String, String> map = userService.deletePhoneNumber(1L);
-        assertEquals("You have successfully deleted your phone number.", map.get("message"));
+        assertEquals("You've successfully deleted your phone number.", map.get("message"));
     }
 }

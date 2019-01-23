@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user/user.service';
 import { UpdateSettingsDTO } from '../../../interfaces/settings/update-settings-dto';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SnackBar } from '../../../snackbar';
 
 @Component({
     selector: 'app-reminder-settings',
@@ -16,7 +17,10 @@ export class ReminderSettingsComponent implements OnInit {
     successMessage: string;
     errorMessage: string;
 
-    constructor(private userService: UserService) {
+    constructor(
+        private userService: UserService,
+        private snackBar: SnackBar
+    ) {
     }
 
     ngOnInit() {
@@ -43,7 +47,7 @@ export class ReminderSettingsComponent implements OnInit {
         this.userService.updateSettings(payload).subscribe(
             res => {
                 this.errorMessage = void 0;
-                this.successMessage = res['message'];
+                this.snackBar.openSnackBarSuccess(res['message']);
             },
             err => {
                 this.successMessage = void 0;

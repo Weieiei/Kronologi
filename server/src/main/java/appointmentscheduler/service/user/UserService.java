@@ -220,7 +220,7 @@ public class UserService {
 
         phoneNumberRepository.delete(phoneNumber);
 
-        return message("You have successfully deleted your phone number.");
+        return message("You've successfully deleted your phone number.");
     }
 
     private Map<String, String> message(String message) {
