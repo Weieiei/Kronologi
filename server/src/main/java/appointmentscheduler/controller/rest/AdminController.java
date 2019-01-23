@@ -4,6 +4,7 @@ import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.user.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,10 +19,12 @@ import java.util.Set;
 public class AdminController {
     private AppointmentService appointmentService;
     private UserService userService;
+    private RoleRepository roleRepository;
 
-    public AdminController(AppointmentService appointmentService, UserService userService) {
+    public AdminController(AppointmentService appointmentService, UserService userService, RoleRepository roleRepository) {
         this.appointmentService = appointmentService;
         this.userService = userService;
+        this.roleRepository = roleRepository;
     }
 
 
@@ -29,6 +32,11 @@ public class AdminController {
     @GetMapping
     public String areYouAnAdmin(@RequestAttribute long userId) {
         return String.format("You are an admin, your id is %d.", userId);
+    }
+
+    @GetMapping("/client/{id}")
+    public List<Appointment> cleintAppointmentList(@RequestAttribute long clientId){
+        return this.appointmentService.findByClientId(clientId);
     }
 
     @GetMapping("/employee/{id}")
@@ -45,7 +53,7 @@ public class AdminController {
                 return "User " + id + " is already an employee";
             }
         }
-        user.addRoles(new Role(RoleEnum.EMPLOYEE));
+        user.addRoles(this.roleRepository.findByRole(RoleEnum.EMPLOYEE));
         if (userService.updateUser(user))
             return "Successfully changed user to employee.";
         return "Something went wrong while updating user, please check the server log.";
