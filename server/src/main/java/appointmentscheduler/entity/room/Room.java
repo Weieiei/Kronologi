@@ -13,7 +13,7 @@ public class Room extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @JoinTable(
@@ -23,6 +23,11 @@ public class Room extends AuditableEntity {
     )
     @ManyToMany
     private Set<Service> services;
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Room && this.getId() == ((Room) o).getId();
+    }
 
     public long getId() {
         return id;
