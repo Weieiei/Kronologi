@@ -38,7 +38,68 @@ public class AppointmentService {
     }
 
     public Appointment add(Appointment appointment) {
-        Employee employee = appointment.getEmployee();
+        // todo should this return a boolean instead ?
+        // Right now this is void return type because it will throw exceptions if it doesn't work.
+        // It will never reach the return statement if it fails any of the checks.
+        // If this returns a boolean, then what do I return if the boolean is false?
+        validate(appointment);
+
+        return appointmentRepository.save(appointment);
+    }
+
+    public Appointment update(long id, Appointment appointment) {
+
+        return appointmentRepository.findById(id).map(a -> {
+
+            a.setClient(appointment.getClient());
+            a.setEmployee(appointment.getEmployee());
+            a.setService(appointment.getService());
+            a.setStartTime(appointment.getStartTime());
+            a.setEndTime(appointment.getEndTime());
+            a.setNotes(appointment.getNotes());
+
+            return appointmentRepository.save(a);
+
+        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+
+    }
+
+    public ResponseEntity<?> cancel(long id) {
+
+        return appointmentRepository.findById(id).map(a -> {
+
+            a.setStatus(AppointmentStatus.cancelled);
+            appointmentRepository.save(a);
+
+            return ResponseEntity.ok().build();
+
+        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+
+    }
+
+    public ResponseEntity<?> delete(long id) {
+
+        return appointmentRepository.findById(id).map(a -> {
+
+            appointmentRepository.delete(a);
+            return ResponseEntity.ok().build();
+
+        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+
+    }
+
+    /**
+     * Check's to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
+     * @param appointment The appointment to validate.
+     * @throws ModelValidationException If the client and employee are the same person.
+     * @throws EmployeeDoesNotOfferServiceException If the employee is not assigned to the service specified.
+     * @throws EmployeeNotWorkingException If the employee does not have a shift on the date specified.
+     * @throws EmployeeAppointmentConflictException If the employee is already booked on the date and time specified.
+     * @throws ClientAppointmentConflictException If the client is already booked on the date and time specified.
+     * @throws NoRoomAvailableException If there are no rooms available to perform the service specified.
+     */
+    private void validate(Appointment appointment) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
+        final Employee employee = appointment.getEmployee();
 
         // Make sure the client and employee are not the same
         if (appointment.getClient().equals(employee)) {
@@ -91,48 +152,5 @@ public class AppointmentService {
         if (roomSet.isEmpty()) {
             throw new NoRoomAvailableException("There are no rooms available");
         }
-
-        return appointmentRepository.save(appointment);
-    }
-
-    public Appointment update(long id, Appointment appointment) {
-
-        return appointmentRepository.findById(id).map(a -> {
-
-            a.setClient(appointment.getClient());
-            a.setEmployee(appointment.getEmployee());
-            a.setService(appointment.getService());
-            a.setStartTime(appointment.getStartTime());
-            a.setEndTime(appointment.getEndTime());
-            a.setNotes(appointment.getNotes());
-
-            return appointmentRepository.save(a);
-
-        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
-
-    }
-
-    public ResponseEntity<?> cancel(long id) {
-
-        return appointmentRepository.findById(id).map(a -> {
-
-            a.setStatus(AppointmentStatus.cancelled);
-            appointmentRepository.save(a);
-
-            return ResponseEntity.ok().build();
-
-        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
-
-    }
-
-    public ResponseEntity<?> delete(long id) {
-
-        return appointmentRepository.findById(id).map(a -> {
-
-            appointmentRepository.delete(a);
-            return ResponseEntity.ok().build();
-
-        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
-
     }
 }
