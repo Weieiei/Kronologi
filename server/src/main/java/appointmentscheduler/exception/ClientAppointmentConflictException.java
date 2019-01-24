@@ -4,17 +4,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
-public class AppointmentConflictException extends RuntimeException {
+public class ClientAppointmentConflictException extends RuntimeException {
 
-    public AppointmentConflictException() {
+    public ClientAppointmentConflictException() {
         super();
     }
 
-    public AppointmentConflictException(String message) {
+    public ClientAppointmentConflictException(String message) {
         super(message);
     }
 
-    public AppointmentConflictException(String message, Throwable cause) {
+    public ClientAppointmentConflictException(String message, Throwable cause) {
         super(message, cause);
     }
 

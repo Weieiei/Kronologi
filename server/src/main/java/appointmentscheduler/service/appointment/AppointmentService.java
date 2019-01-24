@@ -48,14 +48,14 @@ public class AppointmentService {
         // Make sure the employee can perform the service requested
         boolean employeeCanDoService = appointment.getService().getEmployees().contains(employee);
 
-        if (employeeCanDoService) {
+        if (!employeeCanDoService) {
             throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");
         }
 
         // Check if the employee is working on the date specified
         boolean employeeIsWorking = employee.isWorking(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
 
-        if (employeeIsWorking) {
+        if (!employeeIsWorking) {
             throw new EmployeeNotWorkingException("The employee does not have a shift.");
         }
 
@@ -64,7 +64,7 @@ public class AppointmentService {
 
         for (Appointment employeeAppointment : employeeAppointments) {
             if (employeeAppointment.isConflicting(appointment)) {
-                throw new AppointmentConflictException("There is a conflicting appointment already booked with that employee");
+                throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee");
             }
         }
 
@@ -73,7 +73,7 @@ public class AppointmentService {
 
         for (Appointment clientAppointment : clientAppointments) {
             if (clientAppointment.isConflicting(appointment)) {
-                throw new AppointmentConflictException("There is a conflicting appointment already booked with that client");
+                throw new ClientAppointmentConflictException("There is a conflicting appointment already booked with that client");
             }
         }
 
