@@ -24,7 +24,9 @@ const routes: Routes = [
             button: 'Create Account'
         }
     },
-    {path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard]},
+
+    { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
+
     // Dashboard
     {
         path: '',

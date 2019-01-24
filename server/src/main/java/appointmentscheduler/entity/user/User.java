@@ -122,16 +122,16 @@ public class User extends AuditableEntity {
         this.employeeServices = employeeServices;
     }
 
-    @PrePersist
-    public void beforeInsert(){
-        this.verified = false;
-    }
-
     public boolean isVerified() {
         return verified;
     }
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    @PrePersist
+    public void beforeInsert(){
+        this.verified = false;
     }
 }

@@ -66,13 +66,13 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        Verification verifyUser = new Verification(savedUser);
+        Verification verification = new Verification(savedUser);
 
-        verificationRepository.save(verifyUser);
+        verificationRepository.save(verification);
 
         String token = generateToken(savedUser, userRegisterDTO.getPassword());
 
-        return buildUserTokenRegisterMap(savedUser,verifyUser, token);
+        return buildUserTokenRegisterMap(savedUser, token, verification);
     }
 
     public Map<String, Object> login(UserLoginDTO userLoginDTO) {
@@ -88,16 +88,12 @@ public class UserService {
         Map<String, Object> map = new HashMap<>();
         map.put("user", user);
         map.put("token", token);
-
         return map;
     }
 
-    private Map<String, Object> buildUserTokenRegisterMap(User user, Verification verif, String token) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", user);
-        map.put("verification", verif);
-        map.put("token", token);
-
+    private Map<String, Object> buildUserTokenRegisterMap(User user, String token, Verification verification) {
+        Map<String, Object> map = buildUserTokenMap(user, token);
+        map.put("verification", verification);
         return map;
     }
 

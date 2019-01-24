@@ -81,7 +81,7 @@ public class EmailService {
                 "          <table cellspacing=\"0\" cellpadding=\"0\">\n" +
                 "              <tr>\n" +
                 "                  <td style=\"border-radius: 2px;\" bgcolor=\"#ED2939\">\n" +
-                "                      <a href=\"http://localhost:4200/api/user/verification?hash=" + hash + "\" target=\"_blank\" style=\"padding: 8px 12px; border: 1px solid #ED2939;border-radius: 2px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;\">\n" +
+                "                      <a href=\"http://localhost:4200/verification?hash=" + hash + "\" target=\"_blank\" style=\"padding: 8px 12px; border: 1px solid #ED2939;border-radius: 2px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;\">\n" +
                 "                          Confirm Email             \n" +
                 "                      </a>\n" +
                 "                  </td>\n" +
