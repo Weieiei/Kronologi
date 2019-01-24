@@ -43,7 +43,7 @@ export class AppointmentsComponent implements OnInit {
                     if (now <= appointmentStart) {
                         this.upcomingAppointments.push(appointment);
                     } else {
-                        this.historyAppointments.push(appointment);
+                        this.pastAppointments.push(appointment);
                     }
                 }
             },
