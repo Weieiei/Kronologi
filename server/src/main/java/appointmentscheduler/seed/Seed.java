@@ -1,6 +1,7 @@
 package appointmentscheduler.seed;
 
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
@@ -14,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,14 +46,14 @@ public class Seed {
         boolean noAdmin = userRepository.findByRoles_Role(RoleEnum.ADMIN).isEmpty();
 
         if (noAdmin) {
-            seedAdminAndClients();
+            seedAdminAndClientsAndPhoneNumbers();
             seedEmployeeServicesAndShifts();
             seedAppointments();
         }
 
     }
 
-    public void seedAdminAndClients() {
+    public void seedAdminAndClientsAndPhoneNumbers() {
 
         Role adminRole = new Role(RoleEnum.ADMIN);
         Role clientRole = new Role(RoleEnum.CLIENT);
@@ -66,6 +66,10 @@ public class Seed {
 
         User client2 = new User("Test", "User", "test@test.com", hash("test123"));
         client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
+
+        admin.setPhoneNumber(new PhoneNumber("1", "514", "5551234", admin));
+        client1.setPhoneNumber(new PhoneNumber("1", "514", "5552345", client1));
+        client2.setPhoneNumber(new PhoneNumber("1", "514", "5553456", client2));
 
         userRepository.saveAll(Arrays.asList(admin, client1, client2));
 
@@ -97,8 +101,8 @@ public class Seed {
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
 
         User employee = new User("Employee", "User", "employee@employee.com", hash("employee123"));
-
         employee.setRoles(Stream.of(employeeRole).collect(Collectors.toSet()));
+        employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
         employee.setEmployeeServices(Arrays.asList(
                 services.get(0), services.get(1), services.get(3),

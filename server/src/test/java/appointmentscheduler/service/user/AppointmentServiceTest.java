@@ -3,7 +3,6 @@ package appointmentscheduler.service.user;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.service.AuthenticationService;
 import appointmentscheduler.service.appointment.AppointmentService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,12 +17,10 @@ import java.util.List;
 public class AppointmentServiceTest {
 
     private AppointmentService mockAppointmentService;
-    private AuthenticationService mockAuthenticationService;
 
     @Before
     public void setup(){
         mockAppointmentService = Mockito.mock(AppointmentService.class);
-        mockAuthenticationService = Mockito.mock(AuthenticationService.class);
     }
 
 
@@ -60,18 +57,17 @@ public class AppointmentServiceTest {
         appointments.add(appointment);
         Mockito.when(mockAppointmentService.findByClientId(Mockito.anyLong())).thenReturn(appointments);
 
-        long id = 5;
-        Mockito.when(mockAuthenticationService.getCurrentUserId()).thenReturn(id);
-        Mockito.when(mockAppointmentService.findByClientId(Mockito.anyLong())).thenReturn(appointments);
 
-        Assert.assertEquals(1, appointments.size());
-        Assert.assertEquals(endTime , appointments.get(0).getEndTime());
-        Assert.assertEquals(startTime , appointments.get(0).getStartTime());
-        Assert.assertEquals(notes, appointments.get(0).getNotes());
-        Assert.assertEquals(employeeFirstName, appointments.get(0).getEmployee().getFirstName() );
-        Assert.assertEquals(employeeLastName, appointments.get(0).getEmployee().getLastName() );
-        Assert.assertEquals(clientFirstName, appointments.get(0).getEmployee().getFirstName() );
-        Assert.assertEquals(serviceName, appointments.get(0).getService().getName() );
-        Assert.assertEquals(serviceDuration, appointments.get(0).getService().getDuration() );
+        List <Appointment> result = mockAppointmentService.findByClientId(5);
+
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals(endTime , result.get(0).getEndTime());
+        Assert.assertEquals(startTime , result.get(0).getStartTime());
+        Assert.assertEquals(notes, result.get(0).getNotes());
+        Assert.assertEquals(employeeFirstName, result.get(0).getEmployee().getFirstName() );
+        Assert.assertEquals(employeeLastName, result.get(0).getEmployee().getLastName() );
+        Assert.assertEquals(clientFirstName, result.get(0).getEmployee().getFirstName() );
+        Assert.assertEquals(serviceName, result.get(0).getService().getName() );
+        Assert.assertEquals(serviceDuration, result.get(0).getService().getDuration() );
     }
 }

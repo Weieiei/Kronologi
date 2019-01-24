@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${rest.api.path}/services")
-@PreAuthorize("hasRole('CLIENT')")
+@PreAuthorize("hasAuthority('CLIENT')")
 public class ServiceController extends IRestController {
 
     private final ServiceRepository serviceRepository;

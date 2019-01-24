@@ -67,6 +67,18 @@ public class JwtProvider implements Serializable {
         return getClaimsFromToken(token).getSubject();
     }
 
+    public String getFirstNameFromToken(String token) {
+        return getClaimsFromToken(token).get("firstName").toString();
+    }
+
+    public String getLastNameFromToken(String token) {
+        return getClaimsFromToken(token).get("lastName").toString();
+    }
+
+    public String getEmailFromToken(String token) {
+        return getClaimsFromToken(token).get("email").toString();
+    }
+
     public Date getExpirationDateOfToken(String token) {
         return getClaimsFromToken(token).getExpiration();
     }

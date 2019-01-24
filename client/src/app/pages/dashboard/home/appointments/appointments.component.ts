@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
     selector: 'app-appointments',
@@ -34,21 +33,17 @@ export class AppointmentsComponent implements OnInit {
     }
 
     getMyAppointments(): void {
-        this.appointmentService.getMyAppointments().subscribe
-        (
-            (res) => {
+        this.appointmentService.getMyAppointments().subscribe(
+            res => {
                 const now = new Date();
 
                 for (const appointment of res) {
                     const appointmentStart = new Date(appointment.date + ' ' + appointment.startTime);
 
-
                     if (now <= appointmentStart) {
                         this.upcomingAppointments.push(appointment);
-
                     } else {
-                        this.pastAppointments.push(appointment);
-
+                        this.historyAppointments.push(appointment);
                     }
                 }
             },
