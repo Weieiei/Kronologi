@@ -9,17 +9,21 @@ import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.serializer.ObjectMapperFactory;
+import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,16 +34,18 @@ public class UserController extends AbstractController {
     private final UserService userService;
     private final EmailService emailService;
     private final AppointmentService appointmentService;
+    private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
-    public UserController(UserService userService, AppointmentService appointmentService, EmailService emailService) {
+    public UserController(UserService userService, AppointmentService appointmentService, EmailService emailService, ObjectMapperFactory objectMapperFactory) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.emailService = emailService;
+        this.objectMapperFactory = objectMapperFactory;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
+    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws MessagingException {
         try {
             Map<String, Object> userTokenMap = userService.register(userRegisterDTO);
             emailService.sendEmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", "Welcome to ASApp.<br />", true);
@@ -95,10 +101,16 @@ public class UserController extends AbstractController {
         return ResponseEntity.ok(userService.deletePhoneNumber(getUserId()));
     }
 
-    @GetMapping("/appointments")
-    public List<Appointment> findByCurrentUser() {
-        return appointmentService.findByClientId(getUserId());
+    @GetMapping(value = "/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findAllAppointments() {
+        final List<Appointment> appointments = appointmentService.findByClientId(getUserId());
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+
+        try {
+            return ResponseEntity.ok(mapper.writeValueAsString(appointments));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-
-
 }

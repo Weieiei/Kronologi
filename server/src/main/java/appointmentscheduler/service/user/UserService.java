@@ -62,7 +62,7 @@ public class UserService {
         this.phoneNumberRepository = phoneNumberRepository;
     }
 
-    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
+    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) {
 
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));

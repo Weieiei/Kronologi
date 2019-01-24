@@ -9,11 +9,16 @@ import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.repository.UserRepository;
-import appointmentscheduler.service.AuthenticationService;
+import appointmentscheduler.serializer.ObjectMapperFactory;
+import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.appointment.AppointmentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,24 +26,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/${rest.api.path}/appointments")
-public class AppointmentController extends IRestController<Appointment, AppointmentDTO> {
+public class AppointmentController extends AbstractController {
 
     private final AppointmentService appointmentService;
-
-    private final AuthenticationService authenticationService;
-
     private final UserRepository userRepository;
-
     private final EmployeeRepository employeeRepository;
-
     private final ServiceRepository serviceRepository;
-
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+    private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
-    public AppointmentController(AppointmentService appointmentService, AuthenticationService authenticationService, UserRepository userRepository, ServiceRepository serviceRepository, ModelMapper modelMapper, EmployeeRepository employeeRepository) {
+    public AppointmentController(AppointmentService appointmentService, UserRepository userRepository, ServiceRepository serviceRepository, ModelMapper modelMapper, EmployeeRepository employeeRepository, ObjectMapperFactory objectMapperFactory) {
         this.appointmentService = appointmentService;
-        this.authenticationService = authenticationService;
         this.userRepository = userRepository;
         this.serviceRepository = serviceRepository;
         this.modelMapper = modelMapper;
@@ -49,28 +48,24 @@ public class AppointmentController extends IRestController<Appointment, Appointm
                 skip().setId(0);
             }
         });
+        this.objectMapperFactory = objectMapperFactory;
     }
 
     @GetMapping
-    @Override
     public List<Appointment> findAll() {
         return appointmentService.findAll();
     }
 
     @GetMapping("/{id}")
-    @Override
     public Appointment findById(@PathVariable long id) {
         return appointmentService.findById(id);
     }
 
-    @PostMapping
-    @Override
-    public Appointment add(@RequestBody AppointmentDTO appointmentDTO) {
-        long clientId = authenticationService.getCurrentUserId();
-
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> add(@RequestBody AppointmentDTO appointmentDTO) {
         Appointment appointment = modelMapper.map(appointmentDTO, Appointment.class);
 
-        User client = userRepository.findById(clientId).orElseThrow(ResourceNotFoundException::new);
+        User client = userRepository.findById(getUserId()).orElseThrow(ResourceNotFoundException::new);
         appointment.setClient(client);
 
         Employee employee = employeeRepository.findById(appointmentDTO.getEmployeeId()).orElseThrow(ResourceNotFoundException::new);
@@ -79,18 +74,23 @@ public class AppointmentController extends IRestController<Appointment, Appointm
         Service service = serviceRepository.findById(appointmentDTO.getServiceId()).orElseThrow(ResourceNotFoundException::new);
         appointment.setService(service);
 
-        return appointmentService.add(appointment);
+        ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+
+        try {
+            return ResponseEntity.ok(objectMapper.writeValueAsString(appointmentService.add(appointment)));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/{id}")
-    @Override
     public Appointment update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) {
         // todo not implemented
         return null;
     }
 
     @DeleteMapping("/{id}")
-    @Override
     public ResponseEntity delete(@PathVariable long id) {
         return appointmentService.cancel(id);
     }
