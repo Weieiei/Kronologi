@@ -87,5 +87,4 @@ public class PhoneNumber extends AuditableEntity {
     public String getRawPhoneNumber() {
         return countryCode + areaCode + number;
     }
-
 }

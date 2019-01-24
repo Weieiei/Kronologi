@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from '../../services/service/service.service';
-import { UserRegisterDTO } from '../../interfaces/user-register-dto';
+import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
 import { UserService } from '../../services/user/user.service';
-import { FormControl } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 
 @Component({
@@ -18,12 +17,11 @@ export class RegisterComponent implements OnInit {
     email: string;
     password: string;
 
-    countryCode: string;
+    countries: Object[] = countryData.allCountries;
+    selectedCountry: Object;
+
     areaCode: string;
     number: string;
-
-    countryControl = new FormControl();
-    countries: Object[] = countryData.allCountries;
 
     confirmPassword: string;
     isPasswordVisible = false;
@@ -54,7 +52,7 @@ export class RegisterComponent implements OnInit {
 
             if (this.registerPhone) {
                 payload.phoneNumber = {
-                    countryCode: this.countryCode,
+                    countryCode: this.selectedCountry['dialCode'],
                     areaCode: this.areaCode,
                     number: this.number
                 };
@@ -83,8 +81,8 @@ export class RegisterComponent implements OnInit {
         this.isPasswordVisible = !this.isPasswordVisible;
     }
 
-    selectCountry(countryCode: string) {
-        this.countryCode = '+' + countryCode;
+    selectCountry(country: Object) {
+        this.selectedCountry = country;
     }
 
 }

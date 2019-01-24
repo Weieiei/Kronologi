@@ -28,6 +28,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String header = httpServletRequest.getHeader("Authorization");
         String token = null;
         String userId = null;
+        String firstName = null;
+        String lastName = null;
+        String email = null;
 
         if (header != null && header.startsWith("Bearer ")) {
 
@@ -36,6 +39,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (!token.equals("null")) {
                 try {
                     userId = jwtProvider.getUserIdFromToken(token);
+                    firstName = jwtProvider.getFirstNameFromToken(token);
+                    lastName = jwtProvider.getLastNameFromToken(token);
+                    email = jwtProvider.getEmailFromToken(token);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -55,7 +61,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
 
-            httpServletRequest.setAttribute("userId", Long.parseLong(userId));
+            httpServletRequest.setAttribute("userId", userId);
+            httpServletRequest.setAttribute("firstName", firstName);
+            httpServletRequest.setAttribute("lastName", lastName);
+            httpServletRequest.setAttribute("email", email);
 
         }
 

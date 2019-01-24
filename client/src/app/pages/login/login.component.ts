@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
-import { UserLoginDTO } from '../../interfaces/user-login-dto';
+import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 
 @Component({
     selector: 'app-login',

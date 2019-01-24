@@ -4,11 +4,11 @@ import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PhoneNumberRepository extends JpaRepository<PhoneNumber, Long> {
 
-    List<PhoneNumber> findByUserId(long userId);
+    Optional<PhoneNumber> findByUserId(long userId);
 
 }

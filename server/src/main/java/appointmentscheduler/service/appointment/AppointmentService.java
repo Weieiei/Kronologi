@@ -33,7 +33,7 @@ public class AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
     }
 
-    public List<Appointment> findByClientId(long id) {
+    public List<Appointment> findByClientId(long id){
         return appointmentRepository.findByClientId(id);
     }
 

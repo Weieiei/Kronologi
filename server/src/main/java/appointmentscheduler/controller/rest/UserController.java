@@ -1,13 +1,17 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+import appointmentscheduler.dto.settings.UpdateSettingsDTO;
+import appointmentscheduler.dto.user.UpdateEmailDTO;
+import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
-import appointmentscheduler.service.email.EmailService;
-import appointmentscheduler.service.AuthenticationService;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
+import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.service.appointment.AppointmentService;
+import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +25,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/${rest.api.path}/user")
-public class UserController {
+public class UserController extends AbstractController {
 
     private final UserService userService;
     private final EmailService emailService;
-
-    private final AuthenticationService authenticationService;
-
     private final AppointmentService appointmentService;
 
     @Autowired
-    public UserController(UserService userService, AuthenticationService authenticationService, AppointmentService appointmentService, EmailService emailService) {
+    public UserController(UserService userService, AppointmentService appointmentService, EmailService emailService) {
         this.userService = userService;
-        this.authenticationService = authenticationService;
         this.appointmentService = appointmentService;
         this.emailService = emailService;
     }
@@ -60,10 +60,45 @@ public class UserController {
         }
     }
 
-    @GetMapping("/appointments")
-    public ResponseEntity<List<Appointment>> findAllAppointments() {
-        final List<Appointment> appointments = appointmentService.findByClientId(authenticationService.getCurrentUserId());
-
-        return ResponseEntity.ok(appointments);
+    @PostMapping("/email")
+    public ResponseEntity<Map<String, String>> updateEmail(@RequestBody UpdateEmailDTO updateEmailDTO) {
+        return ResponseEntity.ok(userService.updateEmail(getUserId(), getUserEmail(), updateEmailDTO));
     }
+
+    @PostMapping("/password")
+    public ResponseEntity<Map<String, String>> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO) {
+        return ResponseEntity.ok(userService.updatePassword(getUserId(), updatePasswordDTO));
+    }
+
+    @GetMapping("/settings")
+    public Settings getSettings(@RequestAttribute long userId) {
+        return userService.getSettings(userId);
+    }
+
+    @PostMapping("/settings")
+    public ResponseEntity<Map<String, String>> updateSettings(@RequestBody UpdateSettingsDTO updateSettingsDTO) {
+        return ResponseEntity.ok(userService.updateSettings(getUserId(), updateSettingsDTO));
+    }
+
+    @GetMapping("/phone")
+    public PhoneNumber getPhoneNumber(@RequestAttribute long userId) {
+        return userService.getPhoneNumber(userId);
+    }
+
+    @PostMapping("/phone")
+    public ResponseEntity<Map<String, String>> saveOrUpdatePhoneNumber(@RequestBody PhoneNumberDTO phoneNumberDTO) {
+        return ResponseEntity.ok(userService.saveOrUpdatePhoneNumber(getUserId(), phoneNumberDTO));
+    }
+
+    @DeleteMapping("/phone")
+    public ResponseEntity<Map<String, String>> deletePhoneNumber() {
+        return ResponseEntity.ok(userService.deletePhoneNumber(getUserId()));
+    }
+
+    @GetMapping("/appointments")
+    public List<Appointment> findByCurrentUser() {
+        return appointmentService.findByClientId(getUserId());
+    }
+
+
 }

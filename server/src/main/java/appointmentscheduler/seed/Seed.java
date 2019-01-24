@@ -87,13 +87,11 @@ public class Seed {
         User client3 = UserFactory.createUser(User.class, "Test2", "User", "test2@test.com", hash("test123"));
         client3.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
+        admin.setPhoneNumber(new PhoneNumber("1", "514", "5551234", admin));
+        client1.setPhoneNumber(new PhoneNumber("1", "514", "5552345", client1));
+        client2.setPhoneNumber(new PhoneNumber("1", "514", "5553456", client2));
+
         userRepository.saveAll(Arrays.asList(admin, client1, client2, client3));
-
-        PhoneNumber adminPhoneNumber = new PhoneNumber("+1", "514", "5551234", admin);
-        PhoneNumber client1PhoneNumber = new PhoneNumber("+1", "514", "5552345", client1);
-        PhoneNumber client2PhoneNumber = new PhoneNumber("+1", "514", "5553456", client2);
-
-        phoneRepository.saveAll(Arrays.asList(adminPhoneNumber, client1PhoneNumber, client2PhoneNumber));
 
     }
 
@@ -150,6 +148,7 @@ public class Seed {
         employee.setServices(set);
         employee.setShifts(shifts);
         employee.setRoles(Sets.newHashSet(employeeRole));
+        employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
         Employee employee2 = (Employee) UserFactory.createUser(Employee.class, "Employee2", "User", "employee2@employee.com", hash("employee123"));
         employee2.setServices(set);
@@ -167,9 +166,6 @@ public class Seed {
         employee4.setRoles(Sets.newHashSet(employeeRole));
 
         userRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
-
-        PhoneNumber employeePhoneNumber = new PhoneNumber("+1", "514", "5554567", employee);
-        phoneRepository.save(employeePhoneNumber);
     }
 
     public void seedAppointments() {

@@ -3,11 +3,10 @@ package appointmentscheduler.entity.user;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
-import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -47,6 +46,13 @@ public class User extends AuditableEntity {
             mappedBy = "user"
     )
     private PhoneNumber phoneNumber;
+
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
+    private Settings settings;
 
     @Override
     public boolean equals(Object obj) {
@@ -109,4 +115,16 @@ public class User extends AuditableEntity {
         this.phoneNumber = phoneNumber;
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    @PrePersist
+    public void setDefaultSettings() {
+        this.setSettings(new Settings(false, false, this));
+    }
 }
