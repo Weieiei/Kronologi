@@ -23,7 +23,8 @@
         }
     }
 
-    .passwords-container {
+    .passwords-container,
+    .phone-container {
         margin-top: 12px;
 
         .no-mat-padding {
@@ -34,4 +35,18 @@
             }
         }
     }
+}
+
+img.flag {
+    vertical-align: middle;
+    margin-bottom: 4px;
+}
+
+.country-code,
+.country-code-small {
+    color: #999;
+}
+
+.country-code-small {
+    font-size: 0.75rem;
 }

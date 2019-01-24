@@ -1,6 +1,7 @@
 package appointmentscheduler.seed;
 
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +75,10 @@ public class Seed {
         Verification verifyUser1 = new Verification(client1);
         Verification verifyUser2 = new Verification(client2);
 
+        admin.setPhoneNumber(new PhoneNumber("1", "514", "5551234", admin));
+        client1.setPhoneNumber(new PhoneNumber("1", "514", "5552345", client1));
+        client2.setPhoneNumber(new PhoneNumber("1", "514", "5553456", client2));
+
         userRepository.saveAll(Arrays.asList(admin, client1, client2));
         verificationRepository.saveAll(Arrays.asList(verifyUser1, verifyUser2));
 
@@ -106,8 +110,8 @@ public class Seed {
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
 
         User employee = new User("Employee", "User", "employee@employee.com", hash("employee123"));
-
         employee.setRoles(Stream.of(employeeRole).collect(Collectors.toSet()));
+        employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
         employee.setEmployeeServices(Arrays.asList(
                 services.get(0), services.get(1), services.get(3),

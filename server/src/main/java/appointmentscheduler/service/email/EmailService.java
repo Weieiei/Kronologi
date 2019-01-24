@@ -1,5 +1,6 @@
 package appointmentscheduler.service.email;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +9,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Properties;
@@ -20,8 +20,9 @@ public class EmailService {
 
     private String email = "schedulerTester123@outlook.com";
     private String password = "testing123";
-    private String logoPath = "server/src/assets/images/asapp_logo.png";
+
     private String registerSubject = "ASApp Registration Confirmation";
+    private String logoPath = "images/asapp_logo.png";
 
     public EmailService() {
         props = new Properties();
@@ -62,7 +63,7 @@ public class EmailService {
                 StandardCharsets.UTF_8.name()
         );
 
-        helper.addAttachment("asapp_logo.png", new File(logoPath));
+        helper.addAttachment("asapp_logo.png", new ClassPathResource(logoPath));
         String inlineImage = "<img src=\"cid:asapp_logo.png\" width=\"10%\" height=\"10%\"></img><br/>";
         helper.setText(bodyContent + "<p><br /><br />All the best, <br /> ASApp Team <br /></p>" + inlineImage, true);
     }

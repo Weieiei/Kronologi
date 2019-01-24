@@ -21,7 +21,7 @@ public class UserRegisterDTOToUser implements Converter<UserRegisterDTO, User> {
     @Override
     public User convert(UserRegisterDTO userRegisterDTO) {
 
-        userRepository.findByEmail(userRegisterDTO.getEmail())
+        userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail())
                 .ifPresent(u -> {
                     throw new UserAlreadyExistsException(String.format("An account under %s already exists.", u.getEmail()));
                 });

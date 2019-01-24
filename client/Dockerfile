@@ -13,4 +13,4 @@ FROM nginx:latest
 
 WORKDIR /home
 COPY nginx.default.conf /etc/nginx/conf.d/default.conf
-COPY --from=node /home/node/dist/AppointmentScheduler/* /home/
+COPY --from=node /home/node/dist/AppointmentScheduler/ /home/

@@ -1,8 +1,10 @@
 package appointmentscheduler.entity.user;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -31,28 +33,42 @@ public class User extends AuditableEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "verified")
-    private boolean verified;
-
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_role",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Set<Role> roles;
 
     @JoinTable(
             name = "employee_services",
-            joinColumns = { @JoinColumn(name = "employee_id") },
-            inverseJoinColumns = { @JoinColumn(name = "service_id") }
+            joinColumns = {@JoinColumn(name = "employee_id")},
+            inverseJoinColumns = {@JoinColumn(name = "service_id")}
     )
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Service> employeeServices;
 
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
+    private PhoneNumber phoneNumber;
+
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
+    private Settings settings;
+
+    @Column(name = "verified")
+    private boolean verified;
 
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
-    public User() { }
+    public User() {
+    }
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
@@ -122,6 +138,22 @@ public class User extends AuditableEntity {
         this.employeeServices = employeeServices;
     }
 
+    public PhoneNumber getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
     public boolean isVerified() {
         return verified;
     }
@@ -131,7 +163,8 @@ public class User extends AuditableEntity {
     }
 
     @PrePersist
-    public void beforeInsert(){
+    public void beforeInsert() {
         this.verified = false;
+        this.setSettings(new Settings(false, false, this));
     }
 }

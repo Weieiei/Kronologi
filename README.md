@@ -6,6 +6,17 @@ SOEN 490 (Capstone) project for Concordia University.
 
 # Running the stack
 
+First, clone the repository and run the following:
+
+```
+(
+    cd server/src/main/resources
+    cp secret.example.properties secret.properties
+)
+```
+
+Then assign appropriate values to the variables defined in the `secret.properties` file.
+
 ## Docker
 
 1. Make sure you have [docker](https://docs.docker.com/install/#supported-platforms) installed.

@@ -1,0 +1,174 @@
+<div class="account-settings-container" fxLayout="column" fxLayoutGap="60px">
+
+    <div fxLayout="column" fxLayoutGap="20px">
+
+        <div fxLayout="column" fxLayoutGap="8px">
+            <h5>Change Your Email</h5>
+            <mat-divider></mat-divider>
+        </div>
+
+        <div class="change-email-container" fxLayout="column" fxLayoutGap="10px">
+
+            <div fxLayout="row">
+                <mat-hint fxFlex="60" fxFlex.lt-md>After changing your email, you will be logged out and prompted to log back in.</mat-hint>
+            </div>
+
+            <form (submit)="updateEmail()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
+
+                <div fxLayout="row">
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
+                        <mat-label>Password</mat-label>
+                        <input matInput [(ngModel)]="password" type="password" name="password" required>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row">
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
+                        <mat-label>New Email</mat-label>
+                        <input matInput [(ngModel)]="newEmail" type="email" name="newemail" required>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" class="submit-button-container">
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md>Save</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div fxLayout="column" fxLayoutGap="20px">
+
+        <div fxLayout="column" fxLayoutGap="8px">
+            <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start end">
+                <h5>Change Your Password</h5>
+                <button mat-icon-button type="button" class="icon-button" (click)="togglePasswordVisibility()">
+                    <mat-icon>{{ isPasswordVisible ? 'visibility_on' : 'visibility_off'}}</mat-icon>
+                </button>
+            </div>
+            <mat-divider></mat-divider>
+        </div>
+
+        <div class="change-password-container" fxLayout="column" fxLayoutGap="10px">
+
+            <div fxLayout="row">
+                <mat-hint fxFlex="60" fxFlex.lt-md>After changing your password, you will be logged out and prompted to log back in.</mat-hint>
+            </div>
+
+            <div fxLayout="row">
+                <mat-hint fxFlex="60" fxFlex.lt-md>Make sure your new password is at least 6 characters long.</mat-hint>
+            </div>
+
+            <div fxLayout="row">
+                <mat-hint fxFlex="60" fxFlex.lt-md>Make sure your new password contains at least 1 letter and 1 number.</mat-hint>
+            </div>
+
+            <form (submit)="updatePassword()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
+
+                <div fxLayout="row">
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
+                        <mat-label>Old Password</mat-label>
+                        <input matInput [(ngModel)]="oldPassword" [type]="isPasswordVisible ? 'text' : 'password'" name="oldpassword" required>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row">
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
+                        <mat-label>New Password</mat-label>
+                        <input matInput [(ngModel)]="newPassword" [type]="isPasswordVisible ? 'text' : 'password'" name="newpassword" required>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row">
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
+                        <mat-label>Confirm</mat-label>
+                        <input matInput [(ngModel)]="confirmPassword" [type]="isPasswordVisible ? 'text' : 'password'" name="confirmpassword" required>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" class="submit-button-container">
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md>Save</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div fxLayout="column" fxLayoutGap="20px">
+
+        <div fxLayout="column" fxLayoutGap="8px">
+            <h5>Manage Your Phone Number</h5>
+            <mat-divider></mat-divider>
+        </div>
+
+        <div class="change-phone-container" fxLayout="column" fxLayoutGap="30px">
+
+            <div *ngIf="hasPhoneNumber" fxLayout="column" fxLayoutGap="10px">
+                <div fxLayout="row">
+                    <mat-hint fxFlex="60" fxFlex.lt-md>
+                        Your phone number is currently saved as +{{ countryCode }} ({{ areaCode }}) {{ number | slice:0:3 }}-{{ number | slice:3:7 }}.
+                    </mat-hint>
+                </div>
+
+                <div fxLayout="row" class="submit-button-container" fxLayoutGap="10px">
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md (click)="deletePhoneNumber()">Delete</button>
+                    <button mat-raised-button color="primary" type="button" fxFlex="10" fxFlex.lt-md (click)="showPhoneNumberForm()">Change</button>
+                </div>
+            </div>
+
+            <div *ngIf="showForm" fxLayout="column" fxLayoutGap="10px">
+                <div fxLayout="row">
+                    <mat-hint *ngIf="hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
+                        If you'd like to change your phone number, please fill out the form below.
+                    </mat-hint>
+                    <mat-hint *ngIf="!hasPhoneNumber" fxFlex="60" fxFlex.lt-md>
+                        If you'd like to add your phone number, please fill out the form below.
+                    </mat-hint>
+                </div>
+
+                <form (submit)="updatePhoneNumber()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
+
+                    <div fxLayout="row">
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="60" fxFlex.lt-md>
+                            <mat-label>Country</mat-label>
+                            <mat-select [required]="true" (selectionChange)="selectCountry($event.value)">
+                                <mat-select-trigger *ngIf="selectedCountry">
+                                    {{ selectedCountry.name }} <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>
+                                </mat-select-trigger>
+                                <mat-option *ngFor="let country of countries" [value]="country">
+                                    <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;
+                                    <span> {{ country.name }} | <span class="country-code">+{{ country.dialCode }}</span></span>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="1%">
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="20">
+                            <mat-label>Area Code</mat-label>
+                            <input matInput [(ngModel)]="newAreaCode" name="areaCode" pattern="\d{3}" minlength="3" maxlength="3" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="39">
+                            <mat-label>Phone Number</mat-label>
+                            <input matInput [(ngModel)]="newNumber" name="number" pattern="\d{7}" minlength="7" maxlength="7" required>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" class="submit-button-container" fxLayoutGap="10px">
+                        <button *ngIf="hasPhoneNumber" mat-raised-button color="primary" type="button" fxFlex="10" fxFlex.lt-md (click)="hidePhoneNumberForm()">Cancel</button>
+                        <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md>Save</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

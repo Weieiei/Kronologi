@@ -1,5 +1,7 @@
 package appointmentscheduler.dto.user;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+
 public class UserRegisterDTO {
 
     private String firstName;
@@ -7,6 +9,7 @@ public class UserRegisterDTO {
     private String email;
     private String password;
     private boolean verified;
+    private PhoneNumberDTO phoneNumber;
 
     public String getFirstName() {
         return firstName;
@@ -40,7 +43,20 @@ public class UserRegisterDTO {
         this.password = password;
     }
 
-    public boolean isVerified() { return verified; }
+    public boolean isVerified() {
+        return verified;
+    }
 
-    public void setVerified(boolean verified) { this.verified = verified; }
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+    
+    public PhoneNumberDTO getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(PhoneNumberDTO phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
 }

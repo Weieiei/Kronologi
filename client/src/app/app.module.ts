@@ -9,7 +9,7 @@ import { MaterialModule } from './material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { HomeComponent } from './pages/dashboard/home/home.component';
@@ -33,6 +33,10 @@ import { ButtonIconDirective } from './directives/button-icon/button-icon.direct
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
 import { VerifiedComponent } from './pages/verified/verified.component';
+import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
+import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 
 @NgModule({
     declarations: [
@@ -56,7 +60,11 @@ import { VerifiedComponent } from './pages/verified/verified.component';
         ButtonIconDirective,
         AppointmentsSectionComponent,
         CardSizeDirective,
-        VerifiedComponent
+        VerifiedComponent,
+        AutofocusDirective,
+        SettingsComponent,
+        AccountSettingsComponent,
+        ReminderSettingsComponent
     ],
     imports: [
         BrowserModule,
@@ -65,7 +73,8 @@ import { VerifiedComponent } from './pages/verified/verified.component';
         BrowserAnimationsModule,
         MaterialModule,
         FlexLayoutModule,
-        HttpClientModule
+        HttpClientModule,
+        ReactiveFormsModule
     ],
     entryComponents: [
         TimePickerDialogComponent
