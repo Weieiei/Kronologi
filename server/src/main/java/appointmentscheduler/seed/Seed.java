@@ -63,7 +63,7 @@ public class Seed {
         Role adminRole = new Role(RoleEnum.ADMIN);
         Role clientRole = new Role(RoleEnum.CLIENT);
 
-        User admin = new User("Admin", "User", "admin@admin.com", hash("admin123"));
+        User admin = new User("Admin", "User", "admin@admin.com", hash("admin123"), true);
         admin.setRoles(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
 
         User client1 = new User("John", "Doe", "johndoe@johndoe.com", hash("johndoe123"));
@@ -109,7 +109,7 @@ public class Seed {
 
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
 
-        User employee = new User("Employee", "User", "employee@employee.com", hash("employee123"));
+        User employee = new User("Employee", "User", "employee@employee.com", hash("employee123"), true);
         employee.setRoles(Stream.of(employeeRole).collect(Collectors.toSet()));
         employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 

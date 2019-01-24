@@ -44,7 +44,7 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping("/verification")
-    public ResponseEntity getAttr(@RequestParam(name = "hash") String hash) {
+    public ResponseEntity verify(@RequestParam(name = "hash") String hash) {
         try {
             verificationService.verify(hash);
             return ResponseEntity.ok().build();
@@ -57,8 +57,8 @@ public class UserController extends AbstractController {
     public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
         try {
             Map<String, Object> userTokenMap = userService.register(userRegisterDTO);
-            Verification verif = (Verification) userTokenMap.get("verification");
-            emailService.sendRegistrationEmail(userRegisterDTO.getEmail(),verif.getHash(), true);
+            Verification verification = (Verification) userTokenMap.get("verification");
+            emailService.sendRegistrationEmail(userRegisterDTO.getEmail(),verification.getHash(), true);
             return ResponseEntity.ok(userTokenMap);
         } catch (BadCredentialsException e) {
             e.printStackTrace();

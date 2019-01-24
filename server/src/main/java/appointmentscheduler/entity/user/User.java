@@ -70,6 +70,13 @@ public class User extends AuditableEntity {
     public User() {
     }
 
+    public User(String firstName, String lastName, String email, String password, Boolean verified) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.verified = verified;
+    }
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

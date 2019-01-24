@@ -22,16 +22,15 @@ public class VerificationService {
 
     public boolean verify(String hash)
     {
-       Verification verif =  verificationRepository.findByHash(hash);
-       if (verif == null) {
+       Verification verification =  verificationRepository.findByHash(hash);
+       if (verification == null) {
            throw new ResourceNotFoundException("Hash not found.");
        }
-       System.out.println("Hash: " + hash);
-       Optional<User> userList = userRepository.findById(verif.getUser().getId());
+       Optional<User> userList = userRepository.findById(verification.getUser().getId());
        User currentUser = userList.get();
-       System.out.println("Email: " + currentUser.getEmail());
        currentUser.setVerified(true);
        userRepository.save(currentUser);
+       verificationRepository.delete(verification);
        return true;
     }
 }
