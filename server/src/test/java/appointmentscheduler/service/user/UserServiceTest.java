@@ -18,6 +18,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -51,7 +53,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserAlreadyExistsException.class)
-    public void registerFailed() {
+    public void registerFailed() throws IOException, MessagingException {
         // create mocks
         final User mockedUser = mock(User.class);
         final UserRegisterDTO userRegisterDTO = mock(UserRegisterDTO.class);

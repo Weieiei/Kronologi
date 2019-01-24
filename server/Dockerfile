@@ -5,7 +5,8 @@ WORKDIR /home/appointmentscheduler/
 COPY . .
 COPY src/main/resources/application.docker.properties src/main/resources/application.properties
 
-RUN mvn package --quiet
+# Skipping tests because it throws an ApplicationContext error, caused by a lack of a connection to the database
+RUN mvn package --quiet -DskipTests
 
 WORKDIR /home/appointmentscheduler/target/
 
