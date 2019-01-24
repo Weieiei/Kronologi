@@ -6,8 +6,10 @@ import appointmentscheduler.dto.user.UpdateEmailDTO;
 import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,11 +29,13 @@ public class UserController extends AbstractController {
 
     private final UserService userService;
     private final EmailService emailService;
+    private final AppointmentService appointmentService;
 
     @Autowired
-    public UserController(UserService userService, EmailService emailService) {
+    public UserController(UserService userService, EmailService emailService, AppointmentService appointmentService) {
         this.userService = userService;
         this.emailService = emailService;
+        this.appointmentService = appointmentService;
     }
 
     @PostMapping("/register")
@@ -89,4 +94,11 @@ public class UserController extends AbstractController {
     public ResponseEntity<Map<String, String>> deletePhoneNumber() {
         return ResponseEntity.ok(userService.deletePhoneNumber(getUserId()));
     }
+
+    @GetMapping("/appointments")
+    public List<Appointment> findByCurrentUser() {
+        return appointmentService.findByClientId(getUserId());
+    }
+
+
 }

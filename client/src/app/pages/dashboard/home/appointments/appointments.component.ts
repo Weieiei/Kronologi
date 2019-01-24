@@ -8,8 +8,8 @@ import { AppointmentService } from '../../../../services/appointment/appointment
 })
 export class AppointmentsComponent implements OnInit {
 
-    upcomingAppointments = [];
-    historyAppointments = [];
+    upcomingAppointments;
+    pastAppointments;
 
     upcomingMessageMapping: { [k: string]: string } = {
         '=0': 'No Upcoming Appointments',
@@ -24,7 +24,9 @@ export class AppointmentsComponent implements OnInit {
     };
 
     constructor(private appointmentService: AppointmentService) {
-    }
+        this.upcomingAppointments = [];
+        this.pastAppointments = [];
+      }
 
     ngOnInit() {
         this.getMyAppointments();
@@ -41,7 +43,7 @@ export class AppointmentsComponent implements OnInit {
                     if (now <= appointmentStart) {
                         this.upcomingAppointments.push(appointment);
                     } else {
-                        this.historyAppointments.push(appointment);
+                        this.pastAppointments.push(appointment);
                     }
                 }
             },
