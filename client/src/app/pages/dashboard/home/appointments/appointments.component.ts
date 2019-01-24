@@ -11,7 +11,6 @@ export class AppointmentsComponent implements OnInit {
 
     upcomingAppointments;
     pastAppointments;
-    random = 0;
 
     upcomingMessageMapping: { [k: string]: string } = {
         '=0': 'No Upcoming Appointments',

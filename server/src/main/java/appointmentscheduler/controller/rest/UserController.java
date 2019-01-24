@@ -50,7 +50,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/current/appointments")
+    @GetMapping("/appointments")
     public List<Appointment> findByCurrentUser() {
         return appointmentService.findByClientId(authenticationService.getCurrentUserId());
     }

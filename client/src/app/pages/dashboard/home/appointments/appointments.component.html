@@ -3,6 +3,11 @@
     <app-appointments-section
         [appointments]="upcomingAppointments"
                               [title]="upcomingAppointments.length | i18nPlural: upcomingMessageMapping"></app-appointments-section>
-    <app-appointments-section [historyAppointments]="pastAppointments"
+
+    <div fxLayout="row" fxLayoutAlign="center">
+        <mat-divider fxFlex="60"></mat-divider>
+    </div>
+
+    <app-appointments-section [appointments]="pastAppointments"
                               [title]="pastAppointments.length | i18nPlural: historyMessageMapping"></app-appointments-section>
 </div>
