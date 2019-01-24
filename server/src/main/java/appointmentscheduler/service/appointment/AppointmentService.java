@@ -24,6 +24,10 @@ public class AppointmentService {
         return appointmentRepository.findByClientId(clientId);
     }
 
+    public List<Appointment> findByEmployeeId(long employeeId) {
+        return appointmentRepository.findByEmployeeId(employeeId);
+    }
+
     public Appointment findById(long id) {
         return appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));

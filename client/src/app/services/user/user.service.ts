@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { UserLoginDTO } from '../../interfaces/user-login-dto';
 import { HttpClient } from '@angular/common/http';
 import { UserRegisterDTO } from '../../interfaces/user-register-dto';
+import * as decode from 'jwt-decode';
 
 @Injectable({
     providedIn: 'root'
@@ -54,5 +55,13 @@ export class UserService {
 
     deleteToken(): void {
         localStorage.removeItem(UserService.TOKEN_KEY);
+    }
+
+    isEmployee(): boolean {
+        if (decode(this.getToken())['roles'] === 'employee') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

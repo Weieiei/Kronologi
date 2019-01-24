@@ -33,11 +33,15 @@ public class AppointmentController extends IRestController<Appointment, Appointm
         return appointmentService.findById(id);
     }
 
-    //TODO  change it sections
     @GetMapping("/current_user")
-    public List<Appointment> findByCurrentUser() {return appointmentService.findByClientId(getUserId());
+    public List<Appointment> findByCurrentUser() {
+            return appointmentService.findByClientId(getUserId());
     }
 
+    @GetMapping("/current_employee")
+    public List<Appointment> findByCurrentEmployee() {
+          return appointmentService.findByEmployeeId(getUserId());
+    }
     @PostMapping
     @Override
     public Appointment add(@RequestBody AppointmentDTO appointmentDTO) {
