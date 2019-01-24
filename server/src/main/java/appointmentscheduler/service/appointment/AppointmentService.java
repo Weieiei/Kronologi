@@ -19,7 +19,7 @@ public class AppointmentService {
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
     }
-
+ 
     public List<Appointment> findByClientId(long clientId) {
         return appointmentRepository.findByClientId(clientId);
     }

@@ -1,0 +1,43 @@
+.account-settings-container {
+
+    .change-password-container,
+    .change-email-container,
+    .change-phone-container {
+        ::ng-deep {
+            .mat-form-field-wrapper {
+                padding-bottom: 0;
+            }
+        }
+    }
+
+    .icon-button {
+        top: 5px;
+    }
+
+    .submit-button-container {
+
+        margin-top: 10px;
+
+        button {
+            font-weight: bold;
+        }
+    }
+
+    .phone-message {
+        margin-bottom: 10rem;
+    }
+}
+
+img.flag {
+    vertical-align: middle;
+    margin-bottom: 4px;
+}
+
+.country-code,
+.country-code-small {
+    color: #999;
+}
+
+.country-code-small {
+    font-size: 0.75rem;
+}

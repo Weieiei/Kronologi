@@ -1,11 +1,14 @@
 package appointmentscheduler.dto.user;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+
 public class UserRegisterDTO {
 
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    private PhoneNumberDTO phoneNumber;
 
     public String getFirstName() {
         return firstName;
@@ -37,6 +40,14 @@ public class UserRegisterDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public PhoneNumberDTO getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(PhoneNumberDTO phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
 }

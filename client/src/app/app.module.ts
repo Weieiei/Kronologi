@@ -9,7 +9,7 @@ import { MaterialModule } from './material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { HomeComponent } from './pages/dashboard/home/home.component';
@@ -32,8 +32,13 @@ import { FabBottomRightDirective } from './directives/fab-bottom-right/fab-botto
 import { ButtonIconDirective } from './directives/button-icon/button-icon.directive';
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
-import { ReviewComponent } from './pages/review/review.component';
+
 import { EmployeeComponentComponent } from './pages/dashboard/home/employee-component/employee-component.component';
+
+import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
+import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 
 @NgModule({
     declarations: [
@@ -57,8 +62,12 @@ import { EmployeeComponentComponent } from './pages/dashboard/home/employee-comp
         ButtonIconDirective,
         AppointmentsSectionComponent,
         CardSizeDirective,
-        ReviewComponent,
-        EmployeeComponentComponent
+        EmployeeComponentComponent,
+        AutofocusDirective,
+        SettingsComponent,
+        AccountSettingsComponent,
+        ReminderSettingsComponent
+
     ],
     imports: [
         BrowserModule,
@@ -67,7 +76,8 @@ import { EmployeeComponentComponent } from './pages/dashboard/home/employee-comp
         BrowserAnimationsModule,
         MaterialModule,
         FlexLayoutModule,
-        HttpClientModule
+        HttpClientModule,
+        ReactiveFormsModule
     ],
     entryComponents: [
         TimePickerDialogComponent

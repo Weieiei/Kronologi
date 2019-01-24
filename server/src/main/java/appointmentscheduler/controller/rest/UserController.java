@@ -1,34 +1,44 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+import appointmentscheduler.dto.settings.UpdateSettingsDTO;
+import appointmentscheduler.dto.user.UpdateEmailDTO;
+import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
+import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/${rest.api.path}/user")
-public class UserController {
+public class UserController extends AbstractController {
 
     private final UserService userService;
+    private final EmailService emailService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) {
+    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
         try {
-            return ResponseEntity.ok(userService.register(userRegisterDTO));
+            Map<String, Object> userTokenMap = userService.register(userRegisterDTO);
+            emailService.sendEmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", "Welcome to ASApp.<br />", true);
+            return ResponseEntity.ok(userTokenMap);
         } catch (BadCredentialsException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -43,5 +53,40 @@ public class UserController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+    }
+
+    @PostMapping("/email")
+    public ResponseEntity<Map<String, String>> updateEmail(@RequestBody UpdateEmailDTO updateEmailDTO) {
+        return ResponseEntity.ok(userService.updateEmail(getUserId(), getUserEmail(), updateEmailDTO));
+    }
+
+    @PostMapping("/password")
+    public ResponseEntity<Map<String, String>> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO) {
+        return ResponseEntity.ok(userService.updatePassword(getUserId(), updatePasswordDTO));
+    }
+
+    @GetMapping("/settings")
+    public Settings getSettings(@RequestAttribute long userId) {
+        return userService.getSettings(userId);
+    }
+
+    @PostMapping("/settings")
+    public ResponseEntity<Map<String, String>> updateSettings(@RequestBody UpdateSettingsDTO updateSettingsDTO) {
+        return ResponseEntity.ok(userService.updateSettings(getUserId(), updateSettingsDTO));
+    }
+
+    @GetMapping("/phone")
+    public PhoneNumber getPhoneNumber(@RequestAttribute long userId) {
+        return userService.getPhoneNumber(userId);
+    }
+
+    @PostMapping("/phone")
+    public ResponseEntity<Map<String, String>> saveOrUpdatePhoneNumber(@RequestBody PhoneNumberDTO phoneNumberDTO) {
+        return ResponseEntity.ok(userService.saveOrUpdatePhoneNumber(getUserId(), phoneNumberDTO));
+    }
+
+    @DeleteMapping("/phone")
+    public ResponseEntity<Map<String, String>> deletePhoneNumber() {
+        return ResponseEntity.ok(userService.deletePhoneNumber(getUserId()));
     }
 }

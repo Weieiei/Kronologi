@@ -1,8 +1,10 @@
 package appointmentscheduler.entity.user;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -46,6 +48,20 @@ public class User extends AuditableEntity {
     )
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Service> employeeServices;
+
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
+    private PhoneNumber phoneNumber;
+
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
+    private Settings settings;
 
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
@@ -115,5 +131,26 @@ public class User extends AuditableEntity {
 
     public void setEmployeeServices(List<Service> employeeServices) {
         this.employeeServices = employeeServices;
+    }
+
+    public PhoneNumber getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    @PrePersist
+    public void setDefaultSettings() {
+        this.setSettings(new Settings(false, false, this));
     }
 }
