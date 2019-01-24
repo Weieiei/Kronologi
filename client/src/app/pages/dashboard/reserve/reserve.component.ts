@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment/appointment.service';
 import { ServiceService } from 'src/app/services/service/service.service';
-import * as moment from 'moment';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CustomStepperComponent } from '../../../components/custom-stepper/custom-stepper.component';
-import { Service } from '../../../models/service/Service';
-import { AppointmentToBook } from '../../../models/appointment/AppointmentToBook';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-reserve',
@@ -18,7 +16,7 @@ export class ReserveComponent implements OnInit {
 
     service: any;
 
-    appointment: AppointmentToBook;
+    appointment;
     date: Date;
     endTime: string;
 
@@ -29,11 +27,20 @@ export class ReserveComponent implements OnInit {
 
     constructor(
         private appointmentService: AppointmentService,
-        private router: Router
+        private serviceService: ServiceService,
+        private router: Router,
+        private route: ActivatedRoute
     ) {
     }
 
     ngOnInit() {
+        const appointmentToModify = this.route.paramMap.pipe(
+            map(() => window.history.state.appointment)
+        );
+
+        if (!appointmentToModify) {
+            this.appointment = appointmentToModify;
+        }
     }
 
     /*getServices() {

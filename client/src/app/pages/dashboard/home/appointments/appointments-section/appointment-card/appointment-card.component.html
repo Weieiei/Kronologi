@@ -6,7 +6,8 @@
         <mat-card-title>{{ appointment.service.name }}</mat-card-title>
         <mat-card-subtitle>Sylvia Pizzi Spa</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="https://interlude.com/wp-content/uploads/2016/03/spa-packages500-5.jpg" alt="Photo of a Shiba Inu" height="194" width="344">
+    <img mat-card-image src="https://interlude.com/wp-content/uploads/2016/03/spa-packages500-5.jpg"
+         alt="Photo of a Shiba Inu" height="194" width="344">
     <mat-card-content>
         <div>
             <b>Date:</b> {{ appointment.date | date: 'fullDate'}}
@@ -18,31 +19,27 @@
             <b>End Time:</b> {{ appointment.endTime }}
         </div>
     </mat-card-content>
-    <div *ngIf="now <= appointmentStart">
-        <mat-card-actions fxLayout="row" fxLayoutGap="16px">
-            <button fxFlex color="primary" mat-stroked-button>
+    <mat-card-actions *ngIf="now <= appointmentStart" fxLayout="row" fxLayoutGap="16px">
+        <button fxFlex color="primary" mat-stroked-button>
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
                 <mat-icon appButtonIcon>cancel</mat-icon>
                 <span>CANCEL</span>
             </span>
-            </button>
+        </button>
 
-            <button fxFlex color="primary" mat-flat-button>
+        <button fxFlex color="primary" mat-flat-button (click)="modifyAppointment()">
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
                 <mat-icon appButtonIcon>edit</mat-icon>
                 <span>MODIFY</span>
             </span>
-            </button>
-        </mat-card-actions>
-    </div>
-    <div *ngIf="now > appointmentStart">
-        <mat-card-actions fxLayout="row" fxLayoutGap="16px">
-            <button fxFlex color="primary" mat-stroked-button>
+        </button>
+    </mat-card-actions>
+    <mat-card-actions *ngIf="now > appointmentStart" fxLayout="row" fxLayoutGap="16px">
+        <button fxFlex color="primary" mat-stroked-button>
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
                 <mat-icon appButtonIcon>edit</mat-icon>
                 <span>REVIEW</span>
             </span>
-            </button>
-        </mat-card-actions>
-    </div>
+        </button>
+    </mat-card-actions>
 </mat-card>

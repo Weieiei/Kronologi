@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-appointment-card',
@@ -7,11 +8,11 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AppointmentCardComponent implements OnInit {
 
-    @Input()
-    appointment: any;
+    @Input() appointment;
     appointmentStart: Date;
     now: Date;
-    constructor() {
+
+    constructor(private router: Router) {
     }
 
     ngOnInit() {
@@ -19,4 +20,7 @@ export class AppointmentCardComponent implements OnInit {
         this.appointmentStart = new Date(this.appointment.date + ' ' + this.appointment.startTime);
     }
 
+    modifyAppointment() {
+        this.router.navigate(['reserve'], { state: { appointment: this.appointment }});
+    }
 }
