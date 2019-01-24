@@ -11,10 +11,7 @@ import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.user.UserFactory;
-import appointmentscheduler.exception.IncorrectPasswordException;
-import appointmentscheduler.exception.InvalidUpdateException;
-import appointmentscheduler.exception.ResourceNotFoundException;
-import appointmentscheduler.exception.UserAlreadyExistsException;
+import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.PhoneNumberRepository;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.SettingsRepository;
@@ -29,8 +26,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -126,6 +121,10 @@ public class UserService {
             throw new IncorrectPasswordException("Incorrect password.");
         }
 
+        if (updateEmailDTO.getNewEmail() == null) {
+            throw new InvalidUpdateException("You must provide a new email.");
+        }
+
         if (user.getEmail().equalsIgnoreCase(updateEmailDTO.getNewEmail())) {
             throw new InvalidUpdateException(String.format("Your email is already %s.", user.getEmail()));
         }
@@ -146,8 +145,12 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d not found.", id)));
 
-        if (!bCryptPasswordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
+        if (updatePasswordDTO.getOldPassword() == null || !bCryptPasswordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
             throw new IncorrectPasswordException("The old password you provided is incorrect.");
+        }
+
+        if (updatePasswordDTO.getNewPassword() == null) {
+            throw new PasswordNotProvidedExcetion("You must provide a new password.");
         }
 
         user.setPassword(bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword()));
