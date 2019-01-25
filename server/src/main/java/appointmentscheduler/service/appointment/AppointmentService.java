@@ -152,5 +152,16 @@ public class AppointmentService {
         if (roomSet.isEmpty()) {
             throw new NoRoomAvailableException("There are no rooms available");
         }
+
+    }
+
+    public Appointment findMyAppointmentById(long userId, long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
+
+        if (appointment == null || appointment.getClient().getId() != userId) {
+            throw new NotYourAppointmentException("This appointment either belongs to another user or doesn't exist.");
+        }
+
+        return appointment;
     }
 }

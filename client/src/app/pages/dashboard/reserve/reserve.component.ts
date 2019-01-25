@@ -4,6 +4,8 @@ import { ServiceService } from 'src/app/services/service/service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomStepperComponent } from '../../../components/custom-stepper/custom-stepper.component';
 import { map } from 'rxjs/operators';
+import { SnackBar } from '../../../snackbar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-reserve',
@@ -25,25 +27,51 @@ export class ReserveComponent implements OnInit {
     startTime: Date;
     notes: string;
 
-    loaded: boolean;
+    modifyAppointment: boolean;
+    isLoaded: boolean;
 
     constructor(
         private appointmentService: AppointmentService,
         private serviceService: ServiceService,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private snackBar: SnackBar
     ) {
     }
 
     ngOnInit() {
-        this.route.paramMap.pipe(
-            map(() => window.history.state.appointment)
-        ).subscribe(
-            res => {
-                this.appointment = res;
-                this.loaded = true;
+        this.route.data.subscribe(data => {
+
+            this.modifyAppointment = data.edit;
+
+            if (this.modifyAppointment) {
+
+                this.route.paramMap.pipe(
+                    map(() => window.history.state.appointment)
+                ).subscribe(
+                    res => {
+                        this.appointment = res;
+                        if (!this.appointment) {
+                            const id = +this.route.snapshot.paramMap.get('id');
+
+                            if (isNaN(id)) {
+                                this.snackBar.openSnackBarError('Invalid URL.');
+                                this.router.navigate(['']);
+                                return;
+                            }
+
+                            this.getAppointmentById(id);
+                        } else {
+                            this.isLoaded = true;
+                        }
+                    }
+                );
+
+            } else {
+                this.isLoaded = true;
             }
-        );
+
+        });
     }
 
     /*getServices() {
@@ -84,4 +112,18 @@ export class ReserveComponent implements OnInit {
         this.stepper.next();
     }
 
+    getAppointmentById(id: number) {
+        this.appointmentService.getAppointmentById(id).subscribe(
+            res => {
+                this.appointment = res;
+                this.isLoaded = true;
+            },
+            err => {
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                    this.router.navigate(['']);
+                }
+            }
+        );
+    }
 }

@@ -104,10 +104,20 @@ public class UserController extends AbstractController {
     @GetMapping(value = "/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findAllAppointments() {
         final List<Appointment> appointments = appointmentService.findByClientId(getUserId());
+        return getJson(appointments);
+    }
+
+    @GetMapping(value = "/appointments/{appointmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findMyAppointmentById(@PathVariable long appointmentId) {
+        Appointment appointment = appointmentService.findMyAppointmentById(getUserId(), appointmentId);
+        return getJson(appointment);
+    }
+
+    private ResponseEntity<String> getJson(Object object) {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
 
         try {
-            return ResponseEntity.ok(mapper.writeValueAsString(appointments));
+            return ResponseEntity.ok(mapper.writeValueAsString(object));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

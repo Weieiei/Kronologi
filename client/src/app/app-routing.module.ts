@@ -33,7 +33,12 @@ const routes: Routes = [
             // Appointments
             { path: 'appointments', component: AppointmentsComponent },
 
-            { path: 'reserve', component: ReserveComponent },
+            {
+                path: 'reserve', children: [
+                    { path: '', component: ReserveComponent, data: { edit: false } },
+                    { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
+                ]
+            },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
             {
