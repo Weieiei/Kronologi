@@ -1,0 +1,8 @@
+<app-custom-stepper #stepper *ngIf="loaded">
+  <cdk-step>
+    <app-scheduler (dateChange)="setDate($event)" [date]="appointment?.date"></app-scheduler>
+  </cdk-step>
+  <cdk-step>
+    The date you chose: {{ date }}
+  </cdk-step>
+</app-custom-stepper>

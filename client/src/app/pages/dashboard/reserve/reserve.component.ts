@@ -25,6 +25,8 @@ export class ReserveComponent implements OnInit {
     startTime: Date;
     notes: string;
 
+    loaded: boolean;
+
     constructor(
         private appointmentService: AppointmentService,
         private serviceService: ServiceService,
@@ -34,13 +36,14 @@ export class ReserveComponent implements OnInit {
     }
 
     ngOnInit() {
-        const appointmentToModify = this.route.paramMap.pipe(
+        this.route.paramMap.pipe(
             map(() => window.history.state.appointment)
+        ).subscribe(
+            res => {
+                this.appointment = res;
+                this.loaded = true;
+            }
         );
-
-        if (!appointmentToModify) {
-            this.appointment = appointmentToModify;
-        }
     }
 
     /*getServices() {
