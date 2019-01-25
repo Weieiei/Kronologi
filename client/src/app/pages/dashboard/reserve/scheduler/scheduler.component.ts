@@ -23,6 +23,13 @@ export class SchedulerComponent implements OnInit {
     }
 
     ngOnInit() {
+        setTimeout(() => {
+            if (this.appointmentDate) {
+                const date = new Date(this.appointmentDate);
+                this.year = date.getFullYear();
+                this.month = date.getMonth();
+            }
+        });
     }
 
     setDay(day: any): void {
