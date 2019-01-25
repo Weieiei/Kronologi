@@ -1,8 +1,8 @@
-<div *ngIf="!date">
+<div *ngIf="!appointmentDate">
     <app-month-picker [(year)]="year" [(month)]="month"></app-month-picker>
     <app-calendar [year]="year" [month]="month" (dayChange)="setDay($event)"></app-calendar>
 </div>
-<div *ngIf="date">
-    <app-month-picker [(year)]="year" [(month)]="month" [appointmentMonth]="appointmentMonth" [appointmentYear]="appointmentYear"></app-month-picker>
-    <app-calendar [year]="year" [month]="month" [appointmentDay]="appointmentDay" [appointmentMonth]="appointmentMonth" [appointmentYear]="appointmentYear" (dayChange)="setDay($event)"></app-calendar>
+<div *ngIf="appointmentDate">
+    <app-month-picker [(year)]="year" [(month)]="month" [appointmentDate]="appointmentDate"></app-month-picker>
+    <app-calendar [year]="year" [month]="month" [appointmentDate]="appointmentDate" (dayChange)="setDay($event)"></app-calendar>
 </div>

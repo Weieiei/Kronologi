@@ -10,12 +10,9 @@ export class SchedulerComponent implements OnInit {
     year: number;
     month: number;
 
-    // We could possible pass in a date to the component, if we're in the process of modifying an appointment
-    // appointmentX variables represent the chosen date of the appointment we're modifying
-    @Input() date?: string;
-    appointmentYear: number;
-    appointmentMonth: number;
-    appointmentDay: number;
+    // We could possibly pass in a date to the component, if we're in the process of modifying an appointment
+    // appointmentX variables represent the original chosen date of the appointment we're modifying
+    @Input() appointmentDate?: string;
 
     @Output() dateChange = new EventEmitter();
 
@@ -26,12 +23,6 @@ export class SchedulerComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.date) {
-            const date = new Date(this.date + ' EST');
-            this.appointmentYear = date.getFullYear();
-            this.appointmentMonth = date.getMonth();
-            this.appointmentDay = date.getDate();
-        }
     }
 
     setDay(day: any): void {
