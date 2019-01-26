@@ -120,4 +120,8 @@ public class User extends AuditableEntity {
     public void setEmployeeServices(List<Service> employeeServices) {
         this.employeeServices = employeeServices;
     }
+
+    public void addEmployeeService(Service service){
+        this.employeeServices.add(service);
+    }
 }

@@ -3,6 +3,7 @@ package appointmentscheduler.controller.rest;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.service.appointment.AppointmentService;
@@ -57,5 +58,27 @@ public class AdminController {
         if (userService.updateUser(user))
             return "Successfully changed user to employee.";
         return "Something went wrong while updating user, please check the server log.";
+    }
+
+    // for assigning services to employees (employees can perform certain services)
+    @PostMapping("assign_service/{id}")
+    public void assignService(@RequestAttribute long id, Service employeeService){
+        User user = this.userService.findUserByid(id);
+        Set<Role> roles = user.getRoles();
+        //check if user is an employee
+        if (roles.contains(RoleEnum.EMPLOYEE)) {
+            //check if the employee can already perform the service
+            if (user.getEmployeeServices().contains(employeeService)){
+                System.out.println("The employee has already been assigned that service");
+            }
+            else {
+                // assign the service
+                user.addEmployeeService(employeeService);
+            }
+        }
+        else {
+            System.out.println("The user is not an employee, and therefore cannot be assigned a service");
+        }
+
     }
 }
