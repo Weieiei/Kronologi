@@ -35,7 +35,7 @@ public class AdminController {
     }
 
     @GetMapping("/client/{id}")
-    public List<Appointment> cleintAppointmentList(@RequestAttribute long clientId){
+    public List<Appointment> clientAppointmentList(@RequestAttribute long clientId){
         return this.appointmentService.findByClientId(clientId);
     }
 
