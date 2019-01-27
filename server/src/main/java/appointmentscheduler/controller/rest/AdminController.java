@@ -45,7 +45,7 @@ public class AdminController {
         return this.appointmentService.findByEmployeeId(employeeId);
     }
 
-    @GetMapping("/all_appointments")
+    @GetMapping("/appointments")
     public List<Appointment> getAllAppointments(){
         return appointmentService.findAll();
     }
