@@ -79,7 +79,13 @@ public class AdminController {
         else {
             System.out.println("The user is not an employee, and therefore cannot be assigned a service");
         }
+    }
 
+    // for adding a new service
+    @PostMapping("add_service/{id}")
+    public Service addService(@RequestAttribute String name, int duration){
+        Service service = new Service(name, duration);
+        return service;
     }
 
 
