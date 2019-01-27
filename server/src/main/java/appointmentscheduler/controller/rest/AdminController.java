@@ -45,6 +45,11 @@ public class AdminController {
         return this.appointmentService.findByEmployeeId(employeeId);
     }
 
+    @GetMapping("/all_appointments")
+    public List<Appointment> getAllAppointments(){
+        return appointmentService.findAll();
+    }
+
     @PostMapping("/change_to_employee/{id}")
     public String changeRoleToEmployee(@RequestAttribute long id){
         User user = this.userService.findUserByid(id);
