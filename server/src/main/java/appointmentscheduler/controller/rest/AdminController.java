@@ -66,7 +66,7 @@ public class AdminController {
         User user = this.userService.findUserByid(id);
         Set<Role> roles = user.getRoles();
         //check if user is an employee
-        if (roles.contains(RoleEnum.EMPLOYEE)) {
+        if (roles.contains(this.roleRepository.findByRole(RoleEnum.EMPLOYEE))) {
             //check if the employee can already perform the service
             if (user.getEmployeeServices().contains(employeeService)){
                 System.out.println("The employee has already been assigned that service");
@@ -81,4 +81,6 @@ public class AdminController {
         }
 
     }
+
+
 }
