@@ -3,7 +3,7 @@ package appointmentscheduler.seed;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
-import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.service.ServiceEntity;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.repository.*;
@@ -73,24 +73,24 @@ public class Seed {
 
     public void seedEmployeeServicesAndShifts() {
 
-        List<Service> services = new ArrayList<>();
+        List<ServiceEntity> services = new ArrayList<>();
 
-        services.add(new Service("BACK TO PURE LIFE", 150));
-        services.add(new Service("QUICK VISIT TO THE SPA", 100));
-        services.add(new Service("BUSINESS ONLY", 120));
-        services.add(new Service("MEC EXTRA", 200));
-        services.add(new Service("GET BACK ON TRACK", 170));
-        services.add(new Service("SLENDER QUEST", 200));
-        services.add(new Service("SERENITY", 140));
-        services.add(new Service("ULTIMATE ESCAPE", 160));
-        services.add(new Service("DIVINE RELAXATION", 150));
-        services.add(new Service("1/2 DAY PASSPORT", 165));
-        services.add(new Service("THE FULL DAY PASSPORT", 325));
-        services.add(new Service("POETRY FOR TWO", 180));
-        services.add(new Service("ULTIMATE COUPLES TREAT", 320));
-        services.add(new Service("BODY AFTER BABY", 120));
-        services.add(new Service("LOST YOUR SOUL", 120));
-        services.add(new Service("RECONNECT WITH YOUR BODY", 210));
+        services.add(new ServiceEntity("BACK TO PURE LIFE", 150));
+        services.add(new ServiceEntity("QUICK VISIT TO THE SPA", 100));
+        services.add(new ServiceEntity("BUSINESS ONLY", 120));
+        services.add(new ServiceEntity("MEC EXTRA", 200));
+        services.add(new ServiceEntity("GET BACK ON TRACK", 170));
+        services.add(new ServiceEntity("SLENDER QUEST", 200));
+        services.add(new ServiceEntity("SERENITY", 140));
+        services.add(new ServiceEntity("ULTIMATE ESCAPE", 160));
+        services.add(new ServiceEntity("DIVINE RELAXATION", 150));
+        services.add(new ServiceEntity("1/2 DAY PASSPORT", 165));
+        services.add(new ServiceEntity("THE FULL DAY PASSPORT", 325));
+        services.add(new ServiceEntity("POETRY FOR TWO", 180));
+        services.add(new ServiceEntity("ULTIMATE COUPLES TREAT", 320));
+        services.add(new ServiceEntity("BODY AFTER BABY", 120));
+        services.add(new ServiceEntity("LOST YOUR SOUL", 120));
+        services.add(new ServiceEntity("RECONNECT WITH YOUR BODY", 210));
 
         serviceRepository.saveAll(services);
 
@@ -118,7 +118,7 @@ public class Seed {
 
         List<User> clients = userRepository.findByRoles_Role(RoleEnum.CLIENT);
         User employee = userRepository.findByRoles_Role(RoleEnum.EMPLOYEE).get(0);
-        List<Service> services = serviceRepository.findAll();
+        List<ServiceEntity> services = serviceRepository.findAll();
 
         Appointment appointment = new Appointment(
                 clients.get(0), employee, services.get(11),

@@ -2,7 +2,7 @@ package appointmentscheduler.entity.user;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.role.Role;
-import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.service.ServiceEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -45,7 +45,7 @@ public class User extends AuditableEntity {
             inverseJoinColumns = { @JoinColumn(name = "service_id") }
     )
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<Service> employeeServices;
+    private List<ServiceEntity> employeeServices;
 
     // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
     public User() { }
@@ -113,15 +113,15 @@ public class User extends AuditableEntity {
         this.roles.add(role);
     }
 
-    public List<Service> getEmployeeServices() {
+    public List<ServiceEntity> getEmployeeServices() {
         return employeeServices;
     }
 
-    public void setEmployeeServices(List<Service> employeeServices) {
+    public void setEmployeeServices(List<ServiceEntity> employeeServices) {
         this.employeeServices = employeeServices;
     }
 
-    public void addEmployeeService(Service service){
+    public void addEmployeeService(ServiceEntity service){
         this.employeeServices.add(service);
     }
 }
