@@ -65,12 +65,15 @@ export class UserService {
 
 
     isEmployee(): boolean {
-        if (decode(this.getToken())['roles'] === 'employee') {
+        const token = this.getToken();
+        const employeeObj = decode(token);
+        if (employeeObj['roles'] === 'EMPLOYEE') {
             return true;
         } else {
             return false;
         }
     }
+
     updateEmail(payload: UpdateEmailDTO): Observable<any> {
         return this.http.post(['api', 'user', 'email'].join('/'), payload);
     }

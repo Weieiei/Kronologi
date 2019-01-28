@@ -34,7 +34,7 @@ const routes: Routes = [
 
             // Appointments
 
-            {path: 'employee/appts', component: EmployeeComponentComponent},
+            { path: 'employee/appts', component: EmployeeComponentComponent},
 
             { path: 'appointments', component: AppointmentsComponent },
 
