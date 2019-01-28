@@ -4,6 +4,7 @@ export class Appointment {
     public clientId: number;
     public employeeId: number;
     public serviceId: number;
+    public date: Date;
     public startTime: Date;
     public endTime: Date;
     public notes: string;
@@ -13,13 +14,14 @@ export class Appointment {
 
     public constructor(
         id: number, clientId: number, employeeId: number, serviceId: number,
-        startTime: Date, endTime: Date, notes: string, status: string,
+        date: Date, startTime: Date, endTime: Date, notes: string, status: string,
         createdAt: Date, updatedAt: Date
     ) {
         this.id = id;
         this.clientId = clientId;
         this.employeeId = employeeId;
         this.serviceId = serviceId;
+        this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.notes = notes;

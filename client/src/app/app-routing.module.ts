@@ -10,6 +10,7 @@ import { AppointmentsComponent } from './pages/dashboard/home/appointments/appoi
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth/auth.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import {AdminAppointmentsComponent} from "./pages/dashboard/home/admin-appointments/admin-appointments.component";
 
 const routes: Routes = [
     // Login
@@ -39,6 +40,7 @@ const routes: Routes = [
 
             {path: 'reserve', component: ReserveComponent},
             {path: 'my/appts', component: AppointmentsComponent},
+            {path: 'admin/appts', component: AdminAppointmentsComponent},
 
             {path: 'add/employee', component: RegisterComponent}
         ]
