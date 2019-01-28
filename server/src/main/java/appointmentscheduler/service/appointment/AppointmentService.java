@@ -20,10 +20,6 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
  
-    public List<Appointment> findByClientId(long clientId) {
-        return appointmentRepository.findByClientId(clientId);
-    }
-
     public List<Appointment> findByEmployeeId(long employeeId) {
         return appointmentRepository.findByEmployeeId(employeeId);
     }
@@ -31,6 +27,10 @@ public class AppointmentService {
     public Appointment findById(long id) {
         return appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+    }
+
+    public List<Appointment> findByClientId(long id){
+        return appointmentRepository.findByClientId(id);
     }
 
     public Appointment add(Appointment appointment) {
