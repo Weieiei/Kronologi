@@ -4,7 +4,6 @@ import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.service.ServiceEntity;
-import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

@@ -1,7 +1,7 @@
 package appointmentscheduler.service.user;
 
 import appointmentscheduler.entity.appointment.Appointment;
-import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.service.ServiceEntity;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.service.appointment.AppointmentService;
 import org.junit.Assert;
@@ -29,7 +29,7 @@ public class AppointmentServiceTest {
 
         User mockClient = Mockito.mock(User.class);
         User mockEmployee = Mockito.mock(User.class);
-        Service mockService = Mockito.mock(Service.class);
+        ServiceEntity mockService = Mockito.mock(ServiceEntity.class);
 
         String clientFirstName = "clientFirstName";
         String clientLastName = "clientLastName";
