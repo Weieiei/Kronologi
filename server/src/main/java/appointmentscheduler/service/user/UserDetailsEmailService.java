@@ -19,8 +19,6 @@ import java.util.Set;
 @Service
 public class UserDetailsEmailService implements UserDetailsService {
 
-    private static final String ROLE_PREFIX = "ROLE_";
-
     @Autowired
     private UserRepository userRepository;
 
@@ -37,7 +35,7 @@ public class UserDetailsEmailService implements UserDetailsService {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
         user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getRole()));
+            authorities.add(new SimpleGrantedAuthority(role.getRole().name()));
         });
 
         return authorities;

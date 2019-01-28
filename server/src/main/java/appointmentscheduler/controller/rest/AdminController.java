@@ -21,7 +21,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("${rest.api.path}/admin")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
 

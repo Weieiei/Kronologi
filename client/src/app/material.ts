@@ -12,6 +12,7 @@ import {
     MatProgressBarModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSnackBarModule,
     MatTableModule
 } from '@angular/material';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -42,7 +43,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatDialogModule,
         CdkStepperModule,
         MatSidenavModule,
-        MatCardModule
+        MatCardModule,
+        MatSnackBarModule
     ],
     exports: [
         MatButtonModule,
@@ -63,7 +65,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatDialogModule,
         CdkStepperModule,
         MatSidenavModule,
-        MatCardModule
+        MatCardModule,
+        MatSnackBarModule
     ]
 })
 export class MaterialModule {

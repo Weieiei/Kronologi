@@ -9,7 +9,9 @@ before_script:
   - psql -c "CREATE USER scheduler WITH PASSWORD 'scheduler';" -U postgres
 
 script:
-  - cd server && mvn verify
+  - cd server
+  - cp src/main/resources/secret.example.properties src/main/resources/secret.properties
+  - mvn verify
 
 notifications:
   email: false

@@ -1,0 +1,40 @@
+@import "../../../variables";
+
+.settings-container {
+    padding: 1rem 1rem 5rem 1rem;
+
+    .menu {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+
+        ::ng-deep .mat-list {
+            padding: 0;
+
+            .mat-list-item {
+                outline: none;
+
+                &:not(:first-child) {
+
+                    &:not(.active) {
+                        cursor: pointer;
+
+                        :hover {
+                            background-color: #f2f2f2;
+                        }
+                    }
+                }
+
+                &:first-child {
+                    font-weight: bold;
+                    background-color: #eee;
+                }
+            }
+
+            .active {
+                font-weight: bold;
+                color: $primary-color;
+                border-left: 3px solid $primary-color;
+            }
+        }
+    }
+}

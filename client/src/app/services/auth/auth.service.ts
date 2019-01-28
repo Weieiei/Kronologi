@@ -4,16 +4,13 @@ import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import * as decode from 'jwt-decode';
 import { UserType } from '../../models/user/UserType';
-import { UserLoginDTO } from '../../interfaces/user-login-dto';
-import { UserRegisterDTO } from '../../interfaces/user-register-dto';
+import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
+import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-
-    static registerClient = 'register-client';
-    static registerEmployee = 'register-employee';
 
     /**
      * Observable that will take notice of app initialization, as well as
