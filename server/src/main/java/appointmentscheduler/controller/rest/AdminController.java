@@ -99,7 +99,7 @@ public class AdminController {
     }
 
     // for adding a new service
-    @PostMapping("add_service/{id}")
+    @PostMapping("add_service")
     public ServiceEntity addService(@RequestBody ServiceDTO serviceDTO){
         ServiceEntity service = serviceConverter.convert(serviceDTO);
         return serviceService.add(service);
