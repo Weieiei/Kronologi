@@ -9,8 +9,10 @@ import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.VerificationRepository;
+import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
 import appointmentscheduler.service.verification.VerificationService;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,12 +38,14 @@ public class UserController extends AbstractController {
 
     @Autowired
     VerificationRepository verificationRepository;
+    private final AppointmentService appointmentService;
 
     @Autowired
-    public UserController(UserService userService, EmailService emailService, VerificationService verificationService) {
+    public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService) {
         this.userService = userService;
         this.emailService = emailService;
         this.verificationService = verificationService;
+        this.appointmentService = appointmentService;
     }
 
     @GetMapping("/verification")
@@ -111,4 +116,11 @@ public class UserController extends AbstractController {
     public ResponseEntity<Map<String, String>> deletePhoneNumber() {
         return ResponseEntity.ok(userService.deletePhoneNumber(getUserId()));
     }
+
+    @GetMapping("/appointments")
+    public List<Appointment> findByCurrentUser() {
+        return appointmentService.findByClientId(getUserId());
+    }
+
+
 }
