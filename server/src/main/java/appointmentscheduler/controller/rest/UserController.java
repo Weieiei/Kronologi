@@ -59,18 +59,17 @@ public class UserController extends AbstractController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+    public ResponseEntity<HttpStatus> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
         try {
             Map<String, Object> userTokenMap = userService.register(userRegisterDTO);
             Verification verification = (Verification) userTokenMap.get("verification");
             emailService.sendRegistrationEmail(userRegisterDTO.getEmail(),verification.getHash(), true);
-            return ResponseEntity.ok(userTokenMap);
+            return ResponseEntity.ok(HttpStatus.OK);
         } catch (BadCredentialsException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody UserLoginDTO userLoginDTO) {
@@ -121,6 +120,5 @@ public class UserController extends AbstractController {
     public List<Appointment> findByCurrentUser() {
         return appointmentService.findByClientId(getUserId());
     }
-
 
 }
