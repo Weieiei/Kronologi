@@ -11,10 +11,7 @@ import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.Verification;
-import appointmentscheduler.exception.IncorrectPasswordException;
-import appointmentscheduler.exception.InvalidUpdateException;
-import appointmentscheduler.exception.ResourceNotFoundException;
-import appointmentscheduler.exception.UserAlreadyExistsException;
+import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.PhoneNumberRepository;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.SettingsRepository;
@@ -107,6 +104,9 @@ public class UserService {
     public Map<String, Object> login(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmailIgnoreCase(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
+
+        if (!user.isVerified())
+            throw new ModelValidationException("Incomplete verification");
 
         String token = generateToken(user, userLoginDTO.getPassword());
 

@@ -3,6 +3,7 @@ package appointmentscheduler.entity.user;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -131,6 +132,10 @@ public class User extends AuditableEntity {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     public void setRoles(Set<Role> roles) {
