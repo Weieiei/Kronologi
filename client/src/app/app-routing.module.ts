@@ -9,9 +9,11 @@ import { ReserveComponent } from './pages/reserve/reserve.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { EmployeeComponentComponent } from './pages/dashboard/home/employee-component/employee-component.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
+
 
 const routes: Routes = [
     // Login
@@ -31,6 +33,9 @@ const routes: Routes = [
             { path: '', component: HomeComponent },
 
             // Appointments
+
+            { path: 'employee/appts', component: EmployeeComponentComponent},
+
             { path: 'appointments', component: AppointmentsComponent },
 
             { path: 'reserve', component: ReserveComponent },
@@ -43,6 +48,7 @@ const routes: Routes = [
                     { path: 'reminders', component: ReminderSettingsComponent }
                 ]
             }
+
         ]
     },
 ];
