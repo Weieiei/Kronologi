@@ -1,0 +1,12 @@
+<mat-nav-list>
+    <ng-container *ngFor="let service of services">
+        <mat-list-item (click)="selectService(service)">
+            <div matLine>{{ service.name }}</div>
+            <div matLine fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+                <mat-icon appButtonIcon>access_time</mat-icon>
+                <span>{{ service.duration }} minutes</span>
+            </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+    </ng-container>
+</mat-nav-list>

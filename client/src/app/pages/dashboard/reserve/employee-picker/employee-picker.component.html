@@ -1,0 +1,14 @@
+<div fxLayout="column">
+    <div class="test" fxLayout="row" fxLayoutAlign="center">
+        Who would you like to work with?
+    </div>
+    <mat-nav-list>
+        <ng-container *ngFor="let employee of employees">
+            <mat-list-item>
+                <div matLine>{{ employee }}</div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+        </ng-container>
+    </mat-nav-list>
+</div>
+
