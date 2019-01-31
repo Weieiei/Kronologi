@@ -3,10 +3,9 @@ import { AppointmentService } from 'src/app/services/appointment/appointment.ser
 import { ServiceService } from 'src/app/services/service/service.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
-import { CustomStepperComponent } from '../../components/custom-stepper/custom-stepper.component';
-import { Service } from '../../models/service/Service';
-import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
-import { map } from 'rxjs/operators';
+import { CustomStepperComponent } from '../../../components/custom-stepper/custom-stepper.component';
+import { Service } from '../../../models/service/Service';
+import { AppointmentToBook } from '../../../models/appointment/AppointmentToBook';
 
 @Component({
     selector: 'app-reserve',
@@ -17,7 +16,7 @@ export class ReserveComponent implements OnInit {
 
     @ViewChild('stepper') stepper: CustomStepperComponent;
 
-    services: Service[] = [];
+    service: any;
 
     appointment: AppointmentToBook;
     date: Date;
@@ -30,47 +29,48 @@ export class ReserveComponent implements OnInit {
 
     constructor(
         private appointmentService: AppointmentService,
-        private serviceService: ServiceService,
         private router: Router
     ) {
     }
 
     ngOnInit() {
-        this.getServices();
     }
 
-    getServices() {
-        this.serviceService.getServices().pipe(
-            map(data => data.map(s => new Service(s.id, s.name, s.duration, s.createdAt, s.updatedAt)))
-        ).subscribe(
+    /*getServices() {
+        this.serviceService.getServices().subscribe(
             res => this.services = res,
             err => console.log(err)
         );
     }
 
     private findServiceById(id: number): Service {
-        return this.services.find(service => service.id === id);
+        return this.services.find(service => service.getId() === id);
     }
 
     updateEndTime() {
-        if (this.appointment.serviceId !== undefined && this.startTime !== undefined) {
-            const service: Service = this.findServiceById(this.appointment.serviceId);
-            const date = moment('2012-12-12 ' + this.startTime).add(service.duration, 'm');
+        if (this.appointment.getServiceId() !== undefined && this.startTime !== undefined) {
+            const service: Service = this.findServiceById(this.appointment.getServiceId());
+            const date = moment('2012-12-12 ' + this.startTime).add(service.getDuration(), 'm');
             this.endTime = date.format('HH:mm:ss');
         }
     }
 
     makeAppointment(): void {
         const date = moment(this.date).format('YYYY-MM-DD');
-        this.appointment.startTime = new Date(moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss'));
+        this.appointment.setStartTime(new Date(moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss')));
         this.appointmentService.reserveAppointment(this.appointment).subscribe(
             res => this.router.navigate(['/my/appts']),
             err => console.log(err)
         );
-    }
+    }*/
 
     setDate(date: Date): void {
         this.date = date;
+        this.stepper.next();
+    }
+
+    setService(service: any): void {
+        this.service = service;
         this.stepper.next();
     }
 

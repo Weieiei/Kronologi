@@ -1,0 +1,15 @@
+<app-custom-stepper #stepper>
+    <cdk-step>
+        <app-service-selection (serviceChange)="setService($event)"></app-service-selection>
+    </cdk-step>
+    <cdk-step>
+        <app-scheduler (dateChange)="setDate($event)"></app-scheduler>
+    </cdk-step>
+    <cdk-step>
+        <app-employee-picker></app-employee-picker>
+    </cdk-step>
+    <cdk-step>
+        <div>The date you chose: {{ date }}</div>
+        <div>The service you chose: {{ service?.name }}</div>
+    </cdk-step>
+</app-custom-stepper>
