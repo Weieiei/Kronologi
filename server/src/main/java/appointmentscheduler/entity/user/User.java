@@ -176,7 +176,8 @@ public class User extends AuditableEntity {
 
     @PrePersist
     public void beforeInsert() {
-        this.verified = false;
+        if(!verified)
+            this.verified = false;
         this.setSettings(new Settings(false, false, this));
     }
 }
