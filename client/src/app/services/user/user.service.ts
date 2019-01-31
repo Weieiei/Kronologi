@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { HttpClient } from '@angular/common/http';
+import * as decode from 'jwt-decode';
 import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
 import { UpdateEmailDTO } from '../../interfaces/user/update-email-dto';
 import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
 import { SettingsDTO } from '../../interfaces/settings/settings-dto';
 import { UpdateSettingsDTO } from '../../interfaces/settings/update-settings-dto';
 import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
+
 
 @Injectable({
     providedIn: 'root'
@@ -61,6 +63,17 @@ export class UserService {
         localStorage.removeItem(UserService.TOKEN_KEY);
     }
 
+
+    isEmployee(): boolean {
+        const token = this.getToken();
+        const employeeObj = decode(token);
+        if (employeeObj['roles'] === 'EMPLOYEE') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     updateEmail(payload: UpdateEmailDTO): Observable<any> {
         return this.http.post(['api', 'user', 'email'].join('/'), payload);
     }
@@ -87,5 +100,6 @@ export class UserService {
 
     updatePhoneNumber(payload: PhoneNumberDTO): Observable<any> {
         return this.http.post(['api', 'user', 'phone'].join('/'), payload);
+
     }
 }

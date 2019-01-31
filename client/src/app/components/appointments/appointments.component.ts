@@ -34,7 +34,7 @@ export class AppointmentsComponent implements OnInit {
 
                     return new AppointmentDetailed(
                         a.id, a.clientId, a.employeeId, a.serviceId,
-                        a.startTime, a.endTime, a.notes, a.status,
+                        a.startTime, a.endTime, a.date, a.notes, a.status,
                         a.createdAt, a.updatedAt,
                         new User(
                             client.id, client.firstName, client.lastName,

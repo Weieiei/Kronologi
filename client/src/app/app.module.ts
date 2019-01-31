@@ -33,6 +33,7 @@ import { ButtonIconDirective } from './directives/button-icon/button-icon.direct
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
 import { VerifiedComponent } from './pages/verified/verified.component';
+import { EmployeeComponentComponent } from './pages/dashboard/home/employee-component/employee-component.component';
 import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
@@ -61,10 +62,12 @@ import { ReminderSettingsComponent } from './pages/settings/reminder-settings/re
         AppointmentsSectionComponent,
         CardSizeDirective,
         VerifiedComponent,
+        EmployeeComponentComponent,
         AutofocusDirective,
         SettingsComponent,
         AccountSettingsComponent,
         ReminderSettingsComponent
+
     ],
     imports: [
         BrowserModule,
