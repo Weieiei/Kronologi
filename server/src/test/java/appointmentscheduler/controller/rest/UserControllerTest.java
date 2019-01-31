@@ -10,6 +10,7 @@ import appointmentscheduler.exception.InvalidUpdateException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.UserAlreadyExistsException;
 import appointmentscheduler.service.user.UserService;
+import appointmentscheduler.service.verification.VerificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -52,6 +52,9 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private VerificationService verificationService;
 
     private MockMvc mockMvc;
 
@@ -100,6 +103,28 @@ public class UserControllerTest {
                 .andReturn();
 
         assertTrue(result.getResponse().getContentAsString().isEmpty());
+    }
+
+    @Test
+    public void verificationSucceeded() throws Exception {
+        String testHash = "testHash";
+        when(verificationService.verify(testHash)).thenReturn(true);
+        final MvcResult result = mockMvc.perform(
+                get("/api/user/verification?hash=testHash")
+        )
+                .andExpect(status().isOk())
+                .andReturn();
+
+    }
+
+    @Test
+    public void verificationFailed() throws Exception {
+        final MvcResult result = mockMvc.perform(
+                get("/api/user/verification")
+        )
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
     }
 
     @Test
