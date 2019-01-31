@@ -75,7 +75,7 @@ public class UserControllerTest {
 
         final Map<String, Object> someMap = Collections.emptyMap();
 
-        when(userService.login(any(UserLoginDTO.class))).thenReturn(someMap);
+        when(userService.login(userLoginDTO)).thenReturn(someMap);
 
         final MvcResult result = mockMvc.perform(
                 post("/api/user/login")
