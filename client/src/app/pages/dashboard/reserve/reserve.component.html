@@ -1,6 +1,6 @@
 <app-custom-stepper #stepper *ngIf="isLoaded">
     <cdk-step>
-        <app-service-selection (serviceChange)="setService($event)"></app-service-selection>
+        <app-service-selection (serviceChange)="setService($event)" [serviceId]="appointment?.service.id"></app-service-selection>
     </cdk-step>
     <cdk-step>
         <app-scheduler (dateChange)="setDate($event)" [appointmentDate]="appointment?.date"></app-scheduler>

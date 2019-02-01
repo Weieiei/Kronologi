@@ -1,6 +1,6 @@
 <mat-nav-list>
     <ng-container *ngFor="let service of services">
-        <mat-list-item (click)="selectService(service)">
+        <mat-list-item (click)="selectService(service)" [class.chosen]="service.id === serviceId">
             <div matLine>{{ service.name }}</div>
             <div matLine fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
                 <mat-icon appButtonIcon>access_time</mat-icon>

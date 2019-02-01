@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ServiceService } from '../../../../services/service/service.service';
 
 @Component({
@@ -10,12 +10,22 @@ export class ServiceSelectionComponent implements OnInit {
 
     services = [];
 
+    @Input() serviceId?: number;
+
     @Output() serviceChange = new EventEmitter();
 
     constructor(private serviceService: ServiceService) {
     }
 
     ngOnInit() {
+        this.getServices();
+    }
+
+    selectService(service: any) {
+        this.serviceChange.emit(service);
+    }
+
+    getServices() {
         this.serviceService.getServices().subscribe(res => {
             this.services = res;
             this.services.sort((a, b) => {
@@ -27,9 +37,5 @@ export class ServiceSelectionComponent implements OnInit {
                 return 0;
             });
         });
-    }
-
-    selectService(service: any) {
-        this.serviceChange.emit(service);
     }
 }

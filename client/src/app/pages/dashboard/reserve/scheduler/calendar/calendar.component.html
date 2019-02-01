@@ -2,7 +2,7 @@
   <mat-grid-tile *ngFor="let day of daysOfWeek">{{ day }}</mat-grid-tile>
   <mat-grid-tile [colspan]="spacer"></mat-grid-tile>
   <mat-grid-tile *ngFor="let date of days" class="date" [class.disabled]="!date.enabled" (click)="handleDateClick(date)"
-                 [class.chosen-date]="appointmentDay === date.date && appointmentMonth === month && appointmentYear === year">
+                 [class.chosen]="appointmentDay === date.date && appointmentMonth === month && appointmentYear === year">
     <div fxLayout="column" fxLayoutAlign="start center">
       <div>{{ date.date }}</div>
     </div>
