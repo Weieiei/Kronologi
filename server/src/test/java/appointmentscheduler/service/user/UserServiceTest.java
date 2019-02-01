@@ -121,6 +121,7 @@ public class UserServiceTest {
 
         // mock methods
         when(mockedUser.getId()).thenReturn(1L);
+        when(mockedUser.isVerified()).thenReturn(true);
 
         when(userLoginDTO.getEmail()).thenReturn("testEmail");
         when(userLoginDTO.getPassword()).thenReturn("testPassword");

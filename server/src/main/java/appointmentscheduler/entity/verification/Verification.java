@@ -32,7 +32,7 @@ public class Verification extends AuditableEntity {
     }
 
     @PostPersist
-    public void afetrInsert() throws NoSuchAlgorithmException {
+    public void afterInsert() throws NoSuchAlgorithmException {
         generateHash();
     }
 
