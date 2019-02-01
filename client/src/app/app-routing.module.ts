@@ -13,6 +13,7 @@ import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-a
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
+import { EmployeeGuard } from './guards/employee.guard';
 
 const routes: Routes = [
     // Login
@@ -32,7 +33,7 @@ const routes: Routes = [
             { path: '', component: HomeComponent },
 
             // Appointments
-            { path: 'employee/appts', component: EmployeeAppointmentsComponent},
+            { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
 
             { path: 'reserve', component: ReserveComponent },

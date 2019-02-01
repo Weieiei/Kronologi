@@ -26,6 +26,6 @@ export class AppointmentService {
     }
 
     public getMyAppointmentsEmployee(): Observable<Appointment[]> {
-        return this.http.get<Appointment[]>(['api', 'appointments', 'current_employee'].join('/'));
+        return this.http.get<Appointment[]>(['api', 'employee', 'appointments'].join('/'));
     }
 }
