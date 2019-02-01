@@ -43,7 +43,7 @@ export class CalendarComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         if (this.appointmentDate) {
-            const date = new Date(this.appointmentDate);
+            const date = new Date(this.appointmentDate + ' EST');
 
             this.appointmentYear = date.getFullYear();
             this.appointmentMonth = date.getMonth();

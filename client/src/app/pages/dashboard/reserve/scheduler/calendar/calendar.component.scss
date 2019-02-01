@@ -5,7 +5,7 @@
         background-color: $accent-color;
         cursor: pointer;
     }
-    
+
     &:active:not(.disabled) {
         background-color: mat-color($accent-palette, 500);
         cursor: pointer;
