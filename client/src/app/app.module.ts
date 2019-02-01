@@ -32,7 +32,7 @@ import { FabBottomRightDirective } from './directives/fab-bottom-right/fab-botto
 import { ButtonIconDirective } from './directives/button-icon/button-icon.directive';
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
-import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-component/employee-appointments.component';
+import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
 import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';

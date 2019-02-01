@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
 import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
 import { Appointment } from 'src/app/interfaces/appointment';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -23,7 +24,8 @@ export class AppointmentService {
     public reserveAppointment(appointment: AppointmentToBook): Observable<any> {
         return this.http.post<AppointmentToBook>(['api', 'user', 'appointments'].join('/'), appointment);
     }
-  public getMyAppointmentsEmployee(): Observable<Appointment[]> {
+
+    public getMyAppointmentsEmployee(): Observable<Appointment[]> {
         return this.http.get<Appointment[]>(['api', 'appointments', 'current_employee'].join('/'));
-   }
+    }
 }
