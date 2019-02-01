@@ -76,7 +76,7 @@ public class AppointmentServiceTest {
 
         User mockClient = Mockito.mock(User.class);
         User mockEmployee = Mockito.mock(User.class);
-        Service mockService = Mockito.mock(Service.class);
+        ServiceEntity mockService = Mockito.mock(ServiceEntity.class);
 
         String clientFirstName = "clientFirstName";
         String clientLastName = "clientLastName";
