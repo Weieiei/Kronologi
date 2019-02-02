@@ -17,7 +17,7 @@ export class AppointmentsComponent implements OnInit {
         'other': '# Upcoming Appointments'
     };
 
-    historyMessageMapping: { [k: string]: string }  = {
+    historyMessageMapping: { [k: string]: string } = {
         '=0': 'No Previous Appointments',
         '=1': 'One Previous Appointment',
         'other': '# Previous Appointments'
@@ -26,7 +26,7 @@ export class AppointmentsComponent implements OnInit {
     constructor(private appointmentService: AppointmentService) {
         this.upcomingAppointments = [];
         this.pastAppointments = [];
-      }
+    }
 
     ngOnInit() {
         this.getMyAppointments();

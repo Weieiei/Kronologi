@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { UserService } from '../services/user/user.service';
+import { UserService } from '../../services/user/user.service';
 
 /**
  * Guards are a means of controlling whether or not a

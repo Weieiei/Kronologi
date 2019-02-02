@@ -14,8 +14,10 @@ export class NavbarComponent implements OnInit {
 
     user;
 
-    constructor(private userService: UserService,
-                private router: Router) {
+    constructor(
+        private userService: UserService,
+        private router: Router
+    ) {
     }
 
     ngOnInit() {
@@ -33,5 +35,9 @@ export class NavbarComponent implements OnInit {
 
     goToSettings() {
         this.router.navigate(['settings']);
+    }
+
+    goToEmployeeAppointments() {
+        this.router.navigate(['employee', 'appts']);
     }
 }
