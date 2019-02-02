@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration  scan="true" scanPeriod="5 seconds" >
 
-    <property name="LOGS_HOME" value="appointmentScheduler/logs/" />
+    <property name="LOGS_HOME" value="appointment-scheduler-logs/" />
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
