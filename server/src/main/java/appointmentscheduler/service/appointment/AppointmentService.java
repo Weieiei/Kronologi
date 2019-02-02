@@ -178,7 +178,11 @@ public class AppointmentService {
         return employeeRepository.findByShifts_Date(date);
     }
 
-    public Shift getEmployeesShift(long employeeId, LocalDate date) {
+    public Shift getEmployeesShiftByDate(long employeeId, LocalDate date) {
         return shiftRepository.findByEmployeeIdAndDate(employeeId, date).orElse(null);
+    }
+
+    public List<Appointment> getEmployeesConfirmedAppointmentsByDate(long employeeId, LocalDate date) {
+        return appointmentRepository.findByDateAndEmployeeIdAndStatus(date, employeeId, AppointmentStatus.confirmed);
     }
 }

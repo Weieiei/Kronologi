@@ -10,10 +10,7 @@ import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.repository.UserRepository;
-import appointmentscheduler.serializer.EmployeeSerializer;
-import appointmentscheduler.serializer.ObjectMapperFactory;
-import appointmentscheduler.serializer.ShiftSerializer;
-import appointmentscheduler.serializer.UserAppointmentSerializer;
+import appointmentscheduler.serializer.*;
 import appointmentscheduler.service.appointment.AppointmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
@@ -94,18 +91,25 @@ public class AppointmentController extends AbstractController {
         return appointmentService.cancel(id);
     }
 
-    @GetMapping("/employees")
+    @GetMapping(value = "/employees", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getAvailableEmployees(@RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());
         return getJson(mapper, appointmentService.getAvailableEmployees(pickedDate));
     }
 
-    @GetMapping("employee/{employeeId}/shift")
+    @GetMapping(value = "employee/{employeeId}/shift", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getEmployeesShift(@PathVariable long employeeId, @RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new ShiftSerializer());
-        return getJson(mapper, appointmentService.getEmployeesShift(employeeId, pickedDate));
+        return getJson(mapper, appointmentService.getEmployeesShiftByDate(employeeId, pickedDate));
+    }
+
+    @GetMapping(value = "employee/{employeeId}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getEmployeesConfirmedAppointments(@PathVariable long employeeId, @RequestParam String date) {
+        LocalDate pickedDate = parseDate(date);
+        ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new EmployeeAppointmentSerializer());
+        return getJson(objectMapper, appointmentService.getEmployeesConfirmedAppointmentsByDate(employeeId, pickedDate));
     }
 
     private LocalDate parseDate(String date) {
