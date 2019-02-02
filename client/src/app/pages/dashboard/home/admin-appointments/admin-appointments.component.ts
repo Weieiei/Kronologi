@@ -27,10 +27,6 @@ export class AdminAppointmentsComponent implements OnInit {
             map(data => {
                 let i = 0;
                 return data.map(a => {
-                    i++;
-                    console.log(i);
-                    console.log(a.date);
-
                     const client = a.client;
                     const employee = a.employee;
                     const service = a.service;
