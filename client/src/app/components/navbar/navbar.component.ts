@@ -15,9 +15,11 @@ export class NavbarComponent implements OnInit {
 
     user;
 
+    
     constructor(private userService: UserService,
                 private router: Router,
                 private googleAnalytics: GoogleAnalyticsService) {
+
     }
 
     ngOnInit() {
@@ -36,5 +38,9 @@ export class NavbarComponent implements OnInit {
 
     goToSettings() {
         this.router.navigate(['settings']);
+    }
+
+    goToEmployeeAppointments() {
+        this.router.navigate(['employee', 'appts']);
     }
 }
