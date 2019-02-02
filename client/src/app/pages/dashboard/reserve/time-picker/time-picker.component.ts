@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 interface Time {
     hour: number;
     minute: string;
+    enabled: boolean;
 }
 
 @Component({
@@ -40,19 +41,21 @@ export class TimePickerComponent implements OnInit {
         this.eveningTimes = [];
 
         for (let i = this.minHour; i <= 11; i++) {
-            this.quarters.forEach(quarter => this.morningTimes.push({ hour: i, minute: quarter }));
+            this.quarters.forEach(quarter => this.morningTimes.push({ hour: i, minute: quarter, enabled: true }));
         }
         for (let i = 12; i <= 16; i++) {
-            this.quarters.forEach(quarter => this.afterNoonTimes.push({ hour: i, minute: quarter }));
+            this.quarters.forEach(quarter => this.afterNoonTimes.push({ hour: i, minute: quarter, enabled: true }));
         }
         for (let i = 17; i <= this.maxHour; i++) {
-            this.quarters.forEach(quarter => this.eveningTimes.push({ hour: i, minute: quarter }));
+            this.quarters.forEach(quarter => this.eveningTimes.push({ hour: i, minute: quarter, enabled: true }));
         }
 
     }
 
     selectTime(time: Time) {
-        this.timeChange.emit(`${time.hour}:${time.minute}`);
+        if (time.enabled) {
+            this.timeChange.emit(`${time.hour}:${time.minute}`);
+        }
     }
 
 }
