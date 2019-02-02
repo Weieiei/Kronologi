@@ -1,12 +1,29 @@
-<mat-nav-list>
-    <ng-container *ngFor="let service of services">
-        <mat-list-item (click)="selectService(service)" [class.chosen]="service.id === serviceId">
-            <div matLine>{{ service.name }}</div>
-            <div matLine fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
-                <mat-icon appButtonIcon>access_time</mat-icon>
-                <span>{{ service.duration }} minutes</span>
+<!--<mat-nav-list>-->
+    <!--<ng-container *ngFor="let service of services">-->
+        <!--<mat-list-item (click)="selectService(service)" [class.chosen]="service.id === serviceId">-->
+            <!--<div matLine>{{ service.name }}</div>-->
+            <!--<div matLine fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">-->
+                <!--<mat-icon appButtonIcon>access_time</mat-icon>-->
+                <!--<span>{{ service.duration }} minutes</span>-->
+            <!--</div>-->
+        <!--</mat-list-item>-->
+        <!--<mat-divider></mat-divider>-->
+    <!--</ng-container>-->
+<!--</mat-nav-list>-->
+
+<div class="service-container">
+
+    <div fxFlex="row" fxLayoutAlign="center">
+        <div gdColumns="repeat(auto-fill, 280px)" gdGap="24px" gdAlignRows="space-evenly" fxFlex.gt-sm="90" fxFlex.lt-md="100">
+            <div class="service mat-elevation-z4" [class.chosen]="service.id === serviceId" *ngFor="let service of services"
+                 (click)="selectService(service)" matRipple fxLayout="column" fxLayoutAlign="center">
+                <div fxLayoutAlign="center">{{ service.name }}</div>
+                <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="center">
+                    <mat-icon appButtonIcon>access_time</mat-icon>
+                    <span>{{ service.duration }} minutes</span>
+                </div>
             </div>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-    </ng-container>
-</mat-nav-list>
+        </div>
+    </div>
+
+</div>

@@ -10,6 +10,7 @@ import {
     MatMenuModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    MatRippleModule,
     MatSelectModule,
     MatSidenavModule,
     MatSnackBarModule,
@@ -44,7 +45,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         CdkStepperModule,
         MatSidenavModule,
         MatCardModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatRippleModule
     ],
     exports: [
         MatButtonModule,
@@ -66,7 +68,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         CdkStepperModule,
         MatSidenavModule,
         MatCardModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatRippleModule
     ]
 })
 export class MaterialModule {
