@@ -111,7 +111,7 @@ export class ReserveComponent implements OnInit {
     setDate(date: Date): void {
         this.date = date;
         this.stepper.next();
-        this.getAvailableEmployees();
+        this.getAvailableEmployeesByDate();
     }
 
     setService(service: any): void {
@@ -122,6 +122,8 @@ export class ReserveComponent implements OnInit {
     setEmployee(employee: EmployeeDTO): void {
         this.employee = employee;
         this.stepper.next();
+        this.getSelectedEmployeesShiftByDate();
+        this.getSelectedEmployeesAppointmentsByDate();
     }
 
     getAppointmentById(id: number) {
@@ -139,9 +141,21 @@ export class ReserveComponent implements OnInit {
         );
     }
 
-    getAvailableEmployees() {
-        this.employeeService.getAvailableEmployees(this.date.toLocaleDateString()).subscribe(
+    getAvailableEmployeesByDate() {
+        this.employeeService.getAvailableEmployeesByDate(this.date.toLocaleDateString()).subscribe(
             res => this.employees = res
+        );
+    }
+
+    getSelectedEmployeesShiftByDate() {
+        this.employeeService.getSelectedEmployeesShiftByDate(this.employee.id, this.date.toLocaleDateString()).subscribe(
+            res => console.log(res)
+        );
+    }
+
+    getSelectedEmployeesAppointmentsByDate() {
+        this.employeeService.getSelectedEmployeesAppointmentsByDate(this.employee.id, this.date.toLocaleDateString()).subscribe(
+            res => console.log(res)
         );
     }
 }
