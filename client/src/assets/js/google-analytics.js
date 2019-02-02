@@ -1,12 +1,8 @@
-// NOTES: add this to webpack, gulp or whatever, don't include in dev unless you want to track values in dev as well, or create a different UA id for dev etc -->
-// Google Analytics
-
-
+//from the google developers guide.
 loadScript("https://www.google-analytics.com/analytics.js", () => {
   window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 
     ga('create', 'UA-133707510-1', 'auto');
-   // ga('send', 'pageview');
 });
 
 

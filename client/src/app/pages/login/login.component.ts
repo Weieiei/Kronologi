@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
         this.userService.login(payload).subscribe(
             res => {
-                this.googleAnalytics.trackEvent('security', 'login', 'success');
+                this.googleAnalytics.trackValues('security', 'login', 'success');
                 const user = res['user'];
                 const token = res['token'];
 
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['']);
             },
             err => {
-                this.googleAnalytics.trackEvent('security', 'login', 'failure');
+                this.googleAnalytics.trackValues('security', 'login', 'failure');
                 console.log(err)
             }
         );

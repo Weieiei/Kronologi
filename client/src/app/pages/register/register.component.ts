@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
                 };
             }
             
-            this.googleAnalytics.trackEvent('formSubmit', 'register');
+            this.googleAnalytics.trackValues('formSubmit', 'register');
 
             this.userService.register(payload).subscribe(
                 res => {

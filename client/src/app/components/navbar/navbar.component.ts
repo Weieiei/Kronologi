@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
     }
 
     logout(): void {
-        this.googleAnalytics.trackEvent('security', 'logout');
+        this.googleAnalytics.trackValues('security', 'logout');
         this.userService.logout();
         this.router.navigate(['login']);
     }

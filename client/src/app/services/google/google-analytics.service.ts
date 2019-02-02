@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router, NavigationEnd } from '@angular/router';
 
-// --- use a declare to allow the compiler find the ga function
+//declare the function that is found in the  scripts/google folder
 declare let ga: Function;
 
-// notes: npm install --save-dev @types/google.analytics
 @Injectable({
     providedIn: 'root'
 })
@@ -24,23 +23,21 @@ export class GoogleAnalyticsService {
   /**
    * Track an event with your custom data in google analytics
    * -
-   * @param {string} category Typically the object that was interacted with (e.g. 'Video')
-   * @param {string} label The type of interaction (e.g. 'play')
-   * @param {string} [action=null] Useful for categorizing events (e.g. 'Fall Campaign')
-   * @param {number} [value=null] A numeric value associated with the event (e.g. 42)
+   * @param  cat object that will  be seen on the analytics website
+   * @param interaction form of interaction (i.e: login , submit, etc...)
+   * @param category Useful for categorizing events (e.g. 'Fall Campaign')
+   * @param value   value associated with the event (e.g. 42)
    * @memberof GoogleAnalyticsEventService
    */
-  public trackEvent(category: string, label: string, action: string = null, value: number = null) {
+  public trackValues(cat: string, interaction: string, category: string = null, value: number = null) {
     try {
-      ga('send', 'event', { eventCategory: category, eventLabel: label,
-        eventAction: action, eventValue: value
+      //ga function declared in the scripts 
+      ga('send', 'event', { eventCategory: cat, eventLabel: interaction,
+        eventAction: category, eventValue: value
       } );
     } catch (error) {
       console.log(`error: ${error}`);
     }
-
-    // testing
-    console.log(category, label, action, value);
   }
 
 
@@ -55,7 +52,7 @@ export class GoogleAnalyticsService {
             ga('send', 'pageview');
             console.log(`logged url: ${e.urlAfterRedirects}`);
           } catch {
-            // console.log('tracking not found');
+            console.log('tracking not found');
           }
         }
       });
@@ -63,8 +60,8 @@ export class GoogleAnalyticsService {
   }
 
   public unsubscribe() {
+      // need to clear the subscription
     if (this.subscription) {
-      // --- clear our observable subscription
       this.subscription.unsubscribe();
     }
   }
