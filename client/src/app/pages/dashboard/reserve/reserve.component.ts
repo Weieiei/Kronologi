@@ -33,6 +33,7 @@ export class ReserveComponent implements OnInit {
     isLoaded: boolean;
 
     employees: EmployeeDTO[];
+    employee: EmployeeDTO;
 
     constructor(
         private appointmentService: AppointmentService,
@@ -115,6 +116,11 @@ export class ReserveComponent implements OnInit {
 
     setService(service: any): void {
         this.service = service;
+        this.stepper.next();
+    }
+
+    setEmployee(employee: EmployeeDTO): void {
+        this.employee = employee;
         this.stepper.next();
     }
 
