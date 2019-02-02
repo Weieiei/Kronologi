@@ -2,6 +2,7 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.service.ServiceDTO;
 import appointmentscheduler.converters.service.ServiceDTOToService;
+import appointmentscheduler.dto.user.UpdateEmailDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
@@ -13,10 +14,13 @@ import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.service.ServiceService;
 import appointmentscheduler.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -62,19 +66,20 @@ public class AdminController {
         return appointmentService.findAll();
     }
 
-    @PostMapping("/change_to_employee/{id}")
-    public String changeRoleToEmployee(@RequestAttribute long id){
+    @PostMapping("/change_to_employee")
+    public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@RequestBody ServiceDTO serviceDTO){
+        long id = serviceDTO.getId();
         User user = this.userService.findUserByid(id);
         Set<Role> roles = user.getRoles();
         for (Role role: roles) {
             if (role.getRole() == RoleEnum.EMPLOYEE) {
-                return "User " + id + " is already an employee";
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
         }
         user.addRoles(this.roleRepository.findByRole(RoleEnum.EMPLOYEE));
         if (userService.updateUser(user))
-            return "Successfully changed user to employee.";
-        return "Something went wrong while updating user, please check the server log.";
+            return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     // for assigning services to employees (employees can perform certain services)
