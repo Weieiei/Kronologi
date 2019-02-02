@@ -2,12 +2,12 @@
 
 .date {
     &:hover:not(.disabled) {
-        background-color: $accent-color;
+        background-color: $accent-color !important;
         cursor: pointer;
     }
 
     &:active:not(.disabled) {
-        background-color: mat-color($accent-palette, 500);
+        background-color: mat-color($accent-palette, 500) !important;
         cursor: pointer;
     }
 

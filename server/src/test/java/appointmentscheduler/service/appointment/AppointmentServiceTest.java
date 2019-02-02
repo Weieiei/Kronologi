@@ -7,7 +7,7 @@ import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.EmployeeRepository;
-import appointmentscheduler.repository.ServiceRepository;
+import appointmentscheduler.repository.ShiftRepository;
 import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,13 +32,13 @@ public class AppointmentServiceTest {
     private EmployeeRepository employeeRepository;
 
     @Mock
-    private ServiceRepository serviceRepository;
+    private ShiftRepository shiftRepository;
 
     private AppointmentService appointmentService;
 
     @Before
     public void setup() {
-        appointmentService = new AppointmentService(appointmentRepository, employeeRepository, serviceRepository);
+        appointmentService = new AppointmentService(appointmentRepository, employeeRepository, shiftRepository);
     }
 
     @Test(expected = ModelValidationException.class)

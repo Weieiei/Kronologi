@@ -40,19 +40,10 @@ public class Seed {
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    private PhoneNumberRepository phoneRepository;
-
-    @Autowired
     private ServiceRepository serviceRepository;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
-
-    @Autowired
-    private ShiftRepository shiftRepository;
-
-    @Autowired
-    private RoomRepository roomRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -140,23 +131,23 @@ public class Seed {
 
         Employee employee = (Employee) UserFactory.createUser(Employee.class, "Employee", "User", "employee@employee.com", hash("employee123"));
         employee.setServices(set);
-        employee.setShifts(generateShifts());
+        employee.setShifts(generateShifts(employee));
         employee.setRoles(Sets.newHashSet(employeeRole));
         employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
         Employee employee2 = (Employee) UserFactory.createUser(Employee.class, "Employee2", "User", "employee2@employee.com", hash("employee123"));
         employee2.setServices(set);
-        employee2.setShifts(generateShifts());
+        employee2.setShifts(generateShifts(employee2));
         employee2.setRoles(Sets.newHashSet(employeeRole));
 
         Employee employee3 = (Employee) UserFactory.createUser(Employee.class, "Employee3", "User", "employee3@employee.com", hash("employee123"));
         employee3.setServices(set);
-        employee3.setShifts(generateShifts());
+        employee3.setShifts(generateShifts(employee3));
         employee3.setRoles(Sets.newHashSet(employeeRole));
 
         Employee employee4 = (Employee) UserFactory.createUser(Employee.class, "Employee4", "User", "employe4e@employee.com", hash("employee123"));
         employee4.setServices(set);
-        employee4.setShifts(generateShifts());
+        employee4.setShifts(generateShifts(employee4));
         employee4.setRoles(Sets.newHashSet(employeeRole));
 
         employeeRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
@@ -198,12 +189,12 @@ public class Seed {
         return bCryptPasswordEncoder.encode(password);
     }
 
-    private Set<Shift> generateShifts() {
-        // Create shifts for employees
+    private Set<Shift> generateShifts(Employee employee) {
+        // Create shifts for employee
         Set<Shift> shifts = new HashSet<>();
-        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), LocalTime.of(21, 0)));
-        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0), LocalTime.of(21, 0)));
-        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0), LocalTime.of(22, 0)));
+        shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), LocalTime.of(21, 0)));
+        shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0), LocalTime.of(21, 0)));
+        shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0), LocalTime.of(22, 0)));
         return shifts;
     }
 }

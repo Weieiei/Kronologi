@@ -1,7 +1,11 @@
 package appointmentscheduler.entity.shift;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ModelValidationException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +18,12 @@ public class Shift extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "employee_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Employee employee;
 
     @Column(name = "date")
     private LocalDate date;
@@ -30,6 +40,14 @@ public class Shift extends AuditableEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public LocalDate getDate() {

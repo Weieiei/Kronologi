@@ -3,6 +3,7 @@ package appointmentscheduler.controller.rest;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.ResourceNotFoundException;
@@ -11,6 +12,7 @@ import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.serializer.EmployeeSerializer;
 import appointmentscheduler.serializer.ObjectMapperFactory;
+import appointmentscheduler.serializer.ShiftSerializer;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.appointment.AppointmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +39,10 @@ public class AppointmentController extends AbstractController {
     private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
-    public AppointmentController(AppointmentService appointmentService, UserRepository userRepository, ServiceRepository serviceRepository, ModelMapper modelMapper, EmployeeRepository employeeRepository, ObjectMapperFactory objectMapperFactory) {
+    public AppointmentController(
+            AppointmentService appointmentService, UserRepository userRepository, ServiceRepository serviceRepository,
+            ModelMapper modelMapper, EmployeeRepository employeeRepository, ObjectMapperFactory objectMapperFactory
+    ) {
         this.appointmentService = appointmentService;
         this.userRepository = userRepository;
         this.serviceRepository = serviceRepository;
@@ -91,9 +96,20 @@ public class AppointmentController extends AbstractController {
 
     @GetMapping("/employees")
     public ResponseEntity<String> getAvailableEmployees(@RequestParam String date) {
-        LocalDate pickedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
+        LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());
         return getJson(mapper, appointmentService.getAvailableEmployees(pickedDate));
+    }
+
+    @GetMapping("employee/{employeeId}/shift")
+    public ResponseEntity<String> getEmployeesShift(@PathVariable long employeeId, @RequestParam String date) {
+        LocalDate pickedDate = parseDate(date);
+        ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new ShiftSerializer());
+        return getJson(mapper, appointmentService.getEmployeesShift(employeeId, pickedDate));
+    }
+
+    private LocalDate parseDate(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
     }
 
 }

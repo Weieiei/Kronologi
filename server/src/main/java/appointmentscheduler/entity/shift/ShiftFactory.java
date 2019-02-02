@@ -1,5 +1,7 @@
 package appointmentscheduler.entity.shift;
 
+import appointmentscheduler.entity.user.Employee;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,6 +13,13 @@ public class ShiftFactory {
         shift.setDate(date);
         shift.setStartTime(startTime);
         shift.setEndTime(endTime);
+
+        return shift;
+    }
+
+    public static Shift createShift(Employee employee, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        Shift shift = createShift(date, startTime, endTime);
+        shift.setEmployee(employee);
 
         return shift;
     }

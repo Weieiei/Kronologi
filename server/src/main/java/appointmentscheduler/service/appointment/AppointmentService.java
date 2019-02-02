@@ -3,12 +3,12 @@ package appointmentscheduler.service.appointment;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.room.Room;
-import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.EmployeeRepository;
-import appointmentscheduler.repository.ServiceRepository;
+import appointmentscheduler.repository.ShiftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -22,15 +22,15 @@ public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final EmployeeRepository employeeRepository;
-    private final ServiceRepository serviceRepository;
+    private final ShiftRepository shiftRepository;
 
     @Autowired
     public AppointmentService(
-            AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ServiceRepository serviceRepository
+            AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository
     ) {
         this.appointmentRepository = appointmentRepository;
         this.employeeRepository = employeeRepository;
-        this.serviceRepository = serviceRepository;
+        this.shiftRepository = shiftRepository;
     }
 
     public List<Appointment> findAll() {
@@ -176,5 +176,9 @@ public class AppointmentService {
 
     public List<Employee> getAvailableEmployees(LocalDate date) {
         return employeeRepository.findByShifts_Date(date);
+    }
+
+    public Shift getEmployeesShift(long employeeId, LocalDate date) {
+        return shiftRepository.findByEmployeeIdAndDate(employeeId, date).orElse(null);
     }
 }
