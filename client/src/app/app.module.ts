@@ -14,12 +14,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { HomeComponent } from './pages/dashboard/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
-import { AuthGuard } from './guards/auth.guard';
-import { AnonymousGuard } from './guards/anonymous.guard';
+import { AuthGuard } from './guards/auth/auth.guard';
+import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
 import { ReserveComponent } from './pages/reserve/reserve.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
-import { AdminGuard } from './guards/admin.guard';
+import { AdminGuard } from './guards/admin/admin.guard';
 import { SchedulerComponent } from './pages/reserve/scheduler/scheduler.component';
 import { CalendarComponent } from './pages/reserve/scheduler/calendar/calendar.component';
 import { MonthPickerComponent } from './pages/reserve/scheduler/month-picker/month-picker.component';
@@ -32,9 +32,7 @@ import { FabBottomRightDirective } from './directives/fab-bottom-right/fab-botto
 import { ButtonIconDirective } from './directives/button-icon/button-icon.directive';
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
-
-import { EmployeeComponentComponent } from './pages/dashboard/home/employee-component/employee-component.component';
-
+import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
 import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
@@ -62,12 +60,11 @@ import { ReminderSettingsComponent } from './pages/settings/reminder-settings/re
         ButtonIconDirective,
         AppointmentsSectionComponent,
         CardSizeDirective,
-        EmployeeComponentComponent,
+        EmployeeAppointmentsComponent,
         AutofocusDirective,
         SettingsComponent,
         AccountSettingsComponent,
         ReminderSettingsComponent
-
     ],
     imports: [
         BrowserModule,
