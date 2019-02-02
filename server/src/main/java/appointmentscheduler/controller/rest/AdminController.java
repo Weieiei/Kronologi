@@ -31,9 +31,10 @@ public class AdminController {
         return String.format("You are an admin, your id is %d.", userId);
     }
 
-    @PostMapping("/createShift")
-    public String register(@RequestBody EmployeeShiftDTO employeeShiftDTO) throws IOException, MessagingException {
+    @PostMapping("/employee/{employeeId}/shift")
+    public String createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) throws IOException, MessagingException {
         try {
+            employeeShiftDTO.setEmployeeId(employeeId);
             return employeeShiftService.createShfit(employeeShiftDTO);
         } catch (Exception e) {
             e.printStackTrace();
