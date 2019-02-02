@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
+import {AuthService} from "../../services/auth/auth.service";
 
 @Component({
   selector: 'app-dashboard',

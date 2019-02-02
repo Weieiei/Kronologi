@@ -37,7 +37,7 @@ export class AdminAppointmentsComponent implements OnInit {
 
                     return new AppointmentDetailed(
                         a.id, a.clientId, a.employeeId, a.serviceId,
-                        a.date, a.startTime, a.endTime, a.notes,
+                        a.startTime, a.endTime, a.date, a.notes,
                         a.status, a.createdAt, a.updatedAt,
                         new User(
                             client.id, client.firstName, client.lastName,

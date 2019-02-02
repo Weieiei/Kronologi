@@ -91,7 +91,8 @@ export class AuthService {
 
     checkAdmin(): void {
         const claims: any = this.getTokenClaims(this.getToken());
-        this.admin = claims === null ? false : claims.type === UserType.admin;
+        const roles: Array<string> = claims.roles.toString().split(",");
+        this.admin = claims === null ? false : (roles.includes(UserType.admin) || roles.includes(UserType.admin.toUpperCase()));
     }
 
 }

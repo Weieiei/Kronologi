@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
+import { AuthService } from "../../services/auth/auth.service";
 
 @Component({
     selector: 'app-navbar',
@@ -15,6 +16,7 @@ export class NavbarComponent implements OnInit {
     user;
 
     constructor(private userService: UserService,
+                private authService: AuthService,
                 private router: Router) {
     }
 
@@ -33,5 +35,9 @@ export class NavbarComponent implements OnInit {
 
     goToSettings() {
         this.router.navigate(['settings']);
+    }
+
+    goToAdminAppointmens() {
+        this.router.navigate(['admin/appts']);
     }
 }
