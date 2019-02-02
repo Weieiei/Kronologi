@@ -14,7 +14,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { EmployeeGuard } from './guards/employee/employee.guard';
-
+import { ReviewComponent } from './pages/review/review.component';
 const routes: Routes = [
     // Login
     { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
@@ -37,6 +37,7 @@ const routes: Routes = [
             { path: 'appointments', component: AppointmentsComponent },
 
             { path: 'reserve', component: ReserveComponent },
+            { path: 'review', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
             {
