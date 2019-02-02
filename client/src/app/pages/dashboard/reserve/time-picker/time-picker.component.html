@@ -14,19 +14,19 @@
 
         <div class="time-container" fxLayout="row" fxLayoutAlign="center">
             <div class="set-width times" fxLayout="column" fxLayoutAlign="start center">
-                <div class="time" *ngFor="let time of morningTimes" fxLayoutAlign="center">
+                <div class="time" *ngFor="let time of morningTimes" (click)="selectTime(time)" fxLayoutAlign="center">
                     {{ time.hour + ':' + time.minute }}
                 </div>
             </div>
             <mat-divider [vertical]="true"></mat-divider>
             <div class="set-width times" fxLayout="column" fxLayoutAlign="start center">
-                <div class="time" *ngFor="let time of afterNoonTimes" fxLayoutAlign="center">
+                <div class="time" *ngFor="let time of afterNoonTimes" (click)="selectTime(time)" fxLayoutAlign="center">
                     {{ time.hour + ':' + time.minute }}
                 </div>
             </div>
             <mat-divider [vertical]="true"></mat-divider>
             <div class="set-width times" fxLayout="column" fxLayoutAlign="start center">
-                <div class="time" *ngFor="let time of eveningTimes" fxLayoutAlign="center">
+                <div class="time" *ngFor="let time of eveningTimes" (click)="selectTime(time)" fxLayoutAlign="center">
                     {{ time.hour + ':' + time.minute }}
                 </div>
             </div>

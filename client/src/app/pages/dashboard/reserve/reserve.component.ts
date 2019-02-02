@@ -37,6 +37,8 @@ export class ReserveComponent implements OnInit {
     employeeShift: any;
     employeeAppointments: any;
 
+    time: string;
+
     constructor(
         private appointmentService: AppointmentService,
         private serviceService: ServiceService,
@@ -126,6 +128,12 @@ export class ReserveComponent implements OnInit {
         this.stepper.next();
         this.getSelectedEmployeesShiftByDate();
         this.getSelectedEmployeesAppointmentsByDate();
+    }
+
+    setTime(time: string): void {
+        // this.date = new Date(this.date.toLocaleDateString() + ' ' + time);
+        this.time = time;
+        this.stepper.next();
     }
 
     getAppointmentById(id: number) {

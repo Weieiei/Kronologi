@@ -9,11 +9,12 @@
         <app-employee-picker (employeeChange)="setEmployee($event)" [employees]="employees" [employeeId]="appointment?.employee.id"></app-employee-picker>
     </cdk-step>
     <cdk-step>
-        <app-time-picker [employeeShift]="employeeShift" [employeeAppointments]="employeeAppointments"></app-time-picker>
+        <app-time-picker (timeChange)="setTime($event)" [employeeShift]="employeeShift" [employeeAppointments]="employeeAppointments"></app-time-picker>
     </cdk-step>
     <cdk-step>
-        <div>The date you chose: {{ date }}</div>
+        <div>The date you chose: {{ date?.toLocaleDateString() }}</div>
         <div>The service you chose: {{ service?.name }}</div>
         <div>The employee you chose: {{ employee?.firstName + ' ' + employee?.lastName }}</div>
+        <div>The time you chose: {{ time }}</div>
     </cdk-step>
 </app-custom-stepper>

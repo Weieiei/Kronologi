@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 interface Time {
     hour: number;
@@ -14,6 +14,8 @@ export class TimePickerComponent implements OnInit {
 
     @Input() employeeShift: any;
     @Input() employeeAppointments: any;
+
+    @Output() timeChange = new EventEmitter();
 
     minHour = 9;
     maxHour = 20;
@@ -47,6 +49,10 @@ export class TimePickerComponent implements OnInit {
             this.quarters.forEach(quarter => this.eveningTimes.push({ hour: i, minute: quarter }));
         }
 
+    }
+
+    selectTime(time: Time) {
+        this.timeChange.emit(`${time.hour}:${time.minute}`);
     }
 
 }
