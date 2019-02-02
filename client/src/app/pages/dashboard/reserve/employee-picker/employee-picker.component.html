@@ -1,14 +1,20 @@
 <div fxLayout="column">
-    <div class="test" fxLayout="row" fxLayoutAlign="center">
-        Who would you like to work with?
+    <div *ngIf="employees?.length">
+        <div fxLayout="row" fxLayoutAlign="center">
+            The following employees are available.
+        </div>
+        <mat-nav-list>
+            <ng-container *ngFor="let employee of employees">
+                <mat-list-item [class.chosen]="employee.id === employeeId">
+                    <div matLine>{{ employee.firstName + ' ' + employee.lastName }}</div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </ng-container>
+        </mat-nav-list>
     </div>
-    <mat-nav-list>
-        <ng-container *ngFor="let employee of employees">
-            <mat-list-item>
-                <div matLine>{{ employee }}</div>
-            </mat-list-item>
-            <mat-divider></mat-divider>
-        </ng-container>
-    </mat-nav-list>
+    <div *ngIf="!employees?.length">
+        <div fxLayout="row" fxLayoutAlign="center">
+            There are no employees available.
+        </div>
+    </div>
 </div>
-

@@ -9,19 +9,20 @@ import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.repository.UserRepository;
+import appointmentscheduler.serializer.EmployeeSerializer;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.appointment.AppointmentService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -42,7 +43,6 @@ public class AppointmentController extends AbstractController {
         this.serviceRepository = serviceRepository;
         this.modelMapper = modelMapper;
         this.employeeRepository = employeeRepository;
-
         this.modelMapper.addMappings(new PropertyMap<AppointmentDTO, Appointment>() {
             protected void configure() {
                 skip().setId(0);
@@ -74,14 +74,8 @@ public class AppointmentController extends AbstractController {
         Service service = serviceRepository.findById(appointmentDTO.getServiceId()).orElseThrow(ResourceNotFoundException::new);
         appointment.setService(service);
 
-        ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-
-        try {
-            return ResponseEntity.ok(objectMapper.writeValueAsString(appointmentService.add(appointment)));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+        return getJson(mapper, appointmentService.add(appointment));
     }
 
     @PutMapping("/{id}")
@@ -93,6 +87,13 @@ public class AppointmentController extends AbstractController {
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable long id) {
         return appointmentService.cancel(id);
+    }
+
+    @GetMapping("/employees")
+    public ResponseEntity<String> getAvailableEmployees(@RequestParam String date) {
+        LocalDate pickedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
+        ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());
+        return getJson(mapper, appointmentService.getAvailableEmployees(pickedDate));
     }
 
 }

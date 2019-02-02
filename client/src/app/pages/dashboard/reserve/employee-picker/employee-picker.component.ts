@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { EmployeeService } from '../../../../services/employee/employee.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { EmployeeDTO } from '../../../../interfaces/user/employee-dto';
 
 @Component({
-  selector: 'app-employee-picker',
-  templateUrl: './employee-picker.component.html',
-  styleUrls: ['./employee-picker.component.scss']
+    selector: 'app-employee-picker',
+    templateUrl: './employee-picker.component.html',
+    styleUrls: ['./employee-picker.component.scss']
 })
 export class EmployeePickerComponent implements OnInit {
 
-  employees: string[];
+    @Input() employees: EmployeeDTO[];
+    @Input() employeeId?: number;
 
-  constructor(private employeeService: EmployeeService) { }
+    constructor() {
+    }
 
-  ngOnInit() {
-    this.employeeService.getAvailableEmployees(null).subscribe( res => this.employees = res); // todo
-  }
+    ngOnInit() {
+    }
 
-  // Allow user to view more info on employee availabilities?
+    // todo: Allow user to view more info on employee availabilities?
 }

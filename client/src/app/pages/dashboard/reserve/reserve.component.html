@@ -6,7 +6,7 @@
         <app-scheduler (dateChange)="setDate($event)" [appointmentDate]="appointment?.date"></app-scheduler>
     </cdk-step>
     <cdk-step>
-        <app-employee-picker></app-employee-picker>
+        <app-employee-picker [employees]="employees" [employeeId]="appointment?.employee.id"></app-employee-picker>
     </cdk-step>
     <cdk-step>
         <div>The date you chose: {{ date }}</div>

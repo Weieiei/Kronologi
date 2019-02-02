@@ -138,34 +138,28 @@ public class Seed {
                 services.get(6), services.get(8), services.get(11)
         ));
 
-        // Create shifts for employees
-        Set<Shift> shifts = new HashSet<>();
-        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, 11, 30), LocalTime.of(12, 0), LocalTime.of(21, 0)));
-        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, 12, 2), LocalTime.of(12, 0), LocalTime.of(21, 0)));
-        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(8, 0), LocalTime.of(22, 0)));
-
         Employee employee = (Employee) UserFactory.createUser(Employee.class, "Employee", "User", "employee@employee.com", hash("employee123"));
         employee.setServices(set);
-        employee.setShifts(shifts);
+        employee.setShifts(generateShifts());
         employee.setRoles(Sets.newHashSet(employeeRole));
         employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
         Employee employee2 = (Employee) UserFactory.createUser(Employee.class, "Employee2", "User", "employee2@employee.com", hash("employee123"));
         employee2.setServices(set);
-        employee2.setShifts(shifts);
+        employee2.setShifts(generateShifts());
         employee2.setRoles(Sets.newHashSet(employeeRole));
 
         Employee employee3 = (Employee) UserFactory.createUser(Employee.class, "Employee3", "User", "employee3@employee.com", hash("employee123"));
         employee3.setServices(set);
-        employee3.setShifts(shifts);
+        employee3.setShifts(generateShifts());
         employee3.setRoles(Sets.newHashSet(employeeRole));
 
         Employee employee4 = (Employee) UserFactory.createUser(Employee.class, "Employee4", "User", "employe4e@employee.com", hash("employee123"));
         employee4.setServices(set);
-        employee4.setShifts(shifts);
+        employee4.setShifts(generateShifts());
         employee4.setRoles(Sets.newHashSet(employeeRole));
 
-        userRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
+        employeeRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
     }
 
     public void seedAppointments() {
@@ -178,29 +172,38 @@ public class Seed {
 
         appointments.add(AppointmentFactory.createAppointment(
                 clients.get(0), employees.get(0), services.get(11),
-                LocalDate.of(2019, 11, 30), LocalTime.of(12, 0), "Some note"
+                LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
                 clients.get(1), employees.get(0), services.get(6),
-                LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), "Some note"
+                LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(16, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
                 clients.get(2), employees.get(1), services.get(6),
-                LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), "Some note"
+                LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
                 clients.get(3), employees.get(2), services.get(4),
-                LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), "Some note"
+                LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(12, 0), "Some note"
         ));
 
         appointmentRepository.saveAll(appointments);
 
     }
 
-    public String hash(String password) {
+    private String hash(String password) {
         return bCryptPasswordEncoder.encode(password);
+    }
+
+    private Set<Shift> generateShifts() {
+        // Create shifts for employees
+        Set<Shift> shifts = new HashSet<>();
+        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), LocalTime.of(21, 0)));
+        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0), LocalTime.of(21, 0)));
+        shifts.add(ShiftFactory.createShift(LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0), LocalTime.of(22, 0)));
+        return shifts;
     }
 }

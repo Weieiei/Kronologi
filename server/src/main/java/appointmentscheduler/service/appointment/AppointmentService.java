@@ -3,25 +3,34 @@ package appointmentscheduler.service.appointment;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.room.Room;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.AppointmentRepository;
+import appointmentscheduler.repository.EmployeeRepository;
+import appointmentscheduler.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Service
+@org.springframework.stereotype.Service
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final EmployeeRepository employeeRepository;
+    private final ServiceRepository serviceRepository;
 
     @Autowired
-    public AppointmentService(AppointmentRepository appointmentRepository) {
+    public AppointmentService(
+            AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ServiceRepository serviceRepository
+    ) {
         this.appointmentRepository = appointmentRepository;
+        this.employeeRepository = employeeRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     public List<Appointment> findAll() {
@@ -89,7 +98,7 @@ public class AppointmentService {
     }
 
     /**
-     * Check's to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
+     * Checks to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
      * @param appointment The appointment to validate.
      * @throws ModelValidationException If the client and employee are the same person.
      * @throws EmployeeDoesNotOfferServiceException If the employee is not assigned to the service specified.
@@ -163,5 +172,9 @@ public class AppointmentService {
         }
 
         return appointment;
+    }
+
+    public List<Employee> getAvailableEmployees(LocalDate date) {
+        return employeeRepository.findByShifts_Date(date);
     }
 }

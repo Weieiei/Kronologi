@@ -6,6 +6,8 @@ import { CustomStepperComponent } from '../../../components/custom-stepper/custo
 import { map } from 'rxjs/operators';
 import { SnackBar } from '../../../snackbar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EmployeeDTO } from '../../../interfaces/user/employee-dto';
+import { EmployeeService } from '../../../services/employee/employee.service';
 
 @Component({
     selector: 'app-reserve',
@@ -30,9 +32,12 @@ export class ReserveComponent implements OnInit {
     modifyAppointment: boolean;
     isLoaded: boolean;
 
+    employees: EmployeeDTO[];
+
     constructor(
         private appointmentService: AppointmentService,
         private serviceService: ServiceService,
+        private employeeService: EmployeeService,
         private router: Router,
         private route: ActivatedRoute,
         private snackBar: SnackBar
@@ -105,6 +110,7 @@ export class ReserveComponent implements OnInit {
     setDate(date: Date): void {
         this.date = date;
         this.stepper.next();
+        this.getAvailableEmployees();
     }
 
     setService(service: any): void {
@@ -124,6 +130,12 @@ export class ReserveComponent implements OnInit {
                     this.router.navigate(['']);
                 }
             }
+        );
+    }
+
+    getAvailableEmployees() {
+        this.employeeService.getAvailableEmployees(this.date.toLocaleDateString()).subscribe(
+            res => this.employees = res
         );
     }
 }
