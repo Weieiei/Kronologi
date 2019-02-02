@@ -34,6 +34,8 @@ export class ReserveComponent implements OnInit {
 
     employees: EmployeeDTO[];
     employee: EmployeeDTO;
+    employeeShift: any;
+    employeeAppointments: any;
 
     constructor(
         private appointmentService: AppointmentService,
@@ -149,13 +151,13 @@ export class ReserveComponent implements OnInit {
 
     getSelectedEmployeesShiftByDate() {
         this.employeeService.getSelectedEmployeesShiftByDate(this.employee.id, this.date.toLocaleDateString()).subscribe(
-            res => console.log(res)
+            res => this.employeeShift = res
         );
     }
 
     getSelectedEmployeesAppointmentsByDate() {
         this.employeeService.getSelectedEmployeesAppointmentsByDate(this.employee.id, this.date.toLocaleDateString()).subscribe(
-            res => console.log(res)
+            res => this.employeeAppointments = res
         );
     }
 }
