@@ -17,7 +17,8 @@ export class TimePickerComponent implements OnInit {
 
     minHour = 9;
     maxHour = 20;
-    quarters: string[] = ['00', '15', '30', '45'];
+    // quarters: string[] = ['00', '15', '30', '45'];
+    quarters: string[] = ['00', '30'];
 
     morningTimes: Time[];
     afterNoonTimes: Time[];
