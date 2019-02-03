@@ -37,7 +37,7 @@
     </div>
     <div *ngIf="now > appointmentStart">
         <mat-card-actions fxLayout="row" fxLayoutGap="16px">
-            <button fxFlex color="primary" mat-stroked-button>
+            <button fxFlex color="primary" mat-stroked-button (click)="review()">
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
                 <mat-icon appButtonIcon>edit</mat-icon>
                 <span>REVIEW</span>
