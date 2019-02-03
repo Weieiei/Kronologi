@@ -66,9 +66,8 @@ public class AdminController {
         return appointmentService.findAll();
     }
 
-    @PostMapping("/change_to_employee")
-    public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@RequestBody ServiceDTO serviceDTO){
-        long id = serviceDTO.getId();
+    @PostMapping("/user/employee")
+    public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@RequestAttribute long id){
         User user = this.userService.findUserByid(id);
         Set<Role> roles = user.getRoles();
         for (Role role: roles) {
@@ -83,7 +82,7 @@ public class AdminController {
     }
 
     // for assigning services to employees (employees can perform certain services)
-    @PostMapping("assign_service/{id}")
+    @PostMapping("service/{id}")
     public void assignService(@RequestAttribute long id, ServiceEntity employeeService){
         User user = this.userService.findUserByid(id);
         Set<Role> roles = user.getRoles();
@@ -104,7 +103,7 @@ public class AdminController {
     }
 
     // for adding a new service
-    @PostMapping("add_service")
+    @PostMapping("service")
     public ServiceEntity addService(@RequestBody ServiceDTO serviceDTO){
         ServiceEntity service = serviceConverter.convert(serviceDTO);
         return serviceService.add(service);

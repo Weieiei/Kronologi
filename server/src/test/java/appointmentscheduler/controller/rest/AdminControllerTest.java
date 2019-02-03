@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
@@ -57,39 +58,35 @@ public class AdminControllerTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void changeRoleToEmployee() throws Exception {
+    public void changeRoleToEmployeeTest() throws Exception {
         User mockUser = mock(User.class);
         Set<Role> roles = new HashSet<>();
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
         roles.add(employeeRole);
         when(mockUser.getRoles()).thenReturn(roles);
         when(userService.updateUser(any(User.class))).thenReturn(true);
+        when(userService.findUserByid(anyLong())).thenReturn(mockUser);
 
-        final ServiceDTO serviceDTO = new ServiceDTO();
-        serviceDTO.setId(1);
+        final String userId = "1";
 
         MvcResult result = mockMvc.perform(
-                post("/api/admin/change_to_employee/")
+                post("/api/admin/user/employee")
                         .with(request -> {
-                            request.setAttribute("userId", 2);
                             request.setAttribute("id", 1);
-                            request.setAttribute("name", "toto");
-                            request.setAttribute("duration", 99999);
                             return request;
                         })
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(serviceDTO)))
-                .andExpect(status().isOk())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
                 .andReturn();
         assertTrue(result.getResponse().getContentAsString().isEmpty());
 
         when(userService.updateUser(any(User.class))).thenReturn(false);
         result = mockMvc.perform(
-                post("/api/admin/change_to_employee")
+                post("/api/admin/user/employee")
                         .contentType(MediaType.APPLICATION_JSON).content("1"))
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
                 .andReturn();
-        Assert.assertEquals("Something went wrong while updating user, please check the server log.", result.getResponse().getContentAsString());
+        assertTrue(result.getResponse().getContentAsString().isEmpty());
     }
 
     @Test
