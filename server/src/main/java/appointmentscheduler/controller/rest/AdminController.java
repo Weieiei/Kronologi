@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -35,12 +36,14 @@ public class AdminController {
     private UserService userService;
     private RoleRepository roleRepository;
     private ServiceService serviceService;
+    private ServiceRepository serviceRepository;
 
     public AdminController(AppointmentService appointmentService, UserService userService, ServiceService serviceService, RoleRepository roleRepository, ServiceRepository serviceRepository) {
         this.appointmentService = appointmentService;
         this.userService = userService;
         this.serviceService = serviceService;
         this.roleRepository = roleRepository;
+        this.serviceRepository = serviceRepository;
 
     }
 
@@ -82,22 +85,33 @@ public class AdminController {
 
     // for assigning services to employees (employees can perform certain services)
     @PostMapping("service/{id}")
-    public void assignService(@PathVariable long id, ServiceEntity employeeService){
-        User user = this.userService.findUserByid(id);
+    public ResponseEntity<Map<String, Object>> assignService(@PathVariable long employeeId, long serviceId){
+        User user = this.userService.findUserByid(employeeId);
         Set<Role> roles = user.getRoles();
         //check if user is an employee
         if (roles.contains(this.roleRepository.findByRole(RoleEnum.EMPLOYEE))) {
             //check if the employee can already perform the service
-            if (user.getEmployeeServices().contains(employeeService)){
+            if (user.getEmployeeServices().contains(serviceRepository.findById(serviceId))){
                 System.out.println("The employee has already been assigned that service");
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
             else {
                 // assign the service
-                user.addEmployeeService(employeeService);
+                Optional<ServiceEntity> optionalService = serviceRepository.findById(serviceId);
+                if ( optionalService.isPresent() ) {
+                    user.addEmployeeService(optionalService.get());
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+                }
+                else {
+                    System.out.println("The ID provided was not a valid Service ID.");
+                    return ResponseEntity.status(HttpStatus.CONFLICT).build();
+                }
+
             }
         }
         else {
             System.out.println("The user is not an employee, and therefore cannot be assigned a service");
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
