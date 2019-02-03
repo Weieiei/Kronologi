@@ -9,9 +9,8 @@ public class ReviewDTO {
     public ReviewDTO() {
     }
 
-    public ReviewDTO(String content, long clientId, long employeeId, long serviceId, long appointmentId) {
+    public ReviewDTO(String content, long appointmentId) {
         this.content = content;
-        this.clientId = clientId;
         this.appointmentId = appointmentId;
     }
 

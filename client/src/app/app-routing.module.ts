@@ -37,7 +37,7 @@ const routes: Routes = [
             { path: 'appointments', component: AppointmentsComponent },
 
             { path: 'reserve', component: ReserveComponent },
-            { path: 'review', component: ReviewComponent },
+            { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
             {
