@@ -40,4 +40,8 @@ export class NavbarComponent implements OnInit {
     goToAdminAppointmens() {
         this.router.navigate(['admin/appts']);
     }
+
+    goToAdminServices() {
+        this.router.navigate(['admin/services']);
+    }
 }

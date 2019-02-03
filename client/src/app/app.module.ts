@@ -38,6 +38,7 @@ import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
+import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/admin-services.component";
 
 @NgModule({
     declarations: [
@@ -66,7 +67,8 @@ import { ReminderSettingsComponent } from './pages/settings/reminder-settings/re
         AutofocusDirective,
         SettingsComponent,
         AccountSettingsComponent,
-        ReminderSettingsComponent
+        ReminderSettingsComponent,
+        AdminServicesComponent
 
     ],
     imports: [

@@ -14,6 +14,7 @@ import { AdminAppointmentsComponent } from "./pages/dashboard/home/admin-appoint
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
+import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/admin-services.component";
 
 
 const routes: Routes = [
@@ -43,6 +44,7 @@ const routes: Routes = [
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
             { path: 'admin/appts', component: AdminAppointmentsComponent },
+            { path: 'admin/services', component: AdminServicesComponent },
             {
                 path: 'settings', component: SettingsComponent, children: [
                     { path: '', redirectTo: 'account', pathMatch: 'full' },

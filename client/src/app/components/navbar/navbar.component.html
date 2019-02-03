@@ -15,6 +15,7 @@
                 <mat-menu #menu="matMenu">
                     <button mat-menu-item (click)="goToSettings()">Settings</button>
                     <button mat-menu-item (click)="goToAdminAppointmens()" *ngIf="authService.isAdmin()">Appointments Management</button>
+                    <button mat-menu-item (click)="goToAdminServices()" *ngIf="authService.isAdmin()">Services</button>
                     <button mat-menu-item (click)="logout()">Logout</button>
                 </mat-menu>
             </div>
