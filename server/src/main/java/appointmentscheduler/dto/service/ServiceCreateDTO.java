@@ -1,6 +1,6 @@
 package appointmentscheduler.dto.service;
 
-public class ServiceDTO {
+public class ServiceCreateDTO {
     private long serviceId;
     private String name;
     private int duration;

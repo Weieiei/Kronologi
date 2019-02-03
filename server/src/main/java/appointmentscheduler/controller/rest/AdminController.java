@@ -1,8 +1,7 @@
 package appointmentscheduler.controller.rest;
 
-import appointmentscheduler.dto.service.ServiceDTO;
+import appointmentscheduler.dto.service.ServiceCreateDTO;
 import appointmentscheduler.converters.service.ServiceDTOToService;
-import appointmentscheduler.dto.user.UpdateEmailDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
@@ -52,12 +51,12 @@ public class AdminController {
     }
 
     @GetMapping("/client/{id}")
-    public List<Appointment> clientAppointmentList(@RequestAttribute long clientId){
+    public List<Appointment> clientAppointmentList(@PathVariable long clientId){
         return this.appointmentService.findByClientId(clientId);
     }
 
     @GetMapping("/employee/{id}")
-    public List<Appointment> employeeAppointmentList(@RequestAttribute long employeeId) {
+    public List<Appointment> employeeAppointmentList(@PathVariable long employeeId) {
         return this.appointmentService.findByEmployeeId(employeeId);
     }
 
@@ -83,7 +82,7 @@ public class AdminController {
 
     // for assigning services to employees (employees can perform certain services)
     @PostMapping("service/{id}")
-    public void assignService(@RequestAttribute long id, ServiceEntity employeeService){
+    public void assignService(@PathVariable long id, ServiceEntity employeeService){
         User user = this.userService.findUserByid(id);
         Set<Role> roles = user.getRoles();
         //check if user is an employee
@@ -104,7 +103,7 @@ public class AdminController {
 
     // for adding a new service
     @PostMapping("service")
-    public ServiceEntity addService(@RequestBody ServiceDTO serviceDTO){
+    public ServiceEntity addService(@RequestBody ServiceCreateDTO serviceDTO){
         ServiceEntity service = serviceConverter.convert(serviceDTO);
         return serviceService.add(service);
     }

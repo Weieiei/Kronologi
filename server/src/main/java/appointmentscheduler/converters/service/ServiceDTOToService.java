@@ -1,6 +1,6 @@
 package appointmentscheduler.converters.service;
 
-import appointmentscheduler.dto.service.ServiceDTO;
+import appointmentscheduler.dto.service.ServiceCreateDTO;
 import appointmentscheduler.entity.service.ServiceEntity;
 import appointmentscheduler.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +8,13 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ServiceDTOToService implements Converter<ServiceDTO, ServiceEntity> {
+public class ServiceDTOToService implements Converter<ServiceCreateDTO, ServiceEntity> {
 
     @Autowired
     private ServiceRepository serviceRepository;
 
     @Override
-    public ServiceEntity convert(ServiceDTO serviceDTO) {
+    public ServiceEntity convert(ServiceCreateDTO serviceDTO) {
         ServiceEntity service = new ServiceEntity();
 
         service.setId(serviceDTO.getId());
