@@ -25,13 +25,13 @@
         <!-- Client Column -->
         <ng-container matColumnDef="client">
             <th mat-header-cell *matHeaderCellDef> Created at </th>
-            <td mat-cell *matCellDef="let service"> {{ service.createdAt | date: 'mediumDate' }} </td>
+            <td mat-cell *matCellDef="let service"> {{ service.createdAt | date: 'short' }} </td>
         </ng-container>
 
         <!-- Employee Column -->
         <ng-container matColumnDef="employee">
             <th mat-header-cell *matHeaderCellDef> Updated at </th>
-            <td mat-cell *matCellDef="let service"> {{ service.updatedAt | date: 'mediumDate' }} </td>
+            <td mat-cell *matCellDef="let service"> {{ service.updatedAt | date: 'short' }} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -44,3 +44,7 @@
 <div *ngIf="!services?.length">
     <p>There are currently no services in the system.</p>
 </div>
+
+<button mat-fab appFabBottomRight routerLink="/admin/services/create">
+    <mat-icon>add</mat-icon>
+</button>

@@ -39,6 +39,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/admin-services.component";
+import { CreateServiceComponent } from "./pages/create-service/create-service.component";
 
 @NgModule({
     declarations: [
@@ -68,7 +69,8 @@ import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/ad
         SettingsComponent,
         AccountSettingsComponent,
         ReminderSettingsComponent,
-        AdminServicesComponent
+        AdminServicesComponent,
+        CreateServiceComponent
 
     ],
     imports: [
