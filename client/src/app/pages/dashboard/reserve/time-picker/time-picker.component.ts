@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
 import { Moment } from 'moment';
+import { ShiftDTO } from '../../../../interfaces/shift-dto/shift-dto';
+import { ServiceDTO } from '../../../../interfaces/service/service-dto';
+import { EmployeeAppointmentDTO } from '../../../../interfaces/appointment/employee-appointment-dto';
 
 interface Time {
     hour: number;
@@ -15,9 +18,9 @@ interface Time {
 })
 export class TimePickerComponent implements OnInit, OnChanges {
 
-    @Input() service: any;
-    @Input() employeeShift: any;
-    @Input() employeeAppointments: any[];
+    @Input() service: ServiceDTO;
+    @Input() employeeShift: ShiftDTO;
+    @Input() employeeAppointments: EmployeeAppointmentDTO[];
 
     @Output() timeChange = new EventEmitter();
 

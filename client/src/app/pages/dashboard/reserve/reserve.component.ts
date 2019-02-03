@@ -8,6 +8,9 @@ import { SnackBar } from '../../../snackbar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeeDTO } from '../../../interfaces/user/employee-dto';
 import { EmployeeService } from '../../../services/employee/employee.service';
+import { ShiftDTO } from '../../../interfaces/shift-dto/shift-dto';
+import { EmployeeAppointmentDTO } from '../../../interfaces/appointment/employee-appointment-dto';
+import { ServiceDTO } from '../../../interfaces/service/service-dto';
 
 @Component({
     selector: 'app-reserve',
@@ -18,7 +21,7 @@ export class ReserveComponent implements OnInit {
 
     @ViewChild('stepper') stepper: CustomStepperComponent;
 
-    service: any;
+    service: ServiceDTO;
 
     appointment;
     date: Date;
@@ -34,8 +37,8 @@ export class ReserveComponent implements OnInit {
 
     employees: EmployeeDTO[];
     employee: EmployeeDTO;
-    employeeShift: any;
-    employeeAppointments: any;
+    employeeShift: ShiftDTO;
+    employeeAppointments: EmployeeAppointmentDTO[];
 
     time: string;
 
@@ -112,7 +115,7 @@ export class ReserveComponent implements OnInit {
         );
     }*/
 
-    setService(service: any): void {
+    setService(service: ServiceDTO): void {
         this.service = service;
         this.stepper.next();
     }

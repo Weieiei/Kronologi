@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ServiceService } from '../../../../services/service/service.service';
+import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 
 @Component({
     selector: 'app-service-selection',
@@ -8,7 +9,7 @@ import { ServiceService } from '../../../../services/service/service.service';
 })
 export class ServiceSelectionComponent implements OnInit {
 
-    services = [];
+    services: ServiceDTO[] = [];
 
     @Input() serviceId?: number;
 
@@ -21,7 +22,7 @@ export class ServiceSelectionComponent implements OnInit {
         this.getServices();
     }
 
-    selectService(service: any) {
+    selectService(service: ServiceDTO) {
         this.serviceChange.emit(service);
     }
 
