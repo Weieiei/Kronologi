@@ -91,11 +91,11 @@ public class AppointmentController extends AbstractController {
         return appointmentService.cancel(id);
     }
 
-    @GetMapping(value = "/employees", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getAvailableEmployees(@RequestParam String date) {
+    @GetMapping(value = "/employees/{serviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getAvailableEmployeesByServiceAndByDate(@PathVariable long serviceId, @RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());
-        return getJson(mapper, appointmentService.getAvailableEmployees(pickedDate));
+        return getJson(mapper, appointmentService.getAvailableEmployeesByServiceAndByDate(serviceId, pickedDate));
     }
 
     @GetMapping(value = "employee/{employeeId}/shift", produces = MediaType.APPLICATION_JSON_VALUE)

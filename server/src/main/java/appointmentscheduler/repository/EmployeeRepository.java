@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByShifts_Date(LocalDate date);
+    List<Employee> findByServices_IdAndShifts_Date(long serviceId, LocalDate date);
 }

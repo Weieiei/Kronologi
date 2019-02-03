@@ -174,8 +174,8 @@ public class AppointmentService {
         return appointment;
     }
 
-    public List<Employee> getAvailableEmployees(LocalDate date) {
-        return employeeRepository.findByShifts_Date(date);
+    public List<Employee> getAvailableEmployeesByServiceAndByDate(long serviceId, LocalDate date) {
+        return employeeRepository.findByServices_IdAndShifts_Date(serviceId, date);
     }
 
     public Shift getEmployeesShiftByDate(long employeeId, LocalDate date) {

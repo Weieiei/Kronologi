@@ -112,15 +112,15 @@ export class ReserveComponent implements OnInit {
         );
     }*/
 
-    setDate(date: Date): void {
-        this.date = date;
-        this.stepper.next();
-        this.getAvailableEmployeesByDate();
-    }
-
     setService(service: any): void {
         this.service = service;
         this.stepper.next();
+    }
+
+    setDate(date: Date): void {
+        this.date = date;
+        this.stepper.next();
+        this.getAvailableEmployeesByServiceAndByDate();
     }
 
     setEmployee(employee: EmployeeDTO): void {
@@ -151,8 +151,8 @@ export class ReserveComponent implements OnInit {
         );
     }
 
-    getAvailableEmployeesByDate() {
-        this.employeeService.getAvailableEmployeesByDate(this.date.toLocaleDateString()).subscribe(
+    getAvailableEmployeesByServiceAndByDate() {
+        this.employeeService.getAvailableEmployeesByServiceAndByDate(this.service.id, this.date.toLocaleDateString()).subscribe(
             res => this.employees = res
         );
     }
