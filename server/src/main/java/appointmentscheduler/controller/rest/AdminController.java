@@ -60,10 +60,16 @@ public class AdminController {
         return this.appointmentService.findByEmployeeId(employeeId);
     }
 
+    @GetMapping("/users")
+    public List<User> getAllUsers(){
+        return userService.findAll();
+    }
+
     @GetMapping("/appointments")
     public List<Appointment> getAllAppointments(){
         return appointmentService.findAll();
     }
+
 
     @PostMapping("/user/employee")
     public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@RequestAttribute long id){

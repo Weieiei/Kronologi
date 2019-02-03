@@ -9,6 +9,7 @@ import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
 import { SettingsDTO } from '../../interfaces/settings/settings-dto';
 import { UpdateSettingsDTO } from '../../interfaces/settings/update-settings-dto';
 import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
+import { User } from "../../models/user/User";
 
 
 @Injectable({
@@ -101,5 +102,9 @@ export class UserService {
     updatePhoneNumber(payload: PhoneNumberDTO): Observable<any> {
         return this.http.post(['api', 'user', 'phone'].join('/'), payload);
 
+    }
+
+    getAllUsers(): Observable<any[]> {
+        return this.http.get<any[]>(['api', 'admin', 'users'].join('/'));
     }
 }

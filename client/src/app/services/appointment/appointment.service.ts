@@ -23,7 +23,8 @@ export class AppointmentService {
     public reserveAppointment(appointment: AppointmentToBook): Observable<any> {
         return this.http.post<AppointmentToBook>(['api', 'user', 'appointments'].join('/'), appointment);
     }
-  public getMyAppointmentsEmployee(): Observable<AppointmentDetail[]> {
+
+    public getMyAppointmentsEmployee(): Observable<AppointmentDetail[]> {
         return this.http.get<AppointmentDetail[]>(['api', 'appointments', 'current_employee'].join('/'));
-   }
+    }
 }

@@ -40,6 +40,7 @@ import { AccountSettingsComponent } from './pages/settings/account-settings/acco
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/admin-services.component";
 import { CreateServiceComponent } from "./pages/create-service/create-service.component";
+import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-users.component";
 
 @NgModule({
     declarations: [
@@ -70,8 +71,8 @@ import { CreateServiceComponent } from "./pages/create-service/create-service.co
         AccountSettingsComponent,
         ReminderSettingsComponent,
         AdminServicesComponent,
-        CreateServiceComponent
-
+        CreateServiceComponent,
+        AdminUsersComponent
     ],
     imports: [
         BrowserModule,
