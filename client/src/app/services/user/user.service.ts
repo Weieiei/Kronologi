@@ -10,7 +10,6 @@ import { SettingsDTO } from '../../interfaces/settings/settings-dto';
 import { UpdateSettingsDTO } from '../../interfaces/settings/update-settings-dto';
 import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
 
-
 @Injectable({
     providedIn: 'root'
 })
@@ -63,15 +62,24 @@ export class UserService {
         localStorage.removeItem(UserService.TOKEN_KEY);
     }
 
+    getTokenClaims() {
+        try {
+            return decode(this.getToken());
+        } catch (e) {
+            return null;
+        }
+    }
+
+    getRolesFromToken(): string[] {
+        try {
+            return this.getTokenClaims()['roles'].split(',');
+        } catch (e) {
+            return null;
+        }
+    }
 
     isEmployee(): boolean {
-        const token = this.getToken();
-        const employeeObj = decode(token);
-        if (employeeObj['roles'] === 'EMPLOYEE') {
-            return true;
-        } else {
-            return false;
-        }
+        return this.getRolesFromToken().includes('EMPLOYEE');
     }
 
     updateEmail(payload: UpdateEmailDTO): Observable<any> {
