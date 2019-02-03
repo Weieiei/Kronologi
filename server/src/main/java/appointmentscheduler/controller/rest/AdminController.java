@@ -1,6 +1,7 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
+import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.service.employee.EmployeeShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,14 +33,9 @@ public class AdminController {
     }
 
     @PostMapping("/employee/{employeeId}/shift")
-    public String createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) throws IOException, MessagingException {
-        try {
-            employeeShiftDTO.setEmployeeId(employeeId);
-            return employeeShiftService.createShfit(employeeShiftDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.CONFLICT).build().toString();
-        }
+    public Shift createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) throws IOException, MessagingException {
+        employeeShiftDTO.setEmployeeId(employeeId);
+        return employeeShiftService.createShfit(employeeShiftDTO);
     }
 
 }

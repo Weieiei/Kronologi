@@ -24,15 +24,12 @@ public class EmployeeShiftService {
         this.userRepository = userRepository;
     }
 
-    public String createShfit(EmployeeShiftDTO employeeShiftDTO) {
+    public Shift createShfit(EmployeeShiftDTO employeeShiftDTO) {
         Optional<User> userList = userRepository.findById(employeeShiftDTO.getEmployeeId());
         User employee = userList.get();
-        LocalDate localDate = LocalDate.of(employeeShiftDTO.getYear(), employeeShiftDTO.getMonth(), employeeShiftDTO.getDay());
-        LocalTime startTime = LocalTime.of(employeeShiftDTO.getStartHour(), employeeShiftDTO.getStartMinute());
-        LocalTime endTime = LocalTime.of(employeeShiftDTO.getEndHour(), employeeShiftDTO.getEndMinute());
 
-        Shift shift = new Shift(employee,localDate, startTime, endTime);
+        Shift shift = new Shift(employee,employeeShiftDTO.getDate(), employeeShiftDTO.getStartTime(), employeeShiftDTO.getEndTime());
         shiftRepository.save(shift);
-        return "Shift sucessfully added";
+        return shift;
     }
 }

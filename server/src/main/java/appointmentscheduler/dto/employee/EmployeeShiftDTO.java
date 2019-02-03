@@ -1,5 +1,8 @@
 package appointmentscheduler.dto.employee;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class EmployeeShiftDTO {
 
     private long employeeId;
@@ -41,6 +44,18 @@ public class EmployeeShiftDTO {
 
     public int getEndMinute() {
         return endMinute;
+    }
+
+    public LocalDate getDate() {
+        return LocalDate.of(this.getYear(), this.getMonth(), this.getDay());
+    }
+
+    public LocalTime getStartTime() {
+        return LocalTime.of(this.getStartHour(), this.getStartMinute());
+    }
+
+    public LocalTime getEndTime() {
+        return LocalTime.of(this.getEndHour(), this.getEndMinute());
     }
 
     public void setEmployeeId(long employeeId) {
