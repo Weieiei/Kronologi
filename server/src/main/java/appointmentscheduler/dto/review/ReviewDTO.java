@@ -3,10 +3,8 @@ package appointmentscheduler.dto.review;
 public class ReviewDTO {
 
     private String content;
-    private long clientId;
-    private long employeeId;
-    private long serviceId;
     private long appointmentId;
+    private long clientId;
 
     public ReviewDTO() {
     }
@@ -14,8 +12,6 @@ public class ReviewDTO {
     public ReviewDTO(String content, long clientId, long employeeId, long serviceId, long appointmentId) {
         this.content = content;
         this.clientId = clientId;
-        this.employeeId = employeeId;
-        this.serviceId = serviceId;
         this.appointmentId = appointmentId;
     }
 
@@ -39,23 +35,7 @@ public class ReviewDTO {
         this.clientId = clientId;
     }
 
-    public long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(long employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public long getServiceId() {
-        return serviceId;
-    }
-
-    public void setServiceId(long serviceId) {
-        this.serviceId = serviceId;
-    }
-
-    public long getAppointmentId() {
+  public long getAppointmentId() {
         return appointmentId;
     }
 

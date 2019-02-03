@@ -2,7 +2,6 @@ package appointmentscheduler.entity.review;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.appointment.Appointment;
-import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -24,27 +23,15 @@ public class Review extends AuditableEntity {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private User client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id", nullable = false)
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private User employee;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id", nullable = false)
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Service service;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_id", nullable = false)
     private Appointment appointment;
 
     public Review(){ }
 
-    public Review(String content, User client, User employee, Service service, Appointment appointment) {
+    public Review(String content, User client, Appointment appointment) {
         this.content = content;
         this.client = client;
-        this.employee = employee;
-        this.service = service;
         this.appointment = appointment;
     }
 
@@ -64,28 +51,12 @@ public class Review extends AuditableEntity {
         this.content = content;
     }
 
-    public User getCustomer() {
+    public User getClient() {
         return client;
     }
 
-    public void setCustomer(User customer) {
+    public void setClient(User customer) {
         this.client = customer;
-    }
-
-    public User getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(User employee) {
-        this.employee = employee;
-    }
-
-    public Service getService() {
-        return service;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
     }
 
     public Appointment getAppointment() {

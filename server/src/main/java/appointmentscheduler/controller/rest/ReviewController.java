@@ -6,6 +6,7 @@ import appointmentscheduler.entity.review.Review;
 import appointmentscheduler.service.review.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class ReviewController extends IRestController<Review, ReviewDTO>{
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CLIENT')")
     public Review add(@RequestBody ReviewDTO reviewDTO) {
         reviewDTO.setClientId(getUserId());
         Review review = reviewConverter.convert(reviewDTO);
