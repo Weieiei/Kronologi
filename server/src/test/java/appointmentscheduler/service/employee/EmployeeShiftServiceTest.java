@@ -13,6 +13,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -58,5 +60,32 @@ public class EmployeeShiftServiceTest {
         assertEquals(localDate, createdShift.getDate());
         assertEquals(startTime, createdShift.getStartTime());
         assertEquals(endTime, createdShift.getEndTime());
+    }
+
+    @Test
+    public void getEmployeeShifts() {
+        final Shift mockedShift1 = mock(Shift.class);
+        final Shift mockedShift2 = mock(Shift.class);
+        final List<Shift> shifts = new ArrayList<>();
+        List<Shift> employeeShifts;
+
+        when(mockedShift1.getId()).thenReturn((long) 1);
+        when(mockedShift2.getId()).thenReturn((long) 2);
+
+        shifts.add(mockedShift1);
+        shifts.add(mockedShift2);
+
+        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(shifts);
+
+        employeeShifts = employeeShiftService.getEmployeeShifts(1);
+
+        assertEquals(shifts.size(), employeeShifts.size());
+        assertEquals(shifts.get(0).getId(), employeeShifts.get(0).getId());
+        assertEquals(shifts.get(1).getId(), employeeShifts.get(1).getId());
+
+    }
+
+    @Test
+    public void deleteShift() {
     }
 }
