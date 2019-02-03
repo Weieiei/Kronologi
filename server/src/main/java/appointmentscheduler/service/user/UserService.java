@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -110,6 +111,10 @@ public class UserService {
 
     public User findUserByid(long id) {
         return userRepository.findById(id).orElseThrow(() -> new UserDoesNotExistException("User id: " + id + " does not exist."));
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     public boolean updateUser(User user) {
