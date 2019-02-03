@@ -42,7 +42,10 @@ public class AppointmentService {
         // Right now this is void return type because it will throw exceptions if it doesn't work.
         // It will never reach the return statement if it fails any of the checks.
         // If this returns a boolean, then what do I return if the boolean is false?
-        validate(appointment);
+
+        // Throwing exception is nice because then you can display the http error message to the user, indicating where
+        // the validation went wrong
+        validate(appointment, false);
 
         return appointmentRepository.save(appointment);
     }
@@ -57,6 +60,8 @@ public class AppointmentService {
             a.setStartTime(appointment.getStartTime());
             a.setEndTime(appointment.getEndTime());
             a.setNotes(appointment.getNotes());
+
+            validate(a, true);
 
             return appointmentRepository.save(a);
 
@@ -77,20 +82,10 @@ public class AppointmentService {
 
     }
 
-    public ResponseEntity<?> delete(long id) {
-
-        return appointmentRepository.findById(id).map(a -> {
-
-            appointmentRepository.delete(a);
-            return ResponseEntity.ok().build();
-
-        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
-
-    }
-
     /**
      * Checks to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
      * @param appointment The appointment to validate.
+     * @param modifying Whether or not it's an appointment being modified.
      * @throws ModelValidationException If the client and employee are the same person.
      * @throws EmployeeDoesNotOfferServiceException If the employee is not assigned to the service specified.
      * @throws EmployeeNotWorkingException If the employee does not have a shift on the date specified.
@@ -98,7 +93,7 @@ public class AppointmentService {
      * @throws ClientAppointmentConflictException If the client is already booked on the date and time specified.
      * @throws NoRoomAvailableException If there are no rooms available to perform the service specified.
      */
-    private void validate(Appointment appointment) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
+    private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
         final Employee employee = appointment.getEmployee();
 
         // Make sure the client and employee are not the same
@@ -124,7 +119,7 @@ public class AppointmentService {
         List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndStatus(appointment.getDate(), employee.getId(), AppointmentStatus.CONFIRMED);
 
         for (Appointment employeeAppointment : employeeAppointments) {
-            if (employeeAppointment.isConflicting(appointment)) {
+            if (employeeAppointment.isConflicting(appointment) && !(modifying && employeeAppointment.equals(appointment))) {
                 throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee.");
             }
         }
@@ -133,7 +128,7 @@ public class AppointmentService {
         List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndStatus(appointment.getDate(), appointment.getClient().getId(), AppointmentStatus.CONFIRMED);
 
         for (Appointment clientAppointment : clientAppointments) {
-            if (clientAppointment.isConflicting(appointment)) {
+            if (clientAppointment.isConflicting(appointment) && !(modifying && clientAppointment.equals(appointment))) {
                 throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
             }
         }
@@ -143,7 +138,7 @@ public class AppointmentService {
 
         Set<Room> roomSet = new HashSet<>(appointment.getService().getRooms());
         for (Appointment a : allAppointmentsOnDate) {
-            if (a.isConflicting(appointment) && !roomSet.isEmpty()) {
+            if (a.isConflicting(appointment) && !roomSet.isEmpty() && !(modifying && a.equals(appointment))) {
                 for (Room room : a.getService().getRooms()) {
                     roomSet.remove(room);
                 }

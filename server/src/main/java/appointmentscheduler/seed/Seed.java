@@ -21,7 +21,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -192,7 +191,7 @@ public class Seed {
     private Set<Shift> generateShifts(Employee employee) {
         // Create shifts for employee
         Set<Shift> shifts = new HashSet<>();
-        shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), LocalTime.of(21, 0)));
+        shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), LocalTime.of(22, 0)));
         shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0), LocalTime.of(21, 0)));
         shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0), LocalTime.of(22, 0)));
         return shifts;

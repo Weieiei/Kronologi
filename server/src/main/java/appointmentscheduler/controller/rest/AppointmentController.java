@@ -24,7 +24,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @RestController
-@RequestMapping("/${rest.api.path}/appointments")
+@RequestMapping(value = "/${rest.api.path}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentController extends AbstractController {
 
     private final AppointmentService appointmentService;
@@ -52,8 +52,7 @@ public class AppointmentController extends AbstractController {
         this.objectMapperFactory = objectMapperFactory;
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> add(@RequestBody AppointmentDTO appointmentDTO) {
+    private Appointment mapAppointmentDTOToAppointment(AppointmentDTO appointmentDTO) {
         Appointment appointment = modelMapper.map(appointmentDTO, Appointment.class);
 
         User client = userRepository.findById(getUserId()).orElseThrow(ResourceNotFoundException::new);
@@ -65,14 +64,21 @@ public class AppointmentController extends AbstractController {
         Service service = serviceRepository.findById(appointmentDTO.getServiceId()).orElseThrow(ResourceNotFoundException::new);
         appointment.setService(service);
 
+        return appointment;
+    }
+
+    @PostMapping
+    public ResponseEntity<String> add(@RequestBody AppointmentDTO appointmentDTO) {
+        Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         return getJson(mapper, appointmentService.add(appointment));
     }
 
     @PutMapping("/{id}")
-    public Appointment update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) {
-        // todo not implemented
-        return null;
+    public ResponseEntity<String> update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) {
+        Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+        return getJson(mapper, appointmentService.update(id, appointment));
     }
 
     @DeleteMapping("/{id}")
@@ -80,21 +86,21 @@ public class AppointmentController extends AbstractController {
         return appointmentService.cancel(id);
     }
 
-    @GetMapping(value = "/employees/{serviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/employees/{serviceId}")
     public ResponseEntity<String> getAvailableEmployeesByServiceAndByDate(@PathVariable long serviceId, @RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());
         return getJson(mapper, appointmentService.getAvailableEmployeesByServiceAndByDate(serviceId, pickedDate));
     }
 
-    @GetMapping(value = "employee/{employeeId}/shift", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("employee/{employeeId}/shift")
     public ResponseEntity<String> getEmployeesShift(@PathVariable long employeeId, @RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new ShiftSerializer());
         return getJson(mapper, appointmentService.getEmployeesShiftByDate(employeeId, pickedDate));
     }
 
-    @GetMapping(value = "employee/{employeeId}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("employee/{employeeId}/appointments")
     public ResponseEntity<String> getEmployeesConfirmedAppointments(@PathVariable long employeeId, @RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new EmployeeAppointmentSerializer());
