@@ -21,6 +21,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
 
     @Output() timeChange = new EventEmitter();
 
+    timeFormat = 'hh:mm';
     minHour = 8;
     maxHour = 20;
     incrementBy = 30;
@@ -78,40 +79,53 @@ export class TimePickerComponent implements OnInit, OnChanges {
     }
 
     isValid(t: string): boolean {
-        const format = 'hh:mm';
-        const time = moment(t, format);
+        const time = moment(t, this.timeFormat);
 
-        const isBetweenShift = this.isBetweenShift(format, time);
-
-        let isDuringAnAppointment: boolean;
-        if (isBetweenShift) {
-            isDuringAnAppointment = this.isDuringAnAppointment(format, time);
+        if (!this.isWithinShift(time)) {
+            return false;
         }
 
-        // let canFitServiceIntoEmployeesSchedule: boolean;
-        // if (isBetweenShift && !isDuringAnAppointment) {
-        //     canFitServiceIntoEmployeesSchedule = this.canFitServiceIntoEmployeesSchedule(format, time);
-        // }
+        if (this.isDuringAnAppointment(time)) {
+            return false;
+        }
 
-        return isBetweenShift && !isDuringAnAppointment;
+        return this.canFitServiceIntoEmployeesSchedule(time);
+
     }
 
-    isBetweenShift(format: string, time: Moment): boolean {
-        const startTime = moment(this.employeeShift.startTime, format);
-        const endTime = moment(this.employeeShift.endTime, format);
-        return time.isBetween(startTime, endTime) || time.isSame(startTime);
+    isWithinShift(time: Moment): boolean {
+        const startTime = moment(this.employeeShift.startTime, this.timeFormat);
+        const endTime = moment(this.employeeShift.endTime, this.timeFormat);
+        return time.isBetween(startTime, endTime) || time.isSame(startTime) || time.isSame(endTime);
     }
 
-    isDuringAnAppointment(format: string, time: Moment): boolean {
+    isDuringAnAppointment(time: Moment): boolean {
         return this.employeeAppointments.some(appointment => {
-            const startTime = moment(appointment.startTime, format);
-            const endTime = moment(appointment.endTime, format);
+            const startTime = moment(appointment.startTime, this.timeFormat);
+            const endTime = moment(appointment.endTime, this.timeFormat);
             return time.isBetween(startTime, endTime) || time.isSame(startTime);
         });
     }
 
-    canFitServiceIntoEmployeesSchedule(format: string, time: Moment): boolean {
-        return;
+    canFitServiceIntoEmployeesSchedule(time: Moment): boolean {
+        let duration = this.service.duration;
+        while (duration !== 0) {
+
+            // 5 because the greatest common divisor of service durations is 5
+            time.add(5, 'm');
+
+            if (!this.isWithinShift(time)) {
+                return false;
+            }
+
+            if (this.isDuringAnAppointment(time)) {
+                return false;
+            }
+
+            duration -= 5;
+        }
+
+        return true;
     }
 
 }
