@@ -6,7 +6,6 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { ReserveComponent } from './pages/dashboard/reserve/reserve.component';
-import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SettingsComponent } from './pages/settings/settings.component';
@@ -30,17 +29,15 @@ const routes: Routes = [
             // Home page
             { path: '', component: HomeComponent },
 
-            // Appointments
-            { path: 'appointments', component: AppointmentsComponent },
-
+            // Reserving and modifying reservation
             {
                 path: 'reserve', children: [
                     { path: '', component: ReserveComponent, data: { edit: false } },
                     { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
                 ]
             },
-            { path: 'my/appts', component: AppointmentsComponent },
-            { path: 'add/employee', component: RegisterComponent },
+
+            // User settings
             {
                 path: 'settings', component: SettingsComponent, children: [
                     { path: '', redirectTo: 'account', pathMatch: 'full' },

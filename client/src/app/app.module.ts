@@ -47,7 +47,6 @@ import { NotesAndReserveComponent } from './pages/dashboard/reserve/notes-and-re
         NavbarComponent,
         RegisterComponent,
         HomeComponent,
-        AppointmentsComponent,
         LoginComponent,
         ReserveComponent,
         AppointmentsComponent,
