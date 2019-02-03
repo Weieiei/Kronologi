@@ -1,6 +1,7 @@
 package appointmentscheduler.service.employee;
 
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.repository.ShiftRepository;
@@ -162,15 +163,18 @@ public class EmployeeShiftServiceTest {
         final User employee1 = mock(User.class);
         final User employee2 = mock(User.class);
 
+        employees.add(employee1);
+        employees.add(employee2);
+
         when(employee1.getId()).thenReturn((long) 1);
         when(employee2.getId()).thenReturn((long) 2);
 
-        userRepository.saveAll(employees);
+        when(userRepository.findByRoles_Role(RoleEnum.EMPLOYEE)).thenReturn(employees);
 
         retrievedEmployees = employeeShiftService.getEmployees();
 
         assertEquals(employees.size(), retrievedEmployees.size());
-//        assertEquals(1, retrievedEmployees.get(0).getId());
-//        assertEquals(2, retrievedEmployees.get(1).getId());
+        assertEquals(1, retrievedEmployees.get(0).getId());
+        assertEquals(2, retrievedEmployees.get(1).getId());
     }
 }
