@@ -1,4 +1,4 @@
-export interface ServiceDTO {
+export interface ServiceCreateDto {
     id: number;
     name: string;
     duration: number;

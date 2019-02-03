@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ServiceService } from "../../services/service/service.service";
-import {ServiceDTO} from "../../interfaces/service/service-dto";
+import {ServiceCreateDto} from "../../interfaces/service/service-create-d-t-o";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -43,7 +43,7 @@ export class CreateServiceComponent implements OnInit {
 
     createService() {
         console.log('Called');
-        const serviceCreateDTO: ServiceDTO = {
+        const serviceCreateDTO: ServiceCreateDto = {
             id: 0,
             name: this.serviceForm.value.name,
             duration: this.serviceForm.value.duration
