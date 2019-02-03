@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @RestController
 @RequestMapping("/${rest.api.path}/appointments")
@@ -51,16 +50,6 @@ public class AppointmentController extends AbstractController {
             }
         });
         this.objectMapperFactory = objectMapperFactory;
-    }
-
-    @GetMapping
-    public List<Appointment> findAll() {
-        return appointmentService.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public Appointment findById(@PathVariable long id) {
-        return appointmentService.findById(id);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)

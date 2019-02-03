@@ -33,15 +33,6 @@ public class AppointmentService {
         this.shiftRepository = shiftRepository;
     }
 
-    public List<Appointment> findAll() {
-        return appointmentRepository.findAll();
-    }
-
-    public Appointment findById(long id) {
-        return appointmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
-    }
-
     public List<Appointment> findByClientId(long id){
         return appointmentRepository.findByClientId(id);
     }

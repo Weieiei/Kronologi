@@ -24,7 +24,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
 
     @Output() timeChange = new EventEmitter();
 
-    timeFormat = 'hh:mm';
+    timeFormat = 'HH:mm';
     minHour = 8;
     maxHour = 20;
     incrementBy = 30;
@@ -77,7 +77,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
 
     selectTime(time: Time) {
         if (time.enabled) {
-            this.timeChange.emit(`${time.hour}:${time.minute}`);
+            this.timeChange.emit(`${time.hour}:${time.minute < 10 ? '0' + time.minute : time.minute}`);
         }
     }
 

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
 import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
+import { BookAppointmentDTO } from '../../interfaces/appointment/book-appointment-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -26,5 +27,9 @@ export class AppointmentService {
 
     public getAppointmentById(id: number): Observable<any> {
         return this.http.get(['api', 'user', 'appointments', id].join('/'));
+    }
+
+    public bookAppointment(payload: BookAppointmentDTO): Observable<any> {
+        return this.http.post(['api', 'appointments'].join('/'), payload);
     }
 }

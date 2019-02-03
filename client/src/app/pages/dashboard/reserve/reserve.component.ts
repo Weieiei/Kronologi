@@ -11,6 +11,8 @@ import { EmployeeService } from '../../../services/employee/employee.service';
 import { ShiftDTO } from '../../../interfaces/shift-dto/shift-dto';
 import { EmployeeAppointmentDTO } from '../../../interfaces/appointment/employee-appointment-dto';
 import { ServiceDTO } from '../../../interfaces/service/service-dto';
+import { BookAppointmentDTO } from '../../../interfaces/appointment/book-appointment-dto';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-reserve',
@@ -29,7 +31,6 @@ export class ReserveComponent implements OnInit {
 
     employeeId: number;
     serviceId: number;
-    startTime: Date;
     notes: string;
 
     modifyAppointment: boolean;
@@ -40,7 +41,7 @@ export class ReserveComponent implements OnInit {
     employeeShift: ShiftDTO;
     employeeAppointments: EmployeeAppointmentDTO[];
 
-    time: string;
+    startTime: string;
 
     constructor(
         private appointmentService: AppointmentService,
@@ -87,34 +88,6 @@ export class ReserveComponent implements OnInit {
         });
     }
 
-    /*getServices() {
-        this.serviceService.getServices().subscribe(
-            res => this.services = res,
-            err => console.log(err)
-        );
-    }
-
-    private findServiceById(id: number): Service {
-        return this.services.find(service => service.getId() === id);
-    }
-
-    updateEndTime() {
-        if (this.appointment.getServiceId() !== undefined && this.startTime !== undefined) {
-            const service: Service = this.findServiceById(this.appointment.getServiceId());
-            const date = moment('2012-12-12 ' + this.startTime).add(service.getDuration(), 'm');
-            this.endTime = date.format('HH:mm:ss');
-        }
-    }
-
-    makeAppointment(): void {
-        const date = moment(this.date).format('YYYY-MM-DD');
-        this.appointment.setStartTime(new Date(moment(date + ' ' + this.startTime).format('YYYY-MM-DD HH:mm:ss')));
-        this.appointmentService.reserveAppointment(this.appointment).subscribe(
-            res => this.router.navigate(['/my/appts']),
-            err => console.log(err)
-        );
-    }*/
-
     setService(service: ServiceDTO): void {
         this.service = service;
         this.stepper.next();
@@ -134,8 +107,8 @@ export class ReserveComponent implements OnInit {
     }
 
     setTime(time: string): void {
-        // this.date = new Date(this.date.toLocaleDateString() + ' ' + time);
-        this.time = time;
+        this.startTime = time;
+        this.endTime = moment(this.startTime, 'HH:mm').add(this.service.duration, 'm').format('HH:mm');
         this.stepper.next();
     }
 
@@ -171,4 +144,27 @@ export class ReserveComponent implements OnInit {
             res => this.employeeAppointments = res
         );
     }
+
+    reserve() {
+
+        const year = this.date.getFullYear();
+        const month = this.date.getMonth() + 1;
+        const day = this.date.getDate();
+
+        const appointmentDate = `${year}-${month < 10 ? '0' + month : month}-${day}`;
+
+        const payload: BookAppointmentDTO = {
+            employeeId: this.employee.id,
+            serviceId: this.service.id,
+            date: appointmentDate,
+            startTime: this.startTime,
+            notes: this.notes
+        };
+
+        this.appointmentService.bookAppointment(payload).subscribe(
+            res => console.log(res)
+        );
+
+    }
+
 }

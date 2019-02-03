@@ -15,6 +15,8 @@
         <div>The date you chose: {{ date?.toLocaleDateString() }}</div>
         <div>The service you chose: {{ service?.name }}</div>
         <div>The employee you chose: {{ employee?.firstName + ' ' + employee?.lastName }}</div>
-        <div>The time you chose: {{ time }}</div>
+        <div>The time you chose: {{ startTime }}</div>
+        <div>Your appointment will end at: {{ endTime }}</div>
+        <button mat-button (click)="reserve()">Reserve</button>
     </cdk-step>
 </app-custom-stepper>
