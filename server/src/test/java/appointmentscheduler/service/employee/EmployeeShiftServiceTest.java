@@ -154,4 +154,23 @@ public class EmployeeShiftServiceTest {
 
         assertNull(modifiedShift);
     }
+
+    @Test
+    public void getAllEmployees() {
+        List<User> employees = new ArrayList<>();
+        List<User> retrievedEmployees;
+        final User employee1 = mock(User.class);
+        final User employee2 = mock(User.class);
+
+        when(employee1.getId()).thenReturn((long) 1);
+        when(employee2.getId()).thenReturn((long) 2);
+
+        userRepository.saveAll(employees);
+
+        retrievedEmployees = employeeShiftService.getEmployees();
+
+        assertEquals(employees.size(), retrievedEmployees.size());
+//        assertEquals(1, retrievedEmployees.get(0).getId());
+//        assertEquals(2, retrievedEmployees.get(1).getId());
+    }
 }
