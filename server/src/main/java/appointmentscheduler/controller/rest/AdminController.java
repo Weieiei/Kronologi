@@ -2,6 +2,7 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
 import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.entity.user.User;
 import appointmentscheduler.service.employee.EmployeeShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,12 @@ public class AdminController {
     public String areYouAnAdmin(@RequestAttribute long userId) {
         return String.format("You are an admin, your id is %d.", userId);
     }
+
+    @GetMapping("/employee")
+    public  List<User> getEmployees() {
+        return employeeShiftService.getEmployees();
+    }
+
 
     @GetMapping("/employee/{employeeId}")
     public List<Shift> getEmployeeShifts(@PathVariable long employeeId) {

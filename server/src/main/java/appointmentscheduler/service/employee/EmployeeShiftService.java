@@ -1,6 +1,7 @@
 package appointmentscheduler.service.employee;
 
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.repository.ShiftRepository;
@@ -23,6 +24,10 @@ public class EmployeeShiftService {
     EmployeeShiftService(ShiftRepository shiftRepository, UserRepository userRepository) {
         this.shiftRepository = shiftRepository;
         this.userRepository = userRepository;
+    }
+
+    public List<User> getEmployees() {
+        return userRepository.findByRoles_Role(RoleEnum.EMPLOYEE);
     }
 
     public Shift createShift(EmployeeShiftDTO employeeShiftDTO) {
