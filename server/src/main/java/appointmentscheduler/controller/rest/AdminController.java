@@ -90,7 +90,7 @@ public class AdminController {
     }
 
     // for assigning services to employees (employees can perform certain services)
-    @PostMapping("service/{id}")
+    @PostMapping("service/{employeeId}/{serviceId}")
     public ResponseEntity<Map<String, Object>> assignService(@PathVariable long employeeId, long serviceId){
         User user = this.userService.findUserByid(employeeId);
         Set<Role> roles = user.getRoles();
@@ -104,7 +104,7 @@ public class AdminController {
             else {
                 // assign the service
                 Optional<ServiceEntity> optionalService = serviceRepository.findById(serviceId);
-                if ( optionalService.isPresent() ) {
+                if (optionalService.isPresent()) {
                     user.addEmployeeService(optionalService.get());
                     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
                 }
