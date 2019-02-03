@@ -15,7 +15,7 @@ interface Time {
 export class TimePickerComponent implements OnInit, OnChanges {
 
     @Input() employeeShift: any;
-    @Input() employeeAppointments: any;
+    @Input() employeeAppointments: any[];
 
     @Output() timeChange = new EventEmitter();
 
@@ -35,7 +35,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        if (this.employeeShift) {
+        if (this.employeeShift && this.employeeAppointments) {
             this.generateTimes();
         }
     }
@@ -48,21 +48,21 @@ export class TimePickerComponent implements OnInit, OnChanges {
 
         for (let i = this.minHour; i <= 11; i++) {
             this.quarters.forEach(quarter => {
-                const enabled = this.isBetweenShiftTimes(`${i}:${quarter}`);
+                const enabled = this.isValid(`${i}:${quarter}`);
                 this.morningTimes.push({ hour: i, minute: quarter, enabled });
             });
         }
 
         for (let i = 12; i <= 16; i++) {
             this.quarters.forEach(quarter => {
-                const enabled = this.isBetweenShiftTimes(`${i}:${quarter}`);
+                const enabled = this.isValid(`${i}:${quarter}`);
                 this.afterNoonTimes.push({ hour: i, minute: quarter, enabled });
             });
         }
 
         for (let i = 17; i <= this.maxHour; i++) {
             this.quarters.forEach(quarter => {
-                const enabled = this.isBetweenShiftTimes(`${i}:${quarter}`);
+                const enabled = this.isValid(`${i}:${quarter}`);
                 this.eveningTimes.push({ hour: i, minute: quarter, enabled });
             });
         }
@@ -75,14 +75,22 @@ export class TimePickerComponent implements OnInit, OnChanges {
         }
     }
 
-    isBetweenShiftTimes(t: string): boolean {
+    isValid(t: string): boolean {
         const format = 'hh:mm';
 
         const time = moment(t, format);
-        const startTime = moment(this.employeeShift.startTime, format);
-        const endTime = moment(this.employeeShift.endTime, format);
+        let startTime = moment(this.employeeShift.startTime, format);
+        let endTime = moment(this.employeeShift.endTime, format);
 
-        return time.isBetween(startTime, endTime) || time.isSame(startTime);
+        const isBetweenShift = time.isBetween(startTime, endTime) || time.isSame(startTime);
+
+        const isDuringAnAppointment = this.employeeAppointments.some(appointment => {
+            startTime = moment(appointment.startTime, format);
+            endTime = moment(appointment.endTime, format);
+            return time.isBetween(startTime, endTime) || time.isSame(startTime);
+        });
+
+        return isBetweenShift && !isDuringAnAppointment;
     }
 
 }
