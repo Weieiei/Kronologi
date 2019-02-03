@@ -12,11 +12,6 @@
         <app-time-picker (timeChange)="setTime($event)" [service]="service" [employeeShift]="employeeShift" [employeeAppointments]="employeeAppointments"></app-time-picker>
     </cdk-step>
     <cdk-step>
-        <div>The date you chose: {{ date?.toLocaleDateString() }}</div>
-        <div>The service you chose: {{ service?.name }}</div>
-        <div>The employee you chose: {{ employee?.firstName + ' ' + employee?.lastName }}</div>
-        <div>The time you chose: {{ startTime }}</div>
-        <div>Your appointment will end at: {{ endTime }}</div>
-        <button mat-button (click)="reserve()">Reserve</button>
+        <app-notes-and-reserve (noteChange)="setNotesAndReserve($event)"></app-notes-and-reserve>
     </cdk-step>
 </app-custom-stepper>

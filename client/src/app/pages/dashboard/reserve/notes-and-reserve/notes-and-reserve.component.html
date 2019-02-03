@@ -1,0 +1,22 @@
+<div class="notes-and-reserve-container">
+
+    <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2rem">
+
+        <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center">
+            <h5>Almost there! Feel free to leave a note.</h5>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="65" fxFlex.lt-sm="90">
+                <mat-label>Note (optional)</mat-label>
+                <textarea matInput [(ngModel)]="notes" type="text" name="note" [rows]="7"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" class="submit-button-container" fxLayoutAlign="center">
+            <button mat-raised-button color="primary" type="button" fxFlex="20" fxFlex.lt-sm="90" (click)="setNotesAndReserve()">Reserve</button>
+        </div>
+
+    </div>
+
+</div>

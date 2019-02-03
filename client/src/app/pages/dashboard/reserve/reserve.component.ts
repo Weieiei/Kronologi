@@ -112,6 +112,11 @@ export class ReserveComponent implements OnInit {
         this.stepper.next();
     }
 
+    setNotesAndReserve(notes: string) {
+        this.notes = notes;
+        this.reserve();
+    }
+
     getAppointmentById(id: number) {
         this.appointmentService.getAppointmentById(id).subscribe(
             res => {
@@ -163,7 +168,7 @@ export class ReserveComponent implements OnInit {
 
         this.appointmentService.bookAppointment(payload).subscribe(
             res => {
-                this.snackBar.openSnackBarSuccess('Successfully booked an appointment!');
+                this.snackBar.openSnackBarSuccess('You\'ve successfully booked your appointment!');
                 this.router.navigate(['']);
             },
             err => {
@@ -174,5 +179,4 @@ export class ReserveComponent implements OnInit {
         );
 
     }
-
 }

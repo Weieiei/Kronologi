@@ -39,6 +39,7 @@ import { ReminderSettingsComponent } from './pages/settings/reminder-settings/re
 import { EmployeePickerComponent } from './pages/dashboard/reserve/employee-picker/employee-picker.component';
 import { ServiceSelectionComponent } from './pages/dashboard/reserve/service-selection/service-selection.component';
 import { TimePickerComponent } from './pages/dashboard/reserve/time-picker/time-picker.component';
+import { NotesAndReserveComponent } from './pages/dashboard/reserve/notes-and-reserve/notes-and-reserve.component';
 
 @NgModule({
     declarations: [
@@ -68,7 +69,8 @@ import { TimePickerComponent } from './pages/dashboard/reserve/time-picker/time-
         ReminderSettingsComponent,
         EmployeePickerComponent,
         ServiceSelectionComponent,
-        TimePickerComponent
+        TimePickerComponent,
+        NotesAndReserveComponent
     ],
     imports: [
         BrowserModule,
