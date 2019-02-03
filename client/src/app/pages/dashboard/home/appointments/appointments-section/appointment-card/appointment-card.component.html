@@ -36,6 +36,8 @@
         </mat-card-actions>
     </div>
     <div *ngIf="now > appointmentStart">
+    <form (submit)="review()" autocomplete="off" fxLayout="column">
+        <a [routerLink]="['/review', appointment.id]"></a>
         <mat-card-actions fxLayout="row" fxLayoutGap="16px">
             <button fxFlex color="primary" mat-stroked-button>
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
@@ -44,5 +46,6 @@
             </span>
             </button>
         </mat-card-actions>
+    </form>
     </div>
 </mat-card>

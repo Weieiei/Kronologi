@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-appointment-card',
@@ -11,12 +12,15 @@ export class AppointmentCardComponent implements OnInit {
     appointment: any;
     appointmentStart: Date;
     now: Date;
-    constructor() {
+    constructor(private router: Router) {
     }
 
     ngOnInit() {
         this.now = new Date();
         this.appointmentStart = new Date(this.appointment.date + ' ' + this.appointment.startTime);
     }
+    review() {
+        this.router.navigate(['/review/' + this.appointment.id]);
 
+    }
 }
