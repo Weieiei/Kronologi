@@ -22,7 +22,7 @@
 
             <div class="set-width times" fxLayout="column" fxLayoutAlign="start center">
                 <div class="time" [class.disabled]="!time.enabled" *ngFor="let time of morningTimes" (click)="selectTime(time)" fxLayoutAlign="center">
-                    {{ time.hour + ':' + time.minute }}
+                    {{ time.minute < 10 ? time.hour + ':0' + time.minute : time.hour + ':' + time.minute }}
                 </div>
             </div>
 
@@ -30,7 +30,7 @@
 
             <div class="set-width times" fxLayout="column" fxLayoutAlign="start center">
                 <div class="time" [class.disabled]="!time.enabled" *ngFor="let time of afterNoonTimes" (click)="selectTime(time)" fxLayoutAlign="center">
-                    {{ time.hour + ':' + time.minute }}
+                    {{ time.minute < 10 ? time.hour + ':0' + time.minute : time.hour + ':' + time.minute }}
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
 
             <div class="set-width times" fxLayout="column" fxLayoutAlign="start center">
                 <div class="time" [class.disabled]="!time.enabled" *ngFor="let time of eveningTimes" (click)="selectTime(time)" fxLayoutAlign="center">
-                    {{ time.hour + ':' + time.minute }}
+                    {{ time.minute < 10 ? time.hour + ':0' + time.minute : time.hour + ':' + time.minute }}
                 </div>
             </div>
 
