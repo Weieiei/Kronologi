@@ -5,12 +5,9 @@
         <input formControlName="name" matInput placeholder="Name">
     </mat-form-field>
 
-    <mat-form-field>
-        <mat-select formControlName="duration" placeholder="Duration">
-            <mat-option *ngFor="let selectedDuration of possibleDurations" [value]="selectedDuration">
-                {{selectedDuration}} min
-            </mat-option>
-        </mat-select>
+
+    <mat-form-field class="example-full-width">
+        <input formControlName="duration" matInput placeholder="Duration (minutes)" type="number" step="5" min="5">
     </mat-form-field>
 </form>
-<button mat-button (click)="createService()">Create</button>
+<button mat-button color="primary" [disabled]="serviceForm.invalid" (click)="createService()">Create</button>

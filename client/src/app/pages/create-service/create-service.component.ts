@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ServiceService } from "../../services/service/service.service";
 import {ServiceCreateDto} from "../../interfaces/service/service-create-dto";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-admin-create-service',
@@ -14,18 +15,10 @@ export class CreateServiceComponent implements OnInit {
     duration: number;
     serviceForm: FormGroup;
 
-    possibleDurations: number[] = [
-        30,
-        45,
-        60,
-        120,
-        150,
-        180
-    ];
-
     constructor(
         private serviceService: ServiceService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private router: Router
     ) {
     }
 
@@ -49,7 +42,7 @@ export class CreateServiceComponent implements OnInit {
             duration: this.serviceForm.value.duration
         };
         this.serviceService.createService(serviceCreateDTO).subscribe(
-            res => console.log(res),
+            res => this.router.navigate(['admin/services']),
             err => console.log(err)
         );
     }
