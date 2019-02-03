@@ -7,7 +7,6 @@ import appointmentscheduler.entity.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -124,7 +123,7 @@ public class Appointment extends AuditableEntity {
     @PrePersist
     public void beforeInsert() {
         adjustEndTime();
-        this.status = AppointmentStatus.confirmed;
+        this.status = AppointmentStatus.CONFIRMED;
     }
 
     @PreUpdate

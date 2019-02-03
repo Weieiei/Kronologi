@@ -68,7 +68,7 @@ public class AppointmentService {
 
         return appointmentRepository.findById(id).map(a -> {
 
-            a.setStatus(AppointmentStatus.cancelled);
+            a.setStatus(AppointmentStatus.CANCELLED);
             appointmentRepository.save(a);
 
             return ResponseEntity.ok().build();
@@ -121,7 +121,7 @@ public class AppointmentService {
         }
 
         // Check if the employee does not have an appointment scheduled already in that time slot
-        List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndStatus(appointment.getDate(), employee.getId(), AppointmentStatus.confirmed);
+        List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndStatus(appointment.getDate(), employee.getId(), AppointmentStatus.CONFIRMED);
 
         for (Appointment employeeAppointment : employeeAppointments) {
             if (employeeAppointment.isConflicting(appointment)) {
@@ -130,7 +130,7 @@ public class AppointmentService {
         }
 
         // Check if the client does not have an appointment scheduled already
-        List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndStatus(appointment.getDate(), appointment.getClient().getId(), AppointmentStatus.confirmed);
+        List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndStatus(appointment.getDate(), appointment.getClient().getId(), AppointmentStatus.CONFIRMED);
 
         for (Appointment clientAppointment : clientAppointments) {
             if (clientAppointment.isConflicting(appointment)) {
@@ -139,7 +139,7 @@ public class AppointmentService {
         }
 
         // Check if there is an available room for the employee to work in
-        List<Appointment> allAppointmentsOnDate = appointmentRepository.findByDateAndStatus(appointment.getDate(), AppointmentStatus.confirmed);
+        List<Appointment> allAppointmentsOnDate = appointmentRepository.findByDateAndStatus(appointment.getDate(), AppointmentStatus.CONFIRMED);
 
         Set<Room> roomSet = new HashSet<>(appointment.getService().getRooms());
         for (Appointment a : allAppointmentsOnDate) {
@@ -174,6 +174,6 @@ public class AppointmentService {
     }
 
     public List<Appointment> getEmployeesConfirmedAppointmentsByDate(long employeeId, LocalDate date) {
-        return appointmentRepository.findByDateAndEmployeeIdAndStatus(date, employeeId, AppointmentStatus.confirmed);
+        return appointmentRepository.findByDateAndEmployeeIdAndStatus(date, employeeId, AppointmentStatus.CONFIRMED);
     }
 }
