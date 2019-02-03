@@ -70,7 +70,7 @@ public class AdminControllerTest {
                 post("/api/admin/change_to_employee/")
                         .with(request -> {
                             request.setAttribute("id", 1);
-                            request.setAttribute("name", "SUCK MY DICK");
+                            request.setAttribute("name", "toto");
                             request.setAttribute("duration", 99999);
                             return request;
                         })
