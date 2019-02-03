@@ -162,7 +162,15 @@ export class ReserveComponent implements OnInit {
         };
 
         this.appointmentService.bookAppointment(payload).subscribe(
-            res => console.log(res)
+            res => {
+                this.snackBar.openSnackBarSuccess('Successfully booked an appointment!');
+                this.router.navigate(['']);
+            },
+            err => {
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                }
+            }
         );
 
     }

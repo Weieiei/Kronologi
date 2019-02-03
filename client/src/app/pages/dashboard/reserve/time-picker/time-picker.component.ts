@@ -26,7 +26,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
 
     timeFormat = 'HH:mm';
     minHour = 8;
-    maxHour = 20;
+    maxHour = 22;
     incrementBy = 30;
     minuteIncrements: number[] = Array(60 / this.incrementBy).fill(0).map((x, y) => x + this.incrementBy * y);
 

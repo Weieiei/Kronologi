@@ -125,7 +125,7 @@ public class AppointmentService {
 
         for (Appointment employeeAppointment : employeeAppointments) {
             if (employeeAppointment.isConflicting(appointment)) {
-                throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee");
+                throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee.");
             }
         }
 
@@ -134,7 +134,7 @@ public class AppointmentService {
 
         for (Appointment clientAppointment : clientAppointments) {
             if (clientAppointment.isConflicting(appointment)) {
-                throw new ClientAppointmentConflictException("There is a conflicting appointment already booked with that client");
+                throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
             }
         }
 
