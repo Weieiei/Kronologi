@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,12 +25,25 @@ public class EmployeeShiftService {
         this.userRepository = userRepository;
     }
 
-    public Shift createShfit(EmployeeShiftDTO employeeShiftDTO) {
+    public Shift createShift(EmployeeShiftDTO employeeShiftDTO) {
         Optional<User> userList = userRepository.findById(employeeShiftDTO.getEmployeeId());
         User employee = userList.get();
 
         Shift shift = new Shift(employee,employeeShiftDTO.getDate(), employeeShiftDTO.getStartTime(), employeeShiftDTO.getEndTime());
         shiftRepository.save(shift);
+        return shift;
+    }
+
+    public List<Shift> getEmployeeShifts(long employeeId) {
+        return shiftRepository.findByEmployeeId(employeeId);
+    }
+
+    public Shift deleteShift(long shiftId){
+        Optional<Shift> shiftList = shiftRepository.findById(shiftId);
+        Shift shift = shiftList.get();
+        if(shiftList != null) {
+            shiftRepository.delete(shift);
+        }
         return shift;
     }
 }

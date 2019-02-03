@@ -52,7 +52,7 @@ public class EmployeeShiftServiceTest {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockedUser));
 
-        createdShift = employeeShiftService.createShfit(employeeShiftDTO);
+        createdShift = employeeShiftService.createShift(employeeShiftDTO);
 
         assertNotNull(createdShift);
         assertEquals(localDate, createdShift.getDate());

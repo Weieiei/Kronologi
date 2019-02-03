@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,10 +33,20 @@ public class AdminController {
         return String.format("You are an admin, your id is %d.", userId);
     }
 
+    @GetMapping("/employee/{employeeId}")
+    public List<Shift> getEmployeeShifts(@PathVariable long employeeId) {
+        return employeeShiftService.getEmployeeShifts(employeeId);
+    }
+
     @PostMapping("/employee/{employeeId}/shift")
     public Shift createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) throws IOException, MessagingException {
         employeeShiftDTO.setEmployeeId(employeeId);
-        return employeeShiftService.createShfit(employeeShiftDTO);
+        return employeeShiftService.createShift(employeeShiftDTO);
+    }
+
+    @DeleteMapping("/employee/{employeeId}/shift/{shiftId}")
+    public Shift deleteShift(@PathVariable long shiftId){
+        return employeeShiftService.deleteShift(shiftId);
     }
 
 }
