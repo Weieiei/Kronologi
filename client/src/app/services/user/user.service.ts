@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { HttpClient } from '@angular/common/http';
+import * as decode from 'jwt-decode';
 import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
 import { UpdateEmailDTO } from '../../interfaces/user/update-email-dto';
 import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
@@ -61,6 +62,26 @@ export class UserService {
         localStorage.removeItem(UserService.TOKEN_KEY);
     }
 
+    getTokenClaims() {
+        try {
+            return decode(this.getToken());
+        } catch (e) {
+            return null;
+        }
+    }
+
+    getRolesFromToken(): string[] {
+        try {
+            return this.getTokenClaims()['roles'].split(',');
+        } catch (e) {
+            return null;
+        }
+    }
+
+    isEmployee(): boolean {
+        return this.getRolesFromToken().includes('EMPLOYEE');
+    }
+
     updateEmail(payload: UpdateEmailDTO): Observable<any> {
         return this.http.post(['api', 'user', 'email'].join('/'), payload);
     }
@@ -87,5 +108,6 @@ export class UserService {
 
     updatePhoneNumber(payload: PhoneNumberDTO): Observable<any> {
         return this.http.post(['api', 'user', 'phone'].join('/'), payload);
+
     }
 }
