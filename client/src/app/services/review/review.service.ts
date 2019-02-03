@@ -20,5 +20,8 @@ export class ReviewService implements OnInit {
 public submitReview(payload: ReviewDTO): Observable<any> {
     return this.http.post< ReviewDTO >(['api', 'reviews'].join('/'), payload);
 }
+public getReviewByAppointmentId(appointmentId: number): Observable<any>  {
+    return this.http.get(['api', 'reviews', appointmentId.toString()].join('/'));
+}
 
 }
