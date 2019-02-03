@@ -44,6 +44,12 @@ public class AdminController {
         return employeeShiftService.createShift(employeeShiftDTO);
     }
 
+    @PutMapping("/employee/{employeeId}/shift/{shiftId}")
+    public Shift modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
+        employeeShiftDTO.setEmployeeId(employeeId);
+        return employeeShiftService.modifyShift(employeeShiftDTO, shiftId);
+    }
+
     @DeleteMapping("/employee/{employeeId}/shift/{shiftId}")
     public Shift deleteShift(@PathVariable long shiftId){
         return employeeShiftService.deleteShift(shiftId);
