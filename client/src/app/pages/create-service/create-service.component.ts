@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ServiceService } from "../../services/service/service.service";
-import {ServiceCreateDto} from "../../interfaces/service/service-create-d-t-o";
+import {ServiceCreateDto} from "../../interfaces/service/service-create-dto";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({

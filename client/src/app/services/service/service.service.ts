@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Service } from '../../models/service/Service';
-import { ServiceCreateDto } from "../../interfaces/service/service-create-d-t-o";
+import { ServiceCreateDto } from "../../interfaces/service/service-create-dto";
 
 @Injectable({
     providedIn: 'root'
