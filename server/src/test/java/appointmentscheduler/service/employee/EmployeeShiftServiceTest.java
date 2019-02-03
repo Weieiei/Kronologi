@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,8 +37,9 @@ public class EmployeeShiftServiceTest {
     public void before() {
         employeeShiftService = new EmployeeShiftService(shiftRepository, userRepository);
     }
+
     @Test
-    public void createShfit() {
+    public void createShift() {
         final User mockedUser = mock(User.class);
         final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
         final LocalDate localDate = LocalDate.now();
@@ -86,6 +86,14 @@ public class EmployeeShiftServiceTest {
     }
 
     @Test
+    public void getShiftsInvalidEmployee() {
+        List<Shift> employeeShifts;
+        employeeShifts = employeeShiftService.getEmployeeShifts(anyLong());
+
+       assertTrue(employeeShifts.isEmpty());
+    }
+
+    @Test
     public void deleteShift() {
         final Shift mockedShift1 = mock(Shift.class);
         Shift deletedShift;
@@ -96,5 +104,13 @@ public class EmployeeShiftServiceTest {
         deletedShift = employeeShiftService.deleteShift(0);
 
         assertEquals(mockedShift1.getId(), deletedShift.getId());
+    }
+
+    @Test
+    public void deleteInvalidShift() {
+        Shift deletedShift;
+        deletedShift = employeeShiftService.deleteShift(anyLong());
+
+        assertNull(deletedShift);
     }
 }

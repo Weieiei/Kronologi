@@ -40,8 +40,9 @@ public class EmployeeShiftService {
 
     public Shift deleteShift(long shiftId){
         Optional<Shift> shiftList = shiftRepository.findById(shiftId);
-        Shift shift = shiftList.get();
-        if(shiftList != null) {
+        Shift shift = null;
+        if(shiftList.isPresent()) {
+            shift = shiftList.get();
             shiftRepository.delete(shift);
         }
         return shift;
