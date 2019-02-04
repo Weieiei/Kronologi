@@ -35,8 +35,26 @@ public class EmployeeShiftService {
         User employee = userList.get();
 
         Shift shift = new Shift(employee,employeeShiftDTO.getDate(), employeeShiftDTO.getStartTime(), employeeShiftDTO.getEndTime());
-        shiftRepository.save(shift);
-        return shift;
+        if(!shiftConflict(employeeShiftDTO.getEmployeeId(), shift)) {
+            shiftRepository.save(shift);
+            return shift;
+        }
+        return null;
+    }
+
+    public boolean shiftConflict(long employeeId, Shift shift) {
+        List<Shift> shifts = shiftRepository.findByEmployeeId(employeeId);
+        Shift currentShift;
+       for(int i = 0; i < shifts.size();i++) {
+           currentShift = shifts.get(i);
+           if(shift.getDate().isEqual(currentShift.getDate())){
+               if((shift.getStartTime().isBefore(currentShift.getEndTime()) && shift.getStartTime().isAfter(currentShift.getStartTime()))
+                   || (shift.getEndTime().isAfter(currentShift.getStartTime()) && shift.getEndTime().isBefore(currentShift.getEndTime()))
+                   || shift.getStartTime().isBefore(currentShift.getStartTime()) && shift.getEndTime().isAfter(currentShift.getEndTime()))
+                   return true;
+           }
+       }
+       return false;
     }
 
     public List<Shift> getEmployeeShifts(long employeeId) {
@@ -51,7 +69,11 @@ public class EmployeeShiftService {
             shift.setDate(employeeShiftDTO.getDate());
             shift.setStartTime(employeeShiftDTO.getStartTime());
             shift.setEndTime(employeeShiftDTO.getEndTime());
-            shiftRepository.save(shift);
+            if(!shiftConflict(employeeShiftDTO.getEmployeeId(), shift)) {
+                shiftRepository.save(shift);
+                return shift;
+            }
+            return null;
         }
         return shift;
     }
