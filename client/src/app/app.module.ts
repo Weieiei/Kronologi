@@ -37,6 +37,7 @@ import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
+import { CancelDialogComponent } from './components/cancel-dialog/cancel-dialog.component';
 
 @NgModule({
     declarations: [
@@ -64,7 +65,8 @@ import { ReminderSettingsComponent } from './pages/settings/reminder-settings/re
         AutofocusDirective,
         SettingsComponent,
         AccountSettingsComponent,
-        ReminderSettingsComponent
+        ReminderSettingsComponent,
+        CancelDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -77,7 +79,8 @@ import { ReminderSettingsComponent } from './pages/settings/reminder-settings/re
         ReactiveFormsModule
     ],
     entryComponents: [
-        TimePickerDialogComponent
+        TimePickerDialogComponent,
+        CancelDialogComponent
     ],
     providers: [
         AuthService,

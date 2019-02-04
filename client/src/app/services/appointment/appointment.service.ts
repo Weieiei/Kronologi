@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
 import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
@@ -25,7 +26,15 @@ export class AppointmentService {
         return this.http.post<AppointmentToBook>(['api', 'user', 'appointments'].join('/'), appointment);
     }
 
+    public cancelAppointments(id:number): Observable<any> {
+        return this.http.delete(['api','user','appointments',id].join('/'),{responseType: 'text'})
+    }
+
     public getMyAppointmentsEmployee(): Observable<Appointment[]> {
         return this.http.get<Appointment[]>(['api', 'employee', 'appointments'].join('/'));
+    }
+
+    public cancelAppointmentsEmployee(id:number): Observable<any>{        
+        return this.http.delete(['api','employee','appointments',id].join('/'),{responseType: 'text'});
     }
 }

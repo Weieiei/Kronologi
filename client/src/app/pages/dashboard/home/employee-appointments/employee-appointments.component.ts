@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
 import { Appointment } from 'src/app/interfaces/appointment';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { AppointmentDetailed } from 'src/app/models/appointment/AppointmentDetailed';
+import { CancelDialogComponent } from 'src/app/components/cancel-dialog/cancel-dialog.component';
 
 @Component({
     selector: 'app-employee-appointments',
@@ -9,17 +12,18 @@ import { Appointment } from 'src/app/interfaces/appointment';
 })
 export class EmployeeAppointmentsComponent implements OnInit {
 
-    displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee'];
+    displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee', 'status', 'actions'];
     appointments: Appointment[];
     pastAppointments: Appointment[];
 
-    constructor(private appointmentService: AppointmentService) {
+    constructor(private dialog: MatDialog, private appointmentService: AppointmentService) {
         this.appointments = [];
         this.pastAppointments = [];
     }
 
     ngOnInit() {
         this.getAllAppointments();
+        
     }
 
     getAllAppointments(): void {
@@ -30,7 +34,6 @@ export class EmployeeAppointmentsComponent implements OnInit {
 
                 for (const appointment of res) {
                     const appointmentStart = new Date(appointment.date + ' ' + appointment.startTime);
-
 
                     if (now <= appointmentStart) {
                         this.appointments.push(appointment);
@@ -44,4 +47,27 @@ export class EmployeeAppointmentsComponent implements OnInit {
         );
     }
 
+    openDialog(row_id:any){
+        let appointmentToCancel: Appointment = this.appointments[row_id-1];
+        const dialogConfig = new MatDialogConfig();
+        
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+    
+        dialogConfig.data = {
+            appointment: appointmentToCancel,
+            serviceName: appointmentToCancel.service.name
+        };
+        this. dialog.afterAllClosed
+        .subscribe(() => {
+        //update appointments when we cancel one on dialog close.
+          this.appointments=[];
+          this.getAllAppointments();
+        })
+        this.dialog.open(CancelDialogComponent, dialogConfig);
+    }
+
+    checkIfCancelled(row_id:any){
+        return this.appointments[row_id-1].status == 'cancelled'
+    }
 }

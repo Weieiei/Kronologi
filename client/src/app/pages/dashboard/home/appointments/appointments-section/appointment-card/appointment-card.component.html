@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card [ngClass]="{'cancelCard': appointment.status=='cancelled'}">
     <mat-card-header>
         <div mat-card-avatar>
             <img src="assets/images/spa-logo.svg" style="width: inherit; height: inherit"/>
@@ -20,14 +20,14 @@
     </mat-card-content>
     <div *ngIf="now <= appointmentStart">
         <mat-card-actions fxLayout="row" fxLayoutGap="16px">
-            <button fxFlex color="primary" mat-stroked-button>
+            <button fxFlex color="primary" mat-stroked-button  (click)="openDialog()" [disabled]="appointment.status=='cancelled'">
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
                 <mat-icon appButtonIcon>cancel</mat-icon>
                 <span>CANCEL</span>
             </span>
             </button>
 
-            <button fxFlex color="primary" mat-flat-button>
+            <button fxFlex color="primary" mat-flat-button [disabled]="appointment.status=='cancelled'">
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
                 <mat-icon appButtonIcon>edit</mat-icon>
                 <span>MODIFY</span>

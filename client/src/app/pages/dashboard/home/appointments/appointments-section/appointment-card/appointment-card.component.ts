@@ -1,4 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Appointment } from 'src/app/models/appointment/Appointment';
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import { CancelDialogComponent } from 'src/app/components/cancel-dialog/cancel-dialog.component';
+
 
 @Component({
     selector: 'app-appointment-card',
@@ -11,7 +15,7 @@ export class AppointmentCardComponent implements OnInit {
     appointment: any;
     appointmentStart: Date;
     now: Date;
-    constructor() {
+    constructor(private dialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -19,4 +23,16 @@ export class AppointmentCardComponent implements OnInit {
         this.appointmentStart = new Date(this.appointment.date + ' ' + this.appointment.startTime);
     }
 
+    openDialog() {
+        const dialogConfig = new MatDialogConfig();
+        
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+    
+        dialogConfig.data = {
+            appointment: this.appointment,
+            serviceName: this.appointment.service.name
+        };
+        this.dialog.open(CancelDialogComponent, dialogConfig);
+    }
 }

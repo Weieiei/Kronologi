@@ -103,5 +103,9 @@ public class UserController extends AbstractController {
         return appointmentService.findByClientId(getUserId());
     }
 
-
+    @LogREST
+    @DeleteMapping("/appointments/{id}")
+    public ResponseEntity delete(@PathVariable long id) {
+        return appointmentService.cancel(id);
+    }
 }

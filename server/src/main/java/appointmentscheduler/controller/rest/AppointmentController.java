@@ -1,5 +1,6 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.converters.appointment.AppointmentDTOToAppointment;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -24,7 +27,10 @@ public class AppointmentController extends IRestController<Appointment, Appointm
     @GetMapping
     @Override
     public List<Appointment> findAll() {
-        return appointmentService.findAll();
+        List<Appointment> listOfAppointment = appointmentService.findAll();
+        listOfAppointment.sort(Comparator.comparing(Appointment::getDate));
+
+        return listOfAppointment;
     }
 
     @GetMapping("/{id}")
@@ -48,6 +54,7 @@ public class AppointmentController extends IRestController<Appointment, Appointm
         return appointmentService.update(id, appointment);
     }
 
+    @LogREST
     @DeleteMapping("/{id}")
     @Override
     public ResponseEntity delete(@PathVariable long id) {
