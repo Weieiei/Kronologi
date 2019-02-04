@@ -14,18 +14,14 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-   public Review add(Review review) {
-       return reviewRepository.save(review);
-   }
+    public Review add(Review review) {
+        return reviewRepository.save(review);
+    }
 
-   public Review findByAppointmentId(long appointmentId) {
-       if( reviewRepository.findByAppointmentId(appointmentId).isPresent())
-       {
-           return reviewRepository.findByAppointmentId(appointmentId)
-                   .orElseThrow(() -> new ResourceNotFoundException(String.format("Review with id %d not found.", appointmentId)));
-
-       }else {
-           return new Review();
-       }
-   }
+    public Review findByAppointmentId(long appointmentId) {
+        return reviewRepository.findByAppointmentId(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Review for appointment id %d not " +
+                                "found.",
+                        appointmentId)));
+    }
 }
