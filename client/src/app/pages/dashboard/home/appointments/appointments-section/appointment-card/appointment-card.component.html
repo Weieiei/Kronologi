@@ -39,7 +39,7 @@
     <form (submit)="review()" autocomplete="off" fxLayout="column">
         <a [routerLink]="['/review', appointment.id]"></a>
         <mat-card-actions fxLayout="row" fxLayoutGap="16px">
-            <button fxFlex color="primary" mat-stroked-button [disabled]="isInvalid()" (click)="review()">
+            <button fxFlex color="primary" mat-stroked-button [disabled]="enableReviewButton()" (click)="review()">
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
                 <mat-icon appButtonIcon>edit</mat-icon>
                 <span>REVIEW</span>

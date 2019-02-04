@@ -36,7 +36,8 @@ public class ReviewDTOToReview implements Converter<ReviewDTO, Review> {
             appointment = appointmentRepository.findById(reviewDTO.getAppointmentId()).get();
             boolean matchingClientId = appointment.getClient().getId() == reviewDTO.getClientId();
             boolean matchingAppointmentId = (appointment.getId() == reviewDTO.getAppointmentId());
-            boolean existsReviewForAppointmentId = reviewRepository.findByAppointmentId(appointment.getId()) != null;
+            boolean existsReviewForAppointmentId =
+                    reviewRepository.findByAppointmentId(appointment.getId()).isPresent();
 
             //verify that the client id and the appointment id of the request match with the database
             if (matchingClientId && matchingAppointmentId)

@@ -13,7 +13,7 @@ export class AppointmentCardComponent implements OnInit {
     appointment: any;
     appointmentStart: Date;
     now: Date;
-    invalid = true;
+    reviewExists = true;
 
     constructor(private router: Router, private reviewService: ReviewService) {
     }
@@ -22,21 +22,19 @@ export class AppointmentCardComponent implements OnInit {
         this.now = new Date();
         this.appointmentStart = new Date(this.appointment.date + ' ' + this.appointment.startTime);
         this.reviewService.getReviewByAppointmentId(this.appointment.id).subscribe(
-           found => {
-               if (found.content == null) {
-
-               } else {
-                this.invalid = false;
-               }
-           },
-
-         );
+            review => {
+                if (review.content != null) {
+                    this.reviewExists = false;
+                }
+            },
+        );
     }
-    review() {
 
+    review() {
         this.router.navigate(['/review/' + this.appointment.id]);
     }
-    isInvalid(): boolean {
-        return !this.invalid;
+
+    enableReviewButton(): boolean {
+        return !this.reviewExists;
     }
 }
