@@ -15,7 +15,7 @@ public class Review extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

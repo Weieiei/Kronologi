@@ -36,8 +36,6 @@ public class ReviewDTOToReview implements Converter<ReviewDTO, Review> {
     public Review convert(ReviewDTO reviewDTO) {
         Appointment appointment;
         Review review = new Review();
-
-        //verify that there is an appointment existing with the given appointment id
         if (appointmentRepository.findById(reviewDTO.getAppointmentId()).isPresent())
         {
             appointment = appointmentRepository.findById(reviewDTO.getAppointmentId()).get();
@@ -46,37 +44,33 @@ public class ReviewDTOToReview implements Converter<ReviewDTO, Review> {
             boolean existsReviewForAppointmentId =
                     reviewRepository.findByAppointmentId(appointment.getId()).isPresent();
 
-            //verify that the client id and the appointment id of the request match with the database
-            if (matchingClientId && matchingAppointmentId)
-            {
-                if (existsReviewForAppointmentId)
-                {
-                    throw new ReviewAlreadyExistsException(String.format("Appointment with id %d already has a review.",
-                            reviewDTO.getAppointmentId()));
-                }
-                //if there is no review for the given appointment id, then add the appointment to the review
-                else{
-                    if (userRepository.findById(reviewDTO.getClientId()).isPresent())
-                    {
-                    review.setClient(userRepository.findById(reviewDTO.getClientId()).get());
-                    review.setAppointment(appointment);
-
-                    }
-                }
-            }
-            else
-            {
-                throw new UserNotAllowedToReviewServiceException(String.format( "Client with id %d is not authorized to write a review for appointment with id %d.",
+            //only the user who had that appointment can review that specific appointment
+            if (!matchingAppointmentId || !matchingClientId){
+                throw new UserNotAllowedToReviewServiceException(String.format( "User with id %d is not authorized to" +
+                                " write a review for appointment with id %d. This appointment was not assigned to " +
+                                "them.",
                         reviewDTO.getClientId(), reviewDTO.getAppointmentId()));
             }
+            if (existsReviewForAppointmentId)
+            {
+                throw new ReviewAlreadyExistsException(String.format("Appointment with id %d already has a review.",
+                        reviewDTO.getAppointmentId()));
+            }
 
-        //there is no appointment that exists with the current appointment id
-        } else {
+        }
+        else
+        {
             throw new ResourceNotFoundException(String.format("Appointment with id %d not found.",
                     reviewDTO.getAppointmentId()));
+
         }
 
-        review.setContent(reviewDTO.getContent());
+        if (userRepository.findById(reviewDTO.getClientId()).isPresent())
+        {
+            review.setClient(userRepository.findById(reviewDTO.getClientId()).get());
+            review.setAppointment(appointment);
+            review.setContent(reviewDTO.getContent());
+        }
         return review;
     }
 

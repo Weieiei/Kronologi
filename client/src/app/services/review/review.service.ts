@@ -9,14 +9,12 @@ import { ReviewDTO } from '../../interfaces/reviewDTO';
 })
 export class ReviewService implements OnInit {
 
-  constructor(private http: HttpClient, private _Activatedroute: ActivatedRoute ) {
-      // console.log(this._Activatedroute.snapshot.params['apptmtId']);
+  constructor(private http: HttpClient ) {
   }
 
   ngOnInit() {
   }
 
-// need to create model in client folder for ReviewToSubmit
 public submitReview(payload: ReviewDTO): Observable<any> {
     return this.http.post< ReviewDTO >(['api', 'reviews'].join('/'), payload);
 }

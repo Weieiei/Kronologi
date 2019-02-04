@@ -13,7 +13,7 @@ export class AppointmentCardComponent implements OnInit {
     appointment: any;
     appointmentStart: Date;
     now: Date;
-    reviewExists = true;
+    reviewExists = false;
 
     constructor(private router: Router, private reviewService: ReviewService) {
     }
@@ -21,20 +21,20 @@ export class AppointmentCardComponent implements OnInit {
     ngOnInit() {
         this.now = new Date();
         this.appointmentStart = new Date(this.appointment.date + ' ' + this.appointment.startTime);
-        this.reviewService.getReviewByAppointmentId(this.appointment.id).subscribe(
-            review => {
-                if (review.content != null) {
-                    this.reviewExists = false;
-                }
-            },
-        );
+        if (this.now > this.appointmentStart) {
+            this.reviewService.getReviewByAppointmentId(this.appointment.id).subscribe(
+                review => {
+                    if (review != null) {
+                        this.reviewExists = true;
+                    }
+                },
+            );
+        }
+
     }
 
     review() {
         this.router.navigate(['/review/' + this.appointment.id]);
     }
 
-    enableReviewButton(): boolean {
-        return !this.reviewExists;
-    }
 }
