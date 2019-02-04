@@ -25,6 +25,13 @@ public class ReviewDTOToReview implements Converter<ReviewDTO, Review> {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    public ReviewDTOToReview(UserRepository userRepository, AppointmentRepository appointmentRepository,
+                             ReviewRepository  reviewRepository){
+        this.userRepository = userRepository;
+        this.appointmentRepository = appointmentRepository;
+        this.reviewRepository = reviewRepository;
+    }
+
     @Override
     public Review convert(ReviewDTO reviewDTO) {
         Appointment appointment;
