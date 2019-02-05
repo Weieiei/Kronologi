@@ -1,14 +1,11 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.AppointmentScheduler;
-import appointmentscheduler.dto.service.ServiceDTO;
-import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,13 +58,12 @@ public class AdminControllerTest {
     public void changeRoleToEmployeeTest() throws Exception {
         User mockUser = mock(User.class);
         Set<Role> roles = new HashSet<>();
+        // to test the conflict in case the user is already an employee, we add employee to the role set:
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
         roles.add(employeeRole);
         when(mockUser.getRoles()).thenReturn(roles);
         when(userService.updateUser(any(User.class))).thenReturn(true);
         when(userService.findUserByid(anyLong())).thenReturn(mockUser);
-
-        final String userId = "1";
 
         MvcResult result = mockMvc.perform(
                 post("/api/admin/user/employee")
@@ -87,9 +83,32 @@ public class AdminControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
         assertTrue(result.getResponse().getContentAsString().isEmpty());
+
+
+
     }
 
     @Test
-    public void assignService() throws Exception {
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void assignServiceTest() throws Exception {
+        User mockEmployee = mock(User.class);
+        Set<Role> roles = new HashSet<>();
+        Role employeeRole = new Role(RoleEnum.EMPLOYEE);
+        roles.add(employeeRole);
+        when(mockEmployee.getRoles()).thenReturn(roles);
+        when(userService.updateUser(any(User.class))).thenReturn(true);
+        when(userService.findUserByid(anyLong())).thenReturn(mockEmployee);
+
+        MvcResult result = mockMvc.perform(
+                post("/api/admin/service/1/1")
+                        .with(request -> {
+                            request.setAttribute("employeeId", 1);
+                            request.setAttribute("serviceId", 1);
+                            return request;
+                        })
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andReturn();
+        assertTrue(result.getResponse().getContentAsString().isEmpty());
     }
 }
