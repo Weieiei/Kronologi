@@ -39,7 +39,7 @@ public class AdminController {
         return employeeShiftService.getEmployees();
     }
 
-    @GetMapping("/employee/{employeeId}")
+    @GetMapping("/employee/{employeeId}/shift")
     public List<Shift> getEmployeeShifts(@PathVariable long employeeId) {
         return employeeShiftService.getEmployeeShifts(employeeId);
     }
