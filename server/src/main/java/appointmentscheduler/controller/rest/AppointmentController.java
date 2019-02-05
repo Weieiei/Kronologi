@@ -85,7 +85,7 @@ public class AppointmentController extends AbstractController {
     public ResponseEntity<String> update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
         Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        Appointment modifiedAppointment = appointmentService.update(id, appointment);
+        Appointment modifiedAppointment = appointmentService.update(id, getUserId(), appointment);
         sendConfirmationMessage(modifiedAppointment, true);
         return getJson(mapper, modifiedAppointment);
     }

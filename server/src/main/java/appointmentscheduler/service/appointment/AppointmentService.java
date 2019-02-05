@@ -50,9 +50,9 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
-    public Appointment update(long id, Appointment appointment) {
+    public Appointment update(long appointmentId, long clientId, Appointment appointment) {
 
-        return appointmentRepository.findById(id).map(a -> {
+        return appointmentRepository.findByIdAndClientId(appointmentId, clientId).map(a -> {
 
             a.setClient(appointment.getClient());
             a.setEmployee(appointment.getEmployee());
@@ -66,7 +66,7 @@ public class AppointmentService {
 
             return appointmentRepository.save(a);
 
-        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+        }).orElseThrow(() -> new ResourceNotFoundException("This appointment either belongs to another user or doesn't exist."));
 
     }
 
