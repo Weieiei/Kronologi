@@ -23,6 +23,14 @@ public class AppointmentService {
     private final EmployeeRepository employeeRepository;
     private final ShiftRepository shiftRepository;
 
+    public List<Appointment> findAll() {
+        return appointmentRepository.findAll();
+    }
+ 
+    public List<Appointment> findByEmployeeId(long employeeId) {
+        return appointmentRepository.findByEmployeeId(employeeId);
+    }
+
     @Autowired
     public AppointmentService(
             AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository

@@ -45,6 +45,18 @@ public class Appointment extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
+    public Appointment() {
+    }
+
+    public Appointment(User client, Employee employee, Service service, LocalDate date, LocalTime startTime, String notes) {
+        this.client = client;
+        this.employee = employee;
+        this.service = service;
+        this.date = date;
+        this.startTime = startTime;
+        this.notes = notes;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Appointment && ((Appointment) obj).getId() == this.getId();

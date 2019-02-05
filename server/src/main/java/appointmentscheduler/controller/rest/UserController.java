@@ -1,5 +1,7 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.annotation.LogREST;
+import appointmentscheduler.annotation.LoggingLevel;
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.settings.UpdateSettingsDTO;
 import appointmentscheduler.dto.user.UpdateEmailDTO;
@@ -55,6 +57,7 @@ public class UserController extends AbstractController {
         }
     }
 
+    @LogREST(LoggingLevel.WARN)
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody UserLoginDTO userLoginDTO) {
         try {
