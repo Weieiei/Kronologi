@@ -70,16 +70,18 @@ public class AppointmentService {
 
     }
 
-    public ResponseEntity<?> cancel(long id) {
+    public Appointment cancel(long appointmentId, long clientId) {
 
-        return appointmentRepository.findById(id).map(a -> {
+        Appointment appointment = appointmentRepository.findByIdAndClientId(appointmentId, clientId)
+                .orElseThrow(() -> new NotYourAppointmentException("This appointment either belongs to another user or doesn't exist."));
 
-            a.setStatus(AppointmentStatus.CANCELLED);
-            appointmentRepository.save(a);
+        if (appointment.getStatus().equals(AppointmentStatus.CANCELLED)) {
+            throw new AppointmentAlreadyCancelledException("This appointment is already cancelled.");
+        }
 
-            return ResponseEntity.ok().build();
+        appointment.setStatus(AppointmentStatus.CANCELLED);
 
-        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+        return appointmentRepository.save(appointment);
 
     }
 

@@ -91,8 +91,11 @@ public class AppointmentController extends AbstractController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable long id) {
-        return appointmentService.cancel(id);
+    public ResponseEntity delete(@PathVariable long id) throws MessagingException {
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+        Appointment cancelledAppointment = appointmentService.cancel(id, getUserId());
+        sendCancellationMessage(cancelledAppointment);
+        return getJson(mapper, cancelledAppointment);
     }
 
     @GetMapping("/employees/{serviceId}")
@@ -131,6 +134,18 @@ public class AppointmentController extends AbstractController {
                 appointment.getClient().getFirstName(),
                 appointment.getService().getName(), appointment.getEmployee().getFullName(),
                 appointment.getDate().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")), appointment.getStartTime().toString()
+        );
+
+        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
+
+    }
+
+    private void sendCancellationMessage(Appointment appointment) throws MessagingException {
+
+        String message = String.format(
+                "Hello %1$s,<br><br>" +
+                        "Your reservation at Sylvia Pizzi Spa has been cancelled.<br>",
+                appointment.getClient().getFirstName()
         );
 
         emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);

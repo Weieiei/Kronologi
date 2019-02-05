@@ -44,6 +44,9 @@ export class ReserveComponent implements OnInit {
 
     startTime: string;
 
+    /**
+     * These are used to pass in values to child components (steps in the cdk stepper).
+     */
     serviceSubject = new Subject<number>();
     dateSubject = new Subject<string>();
     employeeSubject = new Subject<number>();
