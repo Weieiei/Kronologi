@@ -38,6 +38,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { CancelDialogComponent } from './components/cancel-dialog/cancel-dialog.component';
+import { ReviewComponent } from './pages/dashboard/review/review.component';
 
 @NgModule({
     declarations: [
@@ -66,7 +67,8 @@ import { CancelDialogComponent } from './components/cancel-dialog/cancel-dialog.
         SettingsComponent,
         AccountSettingsComponent,
         ReminderSettingsComponent,
-        CancelDialogComponent
+        CancelDialogComponent,
+        ReviewComponent
     ],
     imports: [
         BrowserModule,
