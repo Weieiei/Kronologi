@@ -28,10 +28,7 @@ public class AppointmentService {
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
     }
- 
-    //public List<Appointment> findByEmployeeId(long employeeId) {
-    //    return appointmentRepository.findByEmployeeId(employeeId);
-    //}
+
 
     public Appointment findById(long id) {
         return appointmentRepository.findById(id)
