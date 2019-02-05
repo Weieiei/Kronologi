@@ -74,8 +74,8 @@ public class AdminController {
     }
 
 
-    @PostMapping("/user/employee")
-    public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@RequestAttribute long id){
+    @PostMapping("/user/employee/{id}")
+    public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@PathVariable long id){
         User user = this.userService.findUserByid(id);
         Set<Role> roles = user.getRoles();
         for (Role role: roles) {
