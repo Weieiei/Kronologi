@@ -14,8 +14,10 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { EmployeeGuard } from './guards/employee/employee.guard';
+import { ReviewComponent } from './pages/dashboard/review/review.component';
 import {ShiftComponent} from "./pages/dashboard/home/shift/shift.component";
 import {AdminGuard} from "./guards/admin/admin.guard";
+import {AdminEmployeesComponent} from "./pages/dashboard/home/admin-employees/admin-employees.component";
 
 const routes: Routes = [
     // Login
@@ -35,13 +37,14 @@ const routes: Routes = [
             { path: '', component: HomeComponent },
 
             // Admin
-            {path: 'admin/employee', component: ShiftComponent},
+            {path: 'admin/employee', component: AdminEmployeesComponent},
 
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
 
             { path: 'reserve', component: ReserveComponent },
+            { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
             {

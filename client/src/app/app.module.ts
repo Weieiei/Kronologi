@@ -38,6 +38,8 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
+import { ReviewComponent } from './pages/dashboard/review/review.component';
+import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 
 @NgModule({
     declarations: [
@@ -66,7 +68,10 @@ import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
         SettingsComponent,
         AccountSettingsComponent,
         ReminderSettingsComponent,
-        ShiftComponent
+        ShiftComponent,
+        ReminderSettingsComponent,
+        ReviewComponent,
+        AdminEmployeesComponent
     ],
     imports: [
         BrowserModule,
