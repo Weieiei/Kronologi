@@ -23,4 +23,8 @@ export class AppointmentService {
     public bookAppointment(payload: BookAppointmentDTO): Observable<any> {
         return this.http.post<any>(['api', 'appointments'].join('/'), payload);
     }
+
+    public updateAppointment(id: number, payload: BookAppointmentDTO): Observable<any> {
+        return this.http.put<any>(['api', 'appointments', id].join('/'), payload);
+    }
 }

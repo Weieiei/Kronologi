@@ -9,12 +9,12 @@ export class SnackBar {
     constructor(private snackBar: MatSnackBar) {
     }
 
-    openSnackBarSuccess(successMessage: string): void {
-        this.snackBar.open(successMessage, null, { duration: 3000, panelClass: ['success-message'] });
+    openSnackBarSuccess(successMessage: string, duration: number = 3000): void {
+        this.snackBar.open(successMessage, null, { duration: duration, panelClass: ['success-message'] });
     }
 
-    openSnackBarError(errorMessage: string): void {
-        this.snackBar.open(errorMessage, null, { duration: 3000, panelClass: ['error-message'] });
+    openSnackBarError(errorMessage: string, duration: number = 3000): void {
+        this.snackBar.open(errorMessage, null, { duration: duration, panelClass: ['error-message'] });
     }
 
 }

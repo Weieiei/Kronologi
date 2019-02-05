@@ -53,7 +53,6 @@ export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy() {
-        console.log(this.startTime);
         this.startTimeSubscription.unsubscribe();
     }
 

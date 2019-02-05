@@ -50,6 +50,9 @@ export class ReserveComponent implements OnInit {
     private startTimeSubject = new Subject<string>();
     private notesSubject = new Subject<string>();
 
+    appointmentDate: string;
+    payload: BookAppointmentDTO;
+
     constructor(
         private appointmentService: AppointmentService,
         private serviceService: ServiceService,
@@ -203,19 +206,45 @@ export class ReserveComponent implements OnInit {
         const month = this.date.getMonth() + 1;
         const day = this.date.getDate();
 
-        const appointmentDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+        this.appointmentDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
 
-        const payload: BookAppointmentDTO = {
+        this.payload = {
             employeeId: this.employee.id,
             serviceId: this.service.id,
-            date: appointmentDate,
+            date: this.appointmentDate,
             startTime: this.startTime,
             notes: this.notes
         };
 
-        this.appointmentService.bookAppointment(payload).subscribe(
+        if (this.modifyAppointment) {
+            this.updateAppointment();
+        } else {
+            this.bookAppointment();
+        }
+
+    }
+
+    bookAppointment() {
+
+        this.appointmentService.bookAppointment(this.payload).subscribe(
             res => {
-                this.snackBar.openSnackBarSuccess('You\'ve successfully booked your appointment!');
+                this.snackBar.openSnackBarSuccess('You\'ve successfully booked your appointment!', 5000);
+                this.router.navigate(['']);
+            },
+            err => {
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                }
+            }
+        );
+
+    }
+
+    updateAppointment() {
+
+        this.appointmentService.updateAppointment(this.appointment.id, this.payload).subscribe(
+            res => {
+                this.snackBar.openSnackBarSuccess('You\'ve successfully modified your appointment!', 5000);
                 this.router.navigate(['']);
             },
             err => {
