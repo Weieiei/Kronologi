@@ -6,7 +6,7 @@ export class UserToDisplay {
     public firstName: string;
     public lastName: string;
     public email: string;
-    public userRoles: string[];
+    public userRoles: any[];
     public services: string[];
     public readonly createdAt: Date;
     public readonly updatedAt: Date;

@@ -24,7 +24,6 @@ export class CreateServiceComponent implements OnInit {
 
     ngOnInit() {
         this.initForm();
-        console.log('Hi');
     }
 
     initForm(): void {
@@ -35,7 +34,6 @@ export class CreateServiceComponent implements OnInit {
     }
 
     createService() {
-        console.log('Called');
         const serviceCreateDTO: ServiceCreateDto = {
             id: 0,
             name: this.serviceForm.value.name,

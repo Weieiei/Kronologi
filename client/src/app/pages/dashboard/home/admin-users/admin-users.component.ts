@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { UserService } from "../../../../services/user/user.service";
 import { UserToDisplay } from "../../../../models/user/UserToDisplay";
+import { MatDialog } from "@angular/material";
+import { AssignServicesDialogComponent } from "./assign-services-dialog/assign-services-dialog.component";
+import { ServiceService } from "../../../../services/service/service.service";
+import { Service } from "../../../../models/service/Service";
 
 @Component({
     selector: 'app-admin-users',
@@ -10,14 +14,18 @@ import { UserToDisplay } from "../../../../models/user/UserToDisplay";
 })
 export class AdminUsersComponent implements OnInit {
 
-    displayedColumns: string[] = ['id', 'name', 'email', 'services', 'roles'];
+    displayedColumns: string[] = ['id', 'name', 'email', 'services', 'roles', 'actions'];
     users: UserToDisplay[];
+    services: Service[];
 
-    constructor(private userService: UserService) {
+    constructor(private userService: UserService,
+                private serviceService: ServiceService,
+                public dialog: MatDialog) {
     }
 
     ngOnInit() {
         this.getAllUsers();
+        this.getAllServices();
     }
 
     getAllUsers(): void {
@@ -31,10 +39,7 @@ export class AdminUsersComponent implements OnInit {
                 });
             })
     ).subscribe(
-            res => {
-                            this.users = res;
-                            console.log(this.users);
-                        },
+            res => this.users = res,
             err => console.log(err)
         );
     }
@@ -59,5 +64,36 @@ export class AdminUsersComponent implements OnInit {
             outputString = outputString.substring(0, outputString.length - 2)
         }
         return outputString;
+    }
+
+    isEmployee(user: UserToDisplay): boolean {
+        let roleFound: number = 0;
+        user.userRoles.forEach((roles) => {
+            if(roles.role == 'EMPLOYEE') {
+                roleFound++;
+            }
+        });
+        return roleFound > 0;
+    }
+
+    openAddServiceDialog(user: any) {
+        const dialogRef = this.dialog.open(AssignServicesDialogComponent, {
+            width: '250px',
+            data: {services: this.services, user: user}
+        });
+    }
+
+    getAllServices(): void {
+        this.serviceService.getServices().pipe(
+            map(data => {
+                let i = 0;
+                return data.map(a => {
+                    return a;
+                });
+            })
+        ).subscribe(
+            res => this.services = res,
+            err => console.log(err)
+        );
     }
 }

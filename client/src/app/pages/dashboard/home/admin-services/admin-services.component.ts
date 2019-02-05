@@ -17,7 +17,6 @@ export class AdminServicesComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('Hi');
         this.getAllServices();
     }
 
@@ -26,7 +25,6 @@ export class AdminServicesComponent implements OnInit {
             map(data => {
                 let i = 0;
                 return data.map(a => {
-                    console.log(a);
                     return a;
                 });
             })
