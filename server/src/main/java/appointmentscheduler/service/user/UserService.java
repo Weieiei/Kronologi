@@ -57,7 +57,7 @@ public class UserService {
         this.phoneNumberRepository = phoneNumberRepository;
     }
 
-    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) {
+    public Map<String, String> register(UserRegisterDTO userRegisterDTO) {
 
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
@@ -85,23 +85,21 @@ public class UserService {
 
         String token = generateToken(savedUser, userRegisterDTO.getPassword());
 
-        return buildUserTokenMap(savedUser, token);
+        return buildTokenMap(token);
     }
 
-    public Map<String, Object> login(UserLoginDTO userLoginDTO) {
+    public Map<String, String> login(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmailIgnoreCase(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
 
         String token = generateToken(user, userLoginDTO.getPassword());
 
-        return buildUserTokenMap(user, token);
+        return buildTokenMap(token);
     }
 
-    private Map<String, Object> buildUserTokenMap(User user, String token) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", user);
+    private Map<String, String> buildTokenMap(String token) {
+        Map<String, String> map = new HashMap<>();
         map.put("token", token);
-
         return map;
     }
 

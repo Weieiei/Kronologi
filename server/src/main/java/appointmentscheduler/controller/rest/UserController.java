@@ -46,11 +46,11 @@ public class UserController extends AbstractController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws MessagingException {
+    public ResponseEntity<Map<String, String>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws MessagingException {
         try {
-            Map<String, Object> userTokenMap = userService.register(userRegisterDTO);
+            Map<String, String> tokenMap = userService.register(userRegisterDTO);
             emailService.sendEmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", "Welcome to ASApp.<br />", true);
-            return ResponseEntity.ok(userTokenMap);
+            return ResponseEntity.ok(tokenMap);
         } catch (BadCredentialsException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -59,7 +59,7 @@ public class UserController extends AbstractController {
 
     @LogREST(LoggingLevel.WARN)
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO userLoginDTO) {
         try {
             return ResponseEntity.ok(userService.login(userLoginDTO));
         } catch (BadCredentialsException e) {
