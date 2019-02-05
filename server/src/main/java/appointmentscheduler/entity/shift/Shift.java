@@ -3,9 +3,9 @@ package appointmentscheduler.entity.shift;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ModelValidationException;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,9 +20,9 @@ public class Shift extends AuditableEntity {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "employee_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private Employee employee;
 
     @Column(name = "date")
@@ -33,6 +33,16 @@ public class Shift extends AuditableEntity {
 
     @Column(name = "end_time")
     private LocalTime endTime;
+
+    public Shift() {
+    }
+
+    public Shift(Employee employee, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        this.employee = employee;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
     public long getId() {
         return id;
