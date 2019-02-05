@@ -42,6 +42,7 @@ import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/ad
 import { CreateServiceComponent } from "./pages/create-service/create-service.component";
 import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-users.component";
 import { AssignServicesDialogComponent } from "./pages/dashboard/home/admin-users/assign-services-dialog/assign-services-dialog.component";
+import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/admin-users/change-client-to-employee-dialog/change-client-to-employee-dialog.component";
 
 @NgModule({
     declarations: [
@@ -74,7 +75,8 @@ import { AssignServicesDialogComponent } from "./pages/dashboard/home/admin-user
         AdminServicesComponent,
         CreateServiceComponent,
         AdminUsersComponent,
-        AssignServicesDialogComponent
+        AssignServicesDialogComponent,
+        ChangeClientToEmployeeDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -88,7 +90,8 @@ import { AssignServicesDialogComponent } from "./pages/dashboard/home/admin-user
     ],
     entryComponents: [
         TimePickerDialogComponent,
-        AssignServicesDialogComponent
+        AssignServicesDialogComponent,
+        ChangeClientToEmployeeDialogComponent
     ],
     providers: [
         AuthService,

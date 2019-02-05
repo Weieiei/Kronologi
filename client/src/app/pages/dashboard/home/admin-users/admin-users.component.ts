@@ -6,6 +6,7 @@ import { MatDialog } from "@angular/material";
 import { AssignServicesDialogComponent } from "./assign-services-dialog/assign-services-dialog.component";
 import { ServiceService } from "../../../../services/service/service.service";
 import { Service } from "../../../../models/service/Service";
+import { ChangeClientToEmployeeDialogComponent } from "./change-client-to-employee-dialog/change-client-to-employee-dialog.component";
 
 @Component({
     selector: 'app-admin-users',
@@ -76,11 +77,34 @@ export class AdminUsersComponent implements OnInit {
         return roleFound > 0;
     }
 
+    isClient(user: UserToDisplay): boolean {
+        let roleFound: number = 0;
+        user.userRoles.forEach((roles) => {
+            if(roles.role == 'CLIENT') {
+                roleFound++;
+            }
+        });
+        return roleFound > 0;
+    }
+
     openAddServiceDialog(user: any) {
         const dialogRef = this.dialog.open(AssignServicesDialogComponent, {
             width: '250px',
             data: {services: this.services, user: user}
-        });
+        }).afterClosed().subscribe(result => {
+                this.getAllUsers();
+            }
+        );
+    }
+
+    openChangeClientToEmployeeDialog(user: any) {
+        const dialogRef = this.dialog.open(ChangeClientToEmployeeDialogComponent, {
+            width: '250px',
+            data: {user: user}
+        }).afterClosed().subscribe(result => {
+                this.getAllUsers();
+            }
+        );
     }
 
     getAllServices(): void {

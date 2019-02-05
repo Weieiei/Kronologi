@@ -42,7 +42,7 @@
                 </button>
                 <mat-menu #menu="matMenu">
                     <button mat-menu-item *ngIf="isEmployee(user)" (click)="openAddServiceDialog(user)">Add Service</button>
-                    <button mat-menu-item>Change Role</button>
+                    <button mat-menu-item *ngIf="isClient(user)" (click)="openChangeClientToEmployeeDialog(user)">Change to Employee</button>
                 </mat-menu>
             </td>
         </ng-container>
