@@ -1,13 +1,19 @@
-<form [formGroup]="serviceForm">
-    <h4>Create a new service</h4>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Create a new service</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="serviceForm">
+            <!--<h4>Create a new service</h4>-->
 
-    <mat-form-field class="example-full-width">
-        <input formControlName="name" matInput placeholder="Name">
-    </mat-form-field>
+            <mat-form-field class="name-input">
+                <input formControlName="name" matInput placeholder="Name">
+            </mat-form-field>
+            <mat-form-field class="duration-input">
+                <input formControlName="duration" matInput placeholder="Duration (minutes)" type="number" step="5" min="5">
+            </mat-form-field>
+        </form>
+        <button mat-button color="primary" [disabled]="serviceForm.invalid" (click)="createService()">Create</button>
 
-
-    <mat-form-field class="example-full-width">
-        <input formControlName="duration" matInput placeholder="Duration (minutes)" type="number" step="5" min="5">
-    </mat-form-field>
-</form>
-<button mat-button color="primary" [disabled]="serviceForm.invalid" (click)="createService()">Create</button>
+    </mat-card-content>
+</mat-card>
