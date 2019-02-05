@@ -10,7 +10,6 @@ import { AppointmentsComponent } from './pages/dashboard/home/appointments/appoi
 import { AuthGuard } from './guards/auth/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
-import { EmployeeComponentComponent } from './pages/dashboard/home/employee-component/employee-component.component';
 import { AdminAppointmentsComponent } from "./pages/dashboard/home/admin-appointments/admin-appointments.component";
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
