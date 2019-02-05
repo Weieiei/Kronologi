@@ -57,6 +57,7 @@ public class AppointmentService {
             a.setClient(appointment.getClient());
             a.setEmployee(appointment.getEmployee());
             a.setService(appointment.getService());
+            a.setDate(appointment.getDate());
             a.setStartTime(appointment.getStartTime());
             a.setEndTime(appointment.getEndTime());
             a.setNotes(appointment.getNotes());
