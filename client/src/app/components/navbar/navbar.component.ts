@@ -38,6 +38,10 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['settings']);
     }
 
+    goToEmployeeAppointments() {
+        this.router.navigate(['employee', 'appts']);
+    }
+
     goToAdminAppointmens() {
         this.router.navigate(['admin/appts']);
     }

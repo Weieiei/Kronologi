@@ -3,6 +3,7 @@ package appointmentscheduler.service.appointment;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.repository.AppointmentRepository;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
@@ -33,6 +34,7 @@ public class AppointmentServiceTest {
     public void findAll() {
     }
 
+    @Ignore
     @Test
     public void findById() {
         long testId = 1;

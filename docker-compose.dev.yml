@@ -24,6 +24,10 @@ services:
       DB_HOST: postgres
     ports:
       - "3000:3000"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5000"
 
   db:
     image: postgres:11

@@ -14,12 +14,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { HomeComponent } from './pages/dashboard/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
-import { AuthGuard } from './guards/auth.guard';
-import { AnonymousGuard } from './guards/anonymous.guard';
+import { AuthGuard } from './guards/auth/auth.guard';
+import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
 import { ReserveComponent } from './pages/reserve/reserve.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
-import { AdminGuard } from './guards/admin.guard';
+import { AdminGuard } from './guards/admin/admin.guard';
 import { SchedulerComponent } from './pages/reserve/scheduler/scheduler.component';
 import { CalendarComponent } from './pages/reserve/scheduler/calendar/calendar.component';
 import { MonthPickerComponent } from './pages/reserve/scheduler/month-picker/month-picker.component';
@@ -34,10 +34,12 @@ import { AppointmentsSectionComponent } from './pages/dashboard/home/appointment
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
 import { EmployeeComponentComponent } from './pages/dashboard/home/employee-component/employee-component.component';
 import { AdminAppointmentsComponent } from "./pages/dashboard/home/admin-appointments/admin-appointments.component";
+import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
 import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
+import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/admin-services.component";
 import { CreateServiceComponent } from "./pages/create-service/create-service.component";
 import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-users.component";
@@ -67,10 +69,12 @@ import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/ad
         AppointmentsSectionComponent,
         AdminAppointmentsComponent,
         CardSizeDirective,
-        EmployeeComponentComponent,
+        EmployeeAppointmentsComponent,
         AutofocusDirective,
         SettingsComponent,
         AccountSettingsComponent,
+        ChangeClientToEmployeeDialogComponent
+        ReviewComponent
         ReminderSettingsComponent,
         AdminServicesComponent,
         CreateServiceComponent,

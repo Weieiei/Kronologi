@@ -30,10 +30,6 @@ export class AuthService {
         return this.http.post<UserRegisterDTO>(['api', 'authenticate', 'register'].join('/'), { user });
     }
 
-    // registerEmployee(employee: UserRegister): Observable<UserRegister> {
-    //     return this.http.post<UserRegister>(['api', 'admin', 'employees', 'register'].join('/'), { employee });
-    // }
-
     login(email: string, password: string): Observable<any> {
         const payload: UserLoginDTO = {email, password};
         return this.http.post(['api', 'user', 'login'].join('/'), payload);
