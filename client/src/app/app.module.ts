@@ -41,6 +41,7 @@ import { ReminderSettingsComponent } from './pages/settings/reminder-settings/re
 import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/admin-services.component";
 import { CreateServiceComponent } from "./pages/create-service/create-service.component";
 import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-users.component";
+import { AssignServicesDialogComponent } from "./pages/dashboard/home/admin-users/assign-services-dialog/assign-services-dialog.component";
 
 @NgModule({
     declarations: [
@@ -72,7 +73,8 @@ import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-us
         ReminderSettingsComponent,
         AdminServicesComponent,
         CreateServiceComponent,
-        AdminUsersComponent
+        AdminUsersComponent,
+        AssignServicesDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -85,7 +87,8 @@ import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-us
         ReactiveFormsModule
     ],
     entryComponents: [
-        TimePickerDialogComponent
+        TimePickerDialogComponent,
+        AssignServicesDialogComponent
     ],
     providers: [
         AuthService,

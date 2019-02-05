@@ -19,4 +19,8 @@ export class ServiceService {
     public createService(service: ServiceCreateDto): Observable<any> {
         return this.http.post<Service>(['api', 'admin', 'service'].join('/'), service);
     }
+
+    public addServiceToUser(employeedId: number, serviceId: number):Observable<any> {
+        return this.http.post<any>(['api', 'admin', 'service', employeedId, serviceId].join('/'), "");
+    }
 }
