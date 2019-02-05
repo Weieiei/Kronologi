@@ -1,17 +1,17 @@
-<app-custom-stepper #stepper *ngIf="isLoaded">
+<app-custom-stepper #stepper>
     <cdk-step>
-        <app-service-selection (serviceChange)="setService($event)" [serviceId]="appointment?.service.id"></app-service-selection>
+        <app-service-selection (serviceChange)="setService($event)" [serviceEvent]="serviceSubject.asObservable()"></app-service-selection>
     </cdk-step>
     <cdk-step>
-        <app-scheduler (dateChange)="setDate($event)" [appointmentDate]="appointment?.date"></app-scheduler>
+        <app-scheduler (dateChange)="setDate($event)" [dateEvent]="dateSubject.asObservable()"></app-scheduler>
     </cdk-step>
     <cdk-step>
-        <app-employee-picker (employeeChange)="setEmployee($event)" [employees]="employees" [employeeId]="appointment?.employee.id"></app-employee-picker>
+        <app-employee-picker (employeeChange)="setEmployee($event)" [employees]="employees" [employeeEvent]="employeeSubject.asObservable()"></app-employee-picker>
     </cdk-step>
     <cdk-step>
-        <app-time-picker (timeChange)="setTime($event)" [service]="service" [employeeShift]="employeeShift" [employeeAppointments]="employeeAppointments"></app-time-picker>
+        <app-time-picker (timeChange)="setTime($event)" [service]="service" [employeeShift]="employeeShift" [employeeAppointments]="employeeAppointments" [startTimeEvent]="startTimeSubject.asObservable()"></app-time-picker>
     </cdk-step>
     <cdk-step>
-        <app-notes-and-reserve (noteChange)="setNotesAndReserve($event)"></app-notes-and-reserve>
+        <app-notes-and-reserve (noteChange)="setNotesAndReserve($event)" [notesEvent]="notesSubject.asObservable()"></app-notes-and-reserve>
     </cdk-step>
 </app-custom-stepper>

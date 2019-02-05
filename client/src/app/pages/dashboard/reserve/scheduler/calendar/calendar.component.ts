@@ -10,10 +10,9 @@ export class CalendarComponent implements OnInit, OnChanges {
     @Input() year: number;
     @Input() month: number;
 
-    @Input() appointmentDate?: string;
-    appointmentYear: number;
-    appointmentMonth: number;
-    appointmentDay: number;
+    @Input() appointmentYear?: number;
+    @Input() appointmentMonth?: number;
+    @Input() appointmentDay?: number;
 
     @Output() dayChange = new EventEmitter();
 
@@ -42,18 +41,13 @@ export class CalendarComponent implements OnInit, OnChanges {
     constructor() { }
 
     ngOnInit() {
-        if (this.appointmentDate) {
-            const date = new Date(this.appointmentDate + ' EST');
-
-            this.appointmentYear = date.getFullYear();
-            this.appointmentMonth = date.getMonth();
-            this.appointmentDay = date.getDate();
-
-            this.year = this.appointmentYear;
-            this.month = this.appointmentMonth;
-
-            this.updateCalendar();
-        }
+        setTimeout(() => {
+            if (this.appointmentYear && this.appointmentMonth && this.appointmentDay) {
+                this.year = this.appointmentYear;
+                this.month = this.appointmentMonth;
+                this.updateCalendar();
+            }
+        });
     }
 
     ngOnChanges() {

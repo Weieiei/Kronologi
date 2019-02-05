@@ -1,18 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-scheduler',
     templateUrl: './scheduler.component.html',
     styleUrls: ['./scheduler.component.scss']
 })
-export class SchedulerComponent implements OnInit {
+export class SchedulerComponent implements OnInit, OnDestroy {
 
     year: number;
     month: number;
 
-    // We could possibly pass in a date to the component, if we're in the process of modifying an appointment
-    // appointmentX variables represent the original chosen date of the appointment we're modifying
-    @Input() appointmentDate?: string;
+    dateSubscription: Subscription;
+    @Input() dateEvent: Observable<string>;
+
+    appointmentYear: number;
+    appointmentMonth: number;
+    appointmentDay: number;
 
     @Output() dateChange = new EventEmitter();
 
@@ -23,13 +27,19 @@ export class SchedulerComponent implements OnInit {
     }
 
     ngOnInit() {
-        setTimeout(() => {
-            if (this.appointmentDate) {
-                const date = new Date(this.appointmentDate);
-                this.year = date.getFullYear();
-                this.month = date.getMonth();
-            }
+        this.dateSubscription = this.dateEvent.subscribe(res => {
+            const date = new Date(res + ' EST');
+            this.year = date.getFullYear();
+            this.month = date.getMonth();
+
+            this.appointmentYear = this.year;
+            this.appointmentMonth = this.month;
+            this.appointmentDay = date.getDate();
         });
+    }
+
+    ngOnDestroy() {
+        this.dateSubscription.unsubscribe();
     }
 
     setDay(day: any): void {

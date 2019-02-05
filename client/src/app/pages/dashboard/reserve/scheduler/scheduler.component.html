@@ -1,4 +1,4 @@
 <div>
-    <app-month-picker [(year)]="year" [(month)]="month" [appointmentDate]="appointmentDate"></app-month-picker>
-    <app-calendar [year]="year" [month]="month" [appointmentDate]="appointmentDate" (dayChange)="setDay($event)"></app-calendar>
+    <app-month-picker [(year)]="year" [(month)]="month" [appointmentYear]="appointmentYear" [appointmentMonth]="appointmentMonth"></app-month-picker>
+    <app-calendar (dayChange)="setDay($event)" [year]="year" [month]="month" [appointmentYear]="appointmentYear" [appointmentMonth]="appointmentMonth" [appointmentDay]="appointmentDay"></app-calendar>
 </div>

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { ShiftDTO } from '../../../../interfaces/shift-dto/shift-dto';
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { EmployeeAppointmentDTO } from '../../../../interfaces/appointment/employee-appointment-dto';
+import { Observable, Subscription } from 'rxjs';
 
 interface Time {
     hour: number;
@@ -16,13 +17,17 @@ interface Time {
     templateUrl: './time-picker.component.html',
     styleUrls: ['./time-picker.component.scss']
 })
-export class TimePickerComponent implements OnInit, OnChanges {
+export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() service: ServiceDTO;
     @Input() employeeShift: ShiftDTO;
     @Input() employeeAppointments: EmployeeAppointmentDTO[];
 
     @Output() timeChange = new EventEmitter();
+
+    startTime: string;
+    startTimeSubscription: Subscription;
+    @Input() startTimeEvent: Observable<string>;
 
     timeFormat = 'HH:mm';
     minHour = 8;
@@ -38,6 +43,11 @@ export class TimePickerComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
+        this.startTimeSubscription = this.startTimeEvent.subscribe(res => this.startTime = res);
+    }
+
+    ngOnDestroy() {
+        this.startTimeSubscription.unsubscribe();
     }
 
     ngOnChanges() {

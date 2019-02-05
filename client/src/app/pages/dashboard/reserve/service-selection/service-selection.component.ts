@@ -1,17 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ServiceService } from '../../../../services/service/service.service';
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
+import { Observable, Subscription } from 'rxjs';
+import { UserAppointmentDTO } from '../../../../interfaces/appointment/user-appointment-dto';
 
 @Component({
     selector: 'app-service-selection',
     templateUrl: './service-selection.component.html',
     styleUrls: ['./service-selection.component.scss']
 })
-export class ServiceSelectionComponent implements OnInit {
+export class ServiceSelectionComponent implements OnInit, OnDestroy {
 
     services: ServiceDTO[] = [];
 
-    @Input() serviceId?: number;
+    serviceId: number;
+    serviceSubscription: Subscription;
+    @Input() serviceEvent: Observable<number>;
 
     @Output() serviceChange = new EventEmitter();
 
@@ -20,6 +24,11 @@ export class ServiceSelectionComponent implements OnInit {
 
     ngOnInit() {
         this.getServices();
+        this.serviceSubscription = this.serviceEvent.subscribe(res => this.serviceId = res);
+    }
+
+    ngOnDestroy() {
+        this.serviceSubscription.unsubscribe();
     }
 
     selectService(service: ServiceDTO) {

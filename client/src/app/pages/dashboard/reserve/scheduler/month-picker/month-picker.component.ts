@@ -29,9 +29,8 @@ export class MonthPickerComponent implements OnInit {
     @Input() month: number;
     @Output() monthChange = new EventEmitter();
 
-    @Input() appointmentDate?: string;
-    appointmentYear: number;
-    appointmentMonth: number;
+    @Input() appointmentYear?: number;
+    @Input() appointmentMonth?: number;
 
     options = [];
     dropdownIndex: number;
@@ -43,19 +42,16 @@ export class MonthPickerComponent implements OnInit {
         this.dropdownIndex = 0;
         this.initOptions();
 
-        if (this.appointmentDate) {
-            const date = new Date(this.appointmentDate);
+        setTimeout(() => {
+            if (this.appointmentYear && this.appointmentMonth) {
+                this.year = this.appointmentYear;
+                this.month = this.appointmentMonth;
 
-            this.appointmentYear = date.getFullYear();
-            this.appointmentMonth = date.getMonth();
-
-            this.month = this.appointmentYear;
-            this.year = this.appointmentMonth;
-
-            this.dropdownIndex = this.options.findIndex(
-                option => option.month === this.appointmentMonth && option.year === this.appointmentYear
-            );
-        }
+                this.dropdownIndex = this.options.findIndex(
+                    option => option.month === this.appointmentMonth && option.year === this.appointmentYear
+                );
+            }
+        });
     }
 
     nextMonth(): void {

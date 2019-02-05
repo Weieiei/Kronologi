@@ -13,6 +13,8 @@ import { EmployeeAppointmentDTO } from '../../../interfaces/appointment/employee
 import { ServiceDTO } from '../../../interfaces/service/service-dto';
 import { BookAppointmentDTO } from '../../../interfaces/appointment/book-appointment-dto';
 import * as moment from 'moment';
+import { Subject } from 'rxjs';
+import { UserAppointmentDTO } from '../../../interfaces/appointment/user-appointment-dto';
 
 @Component({
     selector: 'app-reserve',
@@ -25,7 +27,7 @@ export class ReserveComponent implements OnInit {
 
     service: ServiceDTO;
 
-    appointment;
+    appointment: UserAppointmentDTO;
     date: Date;
     endTime: string;
 
@@ -34,7 +36,6 @@ export class ReserveComponent implements OnInit {
     notes: string;
 
     modifyAppointment: boolean;
-    isLoaded: boolean;
 
     employees: EmployeeDTO[];
     employee: EmployeeDTO;
@@ -42,6 +43,12 @@ export class ReserveComponent implements OnInit {
     employeeAppointments: EmployeeAppointmentDTO[];
 
     startTime: string;
+
+    private serviceSubject = new Subject<number>();
+    private dateSubject = new Subject<string>();
+    private employeeSubject = new Subject<number>();
+    private startTimeSubject = new Subject<string>();
+    private notesSubject = new Subject<string>();
 
     constructor(
         private appointmentService: AppointmentService,
@@ -76,27 +83,65 @@ export class ReserveComponent implements OnInit {
 
                             this.getAppointmentById(id);
                         } else {
-                            this.isLoaded = true;
+                            setTimeout(() => this.notifyAll());
                         }
                     }
                 );
 
-            } else {
-                this.isLoaded = true;
             }
 
         });
     }
 
+    notifyAll(): void {
+        this.serviceSubject.next(this.appointment.service.id);
+        this.dateSubject.next(this.appointment.date);
+        this.employeeSubject.next(this.appointment.employee.id);
+        this.startTimeSubject.next(this.appointment.startTime);
+        this.notesSubject.next(this.appointment.notes);
+    }
+
+    notifyService(): void {
+        if (this.appointment) {
+            this.serviceSubject.next(this.appointment.service.id);
+        }
+    }
+
+    notifyDate(): void {
+        if (this.appointment) {
+            this.dateSubject.next(this.appointment.date);
+        }
+    }
+
+    notifyEmployee(): void {
+        if (this.appointment) {
+            this.employeeSubject.next(this.appointment.employee.id);
+        }
+    }
+
+    notifyStartTime(): void {
+        if (this.appointment) {
+            this.startTimeSubject.next(this.appointment.startTime);
+        }
+    }
+
+    notifyNotes(): void {
+        if (this.appointment) {
+            this.notesSubject.next(this.appointment.notes);
+        }
+    }
+
     setService(service: ServiceDTO): void {
         this.service = service;
         this.stepper.next();
+        this.notifyService();
     }
 
     setDate(date: Date): void {
         this.date = date;
         this.stepper.next();
         this.getAvailableEmployeesByServiceAndByDate();
+        this.notifyDate();
     }
 
     setEmployee(employee: EmployeeDTO): void {
@@ -104,12 +149,14 @@ export class ReserveComponent implements OnInit {
         this.stepper.next();
         this.getSelectedEmployeesShiftByDate();
         this.getSelectedEmployeesAppointmentsByDate();
+        this.notifyEmployee();
     }
 
     setTime(time: string): void {
         this.startTime = time;
         this.endTime = moment(this.startTime, 'HH:mm').add(this.service.duration, 'm').format('HH:mm');
         this.stepper.next();
+        this.notifyStartTime();
     }
 
     setNotesAndReserve(notes: string) {
@@ -121,7 +168,7 @@ export class ReserveComponent implements OnInit {
         this.appointmentService.getAppointmentById(id).subscribe(
             res => {
                 this.appointment = res;
-                this.isLoaded = true;
+                this.notifyAll();
             },
             err => {
                 if (err instanceof HttpErrorResponse) {
@@ -156,7 +203,7 @@ export class ReserveComponent implements OnInit {
         const month = this.date.getMonth() + 1;
         const day = this.date.getDate();
 
-        const appointmentDate = `${year}-${month < 10 ? '0' + month : month}-${day}`;
+        const appointmentDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
 
         const payload: BookAppointmentDTO = {
             employeeId: this.employee.id,
