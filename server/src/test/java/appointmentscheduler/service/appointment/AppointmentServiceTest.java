@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -175,6 +176,54 @@ public class AppointmentServiceTest {
         when(conflictingAppointment.getService().getRooms()).thenReturn(otherRoomSet);
 
         assertEquals(expectedResult, appointmentService.add(mockAppointment));
+
+        verify(appointmentRepository).save(mockAppointment);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void updateAppointmentFailNotFound() {
+        final Appointment mockAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
+
+        when(appointmentRepository.findByIdAndClientId(1, 1)).thenReturn(Optional.empty());
+        appointmentService.update(1, 1, mockAppointment);
+    }
+
+    @Test
+    public void updateAppointmentSuccess() {
+        final Appointment mockAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
+        final Employee mockEmployee = mock(Employee.class);
+
+        when(mockAppointment.getEmployee()).thenReturn(mockEmployee);
+        when(mockAppointment.getService().getEmployees().contains(any(Employee.class))).thenReturn(true);
+        when(mockEmployee.isWorking(any(), any(), any())).thenReturn(true);
+
+        final List<Appointment> nonConflictingEmployeeAppointments = Collections.singletonList(createMockedNonConflictingAppointment());
+        when(appointmentRepository.findByDateAndEmployeeIdAndStatus(any(), anyLong(), any())).thenReturn(nonConflictingEmployeeAppointments);
+
+        final List<Appointment> nonConflictingClientAppointments = Collections.singletonList(createMockedNonConflictingAppointment());
+        when(appointmentRepository.findByDateAndClientIdAndStatus(any(), anyLong(), any())).thenReturn(nonConflictingClientAppointments);
+
+        final List<Appointment> nonConflictingAppointments = Collections.singletonList(createMockedNonConflictingAppointment());
+        when(appointmentRepository.findByDateAndStatus(any(), any())).thenReturn(nonConflictingAppointments);
+
+        final Appointment expectedResult = mock(Appointment.class);
+        when(appointmentRepository.save(mockAppointment)).thenReturn(expectedResult);
+
+        final Appointment conflictingAppointment = createMockedConflictingAppointment();
+        when(appointmentRepository.findByDateAndStatus(any(), any())).thenReturn(Collections.singletonList(conflictingAppointment));
+
+        final Room room1 = mock(Room.class);
+        final Room room2 = mock(Room.class);
+        final Set<Room> roomSet = Sets.newHashSet(room1, room2);
+        final Set<Room> otherRoomSet = Sets.newHashSet(room1);
+
+        when(mockAppointment.getService().getRooms()).thenReturn(roomSet);
+        when(conflictingAppointment.getService().getRooms()).thenReturn(otherRoomSet);
+
+        when(appointmentRepository.findByIdAndClientId(1, 1)).thenReturn(Optional.of(mockAppointment));
+        when(appointmentRepository.save(mockAppointment)).thenReturn(expectedResult);
+
+        assertEquals(expectedResult, appointmentService.update(1, 1, mockAppointment));
 
         verify(appointmentRepository).save(mockAppointment);
     }
