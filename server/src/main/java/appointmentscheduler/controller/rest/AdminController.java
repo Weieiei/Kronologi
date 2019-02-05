@@ -74,8 +74,8 @@ public class AdminController {
     }
 
 
-    @PostMapping( "/user/employee/{id}" )
-    public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@PathVariable long id ){
+    @PostMapping("/user/employee/{id}")
+    public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@PathVariable long id){
         User user = this.userService.findUserByid(id);
         Set<Role> roles = user.getRoles();
         for (Role role: roles) {
@@ -111,7 +111,9 @@ public class AdminController {
                 Optional<ServiceEntity> optionalService = serviceRepository.findById(serviceId);
                 if (optionalService.isPresent()) {
                     user.addEmployeeService(optionalService.get());
-                    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+                    if (userService.updateUser(user))
+                        return ResponseEntity.status(HttpStatus.OK).build();
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
                 }
                 else {
                     System.out.println("The ID provided was not a valid Service ID.");
