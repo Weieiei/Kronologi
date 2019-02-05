@@ -1,8 +1,8 @@
-import {Component, Inject, Input} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {Service} from "../../../../../models/service/Service";
-import {ServiceService} from "../../../../../services/service/service.service";
-import {UserToDisplay} from "../../../../../models/user/UserToDisplay";
+import { Component, Inject, Input } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Service } from "../../../../../models/service/Service";
+import { ServiceService } from "../../../../../services/service/service.service";
+import { UserToDisplay } from "../../../../../models/user/UserToDisplay";
 
 export interface DialogData {
     user: UserToDisplay,
