@@ -73,8 +73,8 @@ import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/ad
         AutofocusDirective,
         SettingsComponent,
         AccountSettingsComponent,
-        ChangeClientToEmployeeDialogComponent
-        ReviewComponent
+        ChangeClientToEmployeeDialogComponent,
+        ReviewComponent,
         ReminderSettingsComponent,
         AdminServicesComponent,
         CreateServiceComponent,
