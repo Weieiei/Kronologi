@@ -14,6 +14,9 @@ import { ServiceDTO } from '../../../interfaces/service/service-dto';
 import { BookAppointmentDTO } from '../../../interfaces/appointment/book-appointment-dto';
 import { Subject } from 'rxjs';
 import { UserAppointmentDTO } from '../../../interfaces/appointment/user-appointment-dto';
+import { HelperService } from '../../../services/helper/helper.service';
+import { EmployeeTimes } from '../../../interfaces/employee/employee-times';
+import { Time } from '../../../interfaces/time';
 
 @Component({
     selector: 'app-reserve',
@@ -39,8 +42,10 @@ export class ReserveComponent implements OnInit {
     appointment: UserAppointmentDTO;
 
     employees: EmployeeDTO[];
-    employeeShift: ShiftDTO;
+    employeesWithAvailabilities: EmployeeTimes[] = [];
+    employeeShifts: ShiftDTO[];
     employeeAppointments: EmployeeAppointmentDTO[];
+    chosenEmployeeAvailabilities: Time[] = [];
 
     /**
      * These are used to pass in values to child components (steps in the cdk stepper).
@@ -57,6 +62,7 @@ export class ReserveComponent implements OnInit {
         private appointmentService: AppointmentService,
         private serviceService: ServiceService,
         private employeeService: EmployeeService,
+        private helper: HelperService,
         private router: Router,
         private route: ActivatedRoute,
         private snackBar: SnackBar
@@ -113,15 +119,14 @@ export class ReserveComponent implements OnInit {
     setDate(date: Date): void {
         this.date = date;
         this.stepper.nextStep();
-        this.getAvailableEmployeesByServiceAndByDate();
+        this.getEmployees();
         this.dateSubject.next(date.toString());
     }
 
     setEmployee(employee: EmployeeDTO): void {
         this.employee = employee;
+        this.chosenEmployeeAvailabilities = this.employeesWithAvailabilities.find(e => e.id === this.employee.id).times;
         this.stepper.nextStep();
-        this.getSelectedEmployeesShiftByDate();
-        this.getSelectedEmployeesAppointmentsByDate();
         this.employeeSubject.next(this.employee.id);
     }
 
@@ -151,22 +156,60 @@ export class ReserveComponent implements OnInit {
         );
     }
 
+    getEmployees() {
+        this.getAvailableEmployeesByServiceAndByDate();
+    }
+
     getAvailableEmployeesByServiceAndByDate() {
         this.employeeService.getAvailableEmployeesByServiceAndByDate(this.service.id, this.date.toLocaleDateString()).subscribe(
-            res => this.employees = res
+            res => {
+                this.employees = res;
+                this.getAvailableEmployeesShiftsByDate();
+            }
         );
     }
 
-    getSelectedEmployeesShiftByDate() {
-        this.employeeService.getSelectedEmployeesShiftByDate(this.employee.id, this.date.toLocaleDateString()).subscribe(
-            res => this.employeeShift = res
+    getAvailableEmployeesShiftsByDate() {
+        this.employeeService.getAvailableEmployeesShiftsByDate(this.date.toLocaleDateString()).subscribe(
+            res => {
+                this.employeeShifts = res;
+                this.getAvailableEmployeesAppointmentsByDate();
+            }
         );
     }
 
-    getSelectedEmployeesAppointmentsByDate() {
-        this.employeeService.getSelectedEmployeesAppointmentsByDate(this.employee.id, this.date.toLocaleDateString()).subscribe(
-            res => this.employeeAppointments = res
+    getAvailableEmployeesAppointmentsByDate() {
+        this.employeeService.getAvailableEmployeesAppointmentsByDate(this.date.toLocaleDateString()).subscribe(
+            res => {
+                this.employeeAppointments = res;
+                this.findAvailabilities();
+            }
         );
+    }
+
+    findAvailabilities() {
+
+        this.employeesWithAvailabilities = [];
+
+        this.employees.forEach(e => {
+
+            const employee: EmployeeTimes = {
+                id: e.id,
+                firstName: e.firstName,
+                lastName: e.lastName,
+                times: this.helper.cloneTimesArray()
+            };
+
+            const shift = this.employeeShifts.find(s => s.employee.id === employee.id);
+            const appointments = this.employeeAppointments.filter(a => a.employee.id === employee.id);
+
+            employee.times.forEach(time => {
+                time.enabled = this.helper.isValid(time.hour + ':' + time.minute, shift, appointments, this.service.duration, (this.modifyAppointment ? this.appointment.id : null));
+            });
+
+            this.employeesWithAvailabilities.push(employee);
+
+        });
     }
 
     reserve() {

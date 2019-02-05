@@ -10,7 +10,6 @@ import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -167,11 +166,11 @@ public class AppointmentService {
         return employeeRepository.findByServices_IdAndShifts_Date(serviceId, date);
     }
 
-    public Shift getEmployeesShiftByDate(long employeeId, LocalDate date) {
-        return shiftRepository.findByEmployeeIdAndDate(employeeId, date).orElse(null);
+    public List<Shift> getEmployeeShiftsByDate(LocalDate date) {
+        return shiftRepository.findByDate(date);
     }
 
-    public List<Appointment> getEmployeesConfirmedAppointmentsByDate(long employeeId, LocalDate date) {
-        return appointmentRepository.findByDateAndEmployeeIdAndStatus(date, employeeId, AppointmentStatus.CONFIRMED);
+    public List<Appointment> getConfirmedAppointmentsByDate(LocalDate date) {
+        return appointmentRepository.findByDateAndStatus(date, AppointmentStatus.CONFIRMED);
     }
 }

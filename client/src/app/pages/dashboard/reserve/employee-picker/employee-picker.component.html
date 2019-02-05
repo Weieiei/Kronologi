@@ -5,8 +5,11 @@
         </div>
         <mat-nav-list>
             <ng-container *ngFor="let employee of employees">
-                <mat-list-item [class.chosen]="employee.id === employeeId" (click)="selectEmployee(employee)">
-                    <div matLine>{{ employee.firstName + ' ' + employee.lastName }}</div>
+                <mat-list-item [class.chosen]="employee.id === employeeId" [class.disabled]="notAvailable(employee)" [disableRipple]="notAvailable(employee)" (click)="selectEmployee(employee)">
+                    <div fxLayout="row">
+                        <div matLine>{{ employee.firstName + ' ' + employee.lastName }}</div>
+                        <div *ngIf="notAvailable(employee)">&nbsp;(not available)</div>
+                    </div>
                 </mat-list-item>
                 <mat-divider></mat-divider>
             </ng-container>

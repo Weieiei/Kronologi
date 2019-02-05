@@ -28,4 +28,12 @@ export class EmployeeService {
     public getSelectedEmployeesAppointmentsByDate(employeeId: number, date: string): Observable<EmployeeAppointmentDTO[]> {
         return this.http.get<EmployeeAppointmentDTO[]>(['api', 'appointments', 'employee', employeeId, 'appointments'].join('/'), { params: { date } });
     }
+
+    getAvailableEmployeesShiftsByDate(date: string): Observable<ShiftDTO[]> {
+        return this.http.get<ShiftDTO[]>(['api', 'appointments', 'employee', 'shifts'].join('/'), { params: { date } });
+    }
+
+    getAvailableEmployeesAppointmentsByDate(date: string): Observable<EmployeeAppointmentDTO[]> {
+        return this.http.get<EmployeeAppointmentDTO[]>(['api', 'appointments', 'employee', 'appointments'].join('/'), { params: { date } });
+    }
 }

@@ -105,18 +105,18 @@ public class AppointmentController extends AbstractController {
         return getJson(mapper, appointmentService.getAvailableEmployeesByServiceAndByDate(serviceId, pickedDate));
     }
 
-    @GetMapping("employee/{employeeId}/shift")
-    public ResponseEntity<String> getEmployeesShift(@PathVariable long employeeId, @RequestParam String date) {
+    @GetMapping("employee/shifts")
+    public ResponseEntity<String> getEmployeesShift(@RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new ShiftSerializer());
-        return getJson(mapper, appointmentService.getEmployeesShiftByDate(employeeId, pickedDate));
+        return getJson(mapper, appointmentService.getEmployeeShiftsByDate(pickedDate));
     }
 
-    @GetMapping("employee/{employeeId}/appointments")
-    public ResponseEntity<String> getEmployeesConfirmedAppointments(@PathVariable long employeeId, @RequestParam String date) {
+    @GetMapping("employee/appointments")
+    public ResponseEntity<String> getEmployeesConfirmedAppointments(@RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new EmployeeAppointmentSerializer());
-        return getJson(objectMapper, appointmentService.getEmployeesConfirmedAppointmentsByDate(employeeId, pickedDate));
+        return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDate(pickedDate));
     }
 
     private LocalDate parseDate(String date) {
