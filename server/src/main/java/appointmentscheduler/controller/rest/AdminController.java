@@ -89,13 +89,18 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    private boolean containAnyRole(Set<Role> roles, RoleEnum roleType) {
+        return roles.stream().anyMatch(role -> role.getRole() == roleType);
+    }
+
     // for assigning services to employees (employees can perform certain services)
     @PostMapping("service/{employeeId}/{serviceId}")
-    public ResponseEntity<Map<String, Object>> assignService(@PathVariable Long employeeId, Long serviceId){
+    public ResponseEntity<Map<String, Object>> assignService(@PathVariable Long employeeId, @PathVariable Long serviceId){
         User user = this.userService.findUserByid(employeeId);
         Set<Role> roles = user.getRoles();
         //check if user is an employee
-        if (roles.contains(this.roleRepository.findByRole(RoleEnum.EMPLOYEE))) {
+
+        if (containAnyRole(roles, RoleEnum.EMPLOYEE)) {
             //check if the employee can already perform the service
             if (user.getEmployeeServices().contains(serviceRepository.findById(serviceId))){
                 System.out.println("The employee has already been assigned that service");
@@ -110,13 +115,13 @@ public class AdminController {
                 }
                 else {
                     System.out.println("The ID provided was not a valid Service ID.");
-                    return ResponseEntity.status(HttpStatus.CONFLICT).build();
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
                 }
             }
         }
         else {
             System.out.println("The user is not an employee, and therefore cannot be assigned a service");
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

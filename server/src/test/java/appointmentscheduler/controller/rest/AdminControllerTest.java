@@ -3,7 +3,10 @@ package appointmentscheduler.controller.rest;
 import appointmentscheduler.AppointmentScheduler;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
+import appointmentscheduler.entity.service.ServiceEntity;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.repository.RoleRepository;
+import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -21,8 +24,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -92,12 +94,21 @@ public class AdminControllerTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void assignServiceTest() throws Exception {
         User mockEmployee = mock(User.class);
+        ServiceEntity mockService = mock(ServiceEntity.class);
+        Optional<ServiceEntity> service = Optional.of(mockService);
+        RoleRepository mockRoleRepository = mock(RoleRepository.class);
+        ServiceRepository mockServiceRepository = mock(ServiceRepository.class);
         Set<Role> roles = new HashSet<>();
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
         roles.add(employeeRole);
         when(mockEmployee.getRoles()).thenReturn(roles);
         when(userService.updateUser(any(User.class))).thenReturn(true);
         when(userService.findUserByid(anyLong())).thenReturn(mockEmployee);
+        when(mockRoleRepository.findByRole(any(RoleEnum.class))).thenReturn(new Role(RoleEnum.EMPLOYEE));
+        when(mockServiceRepository.findById(anyLong())).thenReturn(service);
+        List<ServiceEntity> serviceList = new ArrayList<>();
+        serviceList.add(mockService);
+        when(mockEmployee.getEmployeeServices()).thenReturn(serviceList);
 
         MvcResult result = mockMvc.perform(
                 post("/api/admin/service/1/1")
@@ -107,8 +118,20 @@ public class AdminControllerTest {
                             return request;
                         })
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isAccepted())
                 .andReturn();
         assertTrue(result.getResponse().getContentAsString().isEmpty());
+
+        when(userService.updateUser(any(User.class))).thenReturn(false);
+        when(mockRoleRepository.findByRole(any(RoleEnum.class))).thenReturn(null);
+        result = mockMvc.perform(
+                post("/api/admin/service/991/901")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        assertTrue(result.getResponse().getContentAsString().isEmpty());
+
     }
+
+
 }
