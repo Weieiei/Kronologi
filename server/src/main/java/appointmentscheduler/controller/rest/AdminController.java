@@ -95,7 +95,7 @@ public class AdminController {
 
     // for assigning services to employees (employees can perform certain services)
     @PostMapping("service/{employeeId}/{serviceId}")
-    public ResponseEntity<Map<String, Object>> assignService(@PathVariable Long employeeId, @PathVariable Long serviceId){
+    public ResponseEntity<Map<String, Object>> assignService(@PathVariable long employeeId, @PathVariable long serviceId){
         User user = this.userService.findUserByid(employeeId);
         Set<Role> roles = user.getRoles();
         //check if user is an employee
