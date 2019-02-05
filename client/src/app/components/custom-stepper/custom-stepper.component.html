@@ -6,18 +6,20 @@
             <mat-divider *ngIf="!last" [vertical]="true" style="background-color: black;"></mat-divider>
         </ng-container>
     </div>
-    <div fxLayout="row" fxLayout="center center" fxLayoutAlign="">
-        <button mat-icon-button (click)="previousStep()">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-        </button>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <div fxFlex="50" fxFlex.lt-sm="80" fxLayoutAlign="space-between center">
+            <button mat-icon-button (click)="previousStep()">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
 
-        <div fxLayoutAlign="center center">
-            {{ titles[index] }}
+            <div fxLayoutAlign="center center">
+                <h6>{{ titles[index] }}</h6>
+            </div>
+
+            <button mat-icon-button (click)="nextStep()">
+                <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
         </div>
-
-        <button mat-icon-button (click)="nextStep()">
-            <mat-icon>keyboard_arrow_right</mat-icon>
-        </button>
     </div>
 </div>
 
