@@ -5,12 +5,7 @@ import { ShiftDTO } from '../../../../interfaces/shift-dto/shift-dto';
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { EmployeeAppointmentDTO } from '../../../../interfaces/appointment/employee-appointment-dto';
 import { Observable, Subscription } from 'rxjs';
-
-interface Time {
-    hour: number;
-    minute: number;
-    enabled: boolean;
-}
+import { Time } from '../../../../interfaces/time';
 
 @Component({
     selector: 'app-time-picker',
@@ -88,7 +83,7 @@ export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
 
     selectTime(time: Time) {
         if (time.enabled) {
-            this.timeChange.emit(`${time.hour}:${time.minute < 10 ? '0' + time.minute : time.minute}`);
+            this.timeChange.emit(`${time.hour < 10 ? '0' + time.hour : time.hour}:${time.minute < 10 ? '0' + time.minute : time.minute}`);
         }
     }
 

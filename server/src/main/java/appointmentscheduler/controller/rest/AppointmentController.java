@@ -12,6 +12,7 @@ import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.serializer.*;
 import appointmentscheduler.service.appointment.AppointmentService;
+import appointmentscheduler.service.email.EmailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -20,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -33,11 +35,13 @@ public class AppointmentController extends AbstractController {
     private final ServiceRepository serviceRepository;
     private final ModelMapper modelMapper;
     private final ObjectMapperFactory objectMapperFactory;
+    private final EmailService emailService;
 
     @Autowired
     public AppointmentController(
             AppointmentService appointmentService, UserRepository userRepository, ServiceRepository serviceRepository,
-            ModelMapper modelMapper, EmployeeRepository employeeRepository, ObjectMapperFactory objectMapperFactory
+            ModelMapper modelMapper, EmployeeRepository employeeRepository, ObjectMapperFactory objectMapperFactory,
+            EmailService emailService
     ) {
         this.appointmentService = appointmentService;
         this.userRepository = userRepository;
@@ -50,6 +54,7 @@ public class AppointmentController extends AbstractController {
             }
         });
         this.objectMapperFactory = objectMapperFactory;
+        this.emailService = emailService;
     }
 
     private Appointment mapAppointmentDTOToAppointment(AppointmentDTO appointmentDTO) {
@@ -68,17 +73,21 @@ public class AppointmentController extends AbstractController {
     }
 
     @PostMapping
-    public ResponseEntity<String> add(@RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<String> add(@RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
         Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        return getJson(mapper, appointmentService.add(appointment));
+        Appointment savedAppointment = appointmentService.add(appointment);
+        sendConfirmationMessage(savedAppointment, false);
+        return getJson(mapper, savedAppointment);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<String> update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
         Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        return getJson(mapper, appointmentService.update(id, appointment));
+        Appointment modifiedAppointment = appointmentService.update(id, appointment);
+        sendConfirmationMessage(modifiedAppointment, true);
+        return getJson(mapper, modifiedAppointment);
     }
 
     @DeleteMapping("/{id}")
@@ -109,6 +118,23 @@ public class AppointmentController extends AbstractController {
 
     private LocalDate parseDate(String date) {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
+    }
+
+    private void sendConfirmationMessage(Appointment appointment, boolean modifying) throws MessagingException {
+
+        String message = String.format(
+                "Hello %1$s,<br><br>" +
+                        "Your reservation at Sylvia Pizzi Spa has been " + (modifying ? "modified" : "confirmed") + ".<br><br>" +
+                        "%2$s with %3$s<br>" +
+                        "%4$s at %5$s<br><br>" +
+                        "We look forward to seeing you!",
+                appointment.getClient().getFirstName(),
+                appointment.getService().getName(), appointment.getEmployee().getFullName(),
+                appointment.getDate().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")), appointment.getStartTime().toString()
+        );
+
+        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
+
     }
 
 }

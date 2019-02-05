@@ -83,6 +83,10 @@ public class User extends AuditableEntity {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
+
     public String getEmail() {
         return email;
     }
