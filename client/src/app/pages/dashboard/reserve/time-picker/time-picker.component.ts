@@ -6,6 +6,7 @@ import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { EmployeeAppointmentDTO } from '../../../../interfaces/appointment/employee-appointment-dto';
 import { Observable, Subscription } from 'rxjs';
 import { Time } from '../../../../interfaces/time';
+import { HelperService } from '../../../../services/helper/helper.service';
 
 @Component({
     selector: 'app-time-picker',
@@ -33,7 +34,7 @@ export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
 
     times: Time[] = [];
 
-    constructor() {
+    constructor(private helper: HelperService) {
     }
 
     ngOnInit() {
@@ -84,51 +85,16 @@ export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
     isValid(t: string): boolean {
         const time = moment(t, this.timeFormat);
 
-        if (!this.isWithinShift(time)) {
+        if (!this.helper.isWithinShift(time, this.employeeShift)) {
             return false;
         }
 
-        if (this.isDuringAnAppointment(time)) {
+        if (this.helper.isDuringAnAppointment(time, this.employeeAppointments, this.appointmentId)) {
             return false;
         }
 
-        return this.canFitServiceIntoEmployeesSchedule(time);
+        return this.helper.canFitServiceIntoEmployeesSchedule(time, this.employeeShift, this.employeeAppointments, this.service.duration, this.appointmentId);
 
-    }
-
-    isWithinShift(time: Moment): boolean {
-        const startTime = moment(this.employeeShift.startTime, this.timeFormat);
-        const endTime = moment(this.employeeShift.endTime, this.timeFormat);
-        return time.isBetween(startTime, endTime) || time.isSame(startTime) || time.isSame(endTime);
-    }
-
-    isDuringAnAppointment(time: Moment): boolean {
-        return this.employeeAppointments.some(appointment => {
-            const startTime = moment(appointment.startTime, this.timeFormat);
-            const endTime = moment(appointment.endTime, this.timeFormat);
-            return (time.isBetween(startTime, endTime) || time.isSame(startTime)) && appointment.id !== this.appointmentId;
-        });
-    }
-
-    canFitServiceIntoEmployeesSchedule(time: Moment): boolean {
-        let duration = this.service.duration;
-        while (duration !== 0) {
-
-            // 5 because the greatest common divisor of service durations is 5
-            time.add(5, 'm');
-
-            if (!this.isWithinShift(time)) {
-                return false;
-            }
-
-            if (this.isDuringAnAppointment(time)) {
-                return false;
-            }
-
-            duration -= 5;
-        }
-
-        return true;
     }
 
 }
