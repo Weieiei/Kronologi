@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
+import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { AuthService } from "../../services/auth/auth.service";
 
 @Component({
@@ -17,7 +18,8 @@ export class NavbarComponent implements OnInit {
 
     constructor(private userService: UserService,
                 private authService: AuthService,
-                private router: Router) {
+                private router: Router,
+                private googleAnalytics: GoogleAnalyticsService) {
     }
 
     ngOnInit() {
@@ -26,6 +28,7 @@ export class NavbarComponent implements OnInit {
     }
 
     logout(): void {
+        this.googleAnalytics.trackValues('security', 'logout');
         this.userService.logout();
         this.router.navigate(['login']);
     }
