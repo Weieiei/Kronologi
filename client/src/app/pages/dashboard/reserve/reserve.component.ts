@@ -12,7 +12,6 @@ import { ShiftDTO } from '../../../interfaces/shift-dto/shift-dto';
 import { EmployeeAppointmentDTO } from '../../../interfaces/appointment/employee-appointment-dto';
 import { ServiceDTO } from '../../../interfaces/service/service-dto';
 import { BookAppointmentDTO } from '../../../interfaces/appointment/book-appointment-dto';
-import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { UserAppointmentDTO } from '../../../interfaces/appointment/user-appointment-dto';
 
@@ -25,24 +24,23 @@ export class ReserveComponent implements OnInit {
 
     @ViewChild('stepper') stepper: CustomStepperComponent;
 
+    /**
+     * Values to be used in the payload sent to book.
+     */
+    employee: EmployeeDTO;
     service: ServiceDTO;
-
-    appointment: UserAppointmentDTO;
-    date: Date;
-    endTime: string;
-
-    employeeId: number;
-    serviceId: number;
+    appointmentDate: string;
+    startTime: string;
     notes: string;
 
+    date: Date;
+
     modifyAppointment: boolean;
+    appointment: UserAppointmentDTO;
 
     employees: EmployeeDTO[];
-    employee: EmployeeDTO;
     employeeShift: ShiftDTO;
     employeeAppointments: EmployeeAppointmentDTO[];
-
-    startTime: string;
 
     /**
      * These are used to pass in values to child components (steps in the cdk stepper).
@@ -53,7 +51,6 @@ export class ReserveComponent implements OnInit {
     startTimeSubject = new Subject<string>();
     notesSubject = new Subject<string>();
 
-    appointmentDate: string;
     payload: BookAppointmentDTO;
 
     constructor(
@@ -107,62 +104,31 @@ export class ReserveComponent implements OnInit {
         this.notesSubject.next(this.appointment.notes);
     }
 
-    notifyService(): void {
-        if (this.appointment) {
-            this.serviceSubject.next(this.appointment.service.id);
-        }
-    }
-
-    notifyDate(): void {
-        if (this.appointment) {
-            this.dateSubject.next(this.appointment.date);
-        }
-    }
-
-    notifyEmployee(): void {
-        if (this.appointment) {
-            this.employeeSubject.next(this.appointment.employee.id);
-        }
-    }
-
-    notifyStartTime(): void {
-        if (this.appointment) {
-            this.startTimeSubject.next(this.appointment.startTime);
-        }
-    }
-
-    notifyNotes(): void {
-        if (this.appointment) {
-            this.notesSubject.next(this.appointment.notes);
-        }
-    }
-
     setService(service: ServiceDTO): void {
         this.service = service;
-        this.stepper.next();
-        this.notifyService();
+        this.stepper.nextStep();
+        this.serviceSubject.next(this.service.id);
     }
 
     setDate(date: Date): void {
         this.date = date;
-        this.stepper.next();
+        this.stepper.nextStep();
         this.getAvailableEmployeesByServiceAndByDate();
-        this.notifyDate();
+        this.dateSubject.next(date.toString());
     }
 
     setEmployee(employee: EmployeeDTO): void {
         this.employee = employee;
-        this.stepper.next();
+        this.stepper.nextStep();
         this.getSelectedEmployeesShiftByDate();
         this.getSelectedEmployeesAppointmentsByDate();
-        this.notifyEmployee();
+        this.employeeSubject.next(this.employee.id);
     }
 
     setTime(time: string): void {
         this.startTime = time;
-        this.endTime = moment(this.startTime, 'HH:mm').add(this.service.duration, 'm').format('HH:mm');
-        this.stepper.next();
-        this.notifyStartTime();
+        this.stepper.nextStep();
+        this.startTimeSubject.next(this.startTime);
     }
 
     setNotesAndReserve(notes: string) {

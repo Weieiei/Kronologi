@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { ServiceService } from '../../../../services/service/service.service';
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { Observable, Subscription } from 'rxjs';
-import { UserAppointmentDTO } from '../../../../interfaces/appointment/user-appointment-dto';
 
 @Component({
     selector: 'app-service-selection',

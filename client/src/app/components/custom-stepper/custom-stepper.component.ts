@@ -18,11 +18,31 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 })
 export class CustomStepperComponent extends CdkStepper implements OnInit {
 
+    index: number;
+    titles: string[] = [
+        'Choose a Service',
+        'Pick a Date',
+        'Choose an Employee',
+        'Pick a Time',
+        'Leave us a Note'
+    ];
+
     ngOnInit() {
+        this.index = 0;
     }
 
     previousStep(): void {
+        if (this.index > 0) {
+            this.index --;
+        }
+        this.previous();
+    }
 
+    nextStep(): void {
+        if (this.index < this.titles.length - 1) {
+            this.index++;
+        }
+        this.next();
     }
 
 }
