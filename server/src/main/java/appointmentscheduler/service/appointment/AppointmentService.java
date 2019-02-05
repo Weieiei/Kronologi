@@ -4,6 +4,8 @@ import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.AppointmentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.List;
 @Service
 public class AppointmentService {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private AppointmentRepository appointmentRepository;
 

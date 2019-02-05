@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
+import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 
 @Component({
     selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
     isPasswordVisible = false;
 
     constructor(private userService: UserService,
-                private router: Router) {
+                private router: Router,
+                private googleAnalytics :  GoogleAnalyticsService) {
     }
 
     ngOnInit() {
@@ -27,9 +29,11 @@ export class LoginComponent implements OnInit {
             email: this.username,
             password: this.password
         };
+        
 
         this.userService.login(payload).subscribe(
             res => {
+                this.googleAnalytics.trackValues('security', 'login', 'success');
                 const user = res['user'];
                 const token = res['token'];
 
@@ -38,7 +42,10 @@ export class LoginComponent implements OnInit {
 
                 this.router.navigate(['']);
             },
-            err => console.log(err)
+            err => {
+                this.googleAnalytics.trackValues('security', 'login', 'failure');
+                console.log(err)
+            }
         );
 
     }
