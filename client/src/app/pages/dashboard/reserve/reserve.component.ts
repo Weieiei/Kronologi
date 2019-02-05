@@ -27,6 +27,14 @@ export class ReserveComponent implements OnInit {
 
     @ViewChild('stepper') stepper: CustomStepperComponent;
 
+    titles: string[] = [
+        'Choose a Service',
+        'Pick a Date',
+        'Choose an Employee',
+        'Pick a Time',
+        'Leave us a Note'
+    ];
+
     /**
      * Values to be used in the payload sent to book.
      */

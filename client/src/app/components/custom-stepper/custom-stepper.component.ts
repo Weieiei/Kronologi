@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CdkStepper } from '@angular/cdk/stepper';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
@@ -19,13 +19,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class CustomStepperComponent extends CdkStepper implements OnInit {
 
     index: number;
-    titles: string[] = [
-        'Choose a Service',
-        'Pick a Date',
-        'Choose an Employee',
-        'Pick a Time',
-        'Leave us a Note'
-    ];
+    @Input() titles: string[];
 
     ngOnInit() {
         this.index = 0;

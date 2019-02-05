@@ -1,4 +1,4 @@
-<app-custom-stepper #stepper>
+<app-custom-stepper [titles]="titles" #stepper>
     <cdk-step>
         <app-service-selection (serviceChange)="setService($event)" [serviceEvent]="serviceSubject.asObservable()"></app-service-selection>
     </cdk-step>
