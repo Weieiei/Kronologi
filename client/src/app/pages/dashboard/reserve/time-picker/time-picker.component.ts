@@ -46,14 +46,15 @@ export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
         this.startTimeSubscription = this.startTimeEvent.subscribe(res => this.startTime = res);
     }
 
-    ngOnDestroy() {
-        this.startTimeSubscription.unsubscribe();
-    }
-
     ngOnChanges() {
         if (this.employeeShift && this.employeeAppointments) {
             this.generateTimes();
         }
+    }
+
+    ngOnDestroy() {
+        console.log(this.startTime);
+        this.startTimeSubscription.unsubscribe();
     }
 
     generateTimes(): void {
