@@ -28,7 +28,8 @@
     "country-telephone-data": "^0.6.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.22.2",
-    "rxjs": "^6.0.0",
+    "rxjs": "^6.4.0",
+    "rxjs-compat": "^6.4.0",
     "symbol-observable": "^1.2.0",
     "tslib": "^1.9.0",
     "zone.js": "^0.8.29"
@@ -38,6 +39,7 @@
     "@angular/cli": "^7.2.3",
     "@angular/compiler-cli": "^7.2.2",
     "@angular/language-service": "^7.2.2",
+    "@types/google.analytics": "0.0.39",
     "@types/jasmine": "^2.8.12",
     "@types/jasminewd2": "^2.0.6",
     "@types/node": "~8.9.4",

@@ -9,6 +9,8 @@ import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -22,6 +24,7 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final EmployeeRepository employeeRepository;
     private final ShiftRepository shiftRepository;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
