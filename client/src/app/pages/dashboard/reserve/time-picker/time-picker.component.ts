@@ -28,6 +28,7 @@ export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
     startTime: string;
     startTimeSubscription: Subscription;
     @Input() startTimeEvent: Observable<string>;
+    @Input() appointmentId?: number;
 
     timeFormat = 'HH:mm';
     minHour = 8;
@@ -116,7 +117,7 @@ export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
         return this.employeeAppointments.some(appointment => {
             const startTime = moment(appointment.startTime, this.timeFormat);
             const endTime = moment(appointment.endTime, this.timeFormat);
-            return time.isBetween(startTime, endTime) || time.isSame(startTime);
+            return (time.isBetween(startTime, endTime) || time.isSame(startTime)) && appointment.id !== this.appointmentId;
         });
     }
 

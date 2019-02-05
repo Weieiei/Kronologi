@@ -9,7 +9,7 @@
         <app-employee-picker (employeeChange)="setEmployee($event)" [employees]="employees" [employeeEvent]="employeeSubject.asObservable()"></app-employee-picker>
     </cdk-step>
     <cdk-step>
-        <app-time-picker (timeChange)="setTime($event)" [service]="service" [employeeShift]="employeeShift" [employeeAppointments]="employeeAppointments" [startTimeEvent]="startTimeSubject.asObservable()"></app-time-picker>
+        <app-time-picker (timeChange)="setTime($event)" [appointmentId]="appointment?.id" [service]="service" [employeeShift]="employeeShift" [employeeAppointments]="employeeAppointments" [startTimeEvent]="startTimeSubject.asObservable()"></app-time-picker>
     </cdk-step>
     <cdk-step>
         <app-notes-and-reserve (noteChange)="setNotesAndReserve($event)" [notesEvent]="notesSubject.asObservable()"></app-notes-and-reserve>

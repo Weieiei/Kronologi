@@ -44,11 +44,11 @@ export class ReserveComponent implements OnInit {
 
     startTime: string;
 
-    private serviceSubject = new Subject<number>();
-    private dateSubject = new Subject<string>();
-    private employeeSubject = new Subject<number>();
-    private startTimeSubject = new Subject<string>();
-    private notesSubject = new Subject<string>();
+    serviceSubject = new Subject<number>();
+    dateSubject = new Subject<string>();
+    employeeSubject = new Subject<number>();
+    startTimeSubject = new Subject<string>();
+    notesSubject = new Subject<string>();
 
     appointmentDate: string;
     payload: BookAppointmentDTO;
