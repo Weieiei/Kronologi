@@ -118,7 +118,7 @@ public class AdminControllerTest {
                             return request;
                         })
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isAccepted())
+                .andExpect(status().isOk())
                 .andReturn();
         assertTrue(result.getResponse().getContentAsString().isEmpty());
 
