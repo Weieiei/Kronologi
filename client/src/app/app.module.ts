@@ -37,7 +37,7 @@ import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
-import { ReviewComponent } from './pages/review/review.component';
+import { ReviewComponent } from './pages/dashboard/review/review.component';
 
 @NgModule({
     declarations: [

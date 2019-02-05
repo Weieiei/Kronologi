@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReviewService } from '../../services/review/review.service';
+import { ReviewService } from '../../../services/review/review.service';
 import { ReviewDTO } from 'src/app/interfaces/reviewDTO';
 
 @Component({
