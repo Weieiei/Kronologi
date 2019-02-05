@@ -14,6 +14,8 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { EmployeeGuard } from './guards/employee/employee.guard';
+import {ShiftComponent} from "./pages/dashboard/home/shift/shift.component";
+import {AdminGuard} from "./guards/admin/admin.guard";
 
 const routes: Routes = [
     // Login
@@ -31,6 +33,9 @@ const routes: Routes = [
 
             // Home page
             { path: '', component: HomeComponent },
+
+            // Admin
+            {path: 'admin/employee', component: ShiftComponent},
 
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
