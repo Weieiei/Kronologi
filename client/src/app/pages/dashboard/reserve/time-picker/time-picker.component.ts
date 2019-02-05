@@ -31,9 +31,7 @@ export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
     incrementBy = 30;
     minuteIncrements: number[] = Array(60 / this.incrementBy).fill(0).map((x, y) => x + this.incrementBy * y);
 
-    morningTimes: Time[];
-    afterNoonTimes: Time[];
-    eveningTimes: Time[];
+    times: Time[] = [];
 
     constructor() {
     }
@@ -54,31 +52,27 @@ export class TimePickerComponent implements OnInit, OnChanges, OnDestroy {
 
     generateTimes(): void {
 
-        this.morningTimes = [];
-        this.afterNoonTimes = [];
-        this.eveningTimes = [];
+        this.times = [];
 
-        for (let hour = this.minHour; hour <= 11; hour++) {
+        for (let hour = this.minHour; hour <= this.maxHour; hour++) {
             this.minuteIncrements.forEach(minute => {
                 const enabled = this.isValid(`${hour}:${minute}`);
-                this.morningTimes.push({ hour, minute, enabled });
+                this.times.push({ hour, minute, enabled });
             });
         }
 
-        for (let hour = 12; hour <= 16; hour++) {
-            this.minuteIncrements.forEach(minute => {
-                const enabled = this.isValid(`${hour}:${minute}`);
-                this.afterNoonTimes.push({ hour, minute, enabled });
-            });
-        }
+    }
 
-        for (let hour = 17; hour <= this.maxHour; hour++) {
-            this.minuteIncrements.forEach(minute => {
-                const enabled = this.isValid(`${hour}:${minute}`);
-                this.eveningTimes.push({ hour, minute, enabled });
-            });
-        }
+    morningTimes(): Time[] {
+        return this.times.filter(time => time.hour < 12);
+    }
 
+    afterNoonTimes(): Time[] {
+        return this.times.filter(time => time.hour >= 12 && time.hour <= 16);
+    }
+
+    eveningTimes(): Time[] {
+        return this.times.filter(time => time.hour > 16);
     }
 
     selectTime(time: Time) {
