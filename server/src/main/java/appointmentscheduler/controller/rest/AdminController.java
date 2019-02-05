@@ -73,7 +73,7 @@ public class AdminController {
         return appointmentService.findAll();
     }
 
-
+//todo refactor to use existing code
     @PostMapping("/user/employee/{id}")
     public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@PathVariable long id){
         User user = this.userService.findUserByid(id);

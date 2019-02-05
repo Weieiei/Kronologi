@@ -68,7 +68,7 @@ public class AdminControllerTest {
         when(userService.findUserByid(anyLong())).thenReturn(mockUser);
 
         MvcResult result = mockMvc.perform(
-                post("/api/admin/user/employee")
+                post("/api/admin/user/employee/1")
                         .with(request -> {
                             request.setAttribute("id", 1);
                             return request;
@@ -78,9 +78,13 @@ public class AdminControllerTest {
                 .andReturn();
         assertTrue(result.getResponse().getContentAsString().isEmpty());
 
+        Role clientRole = new Role(RoleEnum.CLIENT);
+        roles.clear();
+        roles.add(clientRole);
+        when(mockUser.getRoles()).thenReturn(roles);
         when(userService.updateUser(any(User.class))).thenReturn(false);
         result = mockMvc.perform(
-                post("/api/admin/user/employee")
+                post("/api/admin/user/employee/919")
                         .contentType(MediaType.APPLICATION_JSON).content("1"))
                 .andExpect(status().isBadRequest())
                 .andReturn();
