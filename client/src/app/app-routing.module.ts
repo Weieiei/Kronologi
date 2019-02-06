@@ -4,8 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/dashboard/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ReserveComponent } from './pages/dashboard/reserve/reserve.component';
 import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
-import { ReserveComponent } from './pages/reserve/reserve.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -15,6 +15,7 @@ import { AccountSettingsComponent } from './pages/settings/account-settings/acco
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { EmployeeGuard } from './guards/employee/employee.guard';
 import { ReviewComponent } from './pages/dashboard/review/review.component';
+
 const routes: Routes = [
     // Login
     { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
@@ -32,6 +33,14 @@ const routes: Routes = [
             // Home page
             { path: '', component: HomeComponent },
 
+            // Reserving and modifying reservation
+            {
+                path: 'reserve', children: [
+                    { path: '', component: ReserveComponent, data: { edit: false } },
+                    { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
+                ]
+            },
+
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
@@ -40,6 +49,8 @@ const routes: Routes = [
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
+
+            // User settings
             {
                 path: 'settings', component: SettingsComponent, children: [
                     { path: '', redirectTo: 'account', pathMatch: 'full' },

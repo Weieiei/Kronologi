@@ -60,7 +60,7 @@
 
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row [ngClass]="{'cancelRow': row.status=='cancelled', 'disable-hover': row.status=='cancelled'}"
+        <tr mat-row [ngClass]="{'cancelRow': row.status=='CANCELLED', 'disable-hover': row.status=='CANCELLED'}"
                         *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>

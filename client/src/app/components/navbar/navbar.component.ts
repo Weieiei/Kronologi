@@ -13,17 +13,14 @@ export class NavbarComponent implements OnInit {
 
     @Input() sidenav: MatSidenav;
 
-    user;
-
-    
-    constructor(private userService: UserService,
-                private router: Router,
-                private googleAnalytics: GoogleAnalyticsService) {
-
+    constructor(
+        private userService: UserService,
+        private router: Router,
+        private googleAnalytics: GoogleAnalyticsService
+    ) {
     }
 
     ngOnInit() {
-        this.user = this.userService.getUser();
     }
 
     logout(): void {

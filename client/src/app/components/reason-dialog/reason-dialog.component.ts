@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment/appointment.service';
-import { Appointment } from 'src/app/models/appointment/Appointment';
+import { Appointment } from 'src/app/interfaces/appointment';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
@@ -26,10 +26,10 @@ export class ReasonDialogComponent implements OnInit {
   }
 
   getCancelReason(){
-      this.appointmentService.cancelAppointmentReason(this.cancelledAppointment.id).subscribe(
+      this.appointmentService.cancelAppointmentReason(1).subscribe(
         res => {
             this.reason = res["reason"]
-            let canceller = res["canceller"];
+            let canceller = res["employee"];
             this.employeeName = canceller["firstName"] + " " + canceller["lastName"];
         },
         err => console.log(err)

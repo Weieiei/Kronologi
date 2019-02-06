@@ -70,7 +70,7 @@ public class UserControllerTest {
         userLoginDTO.setEmail("testEmail");
         userLoginDTO.setPassword("testPassword");
 
-        final Map<String, Object> someMap = Collections.emptyMap();
+        final Map<String, String> someMap = Collections.emptyMap();
 
         when(userService.login(any(UserLoginDTO.class))).thenReturn(someMap);
 

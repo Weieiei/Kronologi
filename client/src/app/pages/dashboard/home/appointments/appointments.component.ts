@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
 import { MatDialog } from '@angular/material';
+import { UserAppointmentDTO } from '../../../../interfaces/appointment/user-appointment-dto';
 
 @Component({
     selector: 'app-appointments',
@@ -9,8 +10,8 @@ import { MatDialog } from '@angular/material';
 })
 export class AppointmentsComponent implements OnInit {
 
-    upcomingAppointments;
-    pastAppointments;
+    upcomingAppointments: UserAppointmentDTO[];
+    pastAppointments: UserAppointmentDTO[];
 
     upcomingMessageMapping: { [k: string]: string } = {
         '=0': 'No Upcoming Appointments',
@@ -42,10 +43,10 @@ export class AppointmentsComponent implements OnInit {
         this.appointmentService.getMyAppointments().subscribe(
             res => {
                 const now = new Date();
-                
+
                 for (const appointment of res) {
                     const appointmentStart = new Date(appointment.date + ' ' + appointment.startTime);
-                    
+
                     if (now <= appointmentStart) {
                         this.upcomingAppointments.push(appointment);
                     } else {

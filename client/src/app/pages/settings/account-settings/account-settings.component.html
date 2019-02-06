@@ -135,7 +135,7 @@
                     <div fxLayout="row">
                         <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="60" fxFlex.lt-md>
                             <mat-label>Country</mat-label>
-                            <mat-select [required]="true" (selectionChange)="selectCountry($event.value)">
+                            <mat-select (selectionChange)="selectCountry($event.value)" required>
                                 <mat-select-trigger *ngIf="selectedCountry">
                                     {{ selectedCountry.name }} <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>
                                 </mat-select-trigger>

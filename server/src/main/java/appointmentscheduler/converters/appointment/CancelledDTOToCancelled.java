@@ -6,6 +6,8 @@ import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -24,13 +26,9 @@ public class CancelledDTOToCancelled implements Converter<CancelAppointmentDTO, 
     public CancelledAppointment convert(CancelAppointmentDTO cancelledDTO){
 
         CancelledAppointment cancelledAppointment = new CancelledAppointment();
-
         if (appointmentRepository.findById(cancelledDTO.getIdOfCancelledAppointment()).isPresent()) {
             Appointment temp = appointmentRepository.findById(cancelledDTO.getIdOfCancelledAppointment()).get();
-
-            if(cancelledDTO.getIdPersonWhoCancelled() == temp.getEmployee().getId()){
-                cancelledAppointment.setAppointment(temp);
-            }
+            cancelledAppointment.setAppointment(temp);
         }
 
         if (userRepository.findById(cancelledDTO.getIdPersonWhoCancelled()).isPresent()) {

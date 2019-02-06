@@ -2,12 +2,11 @@ package appointmentscheduler.entity.appointment;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -18,19 +17,16 @@ public class Appointment extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private User client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private User employee;
+    private Employee employee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "service_id", nullable = false)
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Service service;
 
     @Column(name = "date")
@@ -49,15 +45,21 @@ public class Appointment extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
-    public Appointment() { }
+    public Appointment() {
+    }
 
-    public Appointment(User client, User employee, Service service, LocalDate date, LocalTime startTime, String notes) {
+    public Appointment(User client, Employee employee, Service service, LocalDate date, LocalTime startTime, String notes) {
         this.client = client;
         this.employee = employee;
         this.service = service;
         this.date = date;
         this.startTime = startTime;
         this.notes = notes;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Appointment && ((Appointment) obj).getId() == this.getId();
     }
 
     public long getId() {
@@ -76,11 +78,11 @@ public class Appointment extends AuditableEntity {
         this.client = client;
     }
 
-    public User getEmployee() {
+    public Employee getEmployee() {
         return employee;
     }
 
-    public void setEmployee(User employee) {
+    public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 
@@ -109,19 +111,14 @@ public class Appointment extends AuditableEntity {
     }
 
     public LocalTime getEndTime() {
+        if (endTime == null) {
+            adjustEndTime();
+        }
         return endTime;
     }
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
-    }
-
-    public LocalDateTime getStartDateTime() {
-        return LocalDateTime.of(getDate(), getStartTime());
-    }
-
-    public LocalDateTime getEndDateTime() {
-        return LocalDateTime.of(getDate(), getEndTime());
     }
 
     public String getNotes() {
@@ -143,7 +140,7 @@ public class Appointment extends AuditableEntity {
     @PrePersist
     public void beforeInsert() {
         adjustEndTime();
-        this.status = AppointmentStatus.confirmed;
+        this.status = AppointmentStatus.CONFIRMED;
     }
 
     @PreUpdate
@@ -155,4 +152,8 @@ public class Appointment extends AuditableEntity {
         this.endTime = startTime.plusMinutes(this.service.getDuration());
     }
 
+    public boolean isConflicting(Appointment appointment) {
+        return appointment.getDate().equals(this.getDate()) &&
+                !(appointment.getEndTime().isBefore(this.getStartTime()) || appointment.getEndTime().equals(this.getStartTime()) || appointment.getStartTime().isAfter(this.getEndTime()) || appointment.getStartTime().equals(this.getEndTime()));
+    }
 }

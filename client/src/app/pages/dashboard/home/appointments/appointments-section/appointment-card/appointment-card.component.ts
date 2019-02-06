@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Appointment } from 'src/app/models/appointment/Appointment';
 import {MatDialog, MatDialogConfig} from "@angular/material";
 import { CancelDialogComponent } from 'src/app/components/cancel-dialog/cancel-dialog.component';
 import { Router } from '@angular/router';
@@ -14,8 +13,7 @@ import { ReasonDialogComponent } from 'src/app/components/reason-dialog/reason-d
 })
 export class AppointmentCardComponent implements OnInit {
 
-    @Input()
-    appointment: any;
+    @Input() appointment;
     appointmentStart: Date;
     now: Date;
     reviewExists = false;
@@ -43,9 +41,11 @@ export class AppointmentCardComponent implements OnInit {
         this.router.navigate(['/review/' + this.appointment.id]);
     }
 
+    modifyAppointment() {
+        //this.router.navigate(['reserve', 'edit', this.appointment.id], { state: { appointment: this.appointment }});
+    }
     openDialog() {
         const dialogConfig = new MatDialogConfig();
-        
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         let longDescription: string;

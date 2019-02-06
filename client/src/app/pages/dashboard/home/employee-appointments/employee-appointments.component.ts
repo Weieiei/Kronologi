@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
 import { Appointment } from 'src/app/interfaces/appointment';
 import { MatDialogConfig, MatDialog } from '@angular/material';
-import { AppointmentDetailed } from 'src/app/models/appointment/AppointmentDetailed';
 import { CancelDialogComponent } from 'src/app/components/cancel-dialog/cancel-dialog.component';
 
 @Component({
@@ -19,11 +18,16 @@ export class EmployeeAppointmentsComponent implements OnInit {
     constructor(private dialog: MatDialog, private appointmentService: AppointmentService) {
         this.appointments = [];
         this.pastAppointments = [];
+
     }
 
     ngOnInit() {
-        this.getAllAppointments();
-        
+        this.dialog.afterAllClosed
+        .subscribe(() => {
+        //update appointments when we cancel one on dialog close.
+          this.appointments=[];
+          this.getAllAppointments();
+        })
     }
 
     getAllAppointments(): void {
@@ -61,16 +65,10 @@ export class EmployeeAppointmentsComponent implements OnInit {
             longDescription
         };
 
-        this. dialog.afterAllClosed
-        .subscribe(() => {
-        //update appointments when we cancel one on dialog close.
-          this.appointments=[];
-          this.getAllAppointments();
-        })
         this.dialog.open(CancelDialogComponent, dialogConfig);
     }
 
     checkIfCancelled(row_id:any){
-        return this.appointments[row_id-1].status == 'cancelled'
+        return this.appointments[row_id-1].status == 'CANCELLED'
     }
 }

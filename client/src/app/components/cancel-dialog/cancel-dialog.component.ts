@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import { AppointmentDetailed } from 'src/app/models/appointment/AppointmentDetailed';
 import { AppointmentService } from 'src/app/services/appointment/appointment.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SnackBar } from 'src/app/snackbar';
 import { CancelAppointmentDTO } from 'src/app/interfaces/cancelAppointmentDTO';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserAppointmentDTO } from 'src/app/interfaces/appointment/user-appointment-dto';
 
 @Component({
   selector: 'cancel-dialog',
@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class CancelDialogComponent implements OnInit {
   form: FormGroup;
-  toCancel:AppointmentDetailed;
+  toCancel:UserAppointmentDTO;
   serviceName:string;
   employeeName:string;
   customerName:string;
@@ -30,10 +30,8 @@ export class CancelDialogComponent implements OnInit {
       private dialogRef: MatDialogRef<CancelDialogComponent>,
       private snackBar: SnackBar,
       @Inject(MAT_DIALOG_DATA) {appointment,longDescription}:any) {
-    
     this.toCancel = appointment;
-    this.serviceName = appointment.serviceName;
-    this.customerName = this.toCancel.client.firstName + " " + this.toCancel.client.lastName;
+    this.serviceName = appointment.service.name;
     this.employeeName = this.toCancel.employee.firstName + " " + this.toCancel.employee.lastName;
     this.isEmployee = this.userService.isEmployee();
     this.isAdmin = this.authService.isAdmin();
@@ -48,15 +46,18 @@ export class CancelDialogComponent implements OnInit {
 
   cancel() {
     if(!this.isEmployee){
-     this.appointmentService.cancelAppointments(this.toCancel.id).subscribe(
+      const payload: CancelAppointmentDTO = {
+        reason: "Cancelled by customer",
+        idOfAppointment: this.toCancel.id,
+    };
+     this.appointmentService.cancelAppointments(this.toCancel.id, payload).subscribe(
         res => {
           this.dialogRef.close();
-          this.snackBar.openSnackBarSuccess(res);
+          this.snackBar.openSnackBarSuccess(res["message"]);
         },
         err => console.log(err)
       );
     }else{
-
       const payload: CancelAppointmentDTO = {
         reason: this.form.value.longDescription,
         idOfAppointment: this.toCancel.id,
@@ -65,8 +66,7 @@ export class CancelDialogComponent implements OnInit {
       this.appointmentService.cancelAppointmentsEmployee(payload).subscribe(
         res => {
           this.dialogRef.close();
-          console.log(res)
-          this.snackBar.openSnackBarSuccess(res);
+          this.snackBar.openSnackBarSuccess(res["message"]);
         },
         err => console.log(this.dialogRef.close())
       );

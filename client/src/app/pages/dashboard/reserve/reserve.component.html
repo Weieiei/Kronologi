@@ -1,0 +1,17 @@
+<app-custom-stepper [titles]="titles" #stepper>
+    <cdk-step>
+        <app-service-selection (serviceChange)="setService($event)" [serviceEvent]="serviceSubject.asObservable()"></app-service-selection>
+    </cdk-step>
+    <cdk-step>
+        <app-scheduler (dateChange)="setDate($event)" [dateEvent]="dateSubject.asObservable()"></app-scheduler>
+    </cdk-step>
+    <cdk-step>
+        <app-employee-picker (employeeChange)="setEmployee($event)" [employees]="employeesWithAvailabilities" [employeeEvent]="employeeSubject.asObservable()"></app-employee-picker>
+    </cdk-step>
+    <cdk-step>
+        <app-time-picker (timeChange)="setTime($event)" [times]="chosenEmployeeAvailabilities" [startTimeEvent]="startTimeSubject.asObservable()"></app-time-picker>
+    </cdk-step>
+    <cdk-step>
+        <app-notes-and-reserve (noteChange)="setNotesAndReserve($event)" [notesEvent]="notesSubject.asObservable()"></app-notes-and-reserve>
+    </cdk-step>
+</app-custom-stepper>

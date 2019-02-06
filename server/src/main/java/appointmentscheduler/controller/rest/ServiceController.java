@@ -1,51 +1,79 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.ServiceRepository;
+import appointmentscheduler.serializer.ObjectMapperFactory;
+import appointmentscheduler.serializer.ServiceSerializer;
+import appointmentscheduler.serializer.UserAppointmentSerializer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("${rest.api.path}/services")
 @PreAuthorize("hasAuthority('CLIENT')")
-public class ServiceController extends IRestController {
+public class ServiceController {
 
     private final ServiceRepository serviceRepository;
+    private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
-    public ServiceController(ServiceRepository serviceRepository) {
+    public ServiceController(ServiceRepository serviceRepository, ObjectMapperFactory objectMapperFactory) {
         this.serviceRepository = serviceRepository;
+        this.objectMapperFactory = objectMapperFactory;
     }
 
-    @GetMapping
-    @Override
-    public List<Service> findAll() {
-        return serviceRepository.findAll();
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findAll() {
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
+
+        try {
+            return ResponseEntity.ok(mapper.writeValueAsString(serviceRepository.findAll()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @Override
-    public Object findById(long id) {
-        return null;
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findById(@PathVariable long id) {
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+
+        try {
+            final Service service = serviceRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+            return ResponseEntity.ok(mapper.writeValueAsString(service));
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @Override
     public Object add(Object o) {
+        // todo
         return null;
     }
 
-    @Override
     public Object update(long id, Object o) {
+        // todo
         return null;
     }
 
-    @Override
     public ResponseEntity delete(long id) {
+        // todo
         return null;
     }
 }
