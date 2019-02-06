@@ -74,12 +74,14 @@ public class Seed {
         Role clientRole = new Role(RoleEnum.CLIENT);
 
         User admin = UserFactory.createUser(User.class, "Admin", "User", "admin@admin.com", hash("admin123"));
+        admin.setVerified(true);
         admin.setRoles(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
 
         User client1 = UserFactory.createUser(User.class, "John", "Doe", "johndoe@johndoe.com", hash("johndoe123"));
         client1.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         User client2 = UserFactory.createUser(User.class, "Test", "User", "test@test.com", hash("test123"));
+        client2.setVerified(true);
         client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         User client3 = UserFactory.createUser(User.class, "Test2", "User", "test2@test.com", hash("test123"));
@@ -143,22 +145,26 @@ public class Seed {
 
         Employee employee = (Employee) UserFactory.createUser(Employee.class, "Employee", "User", "employee@employee.com", hash("employee123"));
         employee.setServices(set);
+        employee.setVerified(true);
         employee.setShifts(generateShifts(employee));
         employee.setRoles(Sets.newHashSet(employeeRole));
         employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
         Employee employee2 = (Employee) UserFactory.createUser(Employee.class, "Employee2", "User", "employee2@employee.com", hash("employee123"));
         employee2.setServices(set);
+        employee2.setVerified(true);
         employee2.setShifts(generateShifts(employee2));
         employee2.setRoles(Sets.newHashSet(employeeRole));
 
         Employee employee3 = (Employee) UserFactory.createUser(Employee.class, "Employee3", "User", "employee3@employee.com", hash("employee123"));
         employee3.setServices(set);
+        employee3.setVerified(true);
         employee3.setShifts(generateShifts(employee3));
         employee3.setRoles(Sets.newHashSet(employeeRole));
 
         Employee employee4 = (Employee) UserFactory.createUser(Employee.class, "Employee4", "User", "employe4e@employee.com", hash("employee123"));
         employee4.setServices(set);
+        employee4.setVerified(true);
         employee4.setShifts(generateShifts(employee4));
         employee4.setRoles(Sets.newHashSet(employeeRole));
 
