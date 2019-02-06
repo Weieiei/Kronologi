@@ -23,4 +23,8 @@ export class AdminService {
     getEmployeeShifts(employeeId: number): Observable<AdminEmployeeShiftDTO[]> {
         return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'admin', 'employee', employeeId, 'shift'].join('/'));
     }
+
+    deleteShift(shiftId: number): Observable<any> {
+        return this.http.delete<any>(['api', 'admin', 'employee', 'shift', shiftId].join('/'));
+    }
 }

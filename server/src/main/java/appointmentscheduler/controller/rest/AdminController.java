@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -54,20 +52,26 @@ public class AdminController extends AbstractController {
     }
 
     @PostMapping("/employee/{employeeId}/shift")
-    public Shift createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) throws IOException, MessagingException {
+    public ResponseEntity<String> createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
         employeeShiftDTO.setEmployeeId(employeeId);
-        return employeeShiftService.createShift(employeeShiftDTO);
+        Shift shift = employeeShiftService.createShift(employeeShiftDTO);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
     }
 
     @PutMapping("/employee/{employeeId}/shift/{shiftId}")
-    public Shift modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
+    public ResponseEntity<String> modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
         employeeShiftDTO.setEmployeeId(employeeId);
-        return employeeShiftService.modifyShift(employeeShiftDTO, shiftId);
+        Shift shift = employeeShiftService.modifyShift(employeeShiftDTO, shiftId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
     }
 
-    @DeleteMapping("/employee/{employeeId}/shift/{shiftId}")
-    public Shift deleteShift(@PathVariable long shiftId){
-        return employeeShiftService.deleteShift(shiftId);
+    @DeleteMapping("/employee/shift/{shiftId}")
+    public ResponseEntity<String> deleteShift(@PathVariable long shiftId){
+        Shift shift = employeeShiftService.deleteShift(shiftId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
     }
 
 }

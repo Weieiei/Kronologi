@@ -68,4 +68,22 @@ export class ShiftComponent implements OnInit {
         );
     }
 
+    deleteShift(shiftId: number) {
+
+        if (!confirm('Click OK to delete this shift.')) {
+            return;
+        }
+
+        this.adminService.deleteShift(shiftId).subscribe(
+            res => {
+                this.snackBar.openSnackBarSuccess('Successfully deleted shift.');
+                this.shifts = this.shifts.filter(s => s.id !== shiftId);
+            },
+            err => {
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                }
+            }
+        );
+    }
 }

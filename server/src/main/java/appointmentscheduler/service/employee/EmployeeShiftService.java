@@ -82,12 +82,7 @@ public class EmployeeShiftService {
     }
 
     public Shift deleteShift(long shiftId){
-        Optional<Shift> shiftList = shiftRepository.findById(shiftId);
-        Shift shift = null;
-        if(shiftList.isPresent()) {
-            shift = shiftList.get();
-            shiftRepository.delete(shift);
-        }
-        return shift;
+        return shiftRepository.findById(shiftId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Shift with id %d not found.", shiftId)));
     }
 }
