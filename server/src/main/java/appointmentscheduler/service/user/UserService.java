@@ -10,6 +10,7 @@ import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.PhoneNumberRepository;
@@ -69,10 +70,7 @@ public class UserService {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
         }
 
-        User user = new User(
-                userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(),
-                userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword())
-        );
+        User user = UserFactory.createUser(User.class, userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(), userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
 
         if (userRegisterDTO.getPhoneNumber() != null) {
 
@@ -98,10 +96,10 @@ public class UserService {
 
         String token = generateToken(savedUser, userRegisterDTO.getPassword());
 
-        return buildUserTokenRegisterMap(savedUser, token, verification);
+        return buildTokenRegisterMap( token, verification);
     }
 
-    public Map<String, Object> login(UserLoginDTO userLoginDTO) {
+    public Map<String, String> login(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmailIgnoreCase(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
 
@@ -110,19 +108,21 @@ public class UserService {
 
         String token = generateToken(user, userLoginDTO.getPassword());
 
-        return buildUserTokenMap(user, token);
+        return buildTokenMap(token);
     }
 
-    private Map<String, Object> buildUserTokenMap(User user, String token) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", user);
+    private Map<String, String> buildTokenMap(String token) {
+        Map<String, String> map = new HashMap<>();
         map.put("token", token);
+
         return map;
     }
 
-    private Map<String, Object> buildUserTokenRegisterMap(User user, String token, Verification verification) {
-        Map<String, Object> map = buildUserTokenMap(user, token);
+    private Map<String, Object> buildTokenRegisterMap(String token, Verification verification) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", token);
         map.put("verification", verification);
+
         return map;
     }
 
@@ -140,6 +140,10 @@ public class UserService {
 
         if (updateEmailDTO.getPassword() == null || !bCryptPasswordEncoder.matches(updateEmailDTO.getPassword(), user.getPassword())) {
             throw new IncorrectPasswordException("Incorrect password.");
+        }
+
+        if (updateEmailDTO.getNewEmail() == null) {
+            throw new InvalidUpdateException("You must provide a new email.");
         }
 
         if (user.getEmail().equalsIgnoreCase(updateEmailDTO.getNewEmail())) {
@@ -162,8 +166,12 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d not found.", id)));
 
-        if (!bCryptPasswordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
+        if (updatePasswordDTO.getOldPassword() == null || !bCryptPasswordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
             throw new IncorrectPasswordException("The old password you provided is incorrect.");
+        }
+
+        if (updatePasswordDTO.getNewPassword() == null) {
+            throw new PasswordNotProvidedExcetion("You must provide a new password.");
         }
 
         user.setPassword(bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword()));

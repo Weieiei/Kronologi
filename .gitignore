@@ -41,3 +41,4 @@ Thumbs.db
 
 # User Specified
 .env
+appointment-scheduler-logs/

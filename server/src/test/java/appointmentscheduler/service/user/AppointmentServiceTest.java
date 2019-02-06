@@ -1,7 +1,9 @@
 package appointmentscheduler.service.user;
 
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.appointment.AppointmentFactory;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.service.appointment.AppointmentService;
 import org.junit.Assert;
@@ -28,7 +30,7 @@ public class AppointmentServiceTest {
     public void getAppointmentsForCurrentUser() {
 
         User mockClient = Mockito.mock(User.class);
-        User mockEmployee = Mockito.mock(User.class);
+        Employee mockEmployee = Mockito.mock(Employee.class);
         Service mockService = Mockito.mock(Service.class);
 
         String clientFirstName = "clientFirstName";
@@ -51,7 +53,7 @@ public class AppointmentServiceTest {
 
 
         String notes = "note";
-        Appointment appointment = new Appointment(mockClient, mockEmployee, mockService, date, startTime, notes);
+        Appointment appointment = AppointmentFactory.createAppointment(mockClient, mockEmployee, mockService, date, startTime, notes);
         appointment.setEndTime(endTime);
         List<Appointment> appointments = new ArrayList<>();
         appointments.add(appointment);
@@ -75,7 +77,7 @@ public class AppointmentServiceTest {
     public void getAppointmentsForCurrentEmployee() {
 
         User mockClient = Mockito.mock(User.class);
-        User mockEmployee = Mockito.mock(User.class);
+        Employee mockEmployee = Mockito.mock(Employee.class);
         Service mockService = Mockito.mock(Service.class);
 
         String clientFirstName = "clientFirstName";

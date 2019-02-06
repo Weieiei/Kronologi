@@ -132,10 +132,6 @@ public class UserServiceTest {
         // run method and get result
         Map map = userService.login(userLoginDTO);
 
-        // verify result contents for user
-        assertNotNull(map.get("user"));
-        assertEquals(1, ((User) map.get("user")).getId());
-
         // verify result contents for token
         assertNotNull(map.get("token"));
         assertEquals("testToken", map.get("token"));

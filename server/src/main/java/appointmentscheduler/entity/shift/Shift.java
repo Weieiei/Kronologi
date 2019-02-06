@@ -1,12 +1,14 @@
 package appointmentscheduler.entity.shift;
 
 import appointmentscheduler.entity.AuditableEntity;
-import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ModelValidationException;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -17,9 +19,11 @@ public class Shift extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "employee_id", nullable = false)
-    private User employee;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Employee employee;
 
     @Column(name = "date")
     private LocalDate date;
@@ -30,9 +34,10 @@ public class Shift extends AuditableEntity {
     @Column(name = "end_time")
     private LocalTime endTime;
 
-    public Shift() { }
+    public Shift() {
+    }
 
-    public Shift(User employee, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    public Shift(Employee employee, LocalDate date, LocalTime startTime, LocalTime endTime) {
         this.employee = employee;
         this.date = date;
         this.startTime = startTime;
@@ -47,11 +52,11 @@ public class Shift extends AuditableEntity {
         this.id = id;
     }
 
-    public User getEmployee() {
+    public Employee getEmployee() {
         return employee;
     }
 
-    public void setEmployee(User employee) {
+    public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 
@@ -79,14 +84,6 @@ public class Shift extends AuditableEntity {
         this.endTime = endTime;
     }
 
-    public LocalDateTime getStartDateTime() {
-        return LocalDateTime.of(getDate(), getStartTime());
-    }
-
-    public LocalDateTime getEndDateTime() {
-        return LocalDateTime.of(getDate(), getEndTime());
-    }
-
     @PrePersist
     public void beforeInsert() {
         validateTimes();
@@ -98,7 +95,7 @@ public class Shift extends AuditableEntity {
     }
 
     private void validateTimes() {
-        if (getEndDateTime().isBefore(getStartDateTime())) {
+        if (getEndTime().isBefore(getStartTime())) {
             throw new ModelValidationException("A shift's start time should be before its end time.");
         }
     }

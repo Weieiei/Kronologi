@@ -1,0 +1,53 @@
+<div class="time-picker-container">
+
+    <div fxFlex fxLayout="column">
+
+        <mat-divider></mat-divider>
+
+        <div class="daytime-container" fxLayout="row" fxLayoutAlign="center">
+            <mat-divider [vertical]="true"></mat-divider>
+            <div class="set-width" fxLayoutAlign="center">Morning</div>
+            <mat-divider [vertical]="true"></mat-divider>
+            <div class="set-width" fxLayoutAlign="center">After-Noon</div>
+            <mat-divider [vertical]="true"></mat-divider>
+            <div class="set-width" fxLayoutAlign="center">Evening</div>
+            <mat-divider [vertical]="true"></mat-divider>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="time-container" fxLayout="row" fxLayoutAlign="center">
+
+            <mat-divider [vertical]="true"></mat-divider>
+
+            <div class="set-width times" fxLayout="column" fxLayoutAlign="start center">
+                <div class="time" *ngFor="let time of morningTimes()" [class.disabled]="!time.enabled" [class.chosen]="startTime === time.hour + ':' + (time.minute < 10 ? '0' + time.minute : time.minute)" (click)="selectTime(time)" fxLayoutAlign="center">
+                    {{ time.minute < 10 ? time.hour + ':0' + time.minute : time.hour + ':' + time.minute }}
+                </div>
+            </div>
+
+            <mat-divider [vertical]="true"></mat-divider>
+
+            <div class="set-width times" fxLayout="column" fxLayoutAlign="start center">
+                <div class="time" *ngFor="let time of afterNoonTimes()" [class.disabled]="!time.enabled" [class.chosen]="startTime === time.hour + ':' + (time.minute < 10 ? '0' + time.minute : time.minute)" (click)="selectTime(time)" fxLayoutAlign="center">
+                    {{ time.minute < 10 ? time.hour + ':0' + time.minute : time.hour + ':' + time.minute }}
+                </div>
+            </div>
+
+            <mat-divider [vertical]="true"></mat-divider>
+
+            <div class="set-width times" fxLayout="column" fxLayoutAlign="start center">
+                <div class="time" *ngFor="let time of eveningTimes()" [class.disabled]="!time.enabled" [class.chosen]="startTime === time.hour + ':' + (time.minute < 10 ? '0' + time.minute : time.minute)" (click)="selectTime(time)" fxLayoutAlign="center">
+                    {{ time.minute < 10 ? time.hour + ':0' + time.minute : time.hour + ':' + time.minute }}
+                </div>
+            </div>
+
+            <mat-divider [vertical]="true"></mat-divider>
+
+        </div>
+
+        <mat-divider></mat-divider>
+
+    </div>
+
+</div>

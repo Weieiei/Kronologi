@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
+import { UserAppointmentDTO } from '../../../../interfaces/appointment/user-appointment-dto';
 
 @Component({
     selector: 'app-appointments',
@@ -8,8 +9,8 @@ import { AppointmentService } from '../../../../services/appointment/appointment
 })
 export class AppointmentsComponent implements OnInit {
 
-    upcomingAppointments;
-    pastAppointments;
+    upcomingAppointments: UserAppointmentDTO[];
+    pastAppointments: UserAppointmentDTO[];
 
     upcomingMessageMapping: { [k: string]: string } = {
         '=0': 'No Upcoming Appointments',
