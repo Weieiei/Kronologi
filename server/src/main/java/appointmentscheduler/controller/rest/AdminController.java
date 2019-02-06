@@ -4,6 +4,7 @@ import appointmentscheduler.dto.employee.EmployeeShiftDTO;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.serializer.AdminEmployeeSerializer;
+import appointmentscheduler.serializer.AdminEmployeeShiftSerializer;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.service.employee.EmployeeShiftService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,8 +40,10 @@ public class AdminController extends AbstractController {
     }
 
     @GetMapping("/employee/{employeeId}/shift")
-    public List<Shift> getEmployeeShifts(@PathVariable long employeeId) {
-        return employeeShiftService.getEmployeeShifts(employeeId);
+    public ResponseEntity<String> getEmployeeShifts(@PathVariable long employeeId) {
+        List<Shift> shifts = employeeShiftService.getEmployeeShifts(employeeId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shifts);
     }
 
     @PostMapping("/employee/{employeeId}/shift")

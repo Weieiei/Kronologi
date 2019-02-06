@@ -8,7 +8,7 @@ import { SnackBar } from '../../../snackbar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeeDTO } from '../../../interfaces/employee/employee-dto';
 import { EmployeeService } from '../../../services/employee/employee.service';
-import { ShiftDTO } from '../../../interfaces/shift-dto/shift-dto';
+import { ShiftDTO } from '../../../interfaces/shift/shift-dto';
 import { EmployeeAppointmentDTO } from '../../../interfaces/appointment/employee-appointment-dto';
 import { ServiceDTO } from '../../../interfaces/service/service-dto';
 import { BookAppointmentDTO } from '../../../interfaces/appointment/book-appointment-dto';
