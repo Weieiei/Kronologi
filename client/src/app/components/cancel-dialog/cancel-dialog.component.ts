@@ -5,6 +5,8 @@ import { AppointmentService } from 'src/app/services/appointment/appointment.ser
 import { UserService } from 'src/app/services/user/user.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SnackBar } from 'src/app/snackbar';
+import { CancelAppointmentDTO } from 'src/app/interfaces/cancelAppointmentDTO';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'cancel-dialog',
@@ -12,9 +14,8 @@ import { SnackBar } from 'src/app/snackbar';
   styleUrls: ['./cancel-dialog.component.scss']
 })
 export class CancelDialogComponent implements OnInit {
-
-
-  appointmentToCancel:AppointmentDetailed;
+  form: FormGroup;
+  toCancel:AppointmentDetailed;
   serviceName:string;
   employeeName:string;
   customerName:string;
@@ -22,20 +23,24 @@ export class CancelDialogComponent implements OnInit {
   isAdmin:boolean;
 
   constructor(
+      private fb : FormBuilder,
       private authService: AuthService,
       private userService: UserService,
       private appointmentService:AppointmentService,
       private dialogRef: MatDialogRef<CancelDialogComponent>,
       private snackBar: SnackBar,
-      @Inject(MAT_DIALOG_DATA) appointmentToCancel:any ) {
-      
-      
-    this.appointmentToCancel = appointmentToCancel.appointment;
-    this.serviceName = appointmentToCancel.serviceName;
-    this.customerName = this.appointmentToCancel.client.firstName + " " + this.appointmentToCancel.client.lastName;
-    this.employeeName = this.appointmentToCancel.employee.firstName + " " + this.appointmentToCancel.employee.lastName;
+      @Inject(MAT_DIALOG_DATA) {appointment,longDescription}:any) {
+    
+    this.toCancel = appointment;
+    this.serviceName = appointment.serviceName;
+    this.customerName = this.toCancel.client.firstName + " " + this.toCancel.client.lastName;
+    this.employeeName = this.toCancel.employee.firstName + " " + this.toCancel.employee.lastName;
     this.isEmployee = this.userService.isEmployee();
     this.isAdmin = this.authService.isAdmin();
+
+    this.form = this.fb.group({
+      longDescription: [longDescription,Validators.required]
+    })
   }
 
   ngOnInit() {
@@ -43,7 +48,7 @@ export class CancelDialogComponent implements OnInit {
 
   cancel() {
     if(!this.isEmployee){
-     this.appointmentService.cancelAppointments(this.appointmentToCancel.id).subscribe(
+     this.appointmentService.cancelAppointments(this.toCancel.id).subscribe(
         res => {
           this.dialogRef.close();
           this.snackBar.openSnackBarSuccess(res);
@@ -51,7 +56,13 @@ export class CancelDialogComponent implements OnInit {
         err => console.log(err)
       );
     }else{
-      this.appointmentService.cancelAppointmentsEmployee(this.appointmentToCancel.id).subscribe(
+
+      const payload: CancelAppointmentDTO = {
+        reason: this.form.value.longDescription,
+        idOfAppointment: this.toCancel.id,
+    };
+
+      this.appointmentService.cancelAppointmentsEmployee(payload).subscribe(
         res => {
           this.dialogRef.close();
           console.log(res)

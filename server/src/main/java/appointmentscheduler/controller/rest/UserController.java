@@ -2,6 +2,8 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.annotation.LoggingLevel;
+import appointmentscheduler.converters.appointment.CancelledDTOToCancelled;
+import appointmentscheduler.dto.appointment.CancelAppointmentDTO;
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.settings.UpdateSettingsDTO;
 import appointmentscheduler.dto.user.UpdateEmailDTO;
@@ -9,6 +11,7 @@ import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.service.appointment.AppointmentService;
@@ -39,6 +42,9 @@ public class UserController extends AbstractController {
         this.emailService = emailService;
         this.appointmentService = appointmentService;
     }
+
+    @Autowired
+    private CancelledDTOToCancelled cancelledAppointmentConverted;
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
@@ -105,7 +111,10 @@ public class UserController extends AbstractController {
 
     @LogREST
     @DeleteMapping("/appointments/{id}")
-    public ResponseEntity delete(@PathVariable long id) {
-        return appointmentService.cancel(id);
+    public ResponseEntity delete( @RequestBody CancelAppointmentDTO cancel) {
+
+        cancel.setIdPersonWhoCancelled(getUserId());
+        CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
+        return appointmentService.cancel(cancelled);
     }
 }

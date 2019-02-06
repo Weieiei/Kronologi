@@ -4,13 +4,21 @@
 <div class='mat-dialog-content' *ngIf="!isEmployee">
     Are you sure you want to cancel {{serviceName}}
     <br>
-    scheduled with {{employeeName}} on {{appointmentToCancel.date}}
+    scheduled with {{employeeName}} on {{toCancel.date}}
 </div>
 
 <div class='mat-dialog-content' *ngIf="isEmployee || isAdmin">
         Are you sure you want to cancel {{serviceName}}
         <br>
-        with your client {{customerName}} on {{appointmentToCancel.date}}
+        with your client {{customerName}} on {{toCancel.date}}
+</div>
+
+<div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px"  [formGroup]="form" *ngIf="isEmployee">
+    <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Reason for Cancellation</mat-label>
+        <textarea matInput placeholder="review"
+        formControlName="longDescription"></textarea>
+    </mat-form-field>
 </div>
 
 <div class='mat-dialog-actions'>

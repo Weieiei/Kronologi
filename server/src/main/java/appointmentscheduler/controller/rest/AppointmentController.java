@@ -4,6 +4,7 @@ import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.converters.appointment.AppointmentDTOToAppointment;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.service.appointment.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +59,11 @@ public class AppointmentController extends IRestController<Appointment, Appointm
     @DeleteMapping("/{id}")
     @Override
     public ResponseEntity delete(@PathVariable long id) {
-        return appointmentService.cancel(id);
+        return appointmentService.delete(id);
     }
+
+    @GetMapping("cancel/{id}")
+    public CancelledAppointment findId(@PathVariable long id){ return appointmentService.findByCancelledId(id); }
+
 
 }

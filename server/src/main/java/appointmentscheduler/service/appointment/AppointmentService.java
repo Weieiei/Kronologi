@@ -2,8 +2,10 @@ package appointmentscheduler.service.appointment;
 
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
+import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.AppointmentRepository;
+import appointmentscheduler.repository.CancelledRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private CancelledRepository cancelledRepository;
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
@@ -57,17 +62,18 @@ public class AppointmentService {
 
     }
 
-    public ResponseEntity<?> cancel(long id) {
+    public ResponseEntity<?> cancel(CancelledAppointment cancel) {
 
-        return appointmentRepository.findById(id).map(a -> {
+        return appointmentRepository.findById(cancel.getAppointment().getId()).map(a -> {
 
             a.setStatus(AppointmentStatus.cancelled);
             appointmentRepository.save(a);
+            cancelledRepository.save(cancel);
 
             HttpHeaders responseHeaders = new HttpHeaders();
             return ResponseEntity.ok().headers(responseHeaders).body("Appointment was successfully  cancelled!");
 
-        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", cancel.getAppointment().getId())));
 
     }
 
@@ -79,6 +85,10 @@ public class AppointmentService {
             return ResponseEntity.ok().build();
 
         }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+    }
 
+    public CancelledAppointment findByCancelledId(long id){
+        return cancelledRepository.findByAppointmentId(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
     }
 }

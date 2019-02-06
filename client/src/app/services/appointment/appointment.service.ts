@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RequestOptions } from '@angular/http';
+import { RequestOptions, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs';
 import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
 import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
 import { Appointment } from 'src/app/interfaces/appointment';
+import { CancelAppointmentDTO } from 'src/app/interfaces/cancelAppointmentDTO';
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +35,11 @@ export class AppointmentService {
         return this.http.get<Appointment[]>(['api', 'employee', 'appointments'].join('/'));
     }
 
-    public cancelAppointmentsEmployee(id:number): Observable<any>{        
-        return this.http.delete(['api','employee','appointments',id].join('/'),{responseType: 'text'});
+    public cancelAppointmentsEmployee(appointment:CancelAppointmentDTO): Observable<any>{        
+        return this.http.post<CancelAppointmentDTO>(['api','employee','appointments','cancel'].join('/'),  appointment);
+    }
+
+    public cancelAppointmentReason(id:any): Observable<any>{
+        return this.http.get(['api', 'appointments','cancel',id].join('/'));
     }
 }
