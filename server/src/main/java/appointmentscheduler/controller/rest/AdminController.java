@@ -5,7 +5,7 @@ import appointmentscheduler.converters.service.ServiceDTOToService;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
-import appointmentscheduler.entity.service.ServiceEntity;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.ServiceRepository;
@@ -20,7 +20,6 @@ import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.service.employee.EmployeeShiftService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.authentication.BadCredentialsException;
 
 import java.util.List;
 import java.util.Map;
@@ -144,7 +143,7 @@ public class AdminController {
             }
             else {
                 // assign the service
-                Optional<ServiceEntity> optionalService = serviceRepository.findById(serviceId);
+                Optional<Service> optionalService = serviceRepository.findById(serviceId);
                 if (optionalService.isPresent()) {
                     user.addEmployeeService(optionalService.get());
                     if (userService.updateUser(user))
@@ -165,8 +164,8 @@ public class AdminController {
 
     // for adding a new service
     @PostMapping("service")
-    public ServiceEntity addService(@RequestBody ServiceCreateDTO serviceDTO){
-        ServiceEntity service = serviceConverter.convert(serviceDTO);
+    public Service addService(@RequestBody ServiceCreateDTO serviceDTO){
+        Service service = serviceConverter.convert(serviceDTO);
         return serviceService.add(service);
     }
 

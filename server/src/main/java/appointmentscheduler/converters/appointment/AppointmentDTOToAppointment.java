@@ -3,13 +3,11 @@ package appointmentscheduler.converters.appointment;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.role.RoleEnum;
-import appointmentscheduler.entity.service.ServiceEntity;
-import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.ModelValidationException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.AppointmentRepository;
-import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import appointmentscheduler.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +47,7 @@ public class AppointmentDTOToAppointment implements Converter<AppointmentDTO, Ap
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.", appointmentDTO.getEmployeeId())));
 
         // Check if this employee provides the desired service
-        ServiceEntity service = employee.getEmployeeServices().stream().filter(s -> s.getId() == appointmentDTO.getServiceId()).findFirst()
+        Service service = employee.getEmployeeServices().stream().filter(s -> s.getId() == appointmentDTO.getServiceId()).findFirst()
                 .orElseThrow(() -> new ModelValidationException(String.format("%s doesn't provided the desired service.", employee.getFullName())));
 
         appointment.setClient(client);

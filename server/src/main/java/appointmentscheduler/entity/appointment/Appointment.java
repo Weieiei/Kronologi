@@ -1,7 +1,7 @@
 package appointmentscheduler.entity.appointment;
 
 import appointmentscheduler.entity.AuditableEntity;
-import appointmentscheduler.entity.service.ServiceEntity;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -31,7 +31,7 @@ public class Appointment extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private ServiceEntity service;
+    private Service service;
 
     @Column(name = "date")
     private LocalDate date;
@@ -51,7 +51,7 @@ public class Appointment extends AuditableEntity {
 
     public Appointment() { }
 
-    public Appointment(User client, User employee, ServiceEntity service, LocalDate date, LocalTime startTime, String notes) {
+    public Appointment(User client, User employee, Service service, LocalDate date, LocalTime startTime, String notes) {
         this.client = client;
         this.employee = employee;
         this.service = service;
@@ -84,11 +84,11 @@ public class Appointment extends AuditableEntity {
         this.employee = employee;
     }
 
-    public ServiceEntity getService() {
+    public Service getService() {
         return service;
     }
 
-    public void setService(ServiceEntity service) {
+    public void setService(Service service) {
         this.service = service;
     }
 

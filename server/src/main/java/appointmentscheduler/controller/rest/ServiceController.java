@@ -1,6 +1,6 @@
 package appointmentscheduler.controller.rest;
 
-import appointmentscheduler.entity.service.ServiceEntity;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class ServiceController extends IRestController {
 
     @GetMapping
     @Override
-    public List<ServiceEntity> findAll() {
+    public List<Service> findAll() {
         return serviceRepository.findAll();
     }
 

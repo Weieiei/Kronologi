@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "services")
-public class ServiceEntity extends AuditableEntity {
+public class Service extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,9 @@ public class ServiceEntity extends AuditableEntity {
     @Column(name = "duration")
     private int duration;
 
-    public ServiceEntity() { }
+    public Service() { }
 
-    public ServiceEntity(String name, int duration) {
+    public Service(String name, int duration) {
         this.name = name;
         this.duration = duration;
     }

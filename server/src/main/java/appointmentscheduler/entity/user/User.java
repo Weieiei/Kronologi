@@ -3,7 +3,7 @@ package appointmentscheduler.entity.user;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
-import appointmentscheduler.entity.service.ServiceEntity;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -47,7 +47,7 @@ public class User extends AuditableEntity {
             inverseJoinColumns = { @JoinColumn(name = "service_id") }
     )
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<ServiceEntity> employeeServices;
+    private List<Service> employeeServices;
 
     @OneToOne(
             cascade = CascadeType.ALL,
@@ -129,15 +129,15 @@ public class User extends AuditableEntity {
         this.roles.add(role);
     }
 
-    public List<ServiceEntity> getEmployeeServices() {
+    public List<Service> getEmployeeServices() {
         return employeeServices;
     }
 
-    public void setEmployeeServices(List<ServiceEntity> employeeServices) {
+    public void setEmployeeServices(List<Service> employeeServices) {
         this.employeeServices = employeeServices;
     }
 
-    public void addEmployeeService(ServiceEntity service){
+    public void addEmployeeService(Service service){
         this.employeeServices.add(service);
     }
 

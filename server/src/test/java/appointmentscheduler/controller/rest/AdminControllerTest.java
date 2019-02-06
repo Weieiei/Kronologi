@@ -3,7 +3,7 @@ package appointmentscheduler.controller.rest;
 import appointmentscheduler.AppointmentScheduler;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
-import appointmentscheduler.entity.service.ServiceEntity;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.ServiceRepository;
@@ -98,8 +98,8 @@ public class AdminControllerTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void assignServiceTest() throws Exception {
         User mockEmployee = mock(User.class);
-        ServiceEntity mockService = mock(ServiceEntity.class);
-        Optional<ServiceEntity> service = Optional.of(mockService);
+        Service mockService = mock(Service.class);
+        Optional<Service> service = Optional.of(mockService);
         RoleRepository mockRoleRepository = mock(RoleRepository.class);
         ServiceRepository mockServiceRepository = mock(ServiceRepository.class);
         Set<Role> roles = new HashSet<>();
@@ -110,7 +110,7 @@ public class AdminControllerTest {
         when(userService.findUserByid(anyLong())).thenReturn(mockEmployee);
         when(mockRoleRepository.findByRole(any(RoleEnum.class))).thenReturn(new Role(RoleEnum.EMPLOYEE));
         when(mockServiceRepository.findById(anyLong())).thenReturn(service);
-        List<ServiceEntity> serviceList = new ArrayList<>();
+        List<Service> serviceList = new ArrayList<>();
         serviceList.add(mockService);
         when(mockEmployee.getEmployeeServices()).thenReturn(serviceList);
 
