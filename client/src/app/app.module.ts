@@ -37,11 +37,13 @@ import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
+import { CancelDialogComponent } from './components/cancel-dialog/cancel-dialog.component';
 import { EmployeePickerComponent } from './pages/dashboard/reserve/employee-picker/employee-picker.component';
 import { ServiceSelectionComponent } from './pages/dashboard/reserve/service-selection/service-selection.component';
 import { TimePickerComponent } from './pages/dashboard/reserve/time-picker/time-picker.component';
 import { NotesAndReserveComponent } from './pages/dashboard/reserve/notes-and-reserve/notes-and-reserve.component';
 import { ReviewComponent } from './pages/dashboard/review/review.component';
+import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
 
 @NgModule({
     declarations: [
@@ -73,7 +75,10 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
         ServiceSelectionComponent,
         TimePickerComponent,
         NotesAndReserveComponent,
-        ReviewComponent
+        ReviewComponent,
+        CancelDialogComponent,
+        ReviewComponent,
+        ReasonDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -86,7 +91,9 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
         ReactiveFormsModule
     ],
     entryComponents: [
-        TimePickerDialogComponent
+        TimePickerDialogComponent,
+        CancelDialogComponent,
+        ReasonDialogComponent
     ],
     providers: [
         AuthService,
