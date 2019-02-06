@@ -31,7 +31,6 @@ public class VerificationService {
        Optional<User> userList = userRepository.findById(verification.getUser().getId());
        User currentUser = userList.get();
        currentUser.setVerified(true);
-       currentUser.addRole(new Role(RoleEnum.VERIFIED));
        userRepository.save(currentUser);
        verificationRepository.delete(verification);
        return true;
