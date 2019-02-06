@@ -95,18 +95,18 @@ public class EmployeeShiftServiceTest {
        assertTrue(employeeShifts.isEmpty());
     }
 
-    @Test
-    public void deleteShift() {
-        final Shift mockedShift1 = mock(Shift.class);
-        Shift deletedShift;
-
-        when(mockedShift1.getId()).thenReturn((long) 1);
-        when(shiftRepository.findById(anyLong())).thenReturn(Optional.of(mockedShift1));
-
-        deletedShift = employeeShiftService.deleteShift(0);
-
-        assertEquals(mockedShift1.getId(), deletedShift.getId());
-    }
+//    @Test
+//    public void deleteShift() {
+//        final Shift mockedShift1 = mock(Shift.class);
+//        Shift deletedShift;
+//
+//        when(mockedShift1.getId()).thenReturn((long) 1);
+//        when(shiftRepository.findById(anyLong())).thenReturn(Optional.of(mockedShift1));
+//
+//        deletedShift = employeeShiftService.deleteShift(0);
+//
+//        assertEquals(mockedShift1.getId(), deletedShift.getId());
+//    }
 
     @Test(expected = ResourceNotFoundException.class)
     public void deleteInvalidShift() {

@@ -67,10 +67,8 @@ public class AdminController extends AbstractController {
 //    }
 
     @DeleteMapping("/employee/shift/{shiftId}")
-    public ResponseEntity<String> deleteShift(@PathVariable long shiftId){
-        Shift shift = employeeShiftService.deleteShift(shiftId);
-        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
-        return getJson(mapper, shift);
+    public void deleteShift(@PathVariable long shiftId){
+        employeeShiftService.deleteShift(shiftId);
     }
 
 }
