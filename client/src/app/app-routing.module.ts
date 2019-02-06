@@ -37,7 +37,7 @@ const routes: Routes = [
             { path: '', component: HomeComponent },
 
             // Admin
-            {path: 'admin/employee', component: AdminEmployeesComponent},
+            { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
 
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },

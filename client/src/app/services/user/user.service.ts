@@ -78,6 +78,10 @@ export class UserService {
         }
     }
 
+    isAdmin(): boolean {
+        return this.getRolesFromToken().includes('ADMIN');
+    }
+
     isEmployee(): boolean {
         return this.getRolesFromToken().includes('EMPLOYEE');
     }
