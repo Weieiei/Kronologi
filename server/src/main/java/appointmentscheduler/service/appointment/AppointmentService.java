@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 public class AppointmentService {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private AppointmentRepository appointmentRepository;
 
