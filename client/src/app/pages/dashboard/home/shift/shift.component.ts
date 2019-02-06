@@ -3,6 +3,8 @@ import { AdminService } from '../../../../services/admin/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBar } from '../../../../snackbar';
 import { AdminEmployeeShiftDTO } from '../../../../interfaces/shift/admin-employee-shift-dto';
+import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-shift',
@@ -11,8 +13,10 @@ import { AdminEmployeeShiftDTO } from '../../../../interfaces/shift/admin-employ
 })
 export class ShiftComponent implements OnInit {
 
-    columns: string[] = ['date', 'startTime', 'endTime', 'actions'];
     employeeId: number;
+    employee: AdminEmployeeDTO;
+
+    columns: string[] = ['date', 'startTime', 'endTime', 'actions'];
     shifts: AdminEmployeeShiftDTO[];
 
     constructor(
@@ -32,7 +36,20 @@ export class ShiftComponent implements OnInit {
             return;
         }
 
+        this.getEmployee();
         this.getEmployeeShifts();
+    }
+
+    getEmployee() {
+        this.adminService.getEmployee(this.employeeId).subscribe(
+            res => this.employee = res,
+            err => {
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                    this.router.navigate(['']);
+                }
+            }
+        );
     }
 
     getEmployeeShifts() {

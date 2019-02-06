@@ -3,6 +3,7 @@ package appointmentscheduler.service.employee;
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class EmployeeShiftService {
 
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
+    }
+
+    public Employee getEmployee(long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.", id)));
     }
 
     public Shift createShift(EmployeeShiftDTO employeeShiftDTO) {
