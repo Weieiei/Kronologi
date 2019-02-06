@@ -1,22 +1,20 @@
-<p>
-  admin-employees works!
-</p>
-
-    <table>
-        <thead>
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Shifts</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let user of users">
-            <td>{{user.firstName}}</td>
-            <td>{{ user.lastName}}</td>
-            <td><button (click)="submit()" id="{{user.id}}" class="btn btn-lg btn-primary btn-block" type="submit">
+<table>
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Shifts</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+        <td>{{user.firstName}}</td>
+        <td>{{ user.lastName}}</td>
+        <td>
+            <button (click)="goToEmployee(user.id)" class="btn btn-lg btn-primary btn-block" type="submit">
                 <b>View</b>
-            </button></td>
-        </tr>
-        </tbody>
-    </table>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
