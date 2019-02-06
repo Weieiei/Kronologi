@@ -4,6 +4,5 @@ public enum  RoleEnum {
 
     ADMIN,
     CLIENT,
-    EMPLOYEE,
-    VERIFIED
+    EMPLOYEE
 }
