@@ -1,9 +1,0 @@
-<mat-grid-list cols="7" rowHeight="2:1">
-  <mat-grid-tile *ngFor="let day of daysOfWeek">{{ day }}</mat-grid-tile>
-  <mat-grid-tile [colspan]="spacer"></mat-grid-tile>
-  <mat-grid-tile *ngFor="let date of days" class="date" [class.disabled]="!date.enabled" (click)="handleDateClick(date)">
-    <div fxLayout="column" fxLayoutAlign="start center">
-      <div>{{ date.date }}</div>
-    </div>
-  </mat-grid-tile>
-</mat-grid-list>

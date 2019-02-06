@@ -3,16 +3,15 @@ package appointmentscheduler.entity.user;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
-import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User extends AuditableEntity {
 
     @Id
@@ -33,21 +32,13 @@ public class User extends AuditableEntity {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_role",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") }
     )
     private Set<Role> roles;
-
-    @JoinTable(
-            name = "employee_services",
-            joinColumns = { @JoinColumn(name = "employee_id") },
-            inverseJoinColumns = { @JoinColumn(name = "service_id") }
-    )
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Service> employeeServices;
 
     @OneToOne(
             cascade = CascadeType.ALL,
@@ -63,14 +54,9 @@ public class User extends AuditableEntity {
     )
     private Settings settings;
 
-    // Need a no-arg constructor if we specify a constructor with arguments (see 3 lines further)
-    public User() { }
-
-    public User(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof User && ((User) obj).getId() == this.getId();
     }
 
     public long getId() {
@@ -98,7 +84,7 @@ public class User extends AuditableEntity {
     }
 
     public String getFullName() {
-        return this.firstName + " " + this.lastName;
+        return getFirstName() + " " + getLastName();
     }
 
     public String getEmail() {
@@ -123,14 +109,6 @@ public class User extends AuditableEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public List<Service> getEmployeeServices() {
-        return employeeServices;
-    }
-
-    public void setEmployeeServices(List<Service> employeeServices) {
-        this.employeeServices = employeeServices;
     }
 
     public PhoneNumber getPhoneNumber() {

@@ -17,12 +17,12 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
-import { ReserveComponent } from './pages/reserve/reserve.component';
+import { ReserveComponent } from './pages/dashboard/reserve/reserve.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
+import { SchedulerComponent } from './pages/dashboard/reserve/scheduler/scheduler.component';
+import { CalendarComponent } from './pages/dashboard/reserve/scheduler/calendar/calendar.component';
+import { MonthPickerComponent } from './pages/dashboard/reserve/scheduler/month-picker/month-picker.component';
 import { AdminGuard } from './guards/admin/admin.guard';
-import { SchedulerComponent } from './pages/reserve/scheduler/scheduler.component';
-import { CalendarComponent } from './pages/reserve/scheduler/calendar/calendar.component';
-import { MonthPickerComponent } from './pages/reserve/scheduler/month-picker/month-picker.component';
 import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
 import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
 import { TimePickerDialogComponent } from './components/shift-picker/time-picker-dialog/time-picker-dialog.component';
@@ -37,6 +37,10 @@ import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
+import { EmployeePickerComponent } from './pages/dashboard/reserve/employee-picker/employee-picker.component';
+import { ServiceSelectionComponent } from './pages/dashboard/reserve/service-selection/service-selection.component';
+import { TimePickerComponent } from './pages/dashboard/reserve/time-picker/time-picker.component';
+import { NotesAndReserveComponent } from './pages/dashboard/reserve/notes-and-reserve/notes-and-reserve.component';
 import { ReviewComponent } from './pages/dashboard/review/review.component';
 
 @NgModule({
@@ -45,7 +49,6 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
         NavbarComponent,
         RegisterComponent,
         HomeComponent,
-        AppointmentsComponent,
         LoginComponent,
         ReserveComponent,
         AppointmentsComponent,
@@ -66,6 +69,10 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
         SettingsComponent,
         AccountSettingsComponent,
         ReminderSettingsComponent,
+        EmployeePickerComponent,
+        ServiceSelectionComponent,
+        TimePickerComponent,
+        NotesAndReserveComponent,
         ReviewComponent
     ],
     imports: [

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
-import { AppointmentToBook } from '../../models/appointment/AppointmentToBook';
+import { BookAppointmentDTO } from '../../interfaces/appointment/book-appointment-dto';
+import { UserAppointmentDTO } from '../../interfaces/appointment/user-appointment-dto';
 import { Appointment } from 'src/app/interfaces/appointment';
 
 @Injectable({
@@ -13,16 +13,20 @@ export class AppointmentService {
     constructor(private http: HttpClient) {
     }
 
-    public getMyAppointments(): Observable<any> {
-        return this.http.get(['api', 'user', 'appointments'].join('/'));
+    public getMyAppointments(): Observable<UserAppointmentDTO[]> {
+        return this.http.get<UserAppointmentDTO[]>(['api', 'user', 'appointments'].join('/'));
     }
 
-    public getAllAppointments(): Observable<AppointmentDetailed[]> {
-        return this.http.get<AppointmentDetailed[]>(['api', 'admin', 'appointments'].join('/'));
+    public getAppointmentById(id: number): Observable<UserAppointmentDTO> {
+        return this.http.get<UserAppointmentDTO>(['api', 'user', 'appointments', id].join('/'));
     }
 
-    public reserveAppointment(appointment: AppointmentToBook): Observable<any> {
-        return this.http.post<AppointmentToBook>(['api', 'user', 'appointments'].join('/'), appointment);
+    public bookAppointment(payload: BookAppointmentDTO): Observable<any> {
+        return this.http.post<any>(['api', 'appointments'].join('/'), payload);
+    }
+
+    public updateAppointment(id: number, payload: BookAppointmentDTO): Observable<any> {
+        return this.http.put<any>(['api', 'appointments', id].join('/'), payload);
     }
 
     public getMyAppointmentsEmployee(): Observable<Appointment[]> {

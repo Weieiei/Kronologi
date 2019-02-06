@@ -52,6 +52,14 @@ export class AccountSettingsComponent implements OnInit {
 
     updateEmail(): void {
 
+        if (!this.password) {
+            this.snackBar.openSnackBarError('You must provide your password.');
+            return;
+        } else if (!this.newEmail) {
+            this.snackBar.openSnackBarError('You must provide a new email.');
+            return;
+        }
+
         const payload: UpdateEmailDTO = {
             password: this.password,
             newEmail: this.newEmail
@@ -74,7 +82,13 @@ export class AccountSettingsComponent implements OnInit {
 
     updatePassword(): void {
 
-        if (this.newPassword !== this.confirmPassword) {
+        if (!this.oldPassword) {
+            this.snackBar.openSnackBarError('You must provide your current password.');
+            return;
+        } else if (!this.newPassword) {
+            this.snackBar.openSnackBarError('You must provide a new password.');
+            return;
+        } else if (this.newPassword !== this.confirmPassword) {
             this.snackBar.openSnackBarError('The passwords don\'t match.');
             return;
         }
@@ -146,6 +160,11 @@ export class AccountSettingsComponent implements OnInit {
     }
 
     updatePhoneNumber(): void {
+
+        if (!this.selectedCountry || !this.newAreaCode || !this.newNumber) {
+            this.snackBar.openSnackBarError('You must provide all fields to update your phone number.');
+            return;
+        }
 
         const payload: PhoneNumberDTO = {
             countryCode: this.selectedCountry['dialCode'],
