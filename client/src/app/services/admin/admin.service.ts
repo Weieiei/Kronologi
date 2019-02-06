@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AdminEmployeeDTO } from '../../interfaces/employee/admin-employee-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class AdminService {
     constructor(private http: HttpClient) {
     }
 
-    public getEmployeeShifts(): Observable<any> {
-        return this.http.get(['api', 'admin', 'employee'].join('/'));
+    public getAllEmployees(): Observable<AdminEmployeeDTO[]> {
+        return this.http.get<AdminEmployeeDTO[]>(['api', 'admin', 'employee'].join('/'));
     }
 }

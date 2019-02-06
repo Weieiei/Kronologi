@@ -13,11 +13,12 @@ import java.util.Optional;
 
 @Service
 public class EmployeeShiftService {
+
     private final ShiftRepository shiftRepository;
     private final EmployeeRepository employeeRepository;
 
     @Autowired
-    EmployeeShiftService(ShiftRepository shiftRepository, EmployeeRepository employeeRepository) {
+    public EmployeeShiftService(ShiftRepository shiftRepository, EmployeeRepository employeeRepository) {
         this.shiftRepository = shiftRepository;
         this.employeeRepository = employeeRepository;
     }

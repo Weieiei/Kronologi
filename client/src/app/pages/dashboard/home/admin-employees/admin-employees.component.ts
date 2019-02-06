@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../../../interfaces/user';
 import { AdminService } from '../../../../services/admin/admin.service';
 import { Router } from '@angular/router';
+import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
 
 @Component({
     selector: 'app-admin-employees',
@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 })
 export class AdminEmployeesComponent implements OnInit {
 
-    users: User[];
+    columns: string[] = ['firstName', 'lastName', 'email', 'shifts'];
+    employees: AdminEmployeeDTO[];
 
     constructor(
         private adminService: AdminService,
@@ -23,21 +24,12 @@ export class AdminEmployeesComponent implements OnInit {
     }
 
     getAllEmployees(): void {
-        this.users = [];
-        this.adminService.getEmployeeShifts().subscribe(
-            res => {
-                console.log(res);
-                for (const user of res) {
-
-                    this.users.push(user);
-
-                }
-            },
-            err => console.log(err)
+        this.adminService.getAllEmployees().subscribe(
+            res => this.employees = res
         );
     }
 
-    goToEmployee(id: number) {
+    goToEmployee(id: number): void {
         this.router.navigate(['admin', 'employees', id, 'shifts']);
     }
 }
