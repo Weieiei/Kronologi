@@ -180,6 +180,22 @@ public class Seed {
                 LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(12, 0), "Some note"
         ));
 
+        //past appointments
+        appointments.add(AppointmentFactory.createAppointment(
+                clients.get(1), employees.get(1), services.get(6),
+                LocalDate.of(2018, Month.MARCH, 6), LocalTime.of(12, 0), "Some note"
+        ));
+
+        appointments.add(AppointmentFactory.createAppointment(
+                clients.get(2), employees.get(1), services.get(6),
+                LocalDate.of(2018, Month.MARCH, 6), LocalTime.of(12, 0), "Some note"
+        ));
+
+        appointments.add(AppointmentFactory.createAppointment(
+                clients.get(3), employees.get(2), services.get(4),
+                LocalDate.of(2018, Month.MARCH, 30), LocalTime.of(12, 0), "Some note"
+        ));
+
         appointmentRepository.saveAll(appointments);
 
     }
