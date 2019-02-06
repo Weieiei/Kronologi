@@ -1,0 +1,12 @@
+
+<h2 class='mat-dialog-title'>Reason for cancellation of {{serviceName}} </h2>
+
+<div class='mat-dialog-content' *ngIf="!isEmployee">
+    The employee <i>{{employeeName}}</i> cancelled for the following reason:
+    <br>
+    <i>{{reason}} </i>
+</div>
+
+<div class='mat-dialog-actions'>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+</div>

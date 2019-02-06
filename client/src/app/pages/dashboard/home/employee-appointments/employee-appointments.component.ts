@@ -50,14 +50,17 @@ export class EmployeeAppointmentsComponent implements OnInit {
     openDialog(row_id:any){
         let appointmentToCancel: Appointment = this.appointments[row_id-1];
         const dialogConfig = new MatDialogConfig();
+        let longDescription: any;
         
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
     
         dialogConfig.data = {
             appointment: appointmentToCancel,
-            serviceName: appointmentToCancel.service.name
+            serviceName: appointmentToCancel.service.name,
+            longDescription
         };
+
         this. dialog.afterAllClosed
         .subscribe(() => {
         //update appointments when we cancel one on dialog close.

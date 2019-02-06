@@ -39,6 +39,7 @@ import { AccountSettingsComponent } from './pages/settings/account-settings/acco
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { CancelDialogComponent } from './components/cancel-dialog/cancel-dialog.component';
 import { ReviewComponent } from './pages/dashboard/review/review.component';
+import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
 
 @NgModule({
     declarations: [
@@ -68,7 +69,8 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
         AccountSettingsComponent,
         ReminderSettingsComponent,
         CancelDialogComponent,
-        ReviewComponent
+        ReviewComponent,
+        ReasonDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -82,7 +84,8 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
     ],
     entryComponents: [
         TimePickerDialogComponent,
-        CancelDialogComponent
+        CancelDialogComponent,
+        ReasonDialogComponent
     ],
     providers: [
         AuthService,

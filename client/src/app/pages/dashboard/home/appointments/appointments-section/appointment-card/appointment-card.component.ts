@@ -4,6 +4,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material";
 import { CancelDialogComponent } from 'src/app/components/cancel-dialog/cancel-dialog.component';
 import { Router } from '@angular/router';
 import { ReviewService } from '../../../../../../services/review/review.service';
+import { ReasonDialogComponent } from 'src/app/components/reason-dialog/reason-dialog.component';
 
 
 @Component({
@@ -47,11 +48,25 @@ export class AppointmentCardComponent implements OnInit {
         
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-    
+        let longDescription: string;
+        dialogConfig.data = {
+            appointment: this.appointment,
+            serviceName: this.appointment.service.name,
+            longDescription
+        };
+        this.dialog.open(CancelDialogComponent, dialogConfig);
+    }
+
+    openReasonDialog(){
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
         dialogConfig.data = {
             appointment: this.appointment,
             serviceName: this.appointment.service.name
         };
-        this.dialog.open(CancelDialogComponent, dialogConfig);
+
+        this.dialog.open(ReasonDialogComponent, dialogConfig);
     }
 }
