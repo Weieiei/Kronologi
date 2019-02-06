@@ -1,40 +1,36 @@
 package appointmentscheduler.service.employee;
 
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
-import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.shift.Shift;
-import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
-import appointmentscheduler.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class EmployeeShiftService {
     private final ShiftRepository shiftRepository;
-    private final UserRepository userRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
-    EmployeeShiftService(ShiftRepository shiftRepository, UserRepository userRepository) {
+    EmployeeShiftService(ShiftRepository shiftRepository, EmployeeRepository employeeRepository) {
         this.shiftRepository = shiftRepository;
-        this.userRepository = userRepository;
+        this.employeeRepository = employeeRepository;
     }
 
-    public List<User> getEmployees() {
-        return userRepository.findByRoles_Role(RoleEnum.EMPLOYEE);
+    public List<Employee> getEmployees() {
+        return employeeRepository.findAll();
     }
 
     public Shift createShift(EmployeeShiftDTO employeeShiftDTO) {
-        Optional<User> userList = userRepository.findById(employeeShiftDTO.getEmployeeId());
-        User employee = userList.get();
+        Optional<Employee> userList = employeeRepository.findById(employeeShiftDTO.getEmployeeId());
+        Employee employee = userList.get();
 
-        Shift shift = new Shift(employee,employeeShiftDTO.getDate(), employeeShiftDTO.getStartTime(), employeeShiftDTO.getEndTime());
+        Shift shift = new Shift(employee, employeeShiftDTO.getDate(), employeeShiftDTO.getStartTime(), employeeShiftDTO.getEndTime());
         if(!shiftConflict(employeeShiftDTO.getEmployeeId(), shift)) {
             shiftRepository.save(shift);
             return shift;

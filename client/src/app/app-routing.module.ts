@@ -4,8 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/dashboard/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ReserveComponent } from './pages/dashboard/reserve/reserve.component';
 import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
-import { ReserveComponent } from './pages/reserve/reserve.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -39,6 +39,13 @@ const routes: Routes = [
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
+            // Reserving and modifying reservation
+            {
+                path: 'reserve', children: [
+                    { path: '', component: ReserveComponent, data: { edit: false } },
+                    { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
+                ]
+            },
 
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
@@ -48,6 +55,8 @@ const routes: Routes = [
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
+
+            // User settings
             {
                 path: 'settings', component: SettingsComponent, children: [
                     { path: '', redirectTo: 'account', pathMatch: 'full' },

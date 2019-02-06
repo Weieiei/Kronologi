@@ -4,6 +4,7 @@ import { ServiceService } from '../../services/service/service.service';
 import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
 import { UserService } from '../../services/user/user.service';
 import * as countryData from 'country-telephone-data';
+import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 
 @Component({
     selector: 'app-register',
@@ -31,7 +32,8 @@ export class RegisterComponent implements OnInit {
     constructor(
         private userService: UserService,
         private serviceService: ServiceService,
-        private router: Router
+        private router: Router,
+        private googleAnalytics: GoogleAnalyticsService
     ) {
     }
 
@@ -58,14 +60,12 @@ export class RegisterComponent implements OnInit {
                 };
             }
 
+            this.googleAnalytics.trackValues('formSubmit', 'register');
+
             this.userService.register(payload).subscribe(
                 res => {
-                    const user = res['user'];
                     const token = res['token'];
-
-                    this.userService.setUser(user);
                     this.userService.setToken(token);
-
                     this.router.navigate(['']);
                 },
                 err => console.log(err)

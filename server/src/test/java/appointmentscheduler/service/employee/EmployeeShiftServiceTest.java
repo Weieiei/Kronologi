@@ -1,11 +1,11 @@
 package appointmentscheduler.service.employee;
 
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
-import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
-import appointmentscheduler.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,14 +19,15 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeeShiftServiceTest {
+
     @Mock
-    private UserRepository userRepository;
+    private EmployeeRepository employeeRepository;
 
     @Mock
     private ShiftRepository shiftRepository;
@@ -36,12 +37,12 @@ public class EmployeeShiftServiceTest {
 
     @Before
     public void before() {
-        employeeShiftService = new EmployeeShiftService(shiftRepository, userRepository);
+        employeeShiftService = new EmployeeShiftService(shiftRepository, employeeRepository);
     }
 
     @Test
     public void createShift() {
-        final User mockedUser = mock(User.class);
+        final Employee mockEmployee = mock(Employee.class);
         final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
         final LocalDate localDate = LocalDate.now();
         final LocalTime startTime = LocalTime.of(1,0);
@@ -53,7 +54,7 @@ public class EmployeeShiftServiceTest {
         when(employeeShiftDTO.getStartTime()).thenReturn(startTime);
         when(employeeShiftDTO.getEndTime()).thenReturn(endTime);
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockedUser));
+        when(employeeRepository.findById(anyLong())).thenReturn(Optional.of(mockEmployee));
 
         createdShift = employeeShiftService.createShift(employeeShiftDTO);
 
@@ -158,10 +159,10 @@ public class EmployeeShiftServiceTest {
 
     @Test
     public void getAllEmployees() {
-        List<User> employees = new ArrayList<>();
-        List<User> retrievedEmployees;
-        final User employee1 = mock(User.class);
-        final User employee2 = mock(User.class);
+        List<Employee> employees = new ArrayList<>();
+        List<Employee> retrievedEmployees;
+        final Employee employee1 = mock(Employee.class);
+        final Employee employee2 = mock(Employee.class);
 
         employees.add(employee1);
         employees.add(employee2);
@@ -169,7 +170,7 @@ public class EmployeeShiftServiceTest {
         when(employee1.getId()).thenReturn((long) 1);
         when(employee2.getId()).thenReturn((long) 2);
 
-        when(userRepository.findByRoles_Role(RoleEnum.EMPLOYEE)).thenReturn(employees);
+        when(employeeRepository.findAll()).thenReturn(employees);
 
         retrievedEmployees = employeeShiftService.getEmployees();
 

@@ -9,8 +9,7 @@ import { ReviewService } from '../../../../../../services/review/review.service'
 })
 export class AppointmentCardComponent implements OnInit {
 
-    @Input()
-    appointment: any;
+    @Input() appointment;
     appointmentStart: Date;
     now: Date;
     reviewExists = false;
@@ -37,4 +36,7 @@ export class AppointmentCardComponent implements OnInit {
         this.router.navigate(['/review/' + this.appointment.id]);
     }
 
+    modifyAppointment() {
+        this.router.navigate(['reserve', 'edit', this.appointment.id], { state: { appointment: this.appointment }});
+    }
 }
