@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AdminEmployeeDTO } from '../../interfaces/employee/admin-employee-dto';
 import { AdminEmployeeShiftDTO } from '../../interfaces/shift/admin-employee-shift-dto';
+import { NewShiftDTO } from '../../interfaces/shift/new-shift-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class AdminService {
 
     getEmployeeShifts(employeeId: number): Observable<AdminEmployeeShiftDTO[]> {
         return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'admin', 'employee', employeeId, 'shift'].join('/'));
+    }
+
+    addShift(employeeId: number, payload: NewShiftDTO): Observable<AdminEmployeeShiftDTO> {
+        return this.http.post<AdminEmployeeShiftDTO>(['api', 'admin', 'employee', employeeId, 'shift'].join('/'), payload);
     }
 
     deleteShift(shiftId: number): Observable<any> {

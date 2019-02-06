@@ -5,6 +5,7 @@ import { SnackBar } from '../../../../snackbar';
 import { AdminEmployeeShiftDTO } from '../../../../interfaces/shift/admin-employee-shift-dto';
 import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NewShiftDTO } from '../../../../interfaces/shift/new-shift-dto';
 
 @Component({
     selector: 'app-shift',
@@ -18,6 +19,8 @@ export class ShiftComponent implements OnInit {
 
     columns: string[] = ['date', 'startTime', 'endTime', 'actions'];
     shifts: AdminEmployeeShiftDTO[];
+
+    showShiftform = false;
 
     constructor(
         private adminService: AdminService,
@@ -56,14 +59,7 @@ export class ShiftComponent implements OnInit {
         this.adminService.getEmployeeShifts(this.employeeId).subscribe(
             res => {
                 this.shifts = res;
-                this.shifts.sort((a, b) => {
-                    if (a.date < b.date) {
-                        return -1;
-                    } else if (a.date > b.date) {
-                        return 1;
-                    }
-                    return 0;
-                });
+                this.sortShifts(this.shifts);
             }
         );
     }
@@ -85,5 +81,34 @@ export class ShiftComponent implements OnInit {
                 }
             }
         );
+    }
+
+    addShift(shift: NewShiftDTO) {
+        this.adminService.addShift(this.employeeId, shift).subscribe(
+            res => {
+                this.snackBar.openSnackBarSuccess('Successfully added shift.');
+                this.shifts.push(res);
+                this.shifts = this.shifts.map(s => Object.assign({}, s));
+                this.sortShifts(this.shifts);
+            },
+            err => {
+                console.log(err);
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                }
+            }
+        );
+    }
+
+    sortShifts(shifts: AdminEmployeeShiftDTO[]): void {
+        console.log(shifts.length);
+        shifts.sort((a, b) => {
+            if (a.date < b.date) {
+                return -1;
+            } else if (a.date > b.date) {
+                return 1;
+            }
+            return 0;
+        });
     }
 }

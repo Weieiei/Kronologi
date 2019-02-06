@@ -22,7 +22,8 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef class="center">Actions</th>
             <td mat-cell *matCellDef="let shift" class="center">
-                <button mat-raised-button color="primary">Edit</button>
+                <!-- todo: edit will be implemented in the future -->
+                <!--<button mat-raised-button color="primary">Edit</button>-->
                 <button mat-raised-button color="primary" (click)="deleteShift(shift.id)">Delete</button>
             </td>
         </ng-container>
@@ -35,5 +36,9 @@
     <h6 *ngIf="!shifts?.length">
         {{ employee?.firstName + ' ' + employee?.lastName }} currently doesn't have any assigned shifts.
     </h6>
+
+    <button mat-raised-button color="primary" (click)="showShiftform = true">Add Shift</button>
+
+    <app-add-shift-form *ngIf="showShiftform" (shiftChange)="addShift($event)"></app-add-shift-form>
 
 </div>

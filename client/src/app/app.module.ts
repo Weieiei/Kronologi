@@ -44,6 +44,7 @@ import { TimePickerComponent } from './pages/dashboard/reserve/time-picker/time-
 import { NotesAndReserveComponent } from './pages/dashboard/reserve/notes-and-reserve/notes-and-reserve.component';
 import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
+import { AddShiftFormComponent } from './pages/dashboard/home/shift/add-shift-form/add-shift-form.component';
 
 @NgModule({
     declarations: [
@@ -77,7 +78,8 @@ import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/
         ServiceSelectionComponent,
         TimePickerComponent,
         NotesAndReserveComponent,
-        ReviewComponent
+        ReviewComponent,
+        AddShiftFormComponent
     ],
     imports: [
         BrowserModule,
