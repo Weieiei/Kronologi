@@ -8,6 +8,7 @@ public class UserRegisterDTO {
     private String lastName;
     private String email;
     private String password;
+    private boolean verified;
     private PhoneNumberDTO phoneNumber;
 
     public String getFirstName() {
@@ -42,6 +43,14 @@ public class UserRegisterDTO {
         this.password = password;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+    
     public PhoneNumberDTO getPhoneNumber() {
         return phoneNumber;
     }

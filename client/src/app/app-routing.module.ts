@@ -9,6 +9,7 @@ import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { VerifiedComponent } from './pages/verified/verified.component';
 import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
@@ -22,6 +23,8 @@ const routes: Routes = [
 
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
+
+    { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
 
     // Dashboard
     {

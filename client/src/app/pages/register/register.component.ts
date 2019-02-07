@@ -64,9 +64,7 @@ export class RegisterComponent implements OnInit {
 
             this.userService.register(payload).subscribe(
                 res => {
-                    const token = res['token'];
-                    this.userService.setToken(token);
-                    this.router.navigate(['']);
+                    this.router.navigate(['login']);
                 },
                 err => console.log(err)
             );

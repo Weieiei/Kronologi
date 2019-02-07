@@ -1,0 +1,11 @@
+<div fxLayout="row">
+    <div>Verification Status:&nbsp;</div>
+
+    <div *ngIf="result">
+        <mat-icon>verified_user</mat-icon>
+    </div>
+
+    <div *ngIf="!result">
+        <mat-icon>close</mat-icon>
+    </div>
+</div>

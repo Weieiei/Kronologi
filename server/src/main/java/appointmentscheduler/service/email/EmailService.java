@@ -1,5 +1,7 @@
 package appointmentscheduler.service.email;
 
+import appointmentscheduler.property.EmailServiceProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -18,12 +20,19 @@ public class EmailService {
 
     private Properties props;
 
-    private String email = "schedulerTester123@outlook.com";
-    private String password = "testing123";
+    private String email;
+    private String password;
+    private EmailServiceProperties emailServiceProperties;
+
+    private String registerSubject = "ASApp Registration Confirmation";
     private String logoPath = "images/asapp_logo.png";
 
-    public EmailService() {
+    @Autowired
+    public EmailService(EmailServiceProperties emailServiceProperties) {
         props = new Properties();
+        this.emailServiceProperties = emailServiceProperties;
+        this.email = emailServiceProperties.getEmailServiceId();
+        this.password = emailServiceProperties.getEmailServicePassword();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.outlook.com");
@@ -66,6 +75,31 @@ public class EmailService {
         helper.setText(bodyContent + "<p><br /><br />All the best, <br /> ASApp Team <br /></p>" + inlineImage, true);
     }
 
+    public boolean sendRegistrationEmail(String receiver, String hash, boolean attachLogo) throws MessagingException {
+        return sendEmail(receiver, this.registerSubject, generateRegistrationMessage(hash), attachLogo);
+
+    }
+
+    public String generateRegistrationMessage(String hash)
+    {
+        String message = "Welcome to ASApp! Please Confirm your email by clicking on the button below.<br />" ;
+        String button = "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">\n" +
+                "  <tr>\n" +
+                "      <td>\n" +
+                "          <table cellspacing=\"0\" cellpadding=\"0\">\n" +
+                "              <tr>\n" +
+                "                  <td style=\"border-radius: 2px;\" bgcolor=\"#ED2939\">\n" +
+                "                      <a href=\"http://localhost:4200/verification?hash=" + hash + "\" target=\"_blank\" style=\"padding: 8px 12px; border: 1px solid #ED2939;border-radius: 2px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;\">\n" +
+                "                          Confirm Email             \n" +
+                "                      </a>\n" +
+                "                  </td>\n" +
+                "              </tr>\n" +
+                "          </table>\n" +
+                "      </td>\n" +
+                "  </tr>\n" +
+                "</table>";
+        return message + button;
+    }
 
     public boolean sendEmail(String receiver, String subject, String content, boolean attachLogo) throws MessagingException {
         Session session = getSession();
