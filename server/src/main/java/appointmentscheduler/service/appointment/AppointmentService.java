@@ -2,48 +2,50 @@ package appointmentscheduler.service.appointment;
 
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
+import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.room.Room;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.*;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import appointmentscheduler.repository.CancelledRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @org.springframework.stereotype.Service
 public class AppointmentService {
 
+    private final CancelledRepository cancelledRepository;
     private final AppointmentRepository appointmentRepository;
     private final EmployeeRepository employeeRepository;
     private final ShiftRepository shiftRepository;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
     }
- 
+
     public List<Appointment> findByEmployeeId(long employeeId) {
         return appointmentRepository.findByEmployeeId(employeeId);
     }
 
     @Autowired
     public AppointmentService(
-            AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository
+            AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository
     ) {
+        this.cancelledRepository = cancelledRepository;
         this.appointmentRepository = appointmentRepository;
         this.employeeRepository = employeeRepository;
         this.shiftRepository = shiftRepository;
     }
 
-    public List<Appointment> findByClientId(long id){
+    public List<Appointment> findByClientId(long id) {
         return appointmentRepository.findByClientId(id);
     }
 
@@ -97,14 +99,15 @@ public class AppointmentService {
 
     /**
      * Checks to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
+     *
      * @param appointment The appointment to validate.
-     * @param modifying Whether or not it's an appointment being modified.
-     * @throws ModelValidationException If the client and employee are the same person.
+     * @param modifying   Whether or not it's an appointment being modified.
+     * @throws ModelValidationException             If the client and employee are the same person.
      * @throws EmployeeDoesNotOfferServiceException If the employee is not assigned to the service specified.
-     * @throws EmployeeNotWorkingException If the employee does not have a shift on the date specified.
+     * @throws EmployeeNotWorkingException          If the employee does not have a shift on the date specified.
      * @throws EmployeeAppointmentConflictException If the employee is already booked on the date and time specified.
-     * @throws ClientAppointmentConflictException If the client is already booked on the date and time specified.
-     * @throws NoRoomAvailableException If there are no rooms available to perform the service specified.
+     * @throws ClientAppointmentConflictException   If the client is already booked on the date and time specified.
+     * @throws NoRoomAvailableException             If there are no rooms available to perform the service specified.
      */
     private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
         final Employee employee = appointment.getEmployee();
@@ -183,5 +186,40 @@ public class AppointmentService {
 
     public List<Appointment> getConfirmedAppointmentsByDate(LocalDate date) {
         return appointmentRepository.findByDateAndStatus(date, AppointmentStatus.CONFIRMED);
+    }
+
+    public Map<String, String> cancel(CancelledAppointment cancel) {
+        return appointmentRepository.findById(cancel.getAppointment().getId()).map(a -> {
+
+            a.setStatus(AppointmentStatus.CANCELLED);
+            appointmentRepository.save(a);
+            cancelledRepository.save(cancel);
+
+            return message("Appointment was successfully  cancelled!");
+
+        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", cancel.getAppointment().getId())));
+
+    }
+
+    public ResponseEntity<?> delete(long id) {
+
+        return appointmentRepository.findById(id).map(a -> {
+
+            appointmentRepository.delete(a);
+            return ResponseEntity.ok().build();
+
+        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+    }
+
+    public CancelledAppointment findByCancelledId(long id) {
+        return cancelledRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+    }
+
+
+    private Map<String, String> message(String message) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", message);
+        return map;
     }
 }

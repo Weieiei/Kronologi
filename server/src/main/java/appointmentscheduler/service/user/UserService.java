@@ -11,11 +11,13 @@ import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.user.UserFactory;
+import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.PhoneNumberRepository;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.SettingsRepository;
 import appointmentscheduler.repository.UserRepository;
+import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +28,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,6 +41,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final VerificationRepository verificationRepository;
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -45,11 +51,12 @@ public class UserService {
     @Autowired
     public UserService(
             UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider,
-            BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager,
-            SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
+            VerificationRepository verificationRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+            AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.verificationRepository = verificationRepository;
         this.jwtProvider = jwtProvider;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
@@ -57,7 +64,7 @@ public class UserService {
         this.phoneNumberRepository = phoneNumberRepository;
     }
 
-    public Map<String, String> register(UserRegisterDTO userRegisterDTO) {
+    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
 
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
@@ -83,14 +90,21 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
+        Verification verification = new Verification(savedUser);
+
+        verificationRepository.save(verification);
+
         String token = generateToken(savedUser, userRegisterDTO.getPassword());
 
-        return buildTokenMap(token);
+        return buildTokenRegisterMap( token, verification);
     }
 
     public Map<String, String> login(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmailIgnoreCase(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
+
+        if (!user.isVerified())
+            throw new ModelValidationException("Incomplete verification");
 
         String token = generateToken(user, userLoginDTO.getPassword());
 
@@ -100,6 +114,15 @@ public class UserService {
     private Map<String, String> buildTokenMap(String token) {
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
+
+        return map;
+    }
+
+    private Map<String, Object> buildTokenRegisterMap(String token, Verification verification) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", token);
+        map.put("verification", verification);
+
         return map;
     }
 

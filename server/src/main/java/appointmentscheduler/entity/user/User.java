@@ -3,10 +3,13 @@ package appointmentscheduler.entity.user;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
+import appointmentscheduler.entity.role.RoleEnum;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,11 +35,14 @@ public class User extends AuditableEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "verified")
+    private boolean verified;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_role",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Set<Role> roles;
 
@@ -107,6 +113,10 @@ public class User extends AuditableEntity {
         return roles;
     }
 
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
@@ -127,8 +137,18 @@ public class User extends AuditableEntity {
         this.settings = settings;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
     @PrePersist
-    public void setDefaultSettings() {
+    public void beforeInsert() {
+        if(!verified)
+            this.verified = false;
         this.setSettings(new Settings(false, false, this));
     }
 }

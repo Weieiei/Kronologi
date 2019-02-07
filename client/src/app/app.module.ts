@@ -32,12 +32,14 @@ import { FabBottomRightDirective } from './directives/fab-bottom-right/fab-botto
 import { ButtonIconDirective } from './directives/button-icon/button-icon.directive';
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
+import { VerifiedComponent } from './pages/verified/verified.component';
 import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
 import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
+import { CancelDialogComponent } from './components/cancel-dialog/cancel-dialog.component';
 import { EmployeePickerComponent } from './pages/dashboard/reserve/employee-picker/employee-picker.component';
 import { ServiceSelectionComponent } from './pages/dashboard/reserve/service-selection/service-selection.component';
 import { TimePickerComponent } from './pages/dashboard/reserve/time-picker/time-picker.component';
@@ -45,6 +47,7 @@ import { NotesAndReserveComponent } from './pages/dashboard/reserve/notes-and-re
 import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 import { AddShiftFormComponent } from './pages/dashboard/home/shift/add-shift-form/add-shift-form.component';
+import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
 
 @NgModule({
     declarations: [
@@ -67,6 +70,7 @@ import { AddShiftFormComponent } from './pages/dashboard/home/shift/add-shift-fo
         ButtonIconDirective,
         AppointmentsSectionComponent,
         CardSizeDirective,
+        VerifiedComponent,
         EmployeeAppointmentsComponent,
         AutofocusDirective,
         SettingsComponent,
@@ -79,7 +83,10 @@ import { AddShiftFormComponent } from './pages/dashboard/home/shift/add-shift-fo
         TimePickerComponent,
         NotesAndReserveComponent,
         ReviewComponent,
-        AddShiftFormComponent
+        AddShiftFormComponent,
+        CancelDialogComponent,
+        ReviewComponent,
+        ReasonDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -92,7 +99,9 @@ import { AddShiftFormComponent } from './pages/dashboard/home/shift/add-shift-fo
         ReactiveFormsModule
     ],
     entryComponents: [
-        TimePickerDialogComponent
+        TimePickerDialogComponent,
+        CancelDialogComponent,
+        ReasonDialogComponent
     ],
     providers: [
         AuthService,
