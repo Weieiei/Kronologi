@@ -53,6 +53,15 @@ h6 {
     letter-spacing: 0.15px;
 }
 
+table {
+    width: 90vw;
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+
 /* Success/error classes for snackbar messages. They have to be declared in styles.scss */
 .success-message {
     color: $success-color;

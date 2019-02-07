@@ -2,6 +2,7 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
@@ -151,5 +152,12 @@ public class AppointmentController extends AbstractController {
         emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
 
     }
+
+    @GetMapping("cancel/{id}")
+    public ResponseEntity<String> findId(@PathVariable long id){
+        ObjectMapper mapper = objectMapperFactory.createMapper(CancelledAppointment.class, new CancelledAppointmentSerializer());
+        return getJson(mapper, appointmentService.findByCancelledId(id));
+    }
+
 
 }

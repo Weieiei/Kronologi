@@ -1,0 +1,27 @@
+
+<h2 class='mat-dialog-title'>Cancel appointment {{serviceName}} </h2>
+
+<div class='mat-dialog-content' *ngIf="!isEmployee">
+    Are you sure you want to cancel {{serviceName}}
+    <br>
+    scheduled with {{employeeName}} on {{toCancel.date}}
+</div>
+
+<div class='mat-dialog-content' *ngIf="isEmployee || isAdmin">
+        Are you sure you want to cancel {{serviceName}}
+        <br>
+        with your client on {{toCancel.date}}
+</div>
+
+<div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px"  [formGroup]="form" *ngIf="isEmployee">
+    <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Reason for Cancellation</mat-label>
+        <textarea matInput placeholder="Reason"
+        formControlName="longDescription"></textarea>
+    </mat-form-field>
+</div>
+
+<div class='mat-dialog-actions'>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button class="mat-raised-button mat-primary"(click)="cancel()">Confirm</button>
+</div>

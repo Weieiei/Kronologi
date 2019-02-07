@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
+import { MatDialog } from '@angular/material';
 import { UserAppointmentDTO } from '../../../../interfaces/appointment/user-appointment-dto';
 
 @Component({
@@ -24,13 +25,18 @@ export class AppointmentsComponent implements OnInit {
         'other': '# Previous Appointments'
     };
 
-    constructor(private appointmentService: AppointmentService) {
+    constructor(private dialog: MatDialog, private appointmentService: AppointmentService) {
         this.upcomingAppointments = [];
         this.pastAppointments = [];
     }
 
     ngOnInit() {
-        this.getMyAppointments();
+        this.dialog.afterAllClosed
+        .subscribe(() => {
+            this.upcomingAppointments = [];
+            this.pastAppointments = [];
+            this.getMyAppointments();
+        });
     }
 
     getMyAppointments(): void {
@@ -51,5 +57,4 @@ export class AppointmentsComponent implements OnInit {
             err => console.log(err)
         );
     }
-
 }

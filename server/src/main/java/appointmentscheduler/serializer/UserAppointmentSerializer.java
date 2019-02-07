@@ -3,6 +3,7 @@ package appointmentscheduler.serializer;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -19,6 +20,7 @@ public class UserAppointmentSerializer extends StdSerializer<Appointment> {
         super(t);
     }
 
+
     @Override
     public void serialize(Appointment appointment, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
         gen.writeStartObject();
@@ -26,6 +28,7 @@ public class UserAppointmentSerializer extends StdSerializer<Appointment> {
         gen.writeObjectField("id", appointment.getId());
         serializeEmployee(appointment.getEmployee(), gen);
         serializeService(appointment.getService(), gen);
+        serializeUser(appointment.getClient(),gen);
         gen.writeStringField("date", appointment.getDate().toString());
         gen.writeStringField("startTime", appointment.getStartTime().toString());
         gen.writeStringField("endTime", appointment.getEndTime().toString());
@@ -50,4 +53,13 @@ public class UserAppointmentSerializer extends StdSerializer<Appointment> {
         gen.writeObjectField("duration", service.getDuration());
         gen.writeEndObject();
     }
+
+    private void serializeUser(User user, JsonGenerator gen) throws IOException {
+        gen.writeObjectFieldStart("client");
+        gen.writeObjectField("id", user.getId());
+        gen.writeStringField("firstName", user.getFirstName());
+        gen.writeObjectField("lastName", user.getLastName());
+        gen.writeEndObject();
+    }
 }
+

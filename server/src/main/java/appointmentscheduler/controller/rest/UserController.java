@@ -2,6 +2,9 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.annotation.LoggingLevel;
+import appointmentscheduler.converters.appointment.CancelledDTOToCancelled;
+import appointmentscheduler.dto.appointment.CancelAppointmentDTO;
+import appointmentscheduler.dto.appointment.CancelAppointmentDTO;
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.settings.UpdateSettingsDTO;
 import appointmentscheduler.dto.user.UpdateEmailDTO;
@@ -12,6 +15,8 @@ import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.appointment.CancelledAppointment;
+import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.serializer.ObjectMapperFactory;
@@ -50,11 +55,14 @@ public class UserController extends AbstractController {
     @Autowired
     public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory) {
         this.userService = userService;
+        this.appointmentService = appointmentService;
         this.emailService = emailService;
         this.verificationService = verificationService;
-        this.appointmentService = appointmentService;
         this.objectMapperFactory = objectMapperFactory;
     }
+
+    @Autowired
+    private CancelledDTOToCancelled cancelledAppointmentConverted;
 
     @GetMapping("/verification")
     public ResponseEntity verify(@RequestParam(name = "hash") String hash) {
@@ -137,5 +145,13 @@ public class UserController extends AbstractController {
         Appointment appointment = appointmentService.findMyAppointmentById(getUserId(), appointmentId);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         return getJson(mapper, appointment);
+    }
+
+    @LogREST
+    @PostMapping("/appointments/{id}")
+    public ResponseEntity<Map<String, String>> delete( @RequestBody CancelAppointmentDTO cancel) {
+        cancel.setIdPersonWhoCancelled(getUserId());
+        CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
+        return ResponseEntity.ok(appointmentService.cancel(cancelled));
     }
 }

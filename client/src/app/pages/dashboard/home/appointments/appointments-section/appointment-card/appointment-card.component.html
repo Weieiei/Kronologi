@@ -1,7 +1,12 @@
-<mat-card>
+<mat-card [ngClass]="{'cancelCard': appointment.status=='CANCELLED'}">
     <mat-card-header>
         <div mat-card-avatar>
             <img src="assets/images/spa-logo.svg" style="width: inherit; height: inherit"/>
+        </div>
+        <div mat-icon  fxFlex fxLayoutAlign="end start" *ngIf="appointment.status=='CANCELLED'">
+           <button mat-button (click)="openReasonDialog()">
+                <mat-icon color="primary">error_outline</mat-icon>
+            </button>
         </div>
         <mat-card-title>{{ appointment.service.name }}</mat-card-title>
         <mat-card-subtitle>Sylvia Pizzi Spa</mat-card-subtitle>
@@ -20,14 +25,14 @@
         </div>
     </mat-card-content>
     <mat-card-actions *ngIf="now <= appointmentStart" fxLayout="row" fxLayoutGap="8px">
-        <button fxFlex color="primary" mat-stroked-button>
-            <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+        <button fxFlex color="primary" mat-stroked-button (click)='openDialog()' [disabled]="appointment.status=='CANCELLED'">
+            <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px" >
                 <mat-icon appButtonIcon>cancel</mat-icon>
                 <span>CANCEL</span>
             </span>
         </button>
 
-        <button fxFlex color="primary" mat-flat-button (click)="modifyAppointment()">
+        <button fxFlex color="primary" mat-flat-button (click)="modifyAppointment()" [disabled]="appointment.status=='CANCELLED'">
             <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
                 <mat-icon appButtonIcon>edit</mat-icon>
                 <span>MODIFY</span>
