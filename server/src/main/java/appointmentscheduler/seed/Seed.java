@@ -134,7 +134,18 @@ public class Seed {
                 LocalDate.of(2019, 12, 2), LocalTime.of(12, 0), "Some note"
         );
 
-        appointmentRepository.saveAll(Arrays.asList(appointment, appointment2));
+        //past appointments
+        Appointment appointment3 = new Appointment(
+                clients.get(1), employee, services.get(6),
+                LocalDate.of(2018, 12, 2), LocalTime.of(12, 0), "Some note"
+        );
+        Appointment appointment4 = new Appointment(
+                clients.get(0), employee, services.get(6),
+                LocalDate.of(2018, 12, 2), LocalTime.of(12, 0), "Some note"
+        );
+
+        appointmentRepository.saveAll(Arrays.asList(appointment, appointment2, appointment3, appointment4));
+
 
     }
 
