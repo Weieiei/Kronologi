@@ -4,24 +4,37 @@ import appointmentscheduler.entity.review.Review;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
-@Service
+@org.springframework.stereotype.Service
 public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public Review add(Review review) {
-        return reviewRepository.save(review);
+    public Map<String, String> add(Review review) {
+        try{
+        reviewRepository.save(review);
+        return message ("Successfully added review");
+        }
+        catch (Exception e) {
+            return message(e.getMessage());
+        }
     }
 
-    public Review findByAppointmentId(long appointmentId) {
-        return reviewRepository.findByAppointmentId(appointmentId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Review for appointment id %d not " +
-                                "found.",
-                        appointmentId)));
+    public Optional <Review> findByAppointmentId(long appointmentId) {
+        return reviewRepository.findByAppointmentId(appointmentId);
+    }
+
+
+    private Map<String, String> message(String message) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", message);
+        return map;
     }
 }

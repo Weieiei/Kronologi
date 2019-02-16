@@ -3,6 +3,7 @@ package appointmentscheduler.entity.review;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -20,16 +21,17 @@ public class Review extends AuditableEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    @JsonIgnore
     private User client;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_id", nullable = false)
+    @JsonIgnore
     private Appointment appointment;
 
     public Review(){ }
 
-    public Review(String content, User client, Appointment appointment) {
+    public Review(String content, Appointment appointment) {
         this.content = content;
         this.client = client;
         this.appointment = appointment;
