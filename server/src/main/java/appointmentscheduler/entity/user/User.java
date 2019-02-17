@@ -60,6 +60,7 @@ public class User extends AuditableEntity {
     )
     private Settings settings;
 
+    @OneToMany
     private List<Service> employeeServices;
 
     @Override
