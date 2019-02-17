@@ -21,8 +21,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeeShiftServiceTest {
@@ -41,28 +40,25 @@ public class EmployeeShiftServiceTest {
         employeeShiftService = new EmployeeShiftService(shiftRepository, employeeRepository);
     }
 
-//    @Test
-//    public void createShift() {
-//        final Employee mockEmployee = mock(Employee.class);
-//        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
-//        final LocalDate localDate = LocalDate.now();
-//        final LocalTime startTime = LocalTime.of(1,0);
-//        final LocalTime endTime = LocalTime.of(2,0);
-//        Shift createdShift;
-//
-//        when(employeeShiftDTO.getDate()).thenReturn(localDate);
-//        when(employeeShiftDTO.getStartTime()).thenReturn(startTime);
-//        when(employeeShiftDTO.getEndTime()).thenReturn(endTime);
-//
-//        when(employeeRepository.findById(anyLong())).thenReturn(Optional.of(mockEmployee));
-//
-//        createdShift = employeeShiftService.createShift(1, employeeShiftDTO);
-//
-//        assertNotNull(createdShift);
-//        assertEquals(localDate, createdShift.getDate());
-//        assertEquals(startTime, createdShift.getStartTime());
-//        assertEquals(endTime, createdShift.getEndTime());
-//    }
+    @Test
+    public void createShift() {
+        final Employee mockEmployee = mock(Employee.class);
+        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
+        final LocalDate localDate = LocalDate.now();
+        final LocalTime startTime = LocalTime.of(1,0);
+        final LocalTime endTime = LocalTime.of(2,0);
+        Shift createdShift;
+
+        when(employeeShiftDTO.getDate()).thenReturn(localDate);
+        when(employeeShiftDTO.getStartTime()).thenReturn(startTime);
+        when(employeeShiftDTO.getEndTime()).thenReturn(endTime);
+
+        when(employeeRepository.findById(anyLong())).thenReturn(Optional.of(mockEmployee));
+
+        employeeShiftService.createShift(1, employeeShiftDTO);
+
+        verify(shiftRepository,times(1)).save(any());
+    }
 
     @Test
     public void getEmployeeShifts() {
@@ -95,18 +91,16 @@ public class EmployeeShiftServiceTest {
        assertTrue(employeeShifts.isEmpty());
     }
 
-//    @Test
-//    public void deleteShift() {
-//        final Shift mockedShift1 = mock(Shift.class);
-//        Shift deletedShift;
-//
-//        when(mockedShift1.getId()).thenReturn((long) 1);
-//        when(shiftRepository.findById(anyLong())).thenReturn(Optional.of(mockedShift1));
-//
-//        deletedShift = employeeShiftService.deleteShift(0);
-//
-//        assertEquals(mockedShift1.getId(), deletedShift.getId());
-//    }
+    @Test
+    public void deleteShift() {
+        final Shift mockedShift1 = mock(Shift.class);
+
+        when(mockedShift1.getId()).thenReturn((long) 1);
+        when(shiftRepository.findById(anyLong())).thenReturn(Optional.of(mockedShift1));
+
+        employeeShiftService.deleteShift(0);
+        verify(shiftRepository,times(1)).delete(any());
+    }
 
     @Test(expected = ResourceNotFoundException.class)
     public void deleteInvalidShift() {
