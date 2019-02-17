@@ -116,7 +116,6 @@ public class EmployeeShiftServiceTest {
         final LocalTime newStartTime = LocalTime.of(2,0);
         final LocalTime newEndTime = LocalTime.of(3,0);
         Shift shift = new Shift();
-        Shift modifiedShift;
 
 
         shift.setId(1);
@@ -129,23 +128,18 @@ public class EmployeeShiftServiceTest {
         when(employeeShiftDTO.getStartTime()).thenReturn(newStartTime);
         when(employeeShiftDTO.getEndTime()).thenReturn(newEndTime);
 
-        modifiedShift = employeeShiftService.modifyShift(1, employeeShiftDTO, 1);
+        employeeShiftService.modifyShift(1, employeeShiftDTO, 1);
 
-        assertEquals(1, modifiedShift.getId());
-        assertEquals(localDate, modifiedShift.getDate());
-        assertEquals(newStartTime, modifiedShift.getStartTime());
-        assertEquals(newEndTime, modifiedShift.getEndTime());
+        verify(shiftRepository,times(1)).save(shift);
 
     }
 
-    @Test
+    @Test(expected = ResourceNotFoundException.class)
     public void modifyInvalidShift() {
         final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
-        Shift modifiedShift;
 
-        modifiedShift = employeeShiftService.modifyShift(1, employeeShiftDTO, anyLong());
-
-        assertNull(modifiedShift);
+        employeeShiftService.modifyShift(1, employeeShiftDTO, anyLong());
+        fail("Should have thrown an exception.");
     }
 
     @Test

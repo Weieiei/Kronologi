@@ -68,19 +68,15 @@ public class EmployeeShiftService {
     }
 
     public Shift modifyShift(long employeeId, EmployeeShiftDTO employeeShiftDTO, long shiftId) {
-        Optional<Shift> shiftList = shiftRepository.findById(shiftId);
-        Shift shift = null;
-        if(shiftList.isPresent()) {
-            shift = shiftList.get();
-            shift.setDate(employeeShiftDTO.getDate());
-            shift.setStartTime(employeeShiftDTO.getStartTime());
-            shift.setEndTime(employeeShiftDTO.getEndTime());
-            if(!shiftConflict(employeeId, shift)) {
-                shiftRepository.save(shift);
-                return shift;
-            }
+        Shift shift = shiftRepository.findById(shiftId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Shift with id %d not found.", shiftId)));
+        shift.setDate(employeeShiftDTO.getDate());
+        shift.setStartTime(employeeShiftDTO.getStartTime());
+        shift.setEndTime(employeeShiftDTO.getEndTime());
+        if(!shiftConflict(employeeId, shift)) {
+           return  shiftRepository.save(shift);
         }
-        return shift;
+        throw new IllegalArgumentException("Shift conflicts with other shift");
     }
 
     public void deleteShift(long shiftId){
