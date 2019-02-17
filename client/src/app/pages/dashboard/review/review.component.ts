@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from '../../../services/review/review.service';
 import { ReviewDTO } from 'src/app/interfaces/reviewDTO';
+import {SnackBar} from "../../../snackbar";
 
 @Component({
     selector: 'app-review',
@@ -14,6 +15,7 @@ export class ReviewComponent implements OnInit {
     appointmentId: number;
 
     constructor(
+        private snackBar: SnackBar,
         private reviewService: ReviewService,
         private router: Router,
         private _Activatedroute: ActivatedRoute
@@ -33,6 +35,7 @@ export class ReviewComponent implements OnInit {
         };
         this.reviewService.submitReview(payload).subscribe(
             res => {
+                this.snackBar.openSnackBarSuccess(res["message"]);
                 this.router.navigate(['']);
             },
             err => console.log(err)
