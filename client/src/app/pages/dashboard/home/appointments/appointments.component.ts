@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
+import { MatDialog } from '@angular/material';
+import { UserAppointmentDTO } from '../../../../interfaces/appointment/user-appointment-dto';
 
 @Component({
     selector: 'app-appointments',
@@ -8,8 +10,8 @@ import { AppointmentService } from '../../../../services/appointment/appointment
 })
 export class AppointmentsComponent implements OnInit {
 
-    upcomingAppointments;
-    pastAppointments;
+    upcomingAppointments: UserAppointmentDTO[];
+    pastAppointments: UserAppointmentDTO[];
 
     upcomingMessageMapping: { [k: string]: string } = {
         '=0': 'No Upcoming Appointments',
@@ -23,13 +25,18 @@ export class AppointmentsComponent implements OnInit {
         'other': '# Previous Appointments'
     };
 
-    constructor(private appointmentService: AppointmentService) {
+    constructor(private dialog: MatDialog, private appointmentService: AppointmentService) {
         this.upcomingAppointments = [];
         this.pastAppointments = [];
     }
 
     ngOnInit() {
-        this.getMyAppointments();
+        this.dialog.afterAllClosed
+        .subscribe(() => {
+            this.upcomingAppointments = [];
+            this.pastAppointments = [];
+            this.getMyAppointments();
+        });
     }
 
     getMyAppointments(): void {
@@ -50,5 +57,4 @@ export class AppointmentsComponent implements OnInit {
             err => console.log(err)
         );
     }
-
 }

@@ -16,6 +16,14 @@ export class NavbarComponent implements OnInit {
 
     user;
 
+    constructor(
+        private userService: UserService,
+        private authService: AuthService,
+        private router: Router,
+        private googleAnalytics: GoogleAnalyticsService
+    ) {
+
+
     constructor(private userService: UserService,
                 private authService: AuthService,
                 private router: Router,

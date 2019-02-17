@@ -2,26 +2,40 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.annotation.LoggingLevel;
+import appointmentscheduler.converters.appointment.CancelledDTOToCancelled;
+import appointmentscheduler.dto.appointment.CancelAppointmentDTO;
+import appointmentscheduler.dto.appointment.CancelAppointmentDTO;
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.settings.UpdateSettingsDTO;
 import appointmentscheduler.dto.user.UpdateEmailDTO;
 import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.verification.Verification;
+import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.appointment.CancelledAppointment;
+import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.serializer.ObjectMapperFactory;
+import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
+import appointmentscheduler.service.verification.VerificationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
@@ -31,21 +45,42 @@ public class UserController extends AbstractController {
 
     private final UserService userService;
     private final EmailService emailService;
-    private final AppointmentService appointmentService;
+    private final VerificationService verificationService;
 
     @Autowired
-    public UserController(UserService userService, EmailService emailService, AppointmentService appointmentService) {
+    VerificationRepository verificationRepository;
+    private final AppointmentService appointmentService;
+    private final ObjectMapperFactory objectMapperFactory;
+
+    @Autowired
+    public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory) {
         this.userService = userService;
-        this.emailService = emailService;
         this.appointmentService = appointmentService;
+        this.emailService = emailService;
+        this.verificationService = verificationService;
+        this.objectMapperFactory = objectMapperFactory;
+    }
+
+    @Autowired
+    private CancelledDTOToCancelled cancelledAppointmentConverted;
+
+    @GetMapping("/verification")
+    public ResponseEntity verify(@RequestParam(name = "hash") String hash) {
+        try {
+            verificationService.verify(hash);
+            return ResponseEntity.ok().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
+    public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
         try {
-            Map<String, Object> userTokenMap = userService.register(userRegisterDTO);
-            emailService.sendEmail(userRegisterDTO.getEmail(), "ASApp Registration Confirmation", "Welcome to ASApp.<br />", true);
-            return ResponseEntity.ok(userTokenMap);
+            Map<String, Object> tokenMap = userService.register(userRegisterDTO);
+            Verification verification = (Verification) tokenMap.get("verification");
+            emailService.sendRegistrationEmail(userRegisterDTO.getEmail(),verification.getHash(), true);
+            return ResponseEntity.ok(tokenMap);
         } catch (BadCredentialsException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -54,7 +89,7 @@ public class UserController extends AbstractController {
 
     @LogREST(LoggingLevel.WARN)
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO userLoginDTO) {
         try {
             return ResponseEntity.ok(userService.login(userLoginDTO));
         } catch (BadCredentialsException e) {
@@ -98,10 +133,25 @@ public class UserController extends AbstractController {
         return ResponseEntity.ok(userService.deletePhoneNumber(getUserId()));
     }
 
-    @GetMapping("/appointments")
-    public List<Appointment> findByCurrentUser() {
-        return appointmentService.findByClientId(getUserId());
+    @GetMapping(value = "/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findAllAppointments() {
+        final List<Appointment> appointments = appointmentService.findByClientId(getUserId());
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+        return getJson(mapper, appointments);
     }
 
+    @GetMapping(value = "/appointments/{appointmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findMyAppointmentById(@PathVariable long appointmentId) {
+        Appointment appointment = appointmentService.findMyAppointmentById(getUserId(), appointmentId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+        return getJson(mapper, appointment);
+    }
 
+    @LogREST
+    @PostMapping("/appointments/{id}")
+    public ResponseEntity<Map<String, String>> delete( @RequestBody CancelAppointmentDTO cancel) {
+        cancel.setIdPersonWhoCancelled(getUserId());
+        CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
+        return ResponseEntity.ok(appointmentService.cancel(cancelled));
+    }
 }

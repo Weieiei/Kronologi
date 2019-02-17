@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
         private userService: UserService,
         private serviceService: ServiceService,
         private router: Router,
-        private googleAnalytics : GoogleAnalyticsService
+        private googleAnalytics: GoogleAnalyticsService
     ) {
     }
 
@@ -59,18 +59,12 @@ export class RegisterComponent implements OnInit {
                     number: this.number
                 };
             }
-            
+
             this.googleAnalytics.trackValues('formSubmit', 'register');
 
             this.userService.register(payload).subscribe(
                 res => {
-                    const user = res['user'];
-                    const token = res['token'];
-
-                    this.userService.setUser(user);
-                    this.userService.setToken(token);
-
-                    this.router.navigate(['']);
+                    this.router.navigate(['login']);
                 },
                 err => console.log(err)
             );

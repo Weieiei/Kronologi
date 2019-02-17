@@ -4,11 +4,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/dashboard/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ReserveComponent } from './pages/dashboard/reserve/reserve.component';
 import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
 import { ReserveComponent } from './pages/reserve/reserve.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { VerifiedComponent } from './pages/verified/verified.component';
 import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
 import { AdminAppointmentsComponent } from "./pages/dashboard/home/admin-appointments/admin-appointments.component";
 import { SettingsComponent } from './pages/settings/settings.component';
@@ -20,12 +22,15 @@ import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/ad
 import { CreateServiceComponent } from "./pages/create-service/create-service.component";
 import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-users.component";
 
+
 const routes: Routes = [
     // Login
     { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
 
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
+
+    { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
 
     // Dashboard
     {
@@ -36,6 +41,14 @@ const routes: Routes = [
 
             // Home page
             { path: '', component: HomeComponent },
+
+            // Reserving and modifying reservation
+            {
+                path: 'reserve', children: [
+                    { path: '', component: ReserveComponent, data: { edit: false } },
+                    { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
+                ]
+            },
 
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
@@ -49,6 +62,8 @@ const routes: Routes = [
             { path: 'admin/services', component: AdminServicesComponent },
             { path: 'admin/services/create', component: CreateServiceComponent },
             { path: 'admin/users', component: AdminUsersComponent },
+
+            // User settings
             {
                 path: 'settings', component: SettingsComponent, children: [
                     { path: '', redirectTo: 'account', pathMatch: 'full' },

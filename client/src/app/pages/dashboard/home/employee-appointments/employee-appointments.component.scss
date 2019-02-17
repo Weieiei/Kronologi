@@ -1,3 +1,36 @@
 table {
     width: 100%;
-}
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .mat-button{
+    color:white;
+    background-color: red;
+    font-size: x-small;
+    padding: 0px;
+    padding-right: 7px;
+    
+  }
+  .mat-row:hover {
+    background: rgba(143, 32, 32, 0.04);
+  }
+  
+  .mat-column-actions{
+    width:12%;
+  }
+  .cancelRow{
+    background-color:lightgray;
+  }
+  .disable-hover:hover {
+    background-color: lightgray !important;
+  }
+  .mat-button:disabled{
+    background-color: darkred;
+    color:white;
+    font-size: x-small;
+    padding: 0px;
+    padding-right: 7px;
+  }
+  

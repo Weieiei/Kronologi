@@ -16,7 +16,6 @@ import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
 export class UserService {
 
     private static readonly TOKEN_KEY = 'token';
-    private static readonly USER_KEY = 'user';
 
     constructor(private http: HttpClient) {
     }
@@ -31,23 +30,10 @@ export class UserService {
 
     logout(): void {
         this.deleteToken();
-        this.deleteUser();
     }
 
     isLoggedIn(): boolean {
-        return !!this.getToken() && !!this.getUser();
-    }
-
-    setUser(user): void {
-        localStorage.setItem(UserService.USER_KEY, JSON.stringify(user));
-    }
-
-    getUser(): any {
-        return JSON.parse(localStorage.getItem(UserService.USER_KEY));
-    }
-
-    deleteUser(): void {
-        localStorage.removeItem(UserService.USER_KEY);
+        return !!this.getToken();
     }
 
     setToken(token: string): void {
@@ -65,6 +51,30 @@ export class UserService {
     getTokenClaims() {
         try {
             return decode(this.getToken());
+        } catch (e) {
+            return null;
+        }
+    }
+
+    getFirstNameFromToken(): string {
+        try {
+            return this.getTokenClaims()['firstName'];
+        } catch (e) {
+            return null;
+        }
+    }
+
+    getLastNameFromToken(): string {
+        try {
+            return this.getTokenClaims()['lastName'];
+        } catch (e) {
+            return null;
+        }
+    }
+
+    getEmailFromToken(): string {
+        try {
+            return this.getTokenClaims()['email'];
         } catch (e) {
             return null;
         }

@@ -1,5 +1,9 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.dto.employee.EmployeeShiftDTO;
+import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.service.employee.EmployeeShiftService;
 import appointmentscheduler.dto.service.ServiceCreateDTO;
 import appointmentscheduler.converters.service.ServiceDTOToService;
 import appointmentscheduler.entity.appointment.Appointment;
@@ -19,22 +23,24 @@ import appointmentscheduler.dto.employee.EmployeeShiftDTO;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.service.employee.EmployeeShiftService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 import javax.mail.MessagingException;
 import java.io.IOException;
+
 @RestController
 @RequestMapping("${rest.api.path}/admin")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
 
-    @Autowired
+    // to be redone with serializer
+    /*@Autowired
     private ServiceDTOToService serviceConverter;
 
     private AppointmentService appointmentService;
@@ -42,18 +48,25 @@ public class AdminController {
     private RoleRepository roleRepository;
     private ServiceService serviceService;
     private ServiceRepository serviceRepository;
+    */
     private final EmployeeShiftService employeeShiftService;
 
     @Autowired
+    AdminController (EmployeeShiftService employeeShiftService) {
+        this.employeeShiftService = employeeShiftService;
+    }
+
+    //from ema's branch
+    /*@Autowired
     public AdminController(AppointmentService appointmentService, UserService userService, ServiceService serviceService,
-            RoleRepository roleRepository, ServiceRepository serviceRepository, EmployeeShiftService employeeShiftService) {
+                           RoleRepository roleRepository, ServiceRepository serviceRepository, EmployeeShiftService employeeShiftService) {
         this.appointmentService = appointmentService;
         this.userService = userService;
         this.serviceService = serviceService;
         this.roleRepository = roleRepository;
         this.serviceRepository = serviceRepository;
         this.employeeShiftService = employeeShiftService;
-    }
+    }*/
 
     // TODO remove this
     @GetMapping
@@ -62,7 +75,7 @@ public class AdminController {
     }
 
     @GetMapping("/employee")
-    public  List<User> getEmployees() {
+    public  List<Employee> getEmployees() {
         return employeeShiftService.getEmployees();
     }
 

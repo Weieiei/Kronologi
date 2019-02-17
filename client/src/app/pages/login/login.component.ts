@@ -29,22 +29,19 @@ export class LoginComponent implements OnInit {
             email: this.username,
             password: this.password
         };
-        
+
 
         this.userService.login(payload).subscribe(
             res => {
                 this.googleAnalytics.trackValues('security', 'login', 'success');
-                const user = res['user'];
                 const token = res['token'];
-
-                this.userService.setUser(user);
                 this.userService.setToken(token);
 
                 this.router.navigate(['']);
             },
             err => {
                 this.googleAnalytics.trackValues('security', 'login', 'failure');
-                console.log(err)
+                console.log(err);
             }
         );
 

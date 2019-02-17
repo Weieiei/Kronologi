@@ -10,15 +10,14 @@ import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.exception.IncorrectPasswordException;
-import appointmentscheduler.exception.InvalidUpdateException;
-import appointmentscheduler.exception.ResourceNotFoundException;
-import appointmentscheduler.exception.UserAlreadyExistsException;
-import appointmentscheduler.exception.UserDoesNotExistException;
+import appointmentscheduler.entity.user.UserFactory;
+import appointmentscheduler.entity.verification.Verification;
+import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.PhoneNumberRepository;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.SettingsRepository;
 import appointmentscheduler.repository.UserRepository;
+import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -32,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +45,7 @@ public class UserService {
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final VerificationRepository verificationRepository;
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -54,11 +55,12 @@ public class UserService {
     @Autowired
     public UserService(
             UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider,
-            BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager,
-            SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
+            VerificationRepository verificationRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+            AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.verificationRepository = verificationRepository;
         this.jwtProvider = jwtProvider;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.authenticationManager = authenticationManager;
@@ -66,16 +68,13 @@ public class UserService {
         this.phoneNumberRepository = phoneNumberRepository;
     }
 
-    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException {
+    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
 
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
         }
 
-        User user = new User(
-                userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(),
-                userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword())
-        );
+        User user = UserFactory.createUser(User.class, userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(), userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
 
         if (userRegisterDTO.getPhoneNumber() != null) {
 
@@ -95,19 +94,42 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
+        Verification verification = new Verification(savedUser);
+
+        verificationRepository.save(verification);
+
         String token = generateToken(savedUser, userRegisterDTO.getPassword());
 
-        return buildUserTokenMap(savedUser, token);
+        return buildTokenRegisterMap( token, verification);
     }
 
-    public Map<String, Object> login(UserLoginDTO userLoginDTO) {
+    public Map<String, String> login(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmailIgnoreCase(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
 
+        if (!user.isVerified())
+            throw new ModelValidationException("Incomplete verification");
+
         String token = generateToken(user, userLoginDTO.getPassword());
 
-        return buildUserTokenMap(user, token);
+        return buildTokenMap(token);
     }
+
+    private Map<String, String> buildTokenMap(String token) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+
+        return map;
+    }
+
+    private Map<String, Object> buildTokenRegisterMap(String token, Verification verification) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", token);
+        map.put("verification", verification);
+
+        return map;
+    }
+
 
     public User findUserByid(long id) {
         return userRepository.findById(id).orElseThrow(() -> new UserDoesNotExistException("User id: " + id + " does not exist."));
@@ -118,24 +140,16 @@ public class UserService {
     }
 
     public boolean updateUser(User user) {
-       try {
-           userRepository.save(user);
-           return true;
-       }
-       catch (DataAccessException e) {
-           logger.info("ERROR WHILE UPDATING USER: " + user.getId() + " ROLE TO EMPLOYEE");
-           return false;
+        try {
+            userRepository.save(user);
+            return true;
+        }
+        catch (DataAccessException e) {
+            logger.info("ERROR WHILE UPDATING USER: " + user.getId() + " ROLE TO EMPLOYEE");
+            return false;
 
-       }
+        }
 
-    }
-
-    private Map<String, Object> buildUserTokenMap(User user, String token) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", user);
-        map.put("token", token);
-
-        return map;
     }
 
     private String generateToken(User user, String unhashedPassword) {
@@ -152,6 +166,10 @@ public class UserService {
 
         if (updateEmailDTO.getPassword() == null || !bCryptPasswordEncoder.matches(updateEmailDTO.getPassword(), user.getPassword())) {
             throw new IncorrectPasswordException("Incorrect password.");
+        }
+
+        if (updateEmailDTO.getNewEmail() == null) {
+            throw new InvalidUpdateException("You must provide a new email.");
         }
 
         if (user.getEmail().equalsIgnoreCase(updateEmailDTO.getNewEmail())) {
@@ -174,8 +192,12 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d not found.", id)));
 
-        if (!bCryptPasswordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
+        if (updatePasswordDTO.getOldPassword() == null || !bCryptPasswordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
             throw new IncorrectPasswordException("The old password you provided is incorrect.");
+        }
+
+        if (updatePasswordDTO.getNewPassword() == null) {
+            throw new PasswordNotProvidedExcetion("You must provide a new password.");
         }
 
         user.setPassword(bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword()));
