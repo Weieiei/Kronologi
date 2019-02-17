@@ -67,22 +67,21 @@ public class EmployeeShiftService {
         return shiftRepository.findByEmployeeId(employeeId);
     }
 
-//    public Shift modifyShift(EmployeeShiftDTO employeeShiftDTO, long shiftId) {
-//        Optional<Shift> shiftList = shiftRepository.findById(shiftId);
-//        Shift shift = null;
-//        if(shiftList.isPresent()) {
-//            shift = shiftList.get();
-//            shift.setDate(employeeShiftDTO.getDate());
-//            shift.setStartTime(employeeShiftDTO.getStartTime());
-//            shift.setEndTime(employeeShiftDTO.getEndTime());
-//            if(!shiftConflict(employeeShiftDTO.getEmployeeId(), shift)) {
-//                shiftRepository.save(shift);
-//                return shift;
-//            }
-//            return null;
-//        }
-//        return shift;
-//    }
+    public Shift modifyShift(long employeeId, EmployeeShiftDTO employeeShiftDTO, long shiftId) {
+        Optional<Shift> shiftList = shiftRepository.findById(shiftId);
+        Shift shift = null;
+        if(shiftList.isPresent()) {
+            shift = shiftList.get();
+            shift.setDate(employeeShiftDTO.getDate());
+            shift.setStartTime(employeeShiftDTO.getStartTime());
+            shift.setEndTime(employeeShiftDTO.getEndTime());
+            if(!shiftConflict(employeeId, shift)) {
+                shiftRepository.save(shift);
+                return shift;
+            }
+        }
+        return shift;
+    }
 
     public void deleteShift(long shiftId){
         Shift shift = shiftRepository.findById(shiftId)

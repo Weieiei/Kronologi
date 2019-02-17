@@ -58,13 +58,12 @@ public class AdminController extends AbstractController {
         return getJson(mapper, shift);
     }
 
-//    @PutMapping("/employee/{employeeId}/shift/{shiftId}")
-//    public ResponseEntity<String> modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
-//        employeeShiftDTO.setEmployeeId(employeeId);
-//        Shift shift = employeeShiftService.modifyShift(employeeShiftDTO, shiftId);
-//        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
-//        return getJson(mapper, shift);
-//    }
+    @PutMapping("/employee/{employeeId}/shift/{shiftId}")
+    public ResponseEntity<String> modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
+        Shift shift = employeeShiftService.modifyShift(employeeId, employeeShiftDTO, shiftId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
+    }
 
     @DeleteMapping("/employee/shift/{shiftId}")
     public void deleteShift(@PathVariable long shiftId){

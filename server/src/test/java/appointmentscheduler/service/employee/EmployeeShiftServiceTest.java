@@ -95,7 +95,6 @@ public class EmployeeShiftServiceTest {
     public void deleteShift() {
         final Shift mockedShift1 = mock(Shift.class);
 
-        when(mockedShift1.getId()).thenReturn((long) 1);
         when(shiftRepository.findById(anyLong())).thenReturn(Optional.of(mockedShift1));
 
         employeeShiftService.deleteShift(0);
@@ -108,46 +107,46 @@ public class EmployeeShiftServiceTest {
         fail("Should have thrown an exception.");
     }
 
-//    @Test
-//    public void modifyShift() {
-//        final LocalDate localDate = LocalDate.now();
-//        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
-//        final LocalTime startTime = LocalTime.of(1,0);
-//        final LocalTime endTime = LocalTime.of(2,0);
-//        final LocalTime newStartTime = LocalTime.of(2,0);
-//        final LocalTime newEndTime = LocalTime.of(3,0);
-//        Shift shift = new Shift();
-//        Shift modifiedShift;
-//
-//
-//        shift.setId(1);
-//        shift.setDate(localDate);
-//        shift.setStartTime(startTime);
-//        shift.setEndTime(endTime);
-//
-//        when(shiftRepository.findById(anyLong())).thenReturn(Optional.of(shift));
-//        when(employeeShiftDTO.getDate()).thenReturn(localDate);
-//        when(employeeShiftDTO.getStartTime()).thenReturn(newStartTime);
-//        when(employeeShiftDTO.getEndTime()).thenReturn(newEndTime);
-//
-//        modifiedShift = employeeShiftService.modifyShift(employeeShiftDTO, 1);
-//
-//        assertEquals(1, modifiedShift.getId());
-//        assertEquals(localDate, modifiedShift.getDate());
-//        assertEquals(newStartTime, modifiedShift.getStartTime());
-//        assertEquals(newEndTime, modifiedShift.getEndTime());
-//
-//    }
+    @Test
+    public void modifyShift() {
+        final LocalDate localDate = LocalDate.now();
+        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
+        final LocalTime startTime = LocalTime.of(1,0);
+        final LocalTime endTime = LocalTime.of(2,0);
+        final LocalTime newStartTime = LocalTime.of(2,0);
+        final LocalTime newEndTime = LocalTime.of(3,0);
+        Shift shift = new Shift();
+        Shift modifiedShift;
 
-//    @Test
-//    public void modifyInvalidShift() {
-//        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
-//        Shift modifiedShift;
-//
-//        modifiedShift = employeeShiftService.modifyShift(employeeShiftDTO, anyLong());
-//
-//        assertNull(modifiedShift);
-//    }
+
+        shift.setId(1);
+        shift.setDate(localDate);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+
+        when(shiftRepository.findById(anyLong())).thenReturn(Optional.of(shift));
+        when(employeeShiftDTO.getDate()).thenReturn(localDate);
+        when(employeeShiftDTO.getStartTime()).thenReturn(newStartTime);
+        when(employeeShiftDTO.getEndTime()).thenReturn(newEndTime);
+
+        modifiedShift = employeeShiftService.modifyShift(1, employeeShiftDTO, 1);
+
+        assertEquals(1, modifiedShift.getId());
+        assertEquals(localDate, modifiedShift.getDate());
+        assertEquals(newStartTime, modifiedShift.getStartTime());
+        assertEquals(newEndTime, modifiedShift.getEndTime());
+
+    }
+
+    @Test
+    public void modifyInvalidShift() {
+        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
+        Shift modifiedShift;
+
+        modifiedShift = employeeShiftService.modifyShift(1, employeeShiftDTO, anyLong());
+
+        assertNull(modifiedShift);
+    }
 
     @Test
     public void getAllEmployees() {
