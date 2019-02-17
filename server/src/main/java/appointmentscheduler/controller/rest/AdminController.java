@@ -40,7 +40,7 @@ public class AdminController {
 
 
     // to be redone with serializer
-    /*@Autowired
+    @Autowired
     private ServiceDTOToService serviceConverter;
 
     private AppointmentService appointmentService;
@@ -48,16 +48,11 @@ public class AdminController {
     private RoleRepository roleRepository;
     private ServiceService serviceService;
     private ServiceRepository serviceRepository;
-    */
+
     private final EmployeeShiftService employeeShiftService;
 
-    @Autowired
-    AdminController (EmployeeShiftService employeeShiftService) {
-        this.employeeShiftService = employeeShiftService;
-    }
-
     //from ema's branch
-    /*@Autowired
+    @Autowired
     public AdminController(AppointmentService appointmentService, UserService userService, ServiceService serviceService,
                            RoleRepository roleRepository, ServiceRepository serviceRepository, EmployeeShiftService employeeShiftService) {
         this.appointmentService = appointmentService;
@@ -66,7 +61,7 @@ public class AdminController {
         this.roleRepository = roleRepository;
         this.serviceRepository = serviceRepository;
         this.employeeShiftService = employeeShiftService;
-    }*/
+    }
 
     // TODO remove this
     @GetMapping

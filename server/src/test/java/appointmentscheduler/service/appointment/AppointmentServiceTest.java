@@ -11,6 +11,7 @@ import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import com.google.common.collect.Sets;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -253,7 +254,7 @@ public class AppointmentServiceTest {
     @Test
     public void findById() {
         long testId = 1;
-        Appointment appointment = this.appointmentService.findById(testId);
+        Appointment appointment = this.appointmentService.findMyAppointmentById(testId, testId);
         System.out.print("");
 
     }

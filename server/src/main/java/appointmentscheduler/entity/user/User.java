@@ -60,6 +60,8 @@ public class User extends AuditableEntity {
     )
     private Settings settings;
 
+    private List<Service> employeeServices;
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof User && ((User) obj).getId() == this.getId();

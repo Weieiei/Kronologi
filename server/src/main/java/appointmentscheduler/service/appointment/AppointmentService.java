@@ -21,10 +21,10 @@ import java.util.*;
 @org.springframework.stereotype.Service
 public class AppointmentService {
 
-    private final CancelledRepository cancelledRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final EmployeeRepository employeeRepository;
-    private final ShiftRepository shiftRepository;
+    private CancelledRepository cancelledRepository;
+    private AppointmentRepository appointmentRepository;
+    private EmployeeRepository employeeRepository;
+    private ShiftRepository shiftRepository;
 
 
     public AppointmentService(AppointmentRepository appointmentRepository) {
