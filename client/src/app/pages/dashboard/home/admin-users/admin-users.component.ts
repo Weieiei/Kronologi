@@ -108,7 +108,7 @@ export class AdminUsersComponent implements OnInit {
     }
 
     getAllServices(): void {
-        this.serviceService.getServices().pipe(
+        this.serviceService.getPlainServices().pipe(
             map(data => {
                 let i = 0;
                 return data.map(a => {

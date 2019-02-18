@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Service } from '../../../../models/service/Service';
-import { ServiceService } from "../../../../services/service/service.service";
+import { ServiceService } from '../../../../services/service/service.service';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -21,9 +21,8 @@ export class AdminServicesComponent implements OnInit {
     }
 
     getAllServices(): void {
-        this.serviceService.getServices().pipe(
+        this.serviceService.getPlainServices().pipe(
             map(data => {
-                let i = 0;
                 return data.map(a => {
                     return a;
                 });

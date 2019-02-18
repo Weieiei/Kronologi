@@ -86,7 +86,7 @@ import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.
         CreateServiceComponent,
         AdminUsersComponent,
         AssignServicesDialogComponent,
-        ChangeClientToEmployeeDialogComponent
+        ChangeClientToEmployeeDialogComponent,
         EmployeePickerComponent,
         ServiceSelectionComponent,
         TimePickerComponent,
@@ -109,7 +109,7 @@ import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.
     entryComponents: [
         TimePickerDialogComponent,
         CancelDialogComponent,
-        ReasonDialogComponent
+        ReasonDialogComponent,
         AssignServicesDialogComponent,
         ChangeClientToEmployeeDialogComponent
     ],

@@ -3,7 +3,7 @@ import { MatSidenav } from '@angular/material';
 import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
-import { AuthService } from "../../services/auth/auth.service";
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
     selector: 'app-navbar',
@@ -22,16 +22,10 @@ export class NavbarComponent implements OnInit {
         private router: Router,
         private googleAnalytics: GoogleAnalyticsService
     ) {
-
-
-    constructor(private userService: UserService,
-                private authService: AuthService,
-                private router: Router,
-                private googleAnalytics: GoogleAnalyticsService) {
     }
 
     ngOnInit() {
-        this.user = this.userService.getUser();
+        // this.user = this.userService.getUser();
         this.authService.checkAdmin();
     }
 

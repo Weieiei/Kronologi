@@ -6,21 +6,20 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ReserveComponent } from './pages/dashboard/reserve/reserve.component';
 import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
-import { ReserveComponent } from './pages/reserve/reserve.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { VerifiedComponent } from './pages/verified/verified.component';
 import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
-import { AdminAppointmentsComponent } from "./pages/dashboard/home/admin-appointments/admin-appointments.component";
+import { AdminAppointmentsComponent } from './pages/dashboard/home/admin-appointments/admin-appointments.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { EmployeeGuard } from './guards/employee/employee.guard';
 import { ReviewComponent } from './pages/dashboard/review/review.component';
-import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/admin-services.component";
-import { CreateServiceComponent } from "./pages/create-service/create-service.component";
-import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-users.component";
+import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
+import { CreateServiceComponent } from './pages/create-service/create-service.component';
+import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
 
 
 const routes: Routes = [
