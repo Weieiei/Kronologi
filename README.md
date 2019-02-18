@@ -6,7 +6,7 @@
 
 This repository is a copy of Appoitment Scheduler's state on February 10th and has the same commit history and branches as in the AppointmentScheduler as of that date.
 
-We decided to all have our features working with the new backend which is the latest commit on master on the day the copy of AppointmentScheduler was made (this is the commit : https://github.com/Weieiei/AppointmentSchedulerAndroid/commit/4d926bec80065ec38cbba15c33591b12090c60fe) .
+We decided to all have our features working with the new backend which is the latest commit on master on the day the copy of AppointmentScheduler was made (this is the [commit](https://github.com/Weieiei/AppointmentSchedulerAndroid/commit/4d926bec80065ec38cbba15c33591b12090c60fe)) .
 Since some people already had their feature working with the backend change, and  we would be using this backend for the Android application, we think it would be more efficient to update everyone with the new backend and tag our release 2 with it. 
 
 The PR's in this repository are linked to the issues in the AppointmentScheduler repository (links to the specific issues are provided in each of the PR's in this repository)
