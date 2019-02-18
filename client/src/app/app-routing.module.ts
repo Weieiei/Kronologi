@@ -21,6 +21,9 @@ import { AdminServicesComponent } from './pages/dashboard/home/admin-services/ad
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
 
+import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
+import { AdminGuard } from './guards/admin/admin.guard';
+import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 
 const routes: Routes = [
     // Login
@@ -41,6 +44,9 @@ const routes: Routes = [
             // Home page
             { path: '', component: HomeComponent },
 
+            // Admin
+            { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
+            { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
             // Reserving and modifying reservation
             {
                 path: 'reserve', children: [

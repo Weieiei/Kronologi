@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { ShiftDTO } from '../../interfaces/shift-dto/shift-dto';
+import { ShiftDTO } from '../../interfaces/shift/shift-dto';
 import { Moment } from 'moment';
 import { EmployeeAppointmentDTO } from '../../interfaces/appointment/employee-appointment-dto';
 import { Time } from '../../interfaces/time';
