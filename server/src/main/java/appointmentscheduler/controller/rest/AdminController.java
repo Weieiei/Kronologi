@@ -60,14 +60,14 @@ public class AdminController extends AbstractController {
 
     //from ema's branch
     @Autowired
-    public AdminController(AppointmentService appointmentService, UserService userService, ServiceService serviceService,
-                           RoleRepository roleRepository, ServiceRepository serviceRepository, EmployeeShiftService employeeShiftService) {
+    public AdminController( AppointmentService appointmentService, UserService userService, ServiceService serviceService,
+                            RoleRepository roleRepository, ServiceRepository serviceRepository, EmployeeShiftService employeeShiftService,
+                            ObjectMapperFactory objectMapperFactory) {
         this.appointmentService = appointmentService;
         this.userService = userService;
         this.serviceService = serviceService;
         this.roleRepository = roleRepository;
         this.serviceRepository = serviceRepository;
-    public AdminController(EmployeeShiftService employeeShiftService, ObjectMapperFactory objectMapperFactory) {
         this.employeeShiftService = employeeShiftService;
         this.objectMapperFactory = objectMapperFactory;
     }
