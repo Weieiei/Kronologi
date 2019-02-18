@@ -6,7 +6,7 @@ Since some people already had their feature working with the backend change, and
 
 The PR's in this repository are linked to the issues in the AppointmentScheduler repository (links to the specific issues are provided in each of the PR's in this repository)
 
-[![Build Status](https://travis-ci.com/vartanbeno/AppointmentScheduler.svg?token=246smhzQ1xhQqHvZsnxy&branch=master)](https://travis-ci.com/vartanbeno/AppointmentScheduler)
+[![Build Status](https://travis-ci.com/Weieiei/AppointmentSchedulerAndroid)
 
 SOEN 490 (Capstone) project for Concordia University.
 
