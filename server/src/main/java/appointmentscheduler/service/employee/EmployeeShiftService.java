@@ -11,6 +11,7 @@ import appointmentscheduler.repository.ShiftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,12 +52,22 @@ public class EmployeeShiftService {
     public boolean shiftConflict(long employeeId, Shift shift) {
         List<Shift> shifts = shiftRepository.findByEmployeeId(employeeId);
         Shift currentShift;
+        LocalTime shiftStart;
+        LocalTime shiftEnd;
+        LocalTime currentStart;
+        LocalTime currentEnd;
+
        for(int i = 0; i < shifts.size();i++) {
            currentShift = shifts.get(i);
            if(shift.getDate().isEqual(currentShift.getDate())){
-               if((shift.getStartTime().isBefore(currentShift.getEndTime()) && shift.getStartTime().isAfter(currentShift.getStartTime()))
-                   || (shift.getEndTime().isAfter(currentShift.getStartTime()) && shift.getEndTime().isBefore(currentShift.getEndTime()))
-                   || shift.getStartTime().isBefore(currentShift.getStartTime()) && shift.getEndTime().isAfter(currentShift.getEndTime()))
+               shiftStart = shift.getStartTime();
+               shiftEnd = shift.getEndTime();
+               currentStart = currentShift.getStartTime();
+               currentEnd =currentShift.getEndTime();
+
+               if((shiftStart.isBefore(currentEnd) && (shiftStart.isAfter(currentStart) || shiftStart.equals(currentStart)))
+                   || (shiftEnd.isAfter(currentStart) && (shiftEnd.isBefore(currentEnd) || shiftEnd.equals(currentEnd)))
+                   || (shiftStart.isBefore(currentStart) || shiftStart.equals(currentStart)) && (shiftEnd.isAfter(currentEnd) || shiftEnd.equals(currentEnd)))
                    return true;
            }
        }

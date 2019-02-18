@@ -186,6 +186,27 @@ public class EmployeeShiftServiceTest {
     }
 
     @Test
+    public void noDiffDateConflict() {
+        List<Shift> oldShifts = new ArrayList<>();
+        Shift oldShift = new Shift();
+        Shift newShift = new Shift();
+
+        oldShift.setDate(LocalDate.of(2018,1,1));
+        oldShift.setStartTime(LocalTime.of(1,0));
+        oldShift.setEndTime(LocalTime.of(2,0));
+
+        oldShifts.add(oldShift);
+
+        newShift.setDate(LocalDate.of(2019,1,1));
+        newShift.setStartTime(LocalTime.of(1,0));
+        newShift.setEndTime(LocalTime.of(2,0));
+
+        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
+
+        assertFalse(employeeShiftService.shiftConflict(anyLong(),newShift));
+    }
+
+    @Test
     public void conflictStart() {
         List<Shift> oldShifts = new ArrayList<>();
         Shift oldShift = new Shift();
@@ -242,6 +263,69 @@ public class EmployeeShiftServiceTest {
         newShift.setDate(LocalDate.of(2019,1,1));
         newShift.setStartTime(LocalTime.of(0,30));
         newShift.setEndTime(LocalTime.of(3,30));
+
+        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
+
+        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
+    }
+
+    @Test
+    public void conflictSame() {
+        List<Shift> oldShifts = new ArrayList<>();
+        Shift oldShift = new Shift();
+        Shift newShift = new Shift();
+
+        oldShift.setDate(LocalDate.of(2019,1,1));
+        oldShift.setStartTime(LocalTime.of(1,0));
+        oldShift.setEndTime(LocalTime.of(2,0));
+
+        oldShifts.add(oldShift);
+
+        newShift.setDate(LocalDate.of(2019,1,1));
+        newShift.setStartTime(LocalTime.of(1,0));
+        newShift.setEndTime(LocalTime.of(2,0));
+
+        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
+
+        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
+    }
+
+    @Test
+    public void conflictSameStart() {
+        List<Shift> oldShifts = new ArrayList<>();
+        Shift oldShift = new Shift();
+        Shift newShift = new Shift();
+
+        oldShift.setDate(LocalDate.of(2019,1,1));
+        oldShift.setStartTime(LocalTime.of(1,0));
+        oldShift.setEndTime(LocalTime.of(2,0));
+
+        oldShifts.add(oldShift);
+
+        newShift.setDate(LocalDate.of(2019,1,1));
+        newShift.setStartTime(LocalTime.of(1,0));
+        newShift.setEndTime(LocalTime.of(3,0));
+
+        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
+
+        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
+    }
+
+    @Test
+    public void conflictSameEnd() {
+        List<Shift> oldShifts = new ArrayList<>();
+        Shift oldShift = new Shift();
+        Shift newShift = new Shift();
+
+        oldShift.setDate(LocalDate.of(2019,1,1));
+        oldShift.setStartTime(LocalTime.of(1,0));
+        oldShift.setEndTime(LocalTime.of(2,0));
+
+        oldShifts.add(oldShift);
+
+        newShift.setDate(LocalDate.of(2019,1,1));
+        newShift.setStartTime(LocalTime.of(0,50));
+        newShift.setEndTime(LocalTime.of(2,0));
 
         when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
 
