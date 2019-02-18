@@ -55,8 +55,8 @@ public class AdminController extends AbstractController {
     private ServiceService serviceService;
     private ServiceRepository serviceRepository;
 
-    private final EmployeeShiftService employeeShiftService;
-    private final ObjectMapperFactory objectMapperFactory;
+    private EmployeeShiftService employeeShiftService;
+    private ObjectMapperFactory objectMapperFactory;
 
     //from ema's branch
     @Autowired
@@ -117,7 +117,7 @@ public class AdminController extends AbstractController {
         return this.appointmentService.findByClientId(clientId);
     }
 
-    @GetMapping("/employee/{id}")
+    @GetMapping("/employee/appointments/{id}")
     public List<Appointment> employeeAppointmentList(@PathVariable long employeeId) {
         return this.appointmentService.findByEmployeeId(employeeId);
     }
