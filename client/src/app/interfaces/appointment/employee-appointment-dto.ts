@@ -1,4 +1,4 @@
-import { EmployeeDTO } from '../user/employee-dto';
+import { EmployeeDTO } from '../employee/employee-dto';
 
 export interface EmployeeAppointmentDTO {
     id: number;

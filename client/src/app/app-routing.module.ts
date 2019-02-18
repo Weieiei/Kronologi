@@ -16,6 +16,9 @@ import { AccountSettingsComponent } from './pages/settings/account-settings/acco
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { EmployeeGuard } from './guards/employee/employee.guard';
 import { ReviewComponent } from './pages/dashboard/review/review.component';
+import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
+import { AdminGuard } from './guards/admin/admin.guard';
+import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 
 const routes: Routes = [
     // Login
@@ -36,6 +39,9 @@ const routes: Routes = [
             // Home page
             { path: '', component: HomeComponent },
 
+            // Admin
+            { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
+            { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
             // Reserving and modifying reservation
             {
                 path: 'reserve', children: [

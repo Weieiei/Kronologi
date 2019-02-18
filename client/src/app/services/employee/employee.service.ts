@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
-import { EmployeeDTO } from '../../interfaces/user/employee-dto';
-import { ShiftDTO } from '../../interfaces/shift-dto/shift-dto';
+import { EmployeeDTO } from '../../interfaces/employee/employee-dto';
+import { ShiftDTO } from '../../interfaces/shift/shift-dto';
 import { EmployeeAppointmentDTO } from '../../interfaces/appointment/employee-appointment-dto';
 
 @Injectable({

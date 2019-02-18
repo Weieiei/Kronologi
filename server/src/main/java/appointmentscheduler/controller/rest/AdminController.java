@@ -3,58 +3,71 @@ package appointmentscheduler.controller.rest;
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.serializer.AdminEmployeeSerializer;
+import appointmentscheduler.serializer.AdminEmployeeShiftSerializer;
+import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.service.employee.EmployeeShiftService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("${rest.api.path}/admin")
+@RequestMapping(value = "${rest.api.path}/admin", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('ADMIN')")
-public class AdminController {
+public class AdminController extends AbstractController {
 
     private final EmployeeShiftService employeeShiftService;
+    private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
-    AdminController (EmployeeShiftService employeeShiftService) {
+    public AdminController(EmployeeShiftService employeeShiftService, ObjectMapperFactory objectMapperFactory) {
         this.employeeShiftService = employeeShiftService;
-    }
-
-    // TODO remove this
-    @GetMapping
-    public String areYouAnAdmin(@RequestAttribute long userId) {
-        return String.format("You are an admin, your id is %d.", userId);
+        this.objectMapperFactory = objectMapperFactory;
     }
 
     @GetMapping("/employee")
-    public  List<Employee> getEmployees() {
-        return employeeShiftService.getEmployees();
+    public ResponseEntity<String> getEmployees() {
+        List<Employee> employees = employeeShiftService.getEmployees();
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
+        return getJson(mapper, employees);
+    }
+
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<String> getEmployees(@PathVariable long id) {
+        Employee employee = employeeShiftService.getEmployee(id);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
+        return getJson(mapper, employee);
     }
 
     @GetMapping("/employee/{employeeId}/shift")
-    public List<Shift> getEmployeeShifts(@PathVariable long employeeId) {
-        return employeeShiftService.getEmployeeShifts(employeeId);
+    public ResponseEntity<String> getEmployeeShifts(@PathVariable long employeeId) {
+        List<Shift> shifts = employeeShiftService.getEmployeeShifts(employeeId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shifts);
     }
 
     @PostMapping("/employee/{employeeId}/shift")
-    public Shift createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) throws IOException, MessagingException {
-        employeeShiftDTO.setEmployeeId(employeeId);
-        return employeeShiftService.createShift(employeeShiftDTO);
+    public ResponseEntity<String> createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
+        Shift shift = employeeShiftService.createShift(employeeId, employeeShiftDTO);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
     }
 
     @PutMapping("/employee/{employeeId}/shift/{shiftId}")
-    public Shift modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
-        employeeShiftDTO.setEmployeeId(employeeId);
-        return employeeShiftService.modifyShift(employeeShiftDTO, shiftId);
+    public ResponseEntity<String> modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
+        Shift shift = employeeShiftService.modifyShift(employeeId, employeeShiftDTO, shiftId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
     }
 
-    @DeleteMapping("/employee/{employeeId}/shift/{shiftId}")
-    public Shift deleteShift(@PathVariable long shiftId){
-        return employeeShiftService.deleteShift(shiftId);
+    @DeleteMapping("/employee/shift/{shiftId}")
+    public void deleteShift(@PathVariable long shiftId){
+        employeeShiftService.deleteShift(shiftId);
     }
 
 }

@@ -2,7 +2,10 @@ package appointmentscheduler.service.employee;
 
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
 import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.entity.shift.ShiftFactory;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.exception.ShiftConflictException;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +16,12 @@ import java.util.Optional;
 
 @Service
 public class EmployeeShiftService {
+
     private final ShiftRepository shiftRepository;
     private final EmployeeRepository employeeRepository;
 
     @Autowired
-    EmployeeShiftService(ShiftRepository shiftRepository, EmployeeRepository employeeRepository) {
+    public EmployeeShiftService(ShiftRepository shiftRepository, EmployeeRepository employeeRepository) {
         this.shiftRepository = shiftRepository;
         this.employeeRepository = employeeRepository;
     }
@@ -26,16 +30,22 @@ public class EmployeeShiftService {
         return employeeRepository.findAll();
     }
 
-    public Shift createShift(EmployeeShiftDTO employeeShiftDTO) {
-        Optional<Employee> userList = employeeRepository.findById(employeeShiftDTO.getEmployeeId());
-        Employee employee = userList.get();
+    public Employee getEmployee(long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.", id)));
+    }
 
-        Shift shift = new Shift(employee, employeeShiftDTO.getDate(), employeeShiftDTO.getStartTime(), employeeShiftDTO.getEndTime());
-        if(!shiftConflict(employeeShiftDTO.getEmployeeId(), shift)) {
-            shiftRepository.save(shift);
-            return shift;
+    public Shift createShift(long employeeId, EmployeeShiftDTO employeeShiftDTO) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.", employeeId)));
+
+        Shift shift = ShiftFactory.createShift(employee, employeeShiftDTO.getDate(), employeeShiftDTO.getStartTime(), employeeShiftDTO.getEndTime());
+
+        if(!shiftConflict(employeeId, shift)) {
+            return shiftRepository.save(shift);
         }
-        return null;
+
+        throw new ShiftConflictException("This shift conflicts with another one that the employee has.");
     }
 
     public boolean shiftConflict(long employeeId, Shift shift) {
@@ -57,30 +67,21 @@ public class EmployeeShiftService {
         return shiftRepository.findByEmployeeId(employeeId);
     }
 
-    public Shift modifyShift(EmployeeShiftDTO employeeShiftDTO, long shiftId) {
-        Optional<Shift> shiftList = shiftRepository.findById(shiftId);
-        Shift shift = null;
-        if(shiftList.isPresent()) {
-            shift = shiftList.get();
-            shift.setDate(employeeShiftDTO.getDate());
-            shift.setStartTime(employeeShiftDTO.getStartTime());
-            shift.setEndTime(employeeShiftDTO.getEndTime());
-            if(!shiftConflict(employeeShiftDTO.getEmployeeId(), shift)) {
-                shiftRepository.save(shift);
-                return shift;
-            }
-            return null;
+    public Shift modifyShift(long employeeId, EmployeeShiftDTO employeeShiftDTO, long shiftId) {
+        Shift shift = shiftRepository.findById(shiftId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Shift with id %d not found.", shiftId)));
+        shift.setDate(employeeShiftDTO.getDate());
+        shift.setStartTime(employeeShiftDTO.getStartTime());
+        shift.setEndTime(employeeShiftDTO.getEndTime());
+        if(!shiftConflict(employeeId, shift)) {
+           return  shiftRepository.save(shift);
         }
-        return shift;
+        throw new IllegalArgumentException("Shift conflicts with other shift");
     }
 
-    public Shift deleteShift(long shiftId){
-        Optional<Shift> shiftList = shiftRepository.findById(shiftId);
-        Shift shift = null;
-        if(shiftList.isPresent()) {
-            shift = shiftList.get();
-            shiftRepository.delete(shift);
-        }
-        return shift;
+    public void deleteShift(long shiftId){
+        Shift shift = shiftRepository.findById(shiftId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Shift with id %d not found.", shiftId)));
+        shiftRepository.delete(shift);
     }
 }

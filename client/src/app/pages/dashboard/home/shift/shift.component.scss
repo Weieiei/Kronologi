@@ -1,0 +1,16 @@
+.admin-shifts-container {
+    padding: 1rem;
+
+    .shift-table {
+        width: 100%;
+
+        .center {
+            text-align: center;
+        }
+
+        button {
+            font-weight: bold;
+            margin: 0 4px;
+        }
+    }
+}
