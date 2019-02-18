@@ -65,9 +65,9 @@ public class EmployeeShiftService {
                currentStart = currentShift.getStartTime();
                currentEnd =currentShift.getEndTime();
 
-               if((shiftStart.isBefore(currentEnd) && shiftStart.isAfter(currentStart))
-                   || (shiftEnd.isAfter(currentStart) && shiftEnd.isBefore(currentEnd))
-                   || shiftStart.isBefore(currentStart) && shiftEnd.isAfter(currentEnd))
+               if((shiftStart.isBefore(currentEnd) && (shiftStart.isAfter(currentStart) || shiftStart.equals(currentStart)))
+                   || (shiftEnd.isAfter(currentStart) && (shiftEnd.isBefore(currentEnd) || shiftEnd.equals(currentEnd)))
+                   || (shiftStart.isBefore(currentStart) || shiftStart.equals(currentStart)) && (shiftEnd.isAfter(currentEnd) || shiftEnd.equals(currentEnd)))
                    return true;
            }
        }
