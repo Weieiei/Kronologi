@@ -139,17 +139,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public boolean updateUser(User user) {
-        try {
-            userRepository.save(user);
-            return true;
-        }
-        catch (DataAccessException e) {
-            logger.info("ERROR WHILE UPDATING USER: " + user.getId() + " ROLE TO EMPLOYEE");
-            return false;
-
-        }
-
+    public Map<String, String> updateUser(User user) throws DataAccessException{
+        userRepository.save(user);
+        return message("user updated");
     }
 
     private String generateToken(User user, String unhashedPassword) {

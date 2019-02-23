@@ -64,7 +64,7 @@ public class AdminControllerTest {
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
         roles.add(employeeRole);
         when(mockUser.getRoles()).thenReturn(roles);
-        when(userService.updateUser(any(User.class))).thenReturn(true);
+        when(userService.updateUser(any(User.class))).thenReturn(new HashMap<>());
         when(userService.findUserByid(anyLong())).thenReturn(mockUser);
 
         MvcResult result = mockMvc.perform(
@@ -82,7 +82,7 @@ public class AdminControllerTest {
         roles.clear();
         roles.add(clientRole);
         when(mockUser.getRoles()).thenReturn(roles);
-        when(userService.updateUser(any(User.class))).thenReturn(false);
+        when(userService.updateUser(any(User.class))).thenReturn(new HashMap<>());
         result = mockMvc.perform(
                 post("/api/admin/user/employee/919")
                         .contentType(MediaType.APPLICATION_JSON).content("1"))
@@ -106,7 +106,7 @@ public class AdminControllerTest {
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
         roles.add(employeeRole);
         when(mockEmployee.getRoles()).thenReturn(roles);
-        when(userService.updateUser(any(User.class))).thenReturn(true);
+        when(userService.updateUser(any(User.class))).thenReturn(new HashMap<>());
         when(userService.findUserByid(anyLong())).thenReturn(mockEmployee);
         when(mockRoleRepository.findByRole(any(RoleEnum.class))).thenReturn(new Role(RoleEnum.EMPLOYEE));
         when(mockServiceRepository.findById(anyLong())).thenReturn(service);
@@ -126,7 +126,7 @@ public class AdminControllerTest {
                 .andReturn();
         assertTrue(result.getResponse().getContentAsString().isEmpty());
 
-        when(userService.updateUser(any(User.class))).thenReturn(false);
+        when(userService.updateUser(any(User.class))).thenReturn(new HashMap<>());
         when(mockRoleRepository.findByRole(any(RoleEnum.class))).thenReturn(null);
         result = mockMvc.perform(
                 post("/api/admin/service/991/901")

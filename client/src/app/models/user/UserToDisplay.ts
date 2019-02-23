@@ -7,13 +7,14 @@ export class UserToDisplay {
     public lastName: string;
     public email: string;
     public userRoles: any[];
-    public services: string[];
+    public services: any[];
     public readonly createdAt: Date;
     public readonly updatedAt: Date;
 
     public constructor(
+
         id: number, firstName: string, lastName: string,
-        email: string, userRoles: string[], services: string[],
+        email: string, userRoles: any[], services: any[],
         createdAt: Date, updatedAt: Date
     ) {
         this.id = id;

@@ -1,43 +1,33 @@
 package appointmentscheduler.controller.rest;
 
-import appointmentscheduler.dto.employee.EmployeeShiftDTO;
-import appointmentscheduler.entity.shift.Shift;
-import appointmentscheduler.entity.user.Employee;
-import appointmentscheduler.serializer.AdminEmployeeSerializer;
-import appointmentscheduler.serializer.AdminEmployeeShiftSerializer;
-import appointmentscheduler.serializer.ObjectMapperFactory;
-import appointmentscheduler.service.employee.EmployeeShiftService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import appointmentscheduler.dto.service.ServiceCreateDTO;
+import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.converters.service.ServiceDTOToService;
+import appointmentscheduler.dto.employee.EmployeeShiftDTO;
+import appointmentscheduler.dto.service.ServiceCreateDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.ServiceRepository;
+import appointmentscheduler.serializer.*;
 import appointmentscheduler.service.appointment.AppointmentService;
+import appointmentscheduler.service.employee.EmployeeShiftService;
 import appointmentscheduler.service.service.ServiceService;
 import appointmentscheduler.service.user.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import appointmentscheduler.dto.employee.EmployeeShiftDTO;
-import appointmentscheduler.entity.shift.Shift;
-import appointmentscheduler.service.employee.EmployeeShiftService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import javax.mail.MessagingException;
-import java.io.IOException;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "${rest.api.path}/admin", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -122,19 +112,22 @@ public class AdminController extends AbstractController {
         return this.appointmentService.findByEmployeeId(employeeId);
     }
 
+    @LogREST
     @GetMapping("/users")
-    public List<User> getAllUsers(){
-        return userService.findAll();
+    public ResponseEntity<String> getAllUsers(){
+        ObjectMapper mapper = objectMapperFactory.createMapper(User.class, new UserSerializer());
+        return getJson(mapper, userService.findAll());
     }
 
     @GetMapping("/appointments")
-    public List<Appointment> getAllAppointments(){
-        return appointmentService.findAll();
+    public ResponseEntity<String> getAllAppointments(){
+        ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+        return getJson(mapper, appointmentService.findAll());
     }
 
 //todo refactor to use existing code
     @PostMapping("/user/employee/{id}")
-    public ResponseEntity<Map<String, Object>> changeRoleToEmployee(@PathVariable long id){
+    public ResponseEntity<Map<String, String>> changeRoleToEmployee(@PathVariable long id){
         User user = this.userService.findUserByid(id);
         Set<Role> roles = user.getRoles();
         for (Role role: roles) {
@@ -143,9 +136,7 @@ public class AdminController extends AbstractController {
             }
         }
         user.addRoles(this.roleRepository.findByRole(RoleEnum.EMPLOYEE));
-        if (userService.updateUser(user))
-            return ResponseEntity.status(HttpStatus.OK).build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.ok(userService.updateUser(user));
     }
 
     private boolean containAnyRole(Set<Role> roles, RoleEnum roleType) {
@@ -154,44 +145,28 @@ public class AdminController extends AbstractController {
 
     // for assigning services to employees (employees can perform certain services)
     @PostMapping("service/{employeeId}/{serviceId}")
-    public ResponseEntity<Map<String, Object>> assignService(@PathVariable long employeeId, @PathVariable long serviceId){
+    public ResponseEntity<Map<String, String>> assignService(@PathVariable long employeeId, @PathVariable long serviceId){
         User user = this.userService.findUserByid(employeeId);
         Set<Role> roles = user.getRoles();
         //check if user is an employee
-
-        if (containAnyRole(roles, RoleEnum.EMPLOYEE)) {
-            //check if the employee can already perform the service
-            if (user.getEmployeeServices().contains(serviceRepository.findById(serviceId))){
-                System.out.println("The employee has already been assigned that service");
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
-            }
-            else {
-                // assign the service
-                Optional<Service> optionalService = serviceRepository.findById(serviceId);
-                if (optionalService.isPresent()) {
-                    user.addEmployeeService(optionalService.get());
-                    if (userService.updateUser(user))
-                        return ResponseEntity.status(HttpStatus.OK).build();
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-                }
-                else {
-                    System.out.println("The ID provided was not a valid Service ID.");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-                }
-            }
-        }
-        else {
-            System.out.println("The user is not an employee, and therefore cannot be assigned a service");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return serviceRepository.findById(serviceId).map(service -> {
+            user.addEmployeeService(service);
+            return ResponseEntity.ok(message("service assigned"));
+        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Service id %d not found.", serviceId)));
     }
 
     // for adding a new service
+    @LogREST
     @PostMapping("service")
-    public Service addService(@RequestBody ServiceCreateDTO serviceDTO){
-        Service service = serviceConverter.convert(serviceDTO);
-        return serviceService.add(service);
+    public ResponseEntity<Map<String, String>> add(@RequestBody ServiceCreateDTO serviceCreateDTO){
+        Service service = serviceConverter.convert(serviceCreateDTO);
+        return ResponseEntity.ok(serviceService.add(service));
     }
 
+    private Map<String, String> message(String message) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", message);
+        return map;
+    }
 
 }

@@ -35,7 +35,7 @@ export class AdminUsersComponent implements OnInit {
                 return data.map(a => {
                     return new UserToDisplay (
                         a.id, a.firstName, a.lastName, a.email,
-                        a.roles, a.employeeServices, a.createdAt, a.updatedAt
+                        a.roles, a.services, a.createdAt, a.updatedAt
                     );
                 });
             })
