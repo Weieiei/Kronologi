@@ -10,6 +10,7 @@ import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,7 @@ public class AdminControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Ignore
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void changeRoleToEmployeeTest() throws Exception {
@@ -94,6 +96,7 @@ public class AdminControllerTest {
 
     }
 
+    @Ignore
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void assignServiceTest() throws Exception {
