@@ -56,7 +56,6 @@ public class AdminControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Ignore
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void changeRoleToEmployeeTest() throws Exception {
@@ -80,23 +79,9 @@ public class AdminControllerTest {
                 .andReturn();
         assertTrue(result.getResponse().getContentAsString().isEmpty());
 
-        Role clientRole = new Role(RoleEnum.CLIENT);
-        roles.clear();
-        roles.add(clientRole);
-        when(mockUser.getRoles()).thenReturn(roles);
-        when(userService.updateUser(any(User.class))).thenReturn(new HashMap<>());
-        result = mockMvc.perform(
-                post("/api/admin/user/employee/919")
-                        .contentType(MediaType.APPLICATION_JSON).content("1"))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-        assertTrue(result.getResponse().getContentAsString().isEmpty());
-
-
-
     }
 
-    @Ignore
+
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void assignServiceTest() throws Exception {
@@ -127,14 +112,14 @@ public class AdminControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
-        assertTrue(result.getResponse().getContentAsString().isEmpty());
+        assertTrue(result.getResponse().getContentAsString().contentEquals("{\"message\":\"service assigned\"}"));
 
         when(userService.updateUser(any(User.class))).thenReturn(new HashMap<>());
         when(mockRoleRepository.findByRole(any(RoleEnum.class))).thenReturn(null);
         result = mockMvc.perform(
                 post("/api/admin/service/991/901")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andReturn();
         assertTrue(result.getResponse().getContentAsString().isEmpty());
 
