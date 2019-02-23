@@ -42,3 +42,21 @@ Thumbs.db
 # User Specified
 .env
 appointment-scheduler-logs/
+
+client/\.idea/client\.iml
+
+client/\.idea/codeStyles/codeStyleConfig\.xml
+
+client/\.idea/codeStyles/Project\.xml
+
+client/\.idea/inspectionProfiles/Project_Default\.xml
+
+client/\.idea/encodings\.xml
+
+client/\.idea/misc\.xml
+
+client/\.idea/modules\.xml
+
+client/\.idea/vcs\.xml
+
+client/\.idea/workspace\.xml

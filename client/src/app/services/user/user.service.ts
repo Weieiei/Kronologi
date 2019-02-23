@@ -124,4 +124,12 @@ export class UserService {
         return this.http.post(['api', 'user', 'phone'].join('/'), payload);
 
     }
+
+    getAllUsers(): Observable<any[]> {
+        return this.http.get<any[]>(['api', 'admin', 'users'].join('/'));
+    }
+
+    changeUserToEmployee(id: number): Observable<any> {
+        return this.http.post<any[]>(['api', 'admin', 'user', 'employee', id].join('/'), "");
+    }
 }

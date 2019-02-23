@@ -1,8 +1,8 @@
+
 import { Time } from '@angular/common';
 import { User } from './user';
 import { Service } from './service/service';
-
-export interface Appointment {
+export interface AppointmentDetail {
     email: string;
     startTime: Time;
     endTime: Time;

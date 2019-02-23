@@ -32,6 +32,7 @@ import { FabBottomRightDirective } from './directives/fab-bottom-right/fab-botto
 import { ButtonIconDirective } from './directives/button-icon/button-icon.directive';
 import { AppointmentsSectionComponent } from './pages/dashboard/home/appointments/appointments-section/appointments-section.component';
 import { CardSizeDirective } from './directives/card-size/card-size.directive';
+import { AdminAppointmentsComponent } from "./pages/dashboard/home/admin-appointments/admin-appointments.component";
 import { VerifiedComponent } from './pages/verified/verified.component';
 import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
 import { AutofocusDirective } from './directives/autofocus/autofocus.directive';
@@ -47,6 +48,11 @@ import { NotesAndReserveComponent } from './pages/dashboard/reserve/notes-and-re
 import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 import { AddShiftFormComponent } from './pages/dashboard/home/shift/add-shift-form/add-shift-form.component';
+import { AdminServicesComponent } from "./pages/dashboard/home/admin-services/admin-services.component";
+import { CreateServiceComponent } from "./pages/create-service/create-service.component";
+import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-users.component";
+import { AssignServicesDialogComponent } from "./pages/dashboard/home/admin-users/assign-services-dialog/assign-services-dialog.component";
+import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/admin-users/change-client-to-employee-dialog/change-client-to-employee-dialog.component";
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
 
 @NgModule({
@@ -69,15 +75,23 @@ import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.
         FabBottomRightDirective,
         ButtonIconDirective,
         AppointmentsSectionComponent,
+        AdminAppointmentsComponent,
         CardSizeDirective,
         VerifiedComponent,
         EmployeeAppointmentsComponent,
         AutofocusDirective,
         SettingsComponent,
         AccountSettingsComponent,
+        ChangeClientToEmployeeDialogComponent,
+        ReviewComponent,
         ReminderSettingsComponent,
         ShiftComponent,
         AdminEmployeesComponent,
+        AdminServicesComponent,
+        CreateServiceComponent,
+        AdminUsersComponent,
+        AssignServicesDialogComponent,
+        ChangeClientToEmployeeDialogComponent,
         EmployeePickerComponent,
         ServiceSelectionComponent,
         TimePickerComponent,
@@ -101,7 +115,9 @@ import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.
     entryComponents: [
         TimePickerDialogComponent,
         CancelDialogComponent,
-        ReasonDialogComponent
+        ReasonDialogComponent,
+        AssignServicesDialogComponent,
+        ChangeClientToEmployeeDialogComponent
     ],
     providers: [
         AuthService,

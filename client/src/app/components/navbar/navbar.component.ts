@@ -3,6 +3,7 @@ import { MatSidenav } from '@angular/material';
 import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
     selector: 'app-navbar',
@@ -13,14 +14,19 @@ export class NavbarComponent implements OnInit {
 
     @Input() sidenav: MatSidenav;
 
+    user;
+
     constructor(
         private userService: UserService,
+        private authService: AuthService,
         private router: Router,
         private googleAnalytics: GoogleAnalyticsService
     ) {
     }
 
     ngOnInit() {
+        // this.user = this.userService.getUser();
+        this.authService.checkAdmin();
     }
 
     logout(): void {
@@ -39,6 +45,18 @@ export class NavbarComponent implements OnInit {
 
     goToEmployeeAppointments() {
         this.router.navigate(['employee', 'appts']);
+    }
+
+    goToAdminAppointmens() {
+        this.router.navigate(['admin/appts']);
+    }
+
+    goToAdminServices() {
+        this.router.navigate(['admin/services']);
+    }
+
+    goToAdminUsers() {
+        this.router.navigate(['admin/users']);
     }
 
     goToEmployees() {

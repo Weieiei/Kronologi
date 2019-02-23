@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Pick service to add for {{data.user.firstName + " " + data.user.lastName}}</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+        <mat-select placeholder="Pick your service" [(ngModel)]="selectedService">
+            <mat-option *ngFor="let service of data.services" [value]="service">
+                {{service.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onDialogAccept()" [disabled]="selectedService == undefined" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+</div>

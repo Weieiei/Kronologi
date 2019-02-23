@@ -1,6 +1,5 @@
-import {Time} from "@angular/common";
-import {User} from "./user";
-import {Service} from "./service";
+import { Time } from '@angular/common';
+import { User } from './user';
 
 export interface Shift {
     startTime: Time;

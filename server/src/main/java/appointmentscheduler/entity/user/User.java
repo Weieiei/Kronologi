@@ -60,6 +60,9 @@ public class User extends AuditableEntity {
     )
     private Settings settings;
 
+    @OneToMany
+    private List<Service> employeeServices;
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof User && ((User) obj).getId() == this.getId();
@@ -119,6 +122,22 @@ public class User extends AuditableEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void addRoles(Role role) {
+        this.roles.add(role);
+    }
+
+    public List<Service> getEmployeeServices() {
+        return employeeServices;
+    }
+
+    public void setEmployeeServices(List<Service> employeeServices) {
+        this.employeeServices = employeeServices;
+    }
+
+    public void addEmployeeService(Service service){
+        this.employeeServices.add(service);
     }
 
     public PhoneNumber getPhoneNumber() {

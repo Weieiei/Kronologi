@@ -20,6 +20,7 @@ import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,13 +33,16 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class UserService {
 
+    private static final Logger logger = Logger.getLogger(UserService.class.getName());
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final VerificationRepository verificationRepository;
@@ -124,6 +128,20 @@ public class UserService {
         map.put("verification", verification);
 
         return map;
+    }
+
+
+    public User findUserByid(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserDoesNotExistException("User id: " + id + " does not exist."));
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public Map<String, String> updateUser(User user) throws DataAccessException{
+        userRepository.save(user);
+        return message("user updated");
     }
 
     private String generateToken(User user, String unhashedPassword) {

@@ -11,14 +11,16 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 export class ReasonDialogComponent implements OnInit {
 
   cancelledAppointment: Appointment;
-  reasonAppointment : Appointment;
+  reasonAppointment: Appointment;
   reason: String;
   employeeName: String;
-  serviceName : String; 
-  constructor(private appointmentService: AppointmentService, @Inject(MAT_DIALOG_DATA) cancelledAppointment: any, 
-                      private dialogRef: MatDialogRef<ReasonDialogComponent>) { 
-    this.cancelledAppointment =cancelledAppointment.appointment;
-    this.serviceName = cancelledAppointment.serviceName;
+  serviceName: String;
+  constructor(
+    private appointmentService: AppointmentService,
+    @Inject(MAT_DIALOG_DATA) cancelledAppointment: any,
+    private dialogRef: MatDialogRef<ReasonDialogComponent>) {
+        this.cancelledAppointment = cancelledAppointment.appointment;
+        this.serviceName = cancelledAppointment.serviceName;
   }
 
   ngOnInit() {

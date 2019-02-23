@@ -21,11 +21,15 @@ import java.util.*;
 @org.springframework.stereotype.Service
 public class AppointmentService {
 
-    private final CancelledRepository cancelledRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final EmployeeRepository employeeRepository;
-    private final ShiftRepository shiftRepository;
+    private CancelledRepository cancelledRepository;
+    private AppointmentRepository appointmentRepository;
+    private EmployeeRepository employeeRepository;
+    private ShiftRepository shiftRepository;
 
+
+    public AppointmentService(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
@@ -48,7 +52,20 @@ public class AppointmentService {
     public List<Appointment> findByClientId(long id) {
         return appointmentRepository.findByClientId(id);
     }
+/* //from Ema's branch
+    //for admin to view all appointments for a client
+    public List<Appointment> findByClientId(long id){
+        Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByClientId(id));
+        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with client id %d not found", id)));
+    }
 
+
+    //for admin to see employee's appointments
+    public List<Appointment> findByEmployeeId(long id) {
+        Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByEmployeeId(id));
+        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with employee id %d not found.", id)));
+    }
+*/
     public Appointment add(Appointment appointment) {
         // todo should this return a boolean instead ?
         // Right now this is void return type because it will throw exceptions if it doesn't work.

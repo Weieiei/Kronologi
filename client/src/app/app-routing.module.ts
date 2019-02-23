@@ -11,11 +11,16 @@ import { AuthGuard } from './guards/auth/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { VerifiedComponent } from './pages/verified/verified.component';
 import { EmployeeAppointmentsComponent } from './pages/dashboard/home/employee-appointments/employee-appointments.component';
+import { AdminAppointmentsComponent } from './pages/dashboard/home/admin-appointments/admin-appointments.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountSettingsComponent } from './pages/settings/account-settings/account-settings.component';
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { EmployeeGuard } from './guards/employee/employee.guard';
 import { ReviewComponent } from './pages/dashboard/review/review.component';
+import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
+import { CreateServiceComponent } from './pages/create-service/create-service.component';
+import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
+
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
@@ -58,6 +63,10 @@ const routes: Routes = [
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
+            { path: 'admin/appts', component: AdminAppointmentsComponent },
+            { path: 'admin/services', component: AdminServicesComponent },
+            { path: 'admin/services/create', component: CreateServiceComponent },
+            { path: 'admin/users', component: AdminUsersComponent },
 
             // User settings
             {

@@ -11,17 +11,22 @@ import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import com.google.common.collect.Sets;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.Answers;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -243,5 +248,25 @@ public class AppointmentServiceTest {
         when(mockedAppointment.isConflicting(any(Appointment.class))).thenReturn(false);
 
         return mockedAppointment;
+    }
+
+    @Ignore
+    @Test
+    public void findById() {
+        long testId = 1;
+        Appointment appointment = this.appointmentService.findMyAppointmentById(testId, testId);
+        System.out.print("");
+
+    }
+
+    @Test
+    public void findByEmployeeId() {
+        List<Appointment> appointments = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            appointments.add(mock(Appointment.class));
+        }
+        when(appointmentRepository.findByEmployeeId(anyLong())).thenReturn(appointments);
+        List<Appointment> result = this.appointmentService.findByEmployeeId(Long.valueOf(4));
+        assertEquals(6, result.size());
     }
 }
