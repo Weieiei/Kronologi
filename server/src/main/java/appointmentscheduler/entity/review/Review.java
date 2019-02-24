@@ -2,6 +2,7 @@ package appointmentscheduler.entity.review;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,12 +30,25 @@ public class Review extends AuditableEntity {
     @JsonIgnore
     private Appointment appointment;
 
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    private Business business;
+
+
+
     public Review(){ }
 
     public Review(String content, Appointment appointment) {
         this.content = content;
         this.client = client;
         this.appointment = appointment;
+    }
+
+    public Review(String content, Appointment appointment, Business business ) {
+        this.content = content;
+        this.client = client;
+        this.appointment = appointment;
+        this.business = business;
     }
 
     public long getId() {
@@ -67,5 +81,13 @@ public class Review extends AuditableEntity {
 
     public void setAppointment(Appointment appointment) {
         this.appointment = appointment;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 }

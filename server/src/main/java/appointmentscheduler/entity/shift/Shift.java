@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.shift;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ModelValidationException;
 import org.hibernate.annotations.OnDelete;
@@ -34,6 +35,10 @@ public class Shift extends AuditableEntity {
     @Column(name = "end_time")
     private LocalTime endTime;
 
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    private Business business;
+
     public Shift() {
     }
 
@@ -42,6 +47,14 @@ public class Shift extends AuditableEntity {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public Shift(Employee employee, LocalDate date, LocalTime startTime, LocalTime endTime, Business business) {
+        this.employee = employee;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.business = business;
     }
 
     public long getId() {
@@ -82,6 +95,14 @@ public class Shift extends AuditableEntity {
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 
     @PrePersist

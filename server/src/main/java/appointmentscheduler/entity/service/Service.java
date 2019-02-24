@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.service;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.room.Room;
 import appointmentscheduler.entity.user.Employee;
 
@@ -38,11 +39,21 @@ public class Service extends AuditableEntity {
     @ManyToMany(cascade = CascadeType.PERSIST)
     private Set<Room> rooms;
 
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    private Business business;
+
     public Service() { }
 
     public Service(String name, int duration) {
         this.name = name;
         this.duration = duration;
+    }
+
+    public Service(String name, int duration, Business business) {
+        this.name = name;
+        this.duration = duration;
+        this.business = business;
     }
 
     public long getId() {
@@ -83,5 +94,13 @@ public class Service extends AuditableEntity {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 }

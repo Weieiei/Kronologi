@@ -1,13 +1,14 @@
 package appointmentscheduler.entity.appointment;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "cancelled_appointment")
+@Table(name = "cancelled_appointments")
 public class CancelledAppointment extends AuditableEntity {
 
     @Id
@@ -15,10 +16,10 @@ public class CancelledAppointment extends AuditableEntity {
     private long id;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_of_appointment", nullable = false)
+    @JoinColumn(name = "appointment_id", nullable = false)
     private Appointment appointment;
 
-    @Column(name = "cancel_reason")
+    @Column(name = "cancelled_reason")
     private String reason;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,12 +27,24 @@ public class CancelledAppointment extends AuditableEntity {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private User canceller;
 
+
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = false)
+    private Business business;
+
     public CancelledAppointment() { }
 
     public CancelledAppointment(User canceller, String reason, Appointment appointment) {
         this.appointment = appointment;
         this.canceller = canceller;
         this.reason = reason;
+    }
+
+    public CancelledAppointment(User canceller, String reason, Appointment appointment, Business business) {
+        this.appointment = appointment;
+        this.canceller = canceller;
+        this.reason = reason;
+	this.business = business;
     }
 
     public long getId() {
@@ -64,6 +77,14 @@ public class CancelledAppointment extends AuditableEntity {
 
     public void setCanceller(User canceller) {
         this.canceller = canceller;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 
 }

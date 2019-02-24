@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.user;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
@@ -62,6 +63,10 @@ public class User extends AuditableEntity {
 
     @OneToMany
     private List<Service> employeeServices;
+
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    private Business business;
 
     @Override
     public boolean equals(Object obj) {
@@ -162,6 +167,14 @@ public class User extends AuditableEntity {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 
     @PrePersist

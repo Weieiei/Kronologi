@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.room;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.service.Service;
 
 import javax.persistence.*;
@@ -23,6 +24,10 @@ public class Room extends AuditableEntity {
     )
     @ManyToMany
     private Set<Service> services;
+
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    private Business business;
 
     @Override
     public boolean equals(Object o) {
@@ -51,5 +56,13 @@ public class Room extends AuditableEntity {
 
     public void setServices(Set<Service> services) {
         this.services = services;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 }

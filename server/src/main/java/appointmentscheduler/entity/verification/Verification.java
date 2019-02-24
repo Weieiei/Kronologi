@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.verification;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -25,10 +26,19 @@ public class Verification extends AuditableEntity {
     @Column(name = "hash")
     private String hash;
 
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    private Business business;
+
     public Verification() { }
 
     public Verification(User user) throws NoSuchAlgorithmException {
         this.user = user;
+    }
+
+    public Verification(User user, Business business) throws NoSuchAlgorithmException {
+        this.user = user;
+        this.business = business;
     }
 
     @PostPersist
@@ -67,4 +77,11 @@ public class Verification extends AuditableEntity {
 
     public void setHash(String date) { this.hash = date; }
 
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
 }
