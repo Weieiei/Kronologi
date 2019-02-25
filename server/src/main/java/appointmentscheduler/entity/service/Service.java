@@ -31,13 +31,15 @@ public class Service extends AuditableEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Employee> employees;
 
-    @JoinTable(
-            name = "service_rooms",
-            joinColumns = { @JoinColumn(name = "service_id") },
-            inverseJoinColumns = { @JoinColumn(name = "room_id") }
-    )
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "rooms")
     private Set<Room> rooms;
+//    @JoinTable(
+//            name = "service_rooms",
+//            joinColumns = { @JoinColumn(name = "service_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "room_id") }
+//    )
+//    @ManyToMany(cascade = CascadeType.PERSIST)
+//    private Set<Room> rooms;
 
     @ManyToOne
     @JoinColumn(name = "business_id", nullable = true)

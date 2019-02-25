@@ -17,14 +17,19 @@ public class Room extends AuditableEntity {
     @Column(name = "name", unique = true)
     private String name;
 
-   //TODO add an extra column for business (applies for all other join tables for other entities)
-    @JoinTable(
-            name = "service_rooms",
-            joinColumns = { @JoinColumn(name = "room_id") },
-            inverseJoinColumns = { @JoinColumn(name = "service_id") }
-    )
-    @ManyToMany
+    @OneToMany(mappedBy = "services")
     private Set<Service> services;
+
+//   //TODO add an extra column for business (applies for all other join tables for other entities)
+//    @JoinTable(
+//            name = "service_rooms",
+//            joinColumns = { @JoinColumn(name = "room_id")},
+//            inverseJoinColumns = { @JoinColumn(name = "service_id") }
+//
+//    )
+//
+//    @ManyToMany
+//    private Set<Service> services;
 
     @ManyToOne
     @JoinColumn(name = "business_id", nullable = true)
