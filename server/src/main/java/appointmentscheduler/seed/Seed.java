@@ -2,6 +2,7 @@ package appointmentscheduler.seed;
 
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentFactory;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
@@ -53,10 +54,17 @@ public class Seed {
     private VerificationRepository verificationRepository;
 
     @Autowired
+    private BusinessRepository businessRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    Business business;
 
     @EventListener
     public void seed(ContextRefreshedEvent event) throws NoSuchAlgorithmException {
+         business = new Business("my business", "beauty", "my description");
+         businessRepository.save(business);
 
         boolean noAdmin = userRepository.findByRoles_Role(RoleEnum.ADMIN).isEmpty();
 
@@ -73,18 +81,19 @@ public class Seed {
         Role adminRole = new Role(RoleEnum.ADMIN);
         Role clientRole = new Role(RoleEnum.CLIENT);
 
-        User admin = UserFactory.createUser(User.class, "Admin", "User", "admin@admin.com", hash("admin123"));
+        User admin = UserFactory.createUser(business, User.class, "Admin", "User", "admin@admin.com", hash("admin123"));
         admin.setVerified(true);
         admin.setRoles(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
 
-        User client1 = UserFactory.createUser(User.class, "John", "Doe", "johndoe@johndoe.com", hash("johndoe123"));
+        User client1 = UserFactory.createUser(business, User.class, "John", "Doe", "johndoe@johndoe.com", hash(
+                "johndoe123"));
         client1.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
-        User client2 = UserFactory.createUser(User.class, "Test", "User", "test@test.com", hash("test123"));
+        User client2 = UserFactory.createUser(business, User.class, "Test", "User", "test@test.com", hash("test123"));
         client2.setVerified(true);
         client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
-        User client3 = UserFactory.createUser(User.class, "Test2", "User", "test2@test.com", hash("test123"));
+        User client3 = UserFactory.createUser(business, User.class, "Test2", "User", "test2@test.com", hash("test123"));
         client3.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         Verification verifyUser1 = new Verification(client1);
@@ -114,22 +123,22 @@ public class Seed {
 
         List<Service> services = new ArrayList<>();
 
-        services.add(ServiceFactory.createService("Back to Pure Life", 150, massageRoomSet));
-        services.add(ServiceFactory.createService("Quick Visit to the Spa", 100, massageRoomSet));
-        services.add(ServiceFactory.createService("Business Only", 120, massageRoomExtraSet));
-        services.add(ServiceFactory.createService("Mec Extra", 200, laserRoomOnly));
-        services.add(ServiceFactory.createService("Get Back on Track", 170, massageRoomExtraSet));
-        services.add(ServiceFactory.createService("Slender Quest", 200, massageRoomSet));
-        services.add(ServiceFactory.createService("Serenity", 140, massageRoomExtraSet));
-        services.add(ServiceFactory.createService("Ultimate Escape", 160, massageRoomSet));
-        services.add(ServiceFactory.createService("Divine Relaxation", 150, massageRoomExtraSet));
-        services.add(ServiceFactory.createService("1/2 Day Passport", 165));
-        services.add(ServiceFactory.createService("The Full Day Passport", 325, anyRoom));
-        services.add(ServiceFactory.createService("Poetry for Two", 180, anyRoom));
-        services.add(ServiceFactory.createService("Ultimate Couples Treat", 320, massageRoomExtraSet));
-        services.add(ServiceFactory.createService("Body After Baby", 120, pedicureRoomOnly));
-        services.add(ServiceFactory.createService("Lost Your Soul", 120, laserRoomOnly));
-        services.add(ServiceFactory.createService("Reconnect With Your Body", 210, pedicureRoomOnly));
+        services.add(ServiceFactory.createService(business, "Back to Pure Life", 150, massageRoomSet));
+        services.add(ServiceFactory.createService(business, "Quick Visit to the Spa", 100, massageRoomSet));
+        services.add(ServiceFactory.createService(business, "Business Only", 120, massageRoomExtraSet));
+        services.add(ServiceFactory.createService(business,"Mec Extra", 200, laserRoomOnly));
+        services.add(ServiceFactory.createService(business,"Get Back on Track", 170, massageRoomExtraSet));
+        services.add(ServiceFactory.createService(business,"Slender Quest", 200, massageRoomSet));
+        services.add(ServiceFactory.createService(business,"Serenity", 140, massageRoomExtraSet));
+        services.add(ServiceFactory.createService(business,"Ultimate Escape", 160, massageRoomSet));
+        services.add(ServiceFactory.createService(business,"Divine Relaxation", 150, massageRoomExtraSet));
+        services.add(ServiceFactory.createService(business,"1/2 Day Passport", 165));
+        services.add(ServiceFactory.createService(business,"The Full Day Passport", 325, anyRoom));
+        services.add(ServiceFactory.createService(business,"Poetry for Two", 180, anyRoom));
+        services.add(ServiceFactory.createService(business,"Ultimate Couples Treat", 320, massageRoomExtraSet));
+        services.add(ServiceFactory.createService(business,"Body After Baby", 120, pedicureRoomOnly));
+        services.add(ServiceFactory.createService(business,"Lost Your Soul", 120, laserRoomOnly));
+        services.add(ServiceFactory.createService(business,"Reconnect With Your Body", 210, pedicureRoomOnly));
 
         serviceRepository.saveAll(services);
 
@@ -143,26 +152,30 @@ public class Seed {
                 services.get(6), services.get(8), services.get(11)
         ));
 
-        Employee employee = (Employee) UserFactory.createUser(Employee.class, "Employee", "User", "employee@employee.com", hash("employee123"));
+        Employee employee = (Employee) UserFactory.createUser(business, Employee.class, "Employee", "User", "employee" +
+                "@employee.com", hash("employee123"));
         employee.setServices(set);
         employee.setVerified(true);
         employee.setShifts(generateShifts(employee));
         employee.setRoles(Sets.newHashSet(employeeRole));
         employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
-        Employee employee2 = (Employee) UserFactory.createUser(Employee.class, "Employee2", "User", "employee2@employee.com", hash("employee123"));
+        Employee employee2 = (Employee) UserFactory.createUser(business, Employee.class, "Employee2", "User",
+                "employee2@employee.com", hash("employee123"));
         employee2.setServices(set);
         employee2.setVerified(true);
         employee2.setShifts(generateShifts(employee2));
         employee2.setRoles(Sets.newHashSet(employeeRole));
 
-        Employee employee3 = (Employee) UserFactory.createUser(Employee.class, "Employee3", "User", "employee3@employee.com", hash("employee123"));
+        Employee employee3 = (Employee) UserFactory.createUser(business, Employee.class, "Employee3", "User",
+                "employee3@employee.com", hash("employee123"));
         employee3.setServices(set);
         employee3.setVerified(true);
         employee3.setShifts(generateShifts(employee3));
         employee3.setRoles(Sets.newHashSet(employeeRole));
 
-        Employee employee4 = (Employee) UserFactory.createUser(Employee.class, "Employee4", "User", "employe4e@employee.com", hash("employee123"));
+        Employee employee4 = (Employee) UserFactory.createUser(business, Employee.class, "Employee4", "User",
+                "employe4e@employee.com", hash("employee123"));
         employee4.setServices(set);
         employee4.setVerified(true);
         employee4.setShifts(generateShifts(employee4));
@@ -180,38 +193,38 @@ public class Seed {
         List<Appointment> appointments = new ArrayList<>();
 
         appointments.add(AppointmentFactory.createAppointment(
-                clients.get(0), employees.get(0), services.get(11),
+                business, clients.get(0), employees.get(0), services.get(11),
                 LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
-                clients.get(1), employees.get(0), services.get(6),
+                business, clients.get(1), employees.get(0), services.get(6),
                 LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(16, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
-                clients.get(2), employees.get(1), services.get(6),
+                business, clients.get(2), employees.get(1), services.get(6),
                 LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
-                clients.get(3), employees.get(2), services.get(4),
+                business, clients.get(3), employees.get(2), services.get(4),
                 LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(12, 0), "Some note"
         ));
 
         //past appointments
         appointments.add(AppointmentFactory.createAppointment(
-                clients.get(1), employees.get(1), services.get(6),
+                business, clients.get(1), employees.get(1), services.get(6),
                 LocalDate.of(2018, Month.MARCH, 6), LocalTime.of(12, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
-                clients.get(2), employees.get(1), services.get(6),
+                business, clients.get(2), employees.get(1), services.get(6),
                 LocalDate.of(2018, Month.MARCH, 6), LocalTime.of(12, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
-                clients.get(3), employees.get(2), services.get(4),
+                business, clients.get(3), employees.get(2), services.get(4),
                 LocalDate.of(2018, Month.MARCH, 30), LocalTime.of(12, 0), "Some note"
         ));
 
@@ -226,9 +239,12 @@ public class Seed {
     private Set<Shift> generateShifts(Employee employee) {
         // Create shifts for employee
         Set<Shift> shifts = new HashSet<>();
-        shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), LocalTime.of(22, 0)));
-        shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0), LocalTime.of(21, 0)));
-        shifts.add(ShiftFactory.createShift(employee, LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0), LocalTime.of(22, 0)));
+        shifts.add(ShiftFactory.createShift(business, employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12,
+                0), LocalTime.of(22, 0)));
+        shifts.add(ShiftFactory.createShift(business, employee, LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0),
+                LocalTime.of(21, 0)));
+        shifts.add(ShiftFactory.createShift(business, employee, LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0),
+                LocalTime.of(22, 0)));
         return shifts;
     }
 }

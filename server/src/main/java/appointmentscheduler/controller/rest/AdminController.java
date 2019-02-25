@@ -69,6 +69,13 @@ public class AdminController extends AbstractController {
         return getJson(mapper, employees);
     }
 
+//    @GetMapping("/{business_id}/employee")
+//    public ResponseEntity<String> getEmployees() {
+//        List<Employee> employees = employeeShiftService.getEmployees();
+//        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
+//        return getJson(mapper, employees);
+//    }
+
     @GetMapping("/employee/{id}")
     public ResponseEntity<String> getEmployees(@PathVariable long id) {
         Employee employee = employeeShiftService.getEmployee(id);

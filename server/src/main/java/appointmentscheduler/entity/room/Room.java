@@ -17,6 +17,7 @@ public class Room extends AuditableEntity {
     @Column(name = "name", unique = true)
     private String name;
 
+   //TODO add an extra column for business (applies for all other join tables for other entities)
     @JoinTable(
             name = "service_rooms",
             joinColumns = { @JoinColumn(name = "room_id") },

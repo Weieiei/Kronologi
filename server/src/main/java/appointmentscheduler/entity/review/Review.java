@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "reviews")
+@Table(name = "reviews", uniqueConstraints=@UniqueConstraint(columnNames={"id","business_id"}))
 public class Review extends AuditableEntity {
 
     @Id

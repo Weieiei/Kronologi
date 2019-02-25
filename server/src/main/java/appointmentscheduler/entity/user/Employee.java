@@ -1,5 +1,6 @@
 package appointmentscheduler.entity.user;
 
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 
