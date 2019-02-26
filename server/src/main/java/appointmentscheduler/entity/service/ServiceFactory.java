@@ -12,7 +12,6 @@ public class ServiceFactory {
 
         service.setName(name);
         service.setDuration(duration);
-    //    service.setRooms(rooms);
 
         return service;
     }
@@ -23,7 +22,6 @@ public class ServiceFactory {
         service.setBusiness(business);
         service.setName(name);
         service.setDuration(duration);
-    //    service.setRooms(rooms);
 
         return service;
     }

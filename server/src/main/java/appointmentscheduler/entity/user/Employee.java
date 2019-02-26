@@ -1,36 +1,40 @@
 package appointmentscheduler.entity.user;
 
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.employee_service.employee_service;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 public class Employee extends User {
 
-    @JoinTable(
-            name = "employee_services",
-            joinColumns = { @JoinColumn(name = "employee_id") },
-            inverseJoinColumns = { @JoinColumn(name = "service_id") }
-    )
-    @ManyToMany
-    private Set<Service> services;
+
+    @OneToMany
+    Set<employee_service>  services = new HashSet<>();
+
+
+    Business business;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private Set<Shift> shifts;
 
-    public Set<Service> getServices() {
+    public Set<employee_service> getServices() {
         return services;
     }
 
-    public void setServices(Set<Service> services) {
-        this.services = services;
+    public void createService(Service service){
+        employee_service temp = new employee_service(business, this, service);
+        this.services.add(temp);
     }
+
 
     public Set<Shift> getShifts() {
         return shifts;

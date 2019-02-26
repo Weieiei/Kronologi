@@ -38,7 +38,7 @@ public class UserSerializer extends StdSerializer<User> {
             gen.writeArrayFieldStart("services");
             ((Employee) user).getServices().forEach(service -> {
                 try {
-                    serializeService(service, gen);
+                    serializeService(service.getService(), gen);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
