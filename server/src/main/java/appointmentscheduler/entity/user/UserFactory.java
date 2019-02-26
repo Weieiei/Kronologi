@@ -19,15 +19,25 @@ public class UserFactory {
                                   String email,
                                   String password
                                   ) {
-        final User user = createFromType(clazz);
+        if(clazz == Employee.class){
+            final Employee employee = (Employee) createFromType(clazz);
+            employee.setFirstName(firstName);
+            employee.setLastName(lastName);
+            employee.setEmail(email);
+            employee.setPassword(password);
+            employee.setBusiness(business);
+            return employee;
+        }
+        else{
+            final User user = createFromType(clazz);
 
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setBusiness(business);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setPassword(password);
 
-        return user;
+            return user;
+        }
     }
 
     private static User createFromType(Class<? extends User> clazz) {

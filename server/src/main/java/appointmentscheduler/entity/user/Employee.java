@@ -20,21 +20,32 @@ public class Employee extends User {
     Set<employee_service>  services = new HashSet<>();
 
 
-    Business business;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private Set<Shift> shifts;
+
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    private Business business;
+
 
     public Set<employee_service> getServices() {
         return services;
     }
 
     public void createService(Service service){
-        employee_service temp = new employee_service(business, this, service);
+        employee_service temp = new employee_service(this.business, this, service);
         this.services.add(temp);
     }
 
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
 
     public Set<Shift> getShifts() {
         return shifts;

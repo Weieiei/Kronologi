@@ -178,16 +178,18 @@ public class Seed {
         employee4.setRoles(Sets.newHashSet(employeeRole));
 
 
+        employeeRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
+
 
         employee.createService(services.get(0));
         employee.createService(services.get(1));
         employee2.createService(services.get(2));
         employee2.createService(services.get(3));
         employee2.createService(services.get(4));
-        employee3.createService(services.get(5));
         employee3.createService(services.get(6));
-        employee4.createService(services.get(7));
-        employee4.createService(services.get(8));
+        employee3.createService(services.get(6));
+        employee4.createService(services.get(6));
+        employee4.createService(services.get(6));
 
         Set<employee_service> service1 = employee.getServices();
         Set<employee_service> service2 = employee2.getServices();
@@ -200,7 +202,6 @@ public class Seed {
         totalSet.addAll(service3);
         totalSet.addAll(service4);
         employeeServiceRepository.saveAll(totalSet);
-        employeeRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
 
     }
 
