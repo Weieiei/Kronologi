@@ -2,9 +2,11 @@ package appointmentscheduler.entity.service;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.employee_service.employee_service;
 import appointmentscheduler.entity.user.Employee;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,13 +24,17 @@ public class Service extends AuditableEntity {
     @Column(name = "duration")
     private int duration;
 
-    @JoinTable(
-            name = "employee_services",
-            joinColumns = { @JoinColumn(name = "service_id") },
-            inverseJoinColumns = { @JoinColumn(name = "employee_id") }
-    )
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Employee> employees;
+
+    @OneToMany
+    Set<employee_service> employees = new HashSet<>();
+
+//    @JoinTable(
+//            name = "employee_services",
+//            joinColumns = { @JoinColumn(name = "service_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "employee_id") }
+//    )
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    private List<Employee> employees;
 
     @ManyToOne
     @JoinColumn(name = "business_id", nullable = true)
@@ -71,12 +77,13 @@ public class Service extends AuditableEntity {
         this.duration = duration;
     }
 
-    public List<Employee> getEmployees() {
+    public Set<employee_service> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public void setEmployee(Employee employee) {
+        employee_service temp = new employee_service(business, employee, this);
+        this.employees.add(temp);
     }
 
     public Business getBusiness() {

@@ -43,4 +43,13 @@ public class employee_service extends AuditableEntity {
     public void setService(Service service){
         this.service = service;
     }
+
+    public Employee getEmployee(){
+        return this.employee;
+    }
+
+    public void setEmployee(Service service){
+        this.employee = employee;
+    }
+
 }

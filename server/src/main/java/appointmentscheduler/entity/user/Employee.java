@@ -19,7 +19,8 @@ public class Employee extends User {
     @OneToMany
     Set<employee_service>  services = new HashSet<>();
 
-
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
     Business business;
 
     @OneToMany(cascade = CascadeType.ALL)
