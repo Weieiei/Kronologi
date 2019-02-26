@@ -20,13 +20,13 @@ public class Employee extends User {
     Set<employee_service>  services = new HashSet<>();
 
 
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    Business business;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private Set<Shift> shifts;
-
-    @ManyToOne
-    @JoinColumn(name = "business_id", nullable = true)
-    private Business business;
 
 
     public Set<employee_service> getServices() {
