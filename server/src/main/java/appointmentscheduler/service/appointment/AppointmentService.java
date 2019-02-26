@@ -3,7 +3,6 @@ package appointmentscheduler.service.appointment;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
-import appointmentscheduler.entity.room.Room;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.*;
@@ -169,17 +168,17 @@ public class AppointmentService {
         // Check if there is an available room for the employee to work in
         List<Appointment> allAppointmentsOnDate = appointmentRepository.findByDateAndStatus(appointment.getDate(), AppointmentStatus.CONFIRMED);
 
-        Set<Room> roomSet = new HashSet<>(appointment.getService().getRooms());
-        for (Appointment a : allAppointmentsOnDate) {
-            if (a.isConflicting(appointment) && !roomSet.isEmpty() && !(modifying && a.equals(appointment))) {
-                for (Room room : a.getService().getRooms()) {
-                    roomSet.remove(room);
-                }
-            }
-        }
-        if (roomSet.isEmpty()) {
-            throw new NoRoomAvailableException("There are no rooms available");
-        }
+//        Set<Room> roomSet = new HashSet<>(appointment.getService().getRooms());
+//        for (Appointment a : allAppointmentsOnDate) {
+//            if (a.isConflicting(appointment) && !roomSet.isEmpty() && !(modifying && a.equals(appointment))) {
+//                for (Room room : a.getService().getRooms()) {
+//                    roomSet.remove(room);
+//                }
+//            }
+//        }
+//        if (roomSet.isEmpty()) {
+//            throw new NoRoomAvailableException("There are no rooms available");
+//        }
 
     }
 

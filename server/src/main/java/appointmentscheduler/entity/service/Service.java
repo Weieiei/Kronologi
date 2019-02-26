@@ -2,7 +2,6 @@ package appointmentscheduler.entity.service;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.business.Business;
-import appointmentscheduler.entity.room.Room;
 import appointmentscheduler.entity.user.Employee;
 
 import javax.persistence.*;
@@ -30,16 +29,6 @@ public class Service extends AuditableEntity {
     )
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Employee> employees;
-
-    @OneToMany(mappedBy = "rooms")
-    private Set<Room> rooms;
-//    @JoinTable(
-//            name = "service_rooms",
-//            joinColumns = { @JoinColumn(name = "service_id") },
-//            inverseJoinColumns = { @JoinColumn(name = "room_id") }
-//    )
-//    @ManyToMany(cascade = CascadeType.PERSIST)
-//    private Set<Room> rooms;
 
     @ManyToOne
     @JoinColumn(name = "business_id", nullable = true)
@@ -88,14 +77,6 @@ public class Service extends AuditableEntity {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
-    }
-
-    public Set<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(Set<Room> rooms) {
-        this.rooms = rooms;
     }
 
     public Business getBusiness() {
