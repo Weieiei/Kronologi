@@ -7,7 +7,10 @@ import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.exception.ResourceNotFoundException;
-import appointmentscheduler.repository.*;
+import appointmentscheduler.repository.AppointmentRepository;
+import appointmentscheduler.repository.EmployeeRepository;
+import appointmentscheduler.repository.ShiftRepository;
+import appointmentscheduler.repository.CancelledRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -20,7 +23,6 @@ public class AppointmentService {
     private CancelledRepository cancelledRepository;
     private AppointmentRepository appointmentRepository;
     private EmployeeRepository employeeRepository;
-    private EmployeeServiceRepository emnployeeServiceRepository;
     private ShiftRepository shiftRepository;
 
 
@@ -190,8 +192,9 @@ public class AppointmentService {
         return appointment;
     }
 
-    public List<Employee> getAllEmployeesForService(long serviceId) {
-        return emnployeeServiceRepository.findByServiceId(serviceId);
+
+    public List<Employee> getAvailableEmployeesByServiceAndByDate(long serviceId, LocalDate date) {
+        return employeeRepository.findByServices_IdAndShifts_Date(serviceId, date);
     }
 
     public List<Shift> getEmployeeShiftsByDate(LocalDate date) {
