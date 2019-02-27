@@ -1,5 +1,6 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
@@ -17,6 +18,8 @@ import appointmentscheduler.service.email.EmailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +28,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/${rest.api.path}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentController extends AbstractController {
 
+    Logger log = LoggerFactory.getLogger(this.getClass());
     private final AppointmentService appointmentService;
     private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
@@ -99,25 +104,42 @@ public class AppointmentController extends AbstractController {
         return getJson(mapper, cancelledAppointment);
     }
 
+    @LogREST
     @GetMapping("/employees/{serviceId}")
     public ResponseEntity<String> getAvailableEmployeesByServiceAndByDate(@PathVariable long serviceId, @RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());
-        return getJson(mapper, appointmentService.getAvailableEmployeesByServiceAndByDate(serviceId, pickedDate));
+        List<Employee> allEmployees = appointmentService.getAllEmployeesForService(serviceId);
+        //List<Employee> allForToday = appointmentService.get
+        for(Employee employee : allEmployees){
+
+        }
+        return getJson(mapper, allEmployees);
     }
 
+    @LogREST
     @GetMapping("employee/shifts")
     public ResponseEntity<String> getEmployeesShift(@RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new ShiftSerializer());
-        return getJson(mapper, appointmentService.getEmployeeShiftsByDate(pickedDate));
+        List<Shift> ls =appointmentService.getEmployeeShiftsByDate(pickedDate);
+        for(Shift st : ls){
+            log.warn(st.getEmployee().getFirstName());
+        }
+        return getJson(mapper, ls);
     }
 
+    @LogREST
     @GetMapping("employee/appointments")
     public ResponseEntity<String> getEmployeesConfirmedAppointments(@RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new EmployeeAppointmentSerializer());
-        return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDate(pickedDate));
+
+        List<Appointment> ls = appointmentService.getConfirmedAppointmentsByDate(pickedDate);
+        for(Appointment ap : ls){
+            log.warn(ap.getEmployee().getFirstName());
+        }
+        return getJson(objectMapper, ls);
     }
 
     private LocalDate parseDate(String date) {
