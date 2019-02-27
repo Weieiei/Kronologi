@@ -109,12 +109,7 @@ public class AppointmentController extends AbstractController {
     public ResponseEntity<String> getAvailableEmployeesByServiceAndByDate(@PathVariable long serviceId, @RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());
-        List<Employee> allEmployees = appointmentService.getAllEmployeesForService(serviceId);
-        //List<Employee> allForToday = appointmentService.get
-        for(Employee employee : allEmployees){
-
-        }
-        return getJson(mapper, allEmployees);
+        return getJson(mapper, appointmentService.getAvailableEmployeesByServiceAndByDate(serviceId, pickedDate));
     }
 
     @LogREST
@@ -122,11 +117,7 @@ public class AppointmentController extends AbstractController {
     public ResponseEntity<String> getEmployeesShift(@RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new ShiftSerializer());
-        List<Shift> ls =appointmentService.getEmployeeShiftsByDate(pickedDate);
-        for(Shift st : ls){
-            log.warn(st.getEmployee().getFirstName());
-        }
-        return getJson(mapper, ls);
+        return getJson(mapper, appointmentService.getEmployeeShiftsByDate(pickedDate));
     }
 
     @LogREST
@@ -134,12 +125,7 @@ public class AppointmentController extends AbstractController {
     public ResponseEntity<String> getEmployeesConfirmedAppointments(@RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new EmployeeAppointmentSerializer());
-
-        List<Appointment> ls = appointmentService.getConfirmedAppointmentsByDate(pickedDate);
-        for(Appointment ap : ls){
-            log.warn(ap.getEmployee().getFirstName());
-        }
-        return getJson(objectMapper, ls);
+        return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDate(pickedDate));
     }
 
     private LocalDate parseDate(String date) {
