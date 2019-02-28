@@ -164,22 +164,6 @@ public class AppointmentService {
                 throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
             }
         }
-
-        // Check if there is an available room for the employee to work in
-        List<Appointment> allAppointmentsOnDate = appointmentRepository.findByDateAndStatus(appointment.getDate(), AppointmentStatus.CONFIRMED);
-
-//        Set<Room> roomSet = new HashSet<>(appointment.getService().getRooms());
-//        for (Appointment a : allAppointmentsOnDate) {
-//            if (a.isConflicting(appointment) && !roomSet.isEmpty() && !(modifying && a.equals(appointment))) {
-//                for (Room room : a.getService().getRooms()) {
-//                    roomSet.remove(room);
-//                }
-//            }
-//        }
-//        if (roomSet.isEmpty()) {
-//            throw new NoRoomAvailableException("There are no rooms available");
-//        }
-
     }
 
     public Appointment findMyAppointmentById(long userId, long appointmentId) {

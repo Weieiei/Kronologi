@@ -62,7 +62,7 @@ public class AdminController extends AbstractController {
         this.objectMapperFactory = objectMapperFactory;
     }
 
-    @GetMapping("/employee")
+    @GetMapping("{business_id}/employee")
     public ResponseEntity<String> getEmployees() {
         List<Employee> employees = employeeShiftService.getEmployees();
         final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());

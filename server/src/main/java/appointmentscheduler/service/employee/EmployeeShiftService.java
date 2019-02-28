@@ -6,6 +6,7 @@ import appointmentscheduler.entity.shift.ShiftFactory;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.ShiftConflictException;
+import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,14 @@ public class EmployeeShiftService {
 
     private final ShiftRepository shiftRepository;
     private final EmployeeRepository employeeRepository;
+ //   private final BusinessRepository businessRepository;
 
     @Autowired
-    public EmployeeShiftService(ShiftRepository shiftRepository, EmployeeRepository employeeRepository) {
+    public EmployeeShiftService(ShiftRepository shiftRepository,
+                                EmployeeRepository employeeRepository) {
         this.shiftRepository = shiftRepository;
         this.employeeRepository = employeeRepository;
+     //   this.businessRepository = businessRepository;
     }
 
     public List<Employee> getEmployees() {
