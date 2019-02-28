@@ -20,6 +20,8 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
+import { BusinessViewComponent } from './pages/business-view/business-view.component'
+
 
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
@@ -42,8 +44,11 @@ const routes: Routes = [
         children: [
 
             // Home page
-            { path: '', component: HomeComponent },
+            { path: '', component: BusinessViewComponent },
 
+              //Appointments for business
+            { path: 'home', component: HomeComponent },
+          
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
