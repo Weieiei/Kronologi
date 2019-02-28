@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "${rest.api.path}/admin", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "${rest.api.path}", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController extends AbstractController {
 
@@ -62,78 +62,86 @@ public class AdminController extends AbstractController {
         this.objectMapperFactory = objectMapperFactory;
     }
 
-    @GetMapping("{business_id}/employee")
+    @GetMapping("/admin/employee")
     public ResponseEntity<String> getEmployees() {
         List<Employee> employees = employeeShiftService.getEmployees();
         final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
         return getJson(mapper, employees);
     }
 
-//    @GetMapping("/{business_id}/employee")
-//    public ResponseEntity<String> getEmployees() {
-//        List<Employee> employees = employeeShiftService.getEmployees();
-//        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
-//        return getJson(mapper, employees);
-//    }
+    @GetMapping("/business/{businessId}/admin/employees")
+    public ResponseEntity<String> getBusinessEmployees(@PathVariable long businessId) {
+        List<Employee> employees = employeeShiftService.getEmployeesForBusiness(businessId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
+        return getJson(mapper, employees);
+    }
 
-    @GetMapping("/employee/{id}")
+    @GetMapping("/admin/employee/{id}")
     public ResponseEntity<String> getEmployees(@PathVariable long id) {
         Employee employee = employeeShiftService.getEmployee(id);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
         return getJson(mapper, employee);
     }
 
-    @GetMapping("/employee/{employeeId}/shift")
+    @GetMapping("/admin/employee/{employeeId}/shift")
     public ResponseEntity<String> getEmployeeShifts(@PathVariable long employeeId) {
         List<Shift> shifts = employeeShiftService.getEmployeeShifts(employeeId);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
         return getJson(mapper, shifts);
     }
 
-    @PostMapping("/employee/{employeeId}/shift")
+    @GetMapping("business/{businessId}/admin/employee/{employeeId}/shift")
+    public ResponseEntity<String> getBusinessEmployeeShifts(@PathVariable long businessId,
+                                                          @PathVariable long employeeId) {
+        List<Shift> shifts = employeeShiftService.getEmployeeShiftsForBusiness(employeeId, businessId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shifts);
+    }
+
+    @PostMapping("/admin/employee/{employeeId}/shift")
     public ResponseEntity<String> createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
         Shift shift = employeeShiftService.createShift(employeeId, employeeShiftDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
         return getJson(mapper, shift);
     }
 
-    @PutMapping("/employee/{employeeId}/shift/{shiftId}")
+    @PutMapping("/admin/employee/{employeeId}/shift/{shiftId}")
     public ResponseEntity<String> modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
         Shift shift = employeeShiftService.modifyShift(employeeId, employeeShiftDTO, shiftId);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
         return getJson(mapper, shift);
     }
 
-    @DeleteMapping("/employee/shift/{shiftId}")
+    @DeleteMapping("/admin/employee/shift/{shiftId}")
     public void deleteShift(@PathVariable long shiftId){
         employeeShiftService.deleteShift(shiftId);
     }
 
-    @GetMapping("/client/{id}")
+    @GetMapping("/admin/client/{id}")
     public List<Appointment> clientAppointmentList(@PathVariable long clientId){
         return this.appointmentService.findByClientId(clientId);
     }
 
-    @GetMapping("/employee/appointments/{id}")
+    @GetMapping("/admin/employee/appointments/{id}")
     public List<Appointment> employeeAppointmentList(@PathVariable long employeeId) {
         return this.appointmentService.findByEmployeeId(employeeId);
     }
 
     @LogREST
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public ResponseEntity<String> getAllUsers(){
         ObjectMapper mapper = objectMapperFactory.createMapper(User.class, new UserSerializer());
         return getJson(mapper, userService.findAll());
     }
 
-    @GetMapping("/appointments")
+    @GetMapping("/admin/appointments")
     public ResponseEntity<String> getAllAppointments(){
         ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         return getJson(mapper, appointmentService.findAll());
     }
 
 //todo refactor to use existing code
-    @PostMapping("/user/employee/{id}")
+    @PostMapping("/admin/user/employee/{id}")
     public ResponseEntity<Map<String, String>> changeRoleToEmployee(@PathVariable long id){
         User user = this.userService.findUserByid(id);
         Set<Role> roles = user.getRoles();
@@ -151,7 +159,7 @@ public class AdminController extends AbstractController {
     }
 
     // for assigning services to employees (employees can perform certain services)
-    @PostMapping("service/{employeeId}/{serviceId}")
+    @PostMapping("admin/service/{employeeId}/{serviceId}")
     public ResponseEntity<Map<String, String>> assignService(@PathVariable long employeeId, @PathVariable long serviceId){
         User user = this.userService.findUserByid(employeeId);
         Set<Role> roles = user.getRoles();
@@ -164,7 +172,7 @@ public class AdminController extends AbstractController {
 
     // for adding a new service
     @LogREST
-    @PostMapping("service")
+    @PostMapping("admin/service")
     public ResponseEntity<Map<String, String>> add(@RequestBody ServiceCreateDTO serviceCreateDTO){
         Service service = serviceConverter.convert(serviceCreateDTO);
         return ResponseEntity.ok(serviceService.add(service));

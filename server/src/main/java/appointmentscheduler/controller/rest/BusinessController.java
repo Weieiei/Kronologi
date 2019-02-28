@@ -20,9 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import javax.mail.MessagingException;
+import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${rest.api.path}/businesses")
@@ -73,14 +77,13 @@ public class BusinessController extends AbstractController {
     public ResponseEntity<String> findById(@PathVariable long id) {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         try {
-            return ResponseEntity.ok(mapper.writeValueAsString(businessRepository.findById(id)));
+            return ResponseEntity.ok(mapper.writeValueAsString(businessService.findById(id)));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    //    return getJson(mapper, businessService.findById(id));
     }
-    //TODO Create GET
+    //TODO Create POST
 
 //    @PostMapping
 //    public ResponseEntity<String> add(@RequestBody AppointmentDTO appointmentDTO) throws MessagingException {

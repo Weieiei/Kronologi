@@ -35,6 +35,10 @@ public class EmployeeShiftService {
         return employeeRepository.findAll();
     }
 
+    public List<Employee> getEmployeesForBusiness(long businessId) {
+        return employeeRepository.findByBusinessId(businessId);
+    }
+
     public Employee getEmployee(long id) {
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.", id)));
@@ -79,6 +83,10 @@ public class EmployeeShiftService {
     }
 
     public List<Shift> getEmployeeShifts(long employeeId) {
+        return shiftRepository.findByEmployeeId(employeeId);
+    }
+
+    public List<Shift> getEmployeeShiftsForBusiness(long employeeId, long businessId) {
         return shiftRepository.findByEmployeeId(employeeId);
     }
 
