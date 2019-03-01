@@ -13,6 +13,11 @@ import { AuthService } from '../../services/auth/auth.service';
 export class NavbarComponent implements OnInit {
 
     @Input() sidenav: MatSidenav;
+    
+    userEmail = "";
+    userName = "";
+    route = "";
+    showMenu = false;
 
     user;
 
@@ -27,6 +32,8 @@ export class NavbarComponent implements OnInit {
     ngOnInit() {
         // this.user = this.userService.getUser();
         this.authService.checkAdmin();
+        this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
+        this.userEmail = this.userService.getEmailFromToken();
     }
 
     logout(): void {
@@ -35,8 +42,12 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['login']);
     }
 
+    toggleMenu() {
+        this.showMenu = !this.showMenu;
+      }
+
     goToHome() {
-        this.router.navigate(['']);
+        this.router.navigate(['business']);
     }
 
     goToSettings() {

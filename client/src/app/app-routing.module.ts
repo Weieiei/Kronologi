@@ -43,10 +43,10 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
 
-            // Home page
-            { path: '', component: BusinessViewComponent },
+            //Appointments for business
+            { path: 'business', component: BusinessViewComponent },
 
-              //Appointments for business
+            //Home
             { path: 'home', component: HomeComponent },
           
             // Admin
