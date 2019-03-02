@@ -100,7 +100,7 @@ public class EmployeeShiftService {
     }
 
     public List<Shift> getEmployeeShiftsForBusiness(long employeeId, long businessId) {
-        return shiftRepository.findByEmployeeIdAndBusinessId(employeeId,businessId);
+        return shiftRepository.findByIdAndBusinessId(employeeId,businessId);
     }
 
     public Shift modifyShift(long employeeId, EmployeeShiftDTO employeeShiftDTO, long shiftId) {
