@@ -13,5 +13,5 @@ public interface ShiftRepository extends JpaRepository<Shift, Long> {
     List<Shift> findByDate(LocalDate date);
     List<Shift> findByEmployeeId(long id);
     Optional<Shift> findByEmployeeIdAndDate(long employeeId, LocalDate date);
-    List<Shift> findByIdAndBusinessId(long employeeId, long businessId);
+    List<Shift> findByEmployeeIdAndBusinessId(long employeeId, long businessId);
 }
