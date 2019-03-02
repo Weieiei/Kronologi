@@ -19,7 +19,6 @@ export class CardsUiComponent implements OnInit {
   }
 
   button1Function(){
-    console.log("hello")
     this.button1FunctionMapping.emit();
   }
 
