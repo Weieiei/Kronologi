@@ -4,6 +4,7 @@ import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { ThemeService } from "../../core/theme/theme.service";
 
 @Component({
     selector: 'app-navbar',
@@ -18,14 +19,16 @@ export class NavbarComponent implements OnInit {
     userName = "";
     route = "";
     showMenu = false;
-
+    darkModeActive: boolean;
     user;
 
     constructor(
         private userService: UserService,
         private authService: AuthService,
         private router: Router,
-        private googleAnalytics: GoogleAnalyticsService
+        private googleAnalytics: GoogleAnalyticsService,
+        public themeService: ThemeService
+
     ) {
     }
 
@@ -34,12 +37,19 @@ export class NavbarComponent implements OnInit {
         this.authService.checkAdmin();
         this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
         this.userEmail = this.userService.getEmailFromToken();
+        this.themeService.darkModeState.subscribe(value => {
+            this.darkModeActive = value;
+        });
     }
 
     logout(): void {
         this.googleAnalytics.trackValues('security', 'logout');
         this.userService.logout();
         this.router.navigate(['login']);
+    }
+
+    modeToggleSwitch() {
+        this.themeService.darkModeState.next(!this.darkModeActive)
     }
 
     toggleMenu() {

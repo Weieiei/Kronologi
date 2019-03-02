@@ -1,7 +1,8 @@
-<div class="main__container">
+<div class="main-container__bg" [ngClass]="{'main-container__bg-dark': darkModeActive}">
+    <!--<div class="main-container__bg" [ngClass]="{'main-container__bg-dark': darkModeActive}"></div>-->
 
-  <app-cards-ui businessName="business place holder" buttonName1="Book appointments" buttonName2="My Appointments" 
+  <app-cards-ui class="cards-ui" businessName="business place holder" buttonName1="Book appointments" buttonName2="My Appointments"
   
-  (button1FunctionMapping)="getAllAppointmentsForUserForBusiness(1)" ></app-cards-ui>
+  (button1FunctionMapping)="getAllAppointmentsForUserForBusiness(1)" [ngClass]="{'cards-ui-dark': darkModeActive}"></app-cards-ui>
 
 </div>

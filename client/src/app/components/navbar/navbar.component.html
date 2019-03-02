@@ -1,5 +1,5 @@
 <!-- Slide Menu-->
-<aside class="side-menu__container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
+<aside class="side-menu__container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()" >
         <nav class="slide-menu" [ngClass]="{'slide-menu-active': showMenu}" (click)="$event.stopImmediatePropagation();">
           <section class="menu-header">
             <span class="greeting__text">Welcome Back</span>
@@ -12,7 +12,7 @@
               <span class="email__text">{{ userEmail }}</span>
             </div>
           </section>
-          <section class="menu-body">
+          <section class="menu-body" [ngClass]="{'main__header-dark': darkModeActive}">
               <ul>
                 <li class="menu-link" routerLink="/business" routerLinkActive="link-active" (click)="goToHome()" >Home</li>
                 <li class="menu-link" routerLink="/settings" routerLinkActive="link-active" (click)="goToSettings()">Settings</li>
@@ -24,7 +24,7 @@
                 <li class="menu-link" routerLinkActive="link-active" (click)="logout()">Logout</li>
               </ul>
           </section>
-          <section class="menu-footer">
+          <section class="menu-footer" [ngClass]="{'main__header-dark': darkModeActive}">
       
           </section>
         </nav>
