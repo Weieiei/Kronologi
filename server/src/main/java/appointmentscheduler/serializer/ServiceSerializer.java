@@ -28,7 +28,7 @@ public class ServiceSerializer extends StdSerializer<Service> {
         gen.writeObjectField("id", service.getId());
         gen.writeStringField("name", service.getName());
         gen.writeObjectField("duration", service.getDuration());
-        serializeEmployees(service.getEmployees(), gen);
+       //serializeEmployees(service.getEmployees(), gen);
 
         gen.writeEndObject();
     }
