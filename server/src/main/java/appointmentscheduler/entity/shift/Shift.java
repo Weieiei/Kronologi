@@ -49,7 +49,7 @@ public class Shift extends AuditableEntity {
         this.endTime = endTime;
     }
 
-    public Shift(Employee employee, LocalDate date, LocalTime startTime, LocalTime endTime, Business business) {
+    public Shift(Business business, Employee employee, LocalDate date, LocalTime startTime, LocalTime endTime) {
         this.employee = employee;
         this.date = date;
         this.startTime = startTime;

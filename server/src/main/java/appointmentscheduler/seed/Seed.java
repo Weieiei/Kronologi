@@ -10,7 +10,6 @@ import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.service.ServiceFactory;
 import appointmentscheduler.entity.shift.Shift;
-import appointmentscheduler.entity.shift.ShiftFactory;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.Verification;
@@ -262,11 +261,11 @@ public class Seed {
     private Set<Shift> generateShifts(Employee employee) {
         // Create shifts for employee
         Set<Shift> shifts = new HashSet<>();
-        shifts.add(ShiftFactory.createShift(business, employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12,
+        shifts.add(new Shift (business, employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12,
                 0), LocalTime.of(22, 0)));
-        shifts.add(ShiftFactory.createShift(business, employee, LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0),
+        shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0),
                 LocalTime.of(21, 0)));
-        shifts.add(ShiftFactory.createShift(business, employee, LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0),
+        shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0),
                 LocalTime.of(22, 0)));
         return shifts;
     }

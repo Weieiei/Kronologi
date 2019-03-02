@@ -134,11 +134,11 @@ public class AppointmentService {
         }
 
         // Make sure the employee can perform the service requested
-        boolean employeeCanDoService = appointment.getService().getEmployees().contains(employee);
+       // boolean employeeCanDoService = appointment.getService().getEmployees().contains(employee);
 
-        if (!employeeCanDoService) {
+        /*if (!employeeCanDoService) {
             throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");
-        }
+        }*/
 
         // Check if the employee is working on the date specified
         boolean employeeIsWorking = employee.isWorking(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
