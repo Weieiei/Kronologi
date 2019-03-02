@@ -62,12 +62,12 @@ public class AdminController extends AbstractController {
         this.objectMapperFactory = objectMapperFactory;
     }
 
-    @GetMapping("/admin/employee")
-    public ResponseEntity<String> getEmployees() {
-        List<Employee> employees = employeeShiftService.getEmployees();
-        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
-        return getJson(mapper, employees);
-    }
+//    @GetMapping("/admin/employee")
+//    public ResponseEntity<String> getEmployees() {
+//        List<Employee> employees = employeeShiftService.getEmployees();
+//        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
+//        return getJson(mapper, employees);
+//    }
     @LogREST
     @GetMapping("/business/{businessId}/admin/employees")
     public ResponseEntity<String> getBusinessEmployees(@PathVariable long businessId) {
@@ -79,12 +79,12 @@ public class AdminController extends AbstractController {
 
 
 
-     @GetMapping("/admin/employee/{id}")
-    public ResponseEntity<String> getEmployees(@PathVariable long id) {
-        Employee employee = employeeShiftService.getEmployee(id);
-        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
-        return getJson(mapper, employee);
-    }
+//     @GetMapping("/admin/employee/{id}")
+//    public ResponseEntity<String> getEmployees(@PathVariable long id) {
+//        Employee employee = employeeShiftService.getEmployee(id);
+//        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
+//        return getJson(mapper, employee);
+//    }
     @GetMapping("/business/{businessId]/admin/employee/{id}")
     public ResponseEntity<String> getBusinessEmployees() {
         return getBusinessEmployees();
@@ -93,12 +93,12 @@ public class AdminController extends AbstractController {
 
 
 
-    @GetMapping("/admin/employee/{employeeId}/shift")
-    public ResponseEntity<String> getEmployeeShifts(@PathVariable long employeeId) {
-        List<Shift> shifts = employeeShiftService.getEmployeeShifts(employeeId);
-        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
-        return getJson(mapper, shifts);
-    }
+//    @GetMapping("/admin/employee/{employeeId}/shift")
+//    public ResponseEntity<String> getEmployeeShifts(@PathVariable long employeeId) {
+//        List<Shift> shifts = employeeShiftService.getEmployeeShifts(employeeId);
+//        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+//        return getJson(mapper, shifts);
+//    }
     @GetMapping("/business/{businessId}/admin/employee/{employeeId}/shift")
     public ResponseEntity<String> getBusinessEmployeeShifts(@PathVariable long businessId,
                                                           @PathVariable long employeeId) {
@@ -128,14 +128,26 @@ public class AdminController extends AbstractController {
 
 //    @PutMapping("/admin/employee/{employeeId}/shift/{shiftId}")
 //    public ResponseEntity<String> modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
-//        Shift shift = employeeShiftService.modifyShift(employeeId, employeeShiftDTO, shiftId);
+//        Shift shift = employeeShiftService.modifyShiftForBu(employeeId, employeeShiftDTO, shiftId);
 //        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
 //        return getJson(mapper, shift);
 //    }
+//
+//    @LogREST
+//    @DeleteMapping("/admin/employee/shift/{shiftId}")
+//    public void deleteShift(@PathVariable long shiftId){
+//        employeeShiftService.deleteShift(shiftId);
+//    }
+
+    @LogREST
+    @DeleteMapping("/business/{businessId}/admin/employee/shift/{shiftId}")
+    public void deleteShift(@PathVariable long businessId, long shiftId){
+        employeeShiftService.deleteShiftForBusiness(businessId, shiftId);
+    }
 
     @LogREST
     @DeleteMapping("/admin/employee/shift/{shiftId}")
-    public void deleteShift(@PathVariable long shiftId){
+    public void deleteShiftBusiness(@PathVariable long shiftId){
         employeeShiftService.deleteShift(shiftId);
     }
 

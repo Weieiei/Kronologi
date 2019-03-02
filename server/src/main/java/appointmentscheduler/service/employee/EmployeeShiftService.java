@@ -145,4 +145,13 @@ public class EmployeeShiftService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Shift with id %d not found.", shiftId)));
         shiftRepository.delete(shift);
     }
+
+    public void deleteShiftForBusiness(long shiftId, long businessId){
+
+            Shift shift = shiftRepository.findByIdAndBusinessId(shiftId, businessId);
+            if (shift == null) {
+                throw new ResourceNotFoundException(String.format("Shift with id %d not found.", shiftId));
+            } else
+                shiftRepository.delete(shift);
+        }
 }
