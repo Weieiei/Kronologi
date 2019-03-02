@@ -18,4 +18,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByServices_IdAndShifts_Date(@Param("serviceId") long serviceId, @Param("date") LocalDate date);
 
     List<Employee>  findByBusinessId(long businessId);
+    Employee findByEmployeeIdAndBusinessId(long employeeId, long businessId);
 }

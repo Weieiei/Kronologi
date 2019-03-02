@@ -21,7 +21,7 @@ public class EmployeeShiftService {
 
     private final ShiftRepository shiftRepository;
     private final EmployeeRepository employeeRepository;
- //   private final BusinessRepository businessRepository;
+   // private final BusinessRepository businessRepository;
 
     @Autowired
     public EmployeeShiftService(ShiftRepository shiftRepository,
@@ -31,12 +31,25 @@ public class EmployeeShiftService {
      //   this.businessRepository = businessRepository;
     }
 
+//    @Autowired
+//    public EmployeeShiftService(ShiftRepository shiftRepository,
+//                                EmployeeRepository employeeRepository,
+//                                BusinessRepository businessRepository) {
+//        this.shiftRepository = shiftRepository;
+//        this.employeeRepository = employeeRepository;
+//           this.businessRepository = businessRepository;
+//    }
+
+
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
     }
 
     public List<Employee> getEmployeesForBusiness(long businessId) {
-        return employeeRepository.findByBusinessId(businessId);
+        if (employeeRepository.findByBusinessId(businessId).isEmpty())
+            throw new ResourceNotFoundException(String.format("Employees from business %d with not found.",
+                    businessId));
+        else return employeeRepository.findByBusinessId(businessId);
     }
 
     public Employee getEmployee(long id) {
@@ -87,7 +100,7 @@ public class EmployeeShiftService {
     }
 
     public List<Shift> getEmployeeShiftsForBusiness(long employeeId, long businessId) {
-        return shiftRepository.findByEmployeeId(employeeId);
+        return shiftRepository.findByEmployeeIdAndBusinessId(employeeId,businessId);
     }
 
     public Shift modifyShift(long employeeId, EmployeeShiftDTO employeeShiftDTO, long shiftId) {

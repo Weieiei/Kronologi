@@ -68,7 +68,7 @@ public class AdminController extends AbstractController {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
         return getJson(mapper, employees);
     }
-
+    @LogREST
     @GetMapping("/business/{businessId}/admin/employees")
     public ResponseEntity<String> getBusinessEmployees(@PathVariable long businessId) {
         List<Employee> employees = employeeShiftService.getEmployeesForBusiness(businessId);
@@ -76,12 +76,22 @@ public class AdminController extends AbstractController {
         return getJson(mapper, employees);
     }
 
-    @GetMapping("/admin/employee/{id}")
+
+
+
+     @GetMapping("/admin/employee/{id}")
     public ResponseEntity<String> getEmployees(@PathVariable long id) {
         Employee employee = employeeShiftService.getEmployee(id);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
         return getJson(mapper, employee);
     }
+    @GetMapping("/business/{businessId]/admin/employee/{id}")
+    public ResponseEntity<String> getBusinessEmployees() {
+        return getBusinessEmployees();
+    }
+
+
+
 
     @GetMapping("/admin/employee/{employeeId}/shift")
     public ResponseEntity<String> getEmployeeShifts(@PathVariable long employeeId) {
@@ -89,8 +99,7 @@ public class AdminController extends AbstractController {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
         return getJson(mapper, shifts);
     }
-
-    @GetMapping("business/{businessId}/admin/employee/{employeeId}/shift")
+    @GetMapping("/business/{businessId}/admin/employee/{employeeId}/shift")
     public ResponseEntity<String> getBusinessEmployeeShifts(@PathVariable long businessId,
                                                           @PathVariable long employeeId) {
         List<Shift> shifts = employeeShiftService.getEmployeeShiftsForBusiness(employeeId, businessId);
@@ -98,12 +107,23 @@ public class AdminController extends AbstractController {
         return getJson(mapper, shifts);
     }
 
+
+
+
     @PostMapping("/admin/employee/{employeeId}/shift")
     public ResponseEntity<String> createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
         Shift shift = employeeShiftService.createShift(employeeId, employeeShiftDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
         return getJson(mapper, shift);
     }
+    @PostMapping("/business/{businessId}/admin/employee/{employeeId}/shift")
+    public ResponseEntity<String> createBusinessShift(@PathVariable long employeeId,
+                                                      @RequestBody EmployeeShiftDTO employeeShiftDTO) {
+        Shift shift = employeeShiftService.createShift(employeeId, employeeShiftDTO);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
+    }
+
 
     @PutMapping("/admin/employee/{employeeId}/shift/{shiftId}")
     public ResponseEntity<String> modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {

@@ -22,9 +22,10 @@ public class BusinessSerializer extends StdSerializer<Business> {
 
         gen.writeStartObject();
 
+        gen.writeObjectFieldStart("business");
         gen.writeObjectField("id", business.getId());
         gen.writeStringField("name", business.getName());
-        gen.writeObjectField("duration", business.getDomain());
+        gen.writeObjectField("domain", business.getDomain());
         gen.writeObjectField("description", business.getDescription());
 
         gen.writeEndObject();
