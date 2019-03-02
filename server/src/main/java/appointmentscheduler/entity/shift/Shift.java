@@ -21,7 +21,6 @@ public class Shift extends AuditableEntity {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "employee_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Employee employee;
@@ -36,7 +35,7 @@ public class Shift extends AuditableEntity {
     private LocalTime endTime;
 
     @ManyToOne
-    @JoinColumn(name = "business_id", nullable = true)
+    @JoinColumn(name = "business_id")
     private Business business;
 
     public Shift() {

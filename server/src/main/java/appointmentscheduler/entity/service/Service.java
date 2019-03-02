@@ -24,9 +24,9 @@ public class Service extends AuditableEntity {
     @Column(name = "duration")
     private int duration;
 
-//
-//    @OneToMany
-//    Set<employee_service> employees = new HashSet<>();
+
+    @OneToMany(mappedBy = "businessId",  fetch=FetchType.EAGER)
+    Set<employee_service> employees = new HashSet<>();
 
 //    @JoinTable(
 //            name = "employee_services",
@@ -77,14 +77,14 @@ public class Service extends AuditableEntity {
         this.duration = duration;
     }
 
-//    public Set<employee_service> getEmployees() {
-//        return employees;
-//    }
-//
-//    public void setEmployee(Employee employee) {
-//        employee_service temp = new employee_service(business, employee, this);
-//        this.employees.add(temp);
-//    }
+    public Set<employee_service> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployee(Employee employee) {
+        employee_service temp = new employee_service(business, employee, this);
+        this.employees.add(temp);
+    }
 
     public Business getBusiness() {
         return business;

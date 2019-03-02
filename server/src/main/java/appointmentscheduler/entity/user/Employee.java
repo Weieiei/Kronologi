@@ -4,6 +4,7 @@ import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.employee_service;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,8 +16,8 @@ import java.util.Set;
 @Entity
 public class Employee extends User {
 
-
-    @OneToMany
+    @JsonManagedReference
+    @OneToMany(mappedBy = "employee",  fetch=FetchType.EAGER)
     Set<employee_service> services = new HashSet<>();
 
 
@@ -25,7 +26,7 @@ public class Employee extends User {
     Business business;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "shift_id")
     private Set<Shift> shifts;
 
 

@@ -3,6 +3,7 @@ package appointmentscheduler.service.appointment;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
+import appointmentscheduler.entity.employee_service.employee_service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.*;
@@ -80,7 +81,7 @@ public class AppointmentService {
 
     public Appointment update(long appointmentId, long clientId, Appointment appointment) {
 
-        return appointmentRepository.findByIdAndClientId(appointmentId, clientId).map(a -> {
+        return appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, appointment.getBusiness().getId(), clientId).map(a -> {
 
             a.setClient(appointment.getClient());
             a.setEmployee(appointment.getEmployee());
@@ -98,9 +99,9 @@ public class AppointmentService {
 
     }
 
-    public Appointment cancel(long appointmentId, long clientId) {
+    public Appointment cancel(long appointmentId, long businessId, long clientId) {
 
-        Appointment appointment = appointmentRepository.findByIdAndClientId(appointmentId, clientId)
+        Appointment appointment = appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, businessId , clientId)
                 .orElseThrow(() -> new NotYourAppointmentException("This appointment either belongs to another user or doesn't exist."));
 
         if (appointment.getStatus().equals(AppointmentStatus.CANCELLED)) {
@@ -134,11 +135,18 @@ public class AppointmentService {
         }
 
         // Make sure the employee can perform the service requested
-       // boolean employeeCanDoService = appointment.getService().getEmployees().contains(employee);
+        boolean employeeCanDoService = false;
+        for(employee_service service:  appointment.getService().getEmployees()){
+            if(service.getEmployee().getId() == employee.getId()){
+                employeeCanDoService = true;
+                break;
+            }
+        }
 
-        /*if (!employeeCanDoService) {
+
+        if (!employeeCanDoService) {
             throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");
-        }*/
+        }
 
         // Check if the employee is working on the date specified
         boolean employeeIsWorking = employee.isWorking(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
@@ -148,7 +156,7 @@ public class AppointmentService {
         }
 
         // Check if the employee does not have an appointment scheduled already in that time slot
-        List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndStatus(appointment.getDate(), employee.getId(), AppointmentStatus.CONFIRMED);
+        List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(appointment.getDate(), employee.getId(), appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
 
         for (Appointment employeeAppointment : employeeAppointments) {
             if (employeeAppointment.isConflicting(appointment) && !(modifying && employeeAppointment.equals(appointment))) {
@@ -157,7 +165,7 @@ public class AppointmentService {
         }
 
         // Check if the client does not have an appointment scheduled already
-        List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndStatus(appointment.getDate(), appointment.getClient().getId(), AppointmentStatus.CONFIRMED);
+        List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndBusinessIdAndStatus(appointment.getDate(), appointment.getClient().getId(),appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
 
         for (Appointment clientAppointment : clientAppointments) {
             if (clientAppointment.isConflicting(appointment) && !(modifying && clientAppointment.equals(appointment))) {
@@ -181,12 +189,12 @@ public class AppointmentService {
         return employeeRepository.findByServices_IdAndShifts_Date(serviceId, date);
     }
 
-    public List<Shift> getEmployeeShiftsByDate(LocalDate date) {
-        return shiftRepository.findByDate(date);
+    public List<Shift> getEmployeeShiftsByDateAndBusinessId(LocalDate date, long businessId) {
+        return shiftRepository.findByDateAndBusinessId(date, businessId);
     }
 
-    public List<Appointment> getConfirmedAppointmentsByDate(LocalDate date) {
-        return appointmentRepository.findByDateAndStatus(date, AppointmentStatus.CONFIRMED);
+    public List<Appointment> getConfirmedAppointmentsByDateAndBusinessId(LocalDate date, long businessId) {
+        return appointmentRepository.findByDateAndStatusAndBusinessId(date, AppointmentStatus.CONFIRMED, businessId);
     }
 
     public Map<String, String> cancel(CancelledAppointment cancel) {
@@ -212,9 +220,8 @@ public class AppointmentService {
         }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
     }
 
-    public CancelledAppointment findByCancelledId(long id) {
-        return cancelledRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+    public CancelledAppointment findByCancelledIdAndBusinessId(long id, long businessId) {
+        return cancelledRepository.findByIdAndBusinessId(id, businessId);
     }
 
 
