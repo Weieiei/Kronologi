@@ -10,6 +10,7 @@
     $app-dark-accent: mat-palette($mat-blue-grey);
     $app-dark-theme: mat-dark-theme($app-dark-primary, $app-dark-accent);
 
+
     @include angular-material-theme($app-dark-theme);
 }
 

@@ -1,4 +1,4 @@
-<mat-sidenav-container fullscreen #sidenav>
+<mat-sidenav-container fullscreen #sidenav [ngClass]="{'bg-container-dark': darkModeActive}" class="bg-container">
     <mat-sidenav #sidenav mode="over">
         <!--	
         <button mat-button id="my-appts-button" *ngIf="authService.loggedIn()" routerLink="/my/appts">My Appointments</button>	

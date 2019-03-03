@@ -1,8 +1,8 @@
-<div *ngIf="appointments?.length">
+<div class="appointments-container" *ngIf="appointments?.length" [ngClass]="{'appointments-container-dark': darkModeActive}">
 
     <p>The system has {{ appointments?.length }} appointment(s):</p>
 
-    <table mat-table [dataSource]="appointments" class="mat-elevation-z8">
+    <table mat-table [dataSource]="appointments" class="mat-elevation-z8n appointments-container" [ngClass]="{'appointments-container-dark': darkModeActive}">
 
         <!-- Service Column -->
         <ng-container matColumnDef="service">
