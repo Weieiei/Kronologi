@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/${rest.api.path}/employee")
+@RequestMapping("/${rest.api.path}")
 @PreAuthorize("hasAuthority('EMPLOYEE')")
 public class EmployeeController  extends AbstractController {
 
@@ -34,7 +34,7 @@ public class EmployeeController  extends AbstractController {
     }
 
     @LogREST
-    @GetMapping(value="/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/employee/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String>  findByCurrentEmployee() {
         List<Appointment> listOfAppointment = appointmentService.findByEmployeeId(getUserId());
         listOfAppointment.sort(Comparator.comparing(Appointment::getStartTime)
@@ -44,7 +44,17 @@ public class EmployeeController  extends AbstractController {
     }
 
     @LogREST
-    @PostMapping("/appointments/cancel")
+    @GetMapping(value="/business/{businessId}/employee/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String>  getEmployeeAppointments(@PathVariable long businessId) {
+        List<Appointment> listOfAppointment = appointmentService.findByBusinessIdAndEmployeeId(businessId, getUserId());
+        listOfAppointment.sort(Comparator.comparing(Appointment::getStartTime)
+                .thenComparing(Appointment::getDate));
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+        return getJson(mapper, listOfAppointment);
+    }
+
+    @LogREST
+    @DeleteMapping("/employee/appointments/cancel")
     public ResponseEntity delete(@RequestBody CancelAppointmentDTO cancel) {
         cancel.setIdPersonWhoCancelled(getUserId());
         CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);

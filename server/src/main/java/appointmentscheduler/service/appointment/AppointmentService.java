@@ -38,6 +38,10 @@ public class AppointmentService {
         return appointmentRepository.findByEmployeeId(employeeId);
     }
 
+    public List<Appointment> findByBusinessIdAndEmployeeId(long busninessId, long employeeId) {
+        return appointmentRepository.findByBusinessIdAndEmployeeId(busninessId, employeeId);
+    }
+
     @Autowired
     public AppointmentService(
             AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository
