@@ -39,6 +39,10 @@ public class User extends AuditableEntity {
     @Column(name = "verified")
     private boolean verified;
 
+    @ManyToOne
+    @JoinColumn(name = "business_id")
+    private Business business;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_role",
@@ -164,6 +168,14 @@ public class User extends AuditableEntity {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 
     @PrePersist
