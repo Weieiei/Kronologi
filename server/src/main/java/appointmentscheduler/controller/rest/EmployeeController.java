@@ -35,8 +35,8 @@ public class EmployeeController  extends AbstractController {
 
     @LogREST
     @GetMapping(value="/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String>  findByCurrentEmployee() {
-        List<Appointment> listOfAppointment = appointmentService.findByEmployeeId(getUserId());
+    public ResponseEntity<String>  findByCurrentEmployee(@PathVariable long businessId) {
+        List<Appointment> listOfAppointment = appointmentService.findByEmployeeIdAndBusinessId(getUserId(), businessId);
         listOfAppointment.sort(Comparator.comparing(Appointment::getStartTime)
                     .thenComparing(Appointment::getDate));
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());

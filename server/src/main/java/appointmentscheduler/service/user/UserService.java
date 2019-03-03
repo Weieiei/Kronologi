@@ -130,12 +130,20 @@ public class UserService {
         return map;
     }
 
-
-    public User findUserByid(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserDoesNotExistException("User id: " + id + " does not exist."));
+//todo change user repository to query the businessId also, user table doesnt have businessId
+    public User findUserByIdAndBusinessId(long id, long businessId) {
+        User user = userRepository.findById(id).get();
+                if (user==null) {
+                    throw new UserDoesNotExistException(
+                            "User id: " + id + " " +
+                                    "does not exist.");
+                }
+                else
+                    return user;
     }
 
-    public List<User> findAll() {
+    //TODO change the user repository to include query with businessId
+    public List<User> findAllByBusinessId(long id) {
         return userRepository.findAll();
     }
 

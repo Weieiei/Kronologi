@@ -5,6 +5,7 @@ import appointmentscheduler.converters.service.ServiceDTOToService;
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
 import appointmentscheduler.dto.service.ServiceCreateDTO;
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
@@ -12,10 +13,13 @@ import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.repository.BusinessRepository;
+import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.serializer.*;
 import appointmentscheduler.service.appointment.AppointmentService;
+import appointmentscheduler.service.business.BusinessService;
 import appointmentscheduler.service.employee.EmployeeShiftService;
 import appointmentscheduler.service.service.ServiceService;
 import appointmentscheduler.service.user.UserService;
@@ -44,6 +48,9 @@ public class AdminController extends AbstractController {
     private RoleRepository roleRepository;
     private ServiceService serviceService;
     private ServiceRepository serviceRepository;
+    private EmployeeRepository wmployeeRepository;
+    private BusinessService businessService;
+    private BusinessRepository businessRepository;
 
     private EmployeeShiftService employeeShiftService;
     private ObjectMapperFactory objectMapperFactory;
@@ -51,7 +58,8 @@ public class AdminController extends AbstractController {
     //from ema's branch
     @Autowired
     public AdminController( AppointmentService appointmentService, UserService userService, ServiceService serviceService,
-                            RoleRepository roleRepository, ServiceRepository serviceRepository, EmployeeShiftService employeeShiftService,
+                            RoleRepository roleRepository, ServiceRepository serviceRepository,
+                           EmployeeRepository employeeRepository, EmployeeShiftService employeeShiftService,
                             ObjectMapperFactory objectMapperFactory) {
         this.appointmentService = appointmentService;
         this.userService = userService;
@@ -62,12 +70,6 @@ public class AdminController extends AbstractController {
         this.objectMapperFactory = objectMapperFactory;
     }
 
-//    @GetMapping("/admin/employee")
-//    public ResponseEntity<String> getEmployees() {
-//        List<Employee> employees = employeeShiftService.getEmployees();
-//        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
-//        return getJson(mapper, employees);
-//    }
     @LogREST
     @GetMapping("/business/{businessId}/admin/employees")
     public ResponseEntity<String> getBusinessEmployees(@PathVariable long businessId) {
@@ -76,29 +78,14 @@ public class AdminController extends AbstractController {
         return getJson(mapper, employees);
     }
 
-
-
-
-//     @GetMapping("/admin/employee/{id}")
-//    public ResponseEntity<String> getEmployees(@PathVariable long id) {
-//        Employee employee = employeeShiftService.getEmployee(id);
-//        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
-//        return getJson(mapper, employee);
-//    }
+    //TODO test this method
     @GetMapping("/business/{businessId]/admin/employee/{id}")
-    public ResponseEntity<String> getBusinessEmployees() {
-        return getBusinessEmployees();
+    public ResponseEntity<String> getBusinessEmployees(@PathVariable long businessId, @PathVariable long id) {
+        Employee employee = employeeShiftService.getEmployeeByBusinessId(id, businessId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
+        return getJson(mapper, employee);
     }
 
-
-
-
-//    @GetMapping("/admin/employee/{employeeId}/shift")
-//    public ResponseEntity<String> getEmployeeShifts(@PathVariable long employeeId) {
-//        List<Shift> shifts = employeeShiftService.getEmployeeShifts(employeeId);
-//        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
-//        return getJson(mapper, shifts);
-//    }
     @GetMapping("/business/{businessId}/admin/employee/{employeeId}/shift")
     public ResponseEntity<String> getBusinessEmployeeShifts(@PathVariable long businessId,
                                                           @PathVariable long employeeId) {
@@ -107,15 +94,6 @@ public class AdminController extends AbstractController {
         return getJson(mapper, shifts);
     }
 
-
-
-
-/*    @PostMapping("/admin/employee/{employeeId}/shift")
-    public ResponseEntity<String> createShift(@PathVariable long employeeId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
-        Shift shift = employeeShiftService.createShift(employeeId, employeeShiftDTO);
-        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
-        return getJson(mapper, shift);
-    }*/
     @LogREST
     @PostMapping("/business/{businessId}/admin/employee/{employeeId}/shift")
     public ResponseEntity<String> createBusinessShift(@PathVariable long employeeId, @PathVariable long businessId,
@@ -125,59 +103,55 @@ public class AdminController extends AbstractController {
         return getJson(mapper, shift);
     }
 
-
-//    @PutMapping("/admin/employee/{employeeId}/shift/{shiftId}")
-//    public ResponseEntity<String> modifyShift(@PathVariable long employeeId, @PathVariable long shiftId, @RequestBody EmployeeShiftDTO employeeShiftDTO) {
-//        Shift shift = employeeShiftService.modifyShiftForBu(employeeId, employeeShiftDTO, shiftId);
-//        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
-//        return getJson(mapper, shift);
-//    }
-//
-//    @LogREST
-//    @DeleteMapping("/admin/employee/shift/{shiftId}")
-//    public void deleteShift(@PathVariable long shiftId){
-//        employeeShiftService.deleteShift(shiftId);
-//    }
+    @LogREST
+    @PutMapping("/business/{businessId}/admin/employee/{employeeId}/shift/{shiftId}")
+    public ResponseEntity<String> modifyShift(@PathVariable long businessId, @PathVariable long employeeId,
+                                              @PathVariable long shiftId,
+                                              @RequestBody EmployeeShiftDTO employeeShiftDTO) {
+        Shift shift = employeeShiftService.modifyShift(businessId, employeeId, employeeShiftDTO, shiftId);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
+    }
 
     @LogREST
     @DeleteMapping("/business/{businessId}/admin/employee/shift/{shiftId}")
-    public void deleteShift(@PathVariable long businessId, long shiftId){
-        employeeShiftService.deleteShiftForBusiness(businessId, shiftId);
+    public void deleteShift(@PathVariable long businessId, @PathVariable long shiftId){
+        employeeShiftService.deleteShift(shiftId, businessId);
+    }
+
+    //TODO  can you test the routes from here onwards
+
+    @LogREST
+    @GetMapping("/business/{businessId}admin/client/{clientId}")
+    public List<Appointment> clientAppointmentList(@PathVariable long businessId, @PathVariable long clientId){
+        return this.appointmentService.findByClientIdAndBusinessId(clientId, businessId);
+    }
+
+    @GetMapping("/business/{businessId}/admin/employee/appointments/{employeeId}")
+    public List<Appointment> employeeAppointmentList( @PathVariable long businessId, @PathVariable long employeeId) {
+        return this.appointmentService.findByEmployeeIdAndBusinessId(employeeId, businessId);
     }
 
     @LogREST
-    @DeleteMapping("/admin/employee/shift/{shiftId}")
-    public void deleteShiftBusiness(@PathVariable long shiftId){
-        employeeShiftService.deleteShift(shiftId);
-    }
-
-    @GetMapping("/admin/client/{id}")
-    public List<Appointment> clientAppointmentList(@PathVariable long clientId){
-        return this.appointmentService.findByClientId(clientId);
-    }
-
-    @GetMapping("/admin/employee/appointments/{id}")
-    public List<Appointment> employeeAppointmentList(@PathVariable long employeeId) {
-        return this.appointmentService.findByEmployeeId(employeeId);
-    }
-
-    @LogREST
-    @GetMapping("/admin/users")
-    public ResponseEntity<String> getAllUsers(){
+    @GetMapping("/business/{businessId/admin/users")
+    public ResponseEntity<String> getAllUsers(@PathVariable long businessId){
         ObjectMapper mapper = objectMapperFactory.createMapper(User.class, new UserSerializer());
-        return getJson(mapper, userService.findAll());
+        return getJson(mapper, userService.findAllByBusinessId(businessId));
     }
 
+    @LogREST
     @GetMapping("/admin/appointments")
-    public ResponseEntity<String> getAllAppointments(){
+    public ResponseEntity<String> getAllAppointments(@PathVariable long businessId){
         ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        return getJson(mapper, appointmentService.findAll());
+        return getJson(mapper, appointmentService.findByBusinessId(businessId));
     }
 
-//todo refactor to use existing code
+    //todo change to new backend
+//todo refactor to use existing code , user table doesnt have businessId
     @PostMapping("/admin/user/employee/{id}")
-    public ResponseEntity<Map<String, String>> changeRoleToEmployee(@PathVariable long id){
-        User user = this.userService.findUserByid(id);
+    public ResponseEntity<Map<String, String>> changeRoleToEmployee(@PathVariable long businessId,
+                                                                    @PathVariable long id){
+        User user = this.userService.findUserByIdAndBusinessId(id, businessId);
         Set<Role> roles = user.getRoles();
         for (Role role: roles) {
             if (role.getRole() == RoleEnum.EMPLOYEE) {
@@ -187,15 +161,17 @@ public class AdminController extends AbstractController {
         user.addRoles(this.roleRepository.findByRole(RoleEnum.EMPLOYEE));
         return ResponseEntity.ok(userService.updateUser(user));
     }
-
+    //todo change to new backend
     private boolean containAnyRole(Set<Role> roles, RoleEnum roleType) {
         return roles.stream().anyMatch(role -> role.getRole() == roleType);
     }
 
+    //todo change to new backend , user table doesnt have businessId
     // for assigning services to employees (employees can perform certain services)
-    @PostMapping("admin/service/{employeeId}/{serviceId}")
-    public ResponseEntity<Map<String, String>> assignService(@PathVariable long employeeId, @PathVariable long serviceId){
-        User user = this.userService.findUserByid(employeeId);
+    @PostMapping("business/{businessId}/admin/service/{employeeId}/{serviceId}")
+    public ResponseEntity<Map<String, String>> assignService(@PathVariable long businessId,
+                                                             @PathVariable long employeeId, @PathVariable long serviceId){
+        User user = this.userService.findUserByIdAndBusinessId(employeeId, businessId);
         Set<Role> roles = user.getRoles();
         //check if user is an employee
         return serviceRepository.findById(serviceId).map(service -> {
@@ -204,22 +180,19 @@ public class AdminController extends AbstractController {
         }).orElseThrow(() -> new ResourceNotFoundException(String.format("Service id %d not found.", serviceId)));
     }
 
+
     // for adding a new service
     @LogREST
-    @PostMapping("admin/service")
-    public ResponseEntity<Map<String, String>> add(@RequestBody ServiceCreateDTO serviceCreateDTO){
+    @PostMapping("/business/{businessId}/admin/service")
+    public ResponseEntity<Map<String, String>> add(@PathVariable long businessId,
+                                                   @RequestBody ServiceCreateDTO serviceCreateDTO){
         Service service = serviceConverter.convert(serviceCreateDTO);
+        Business business = businessService.findById(businessId);
+        if (business!=null){
+            service.setBusiness(business);
+        }
         return ResponseEntity.ok(serviceService.add(service));
     }
-/*
-    @LogREST
-    @PostMapping("admin/service")
-    public ResponseEntity<Map<String, String>> oorBusiness(@RequestBody ServiceCreateDTO serviceCreateDTO){
-        Service service = serviceConverter.convert(serviceCreateDTO);
-        return ResponseEntity.ok(serviceService.add(service));
-    }*/
-
-
     private Map<String, String> message(String message) {
         Map<String, String> map = new HashMap<>();
         map.put("message", message);

@@ -31,12 +31,12 @@ public class AppointmentService {
         this.appointmentRepository = appointmentRepository;
     }
 
-    public List<Appointment> findAll() {
-        return appointmentRepository.findAll();
+    public List<Appointment> findByBusinessId(long id) {
+        return appointmentRepository.findByBusinessId(id);
     }
 
-    public List<Appointment> findByEmployeeId(long employeeId) {
-        return appointmentRepository.findByEmployeeId(employeeId);
+    public List<Appointment> findByEmployeeIdAndBusinessId(long employeeId, long businessId) {
+        return appointmentRepository.findByEmployeeIdAndBusinessId(employeeId, businessId);
     }
 
     @Autowired
@@ -49,17 +49,15 @@ public class AppointmentService {
         this.shiftRepository = shiftRepository;
     }
 
-    public List<Appointment> findByClientId(long id) {
-        return appointmentRepository.findByClientId(id);
-    }
-/* //from Ema's branch
     //for admin to view all appointments for a client
-    public List<Appointment> findByClientId(long id){
-        Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByClientId(id));
-        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with client id %d not found", id)));
+    public List<Appointment> findByClientIdAndBusinessId(long clientId, long businessId){
+        Optional<List<Appointment>> opt =
+                Optional.ofNullable(appointmentRepository.findByClientIdAndBusinessId(clientId, businessId));
+        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with client id %d " +
+                "and business id %d not found", clientId, businessId)));
     }
 
-
+/*
     //for admin to see employee's appointments
     public List<Appointment> findByEmployeeId(long id) {
         Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByEmployeeId(id));

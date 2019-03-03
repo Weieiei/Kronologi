@@ -134,8 +134,8 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping(value = "/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findAllAppointments() {
-        final List<Appointment> appointments = appointmentService.findByClientId(getUserId());
+    public ResponseEntity<String> findAllAppointments(@PathVariable long businessId) {
+        final List<Appointment> appointments = appointmentService.findByClientIdAndBusinessId(getUserId(), businessId);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         return getJson(mapper, appointments);
     }

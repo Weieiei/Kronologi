@@ -26,7 +26,6 @@ public class Employee extends User {
     Business business;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "shift_id")
     private Set<Shift> shifts;
 
 
