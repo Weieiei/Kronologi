@@ -47,8 +47,6 @@ export class BusinessRegisterComponent implements OnInit {
 
     registerPhone = false;
 
-
-
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -137,6 +135,13 @@ export class BusinessRegisterComponent implements OnInit {
             alert('The passwords don\'t match.');
         }
 
+    }
+    togglePasswordVisibility() {
+        this.isPasswordVisible = !this.isPasswordVisible;
+    }
+
+    selectCountry(country: Object) {
+        this.selectedCountry = country;
     }
 
 }
