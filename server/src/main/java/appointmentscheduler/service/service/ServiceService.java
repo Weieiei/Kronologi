@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import appointmentscheduler.exception.ResourceNotFoundException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @org.springframework.stereotype.Service
@@ -25,6 +26,10 @@ public class ServiceService {
     public Map<String, String> add(Service service) {
         serviceRepository.save(service);
         return message("Service successful added.");
+    }
+    
+    public List<Service> findByBusinessId(long businessId) {
+        return serviceRepository.findServicesByBusinessId(businessId);
     }
 
     private Map<String, String> message(String message) {

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("${rest.api.path}/services")
+@RequestMapping("${rest.api.path}")
 @PreAuthorize("hasAuthority('CLIENT')")
 public class ServiceController {
 
@@ -34,7 +34,7 @@ public class ServiceController {
         this.objectMapperFactory = objectMapperFactory;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/services", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findAll() {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
 
@@ -46,7 +46,20 @@ public class ServiceController {
         }
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/business/{businessId}/services", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findAll(@PathVariable long businessId) {
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
+
+        try {
+            return ResponseEntity.ok(mapper.writeValueAsString(serviceRepository.findServicesByBusinessId(businessId)));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+    @GetMapping(value = "/services/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findById(@PathVariable long id) {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
 
