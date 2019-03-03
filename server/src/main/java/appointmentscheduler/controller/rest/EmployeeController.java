@@ -8,6 +8,7 @@ import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.appointment.AppointmentService;
+import appointmentscheduler.service.business.BusinessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,12 +26,14 @@ public class EmployeeController  extends AbstractController {
 
     private final AppointmentService appointmentService;
     private final ObjectMapperFactory objectMapperFactory;
+    private final BusinessService businessService;
     private CancelledDTOToCancelled cancelledAppointmentConverted;
     @Autowired
-    public EmployeeController(AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory,CancelledDTOToCancelled cancelledAppointmentConverted) {
+    public EmployeeController(AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory,CancelledDTOToCancelled cancelledAppointmentConverted, BusinessService businessService) {
         this.cancelledAppointmentConverted = cancelledAppointmentConverted;
         this.appointmentService = appointmentService;
         this.objectMapperFactory = objectMapperFactory;
+        this.businessService = businessService;
     }
 
     @LogREST
@@ -59,5 +62,14 @@ public class EmployeeController  extends AbstractController {
         cancel.setIdPersonWhoCancelled(getUserId());
         CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
         return ResponseEntity.ok(appointmentService.cancel(cancelled));
+    }
+
+    @LogREST
+    @DeleteMapping("/business/{businessId}/employee/appointments/cancel")
+    public ResponseEntity delete(@RequestBody CancelAppointmentDTO cancel, @PathVariable long businessId) {
+        cancel.setIdPersonWhoCancelled(getUserId());
+        CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
+        cancelled.setBusiness(businessService.findById(businessId));
+        return ResponseEntity.ok(appointmentService.cancel(cancelled, businessId));
     }
 }
