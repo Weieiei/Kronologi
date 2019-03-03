@@ -7,6 +7,7 @@ import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.ServiceSerializer;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
+import appointmentscheduler.service.service.ServiceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServiceController {
 
     private final ServiceRepository serviceRepository;
+    private final ServiceService serviceService;
     private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
     public ServiceController(ServiceRepository serviceRepository, ObjectMapperFactory objectMapperFactory) {
         this.serviceRepository = serviceRepository;
+        this.serviceService = new ServiceService(serviceRepository);
         this.objectMapperFactory = objectMapperFactory;
     }
 
@@ -51,7 +54,7 @@ public class ServiceController {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
 
         try {
-            return ResponseEntity.ok(mapper.writeValueAsString(serviceRepository.findServicesByBusinessId(businessId)));
+            return ResponseEntity.ok(mapper.writeValueAsString(serviceService.findByBusinessId(businessId)));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
