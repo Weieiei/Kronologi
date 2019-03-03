@@ -1,0 +1,14 @@
+@import 'variables';
+@include mat-core();
+// define 3 theme color
+// mat-palette accepts $palette-name, main, lighter and darker variants
+$primary-theme-primary: mat-palette($mat-deep-purple);
+$primary-theme-accent: mat-palette($mat-light-blue, A200, A100, A40);
+$primary-theme-warn: mat-palette($mat-pink);
+
+
+$primary-theme: mat-light-theme(
+        $primary-theme-primary,
+        $primary-theme-accent,
+        $primary-theme-warn
+);
