@@ -1,0 +1,52 @@
+<div fxLayout="row" fxLayoutAlign="center" fxFlex="noshrink">
+    <div fxLayout="column" fxFlex.gt-sm="1000px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
+        <img src="assets/images/asapp_logo.png" width="128"/>
+        <span class="title">Register a business account</span>
+
+         <form (submit)="register()" autocomplete="off" fxLayout="column">
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                    <p>Select a domain</p>
+                    <mat-form-field>
+                        <mat-select [(value)]="selected">
+                            <mat-option value="Beauty">Beauty</mat-option>
+                            <mat-option value="Healthcare">Healthcare</mat-option>
+                            <mat-option value="Retail">Retail</mat-option>
+                        </mat-select>
+                        </mat-form-field>
+
+             </div>
+
+
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Business Name</mat-label>
+                            <input matInput [(ngModel)]="businessName" type="text" name="businessName" pattern=".{1,}" required appAutofocus>
+                        </mat-form-field>
+            </div>
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Description</mat-label>
+                            <input matInput [(ngModel)]="description" type="text" name="description" pattern=".{1,}" required appAutofocus>
+                        </mat-form-field>
+
+            </div>
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Add a service your business offers</mat-label>
+                            <input matInput [(ngModel)]="service" type="text" name="service" pattern=".{1,}" required appAutofocus>
+                        </mat-form-field>
+
+            </div>
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+            <p> Upload a bisiness logo </p>
+            <input type="file" (change) = "onFileSelected($event)">
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
+            <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
+            <button mat-raised-button color="primary" type="submit">Register</button>
+        </div>
+        </form>
+    </div>
+</div>

@@ -56,6 +56,7 @@ import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/ad
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
+import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 
 @NgModule({
     declarations: [
@@ -104,7 +105,8 @@ import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
         ReviewComponent,
         ReasonDialogComponent,
         BusinessViewComponent,
-        CardsUiComponent
+        CardsUiComponent,
+        BusinessRegisterComponent
     ],
     imports: [
         BrowserModule,

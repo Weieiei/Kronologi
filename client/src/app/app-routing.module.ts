@@ -20,7 +20,8 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
-import { BusinessViewComponent } from './pages/business-view/business-view.component'
+import { BusinessViewComponent } from './pages/business-view/business-view.component';
+import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 
 
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
@@ -33,6 +34,7 @@ const routes: Routes = [
 
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
+    { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
 
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
 
@@ -48,7 +50,7 @@ const routes: Routes = [
 
             //Home
             { path: 'home', component: HomeComponent },
-          
+
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
