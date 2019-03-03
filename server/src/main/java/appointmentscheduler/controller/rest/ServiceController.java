@@ -61,6 +61,21 @@ public class ServiceController {
         }
     }
 
+    @GetMapping(value = "/business/{businessId}/services/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findById(@PathVariable long businessId, @PathVariable long id) {
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
+
+        try {
+            final Service service = serviceService.findByBusinessIdAndServiceId(id,businessId);
+            return ResponseEntity.ok(mapper.writeValueAsString(service));
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @GetMapping(value = "/services/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findById(@PathVariable long id) {

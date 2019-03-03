@@ -32,6 +32,10 @@ public class ServiceService {
         return serviceRepository.findServicesByBusinessId(businessId);
     }
 
+    public Service findByBusinessIdAndServiceId(long businessId, long serviceId) {
+        return serviceRepository.findServiceByBusinessIdAndAndId(serviceId, businessId);
+    }
+
     private Map<String, String> message(String message) {
         Map<String, String> map = new HashMap<>();
         map.put("message", message);
