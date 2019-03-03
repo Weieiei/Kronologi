@@ -82,5 +82,4 @@ export class RegisterComponent implements OnInit {
     selectCountry(country: Object) {
         this.selectedCountry = country;
     }
-
 }
