@@ -38,6 +38,10 @@ public class AppointmentService {
         return appointmentRepository.findByEmployeeId(employeeId);
     }
 
+    public List<Appointment> findByBusinessIdAndEmployeeId(long busninessId, long employeeId) {
+        return appointmentRepository.findByBusinessIdAndEmployeeId(busninessId, employeeId);
+    }
+
     @Autowired
     public AppointmentService(
             AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository
@@ -112,6 +116,7 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
 
     }
+
 
     /**
      * Checks to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
@@ -191,6 +196,19 @@ public class AppointmentService {
 
     public Map<String, String> cancel(CancelledAppointment cancel) {
         return appointmentRepository.findById(cancel.getAppointment().getId()).map(a -> {
+
+            a.setStatus(AppointmentStatus.CANCELLED);
+            appointmentRepository.save(a);
+            cancelledRepository.save(cancel);
+
+            return message("Appointment was successfully  cancelled!");
+
+        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", cancel.getAppointment().getId())));
+
+    }
+
+    public Map<String, String> cancel(CancelledAppointment cancel, long businessId) {
+        return appointmentRepository.findByIdAndBusinessId(cancel.getAppointment().getId(), businessId).map(a -> {
 
             a.setStatus(AppointmentStatus.CANCELLED);
             appointmentRepository.save(a);
