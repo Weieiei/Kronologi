@@ -1,6 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~@angular/material/theming";
+@include mat-core();
+
 @import "angular-theme";
+@import "variables.scss";
+@import "primary-theme.scss";
+@import "dark-theme.scss";
 
 
 html, body {
@@ -70,4 +76,12 @@ table {
 
 .chosen {
     background-color: #ddd !important;
+}
+
+.primary-theme {
+    @include angular-material-theme($primary-theme);
+}
+
+.dark-theme {
+    @include angular-material-theme($dark-theme);
 }

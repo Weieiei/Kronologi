@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {GoogleAnalyticsService} from "../../services/google/google-analytics.service";
+import {ThemeService} from "../../core/theme/theme.service";
 import {MatDialog, MatDialogConfig} from "@angular/material";
+
 @Component({
   selector: 'app-business-view',
   templateUrl: './business-view.component.html',
@@ -8,9 +11,12 @@ import {MatDialog, MatDialogConfig} from "@angular/material";
 })
 export class BusinessViewComponent implements OnInit {
 
-  constructor(private router: Router,private dialog: MatDialog) { }
-
+    darkModeActive :boolean;
+  constructor(private router: Router,private dialog: MatDialog, public themeService: ThemeService) { }
   ngOnInit() {
+      this.themeService.darkModeState.subscribe(value => {
+          this.darkModeActive = value;
+      })
   }
 
   getAllAppointmentsForUserForBusiness(businessId: number){
