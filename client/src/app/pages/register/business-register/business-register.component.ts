@@ -12,6 +12,7 @@ import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
 
+
 @Component({
   selector: 'app-business-register',
   templateUrl: './business-register.component.html',
@@ -54,8 +55,7 @@ export class BusinessRegisterComponent implements OnInit {
         private userService: UserService,
         private serviceService: ServiceService,
         private googleAnalytics: GoogleAnalyticsService,
-        private businessService: BusinessService,
-        private serviceCreateDto: ServiceCreateDto
+        private businessService: BusinessService
          ) { }
 
     ngOnInit() {
@@ -94,11 +94,10 @@ export class BusinessRegisterComponent implements OnInit {
         );
         //create new service
         const payload_service: ServiceCreateDto = {
-            id: 0,  // why we have id in the ServiceCreateDto??? I will add for now
             name: this.secondFormGroup.controls['service'].value,
             duration: this.secondFormGroup.controls['service_duration'].value,
             };
-        this.businessService.createBusiness(payload_business).subscribe(
+        this.serviceService.createService(payload_service).subscribe(
             res => {
 
             },

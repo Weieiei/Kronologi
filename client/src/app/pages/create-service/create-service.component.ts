@@ -35,7 +35,6 @@ export class CreateServiceComponent implements OnInit {
 
     createService() {
         const serviceCreateDTO: ServiceCreateDto = {
-            id: 0,
             name: this.serviceForm.value.name,
             duration: this.serviceForm.value.duration
         };
