@@ -57,4 +57,10 @@ export class AppointmentsComponent implements OnInit {
             err => console.log(err)
         );
     }
+
+    login(){
+        this.appointmentService.googleLogin().subscribe(result=>{
+            window.location.href = result['url'];
+        })
+    }
 }

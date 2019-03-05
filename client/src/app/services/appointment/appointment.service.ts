@@ -51,4 +51,8 @@ export class AppointmentService {
     public cancelAppointmentReason(id:any): Observable<any>{
         return this.http.get(['api', 'appointments','cancel',id].join('/'));
     }
+
+    public googleLogin(): Observable<any>{
+        return this.http.get(['api', 'google','login','google'].join('/'));
+    }
 }
