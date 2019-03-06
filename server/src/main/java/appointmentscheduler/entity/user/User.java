@@ -3,7 +3,6 @@ package appointmentscheduler.entity.user;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
-import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.settings.Settings;
@@ -50,9 +49,9 @@ public class User extends AuditableEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Set<Role> roles;*/
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
 
     @OneToOne(
             cascade = CascadeType.ALL,
@@ -77,12 +76,12 @@ public class User extends AuditableEntity {
         return obj instanceof User && ((User) obj).getId() == this.getId();
     }
 
-    public Role getRole() {
-        return role;
+    public String getRole() {
+        return role.toString();
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRole(String role) {
+        this.role =  RoleEnum.valueOf(role);
     }
 
     public long getId() {

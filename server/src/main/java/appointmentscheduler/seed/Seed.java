@@ -5,7 +5,6 @@ import appointmentscheduler.entity.appointment.AppointmentFactory;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.employee_service;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
-import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.service.ServiceFactory;
@@ -54,8 +53,6 @@ public class Seed {
     @Autowired
     private VerificationRepository verificationRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Autowired
     private BusinessRepository businessRepository;
@@ -86,36 +83,33 @@ public class Seed {
 
     public void seedAdminAndClientsAndPhoneNumbers() throws NoSuchAlgorithmException{
 
-        Role adminRole = new Role(RoleEnum.ADMIN);
-        Role clientRole = new Role(RoleEnum.CLIENT);
-        roleRepository.save(clientRole);
-        roleRepository.save(adminRole);
+
         User admin = UserFactory.createUser(business, User.class, "Admin", "User", "admin@admin.com", hash("admin123"));
         admin.setVerified(true);
         //admin.setRole(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
-        admin.setRole(adminRole);
+        admin.setRole(RoleEnum.ADMIN.toString());
         User adminCopy = UserFactory.createUser(business, User.class, "Admin", "User", "admin@admin.com", hash(
                 "admin123"));
         adminCopy.setVerified(true);
 
-        adminCopy.setRole(clientRole);
+        adminCopy.setRole(RoleEnum.CLIENT.toString());
 
         User client1 = UserFactory.createUser(business, User.class, "John", "Doe", "johndoe@johndoe.com", hash(
                 "johndoe123"));
-        client1.setRole(clientRole);
+        client1.setRole(RoleEnum.CLIENT.toString());
 
         User client1Copy = UserFactory.createUser(business, User.class, "John", "Doe", "johndoe@johndoe.com", hash(
                 "johndoe123"));
-        client1Copy.setRole(clientRole);
+        client1Copy.setRole(RoleEnum.CLIENT.toString());
 
         User client2 = UserFactory.createUser(business, User.class, "Test", "User", "test@test.com", hash("test123"));
         client2.setVerified(true);
-        client2.setRole(clientRole);
+        client2.setRole(RoleEnum.CLIENT.toString());
         //client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         User client3 = UserFactory.createUser(business, User.class, "Test2", "User", "test2@test.com", hash("test123"));
 //        client3.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
-        client3.setRole(clientRole);
+        client3.setRole(RoleEnum.CLIENT.toString());
 
         Verification verifyUser1 = new Verification(client1);
         Verification verifyUser2 = new Verification(client2);
@@ -152,10 +146,6 @@ public class Seed {
 
         serviceRepository.saveAll(services);
 
-        // Employee Role
-        Role employeeRole = new Role(RoleEnum.EMPLOYEE);
-        roleRepository.save(employeeRole);
-
         // Create services for employees
 
         Set<Service> set = new HashSet<>(Arrays.asList(
@@ -169,7 +159,7 @@ public class Seed {
         employee.setVerified(true);
         employee.setShifts(generateShifts(employee));
 //        employee.setRoles(Sets.newHashSet(employeeRole));
-        employee.setRole(employeeRole);
+        employee.setRole(RoleEnum.EMPLOYEE.toString());
         employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
         Employee employee2 = (Employee) UserFactory.createUser(business, Employee.class, "Employee2", "User",
@@ -178,7 +168,7 @@ public class Seed {
         employee2.setVerified(true);
         employee2.setShifts(generateShifts(employee2));
 //        employee2.setRoles(Sets.newHashSet(employeeRole));
-        employee2.setRole(employeeRole);
+        employee2.setRole(RoleEnum.EMPLOYEE.toString());
 
         Employee employee3 = (Employee) UserFactory.createUser(business2, Employee.class, "Employee3", "User",
                 "employee3@employee.com", hash("employee123"));
@@ -186,14 +176,14 @@ public class Seed {
         employee3.setVerified(true);
         employee3.setShifts(generateShifts(employee3));
 //        employee3.setRoles(Sets.newHashSet(employeeRole));
-        employee3.setRole(employeeRole);
+        employee3.setRole(RoleEnum.EMPLOYEE.toString());
         Employee employee4 = (Employee) UserFactory.createUser(business2, Employee.class, "Employee4", "User",
                 "employe4e@employee.com", hash("employee123"));
      //   employee4.setServices(set);
         employee4.setVerified(true);
         employee4.setShifts(generateShifts(employee4));
 //        employee4.setRoles(Sets.newHashSet(employeeRole));
-        employee4.setRole(employeeRole);
+        employee4.setRole(RoleEnum.EMPLOYEE.toString());
 
         employeeRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
 
@@ -246,7 +236,7 @@ public class Seed {
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
-                business, clients.get(3), employees.get(2), services.get(4),
+                business, clients.get(2), employees.get(2), services.get(4),
                 LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(12, 0), "Some note"
         ));
 
@@ -262,7 +252,7 @@ public class Seed {
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
-                business, clients.get(3), employees.get(2), services.get(4),
+                business, clients.get(2), employees.get(2), services.get(4),
                 LocalDate.of(2018, Month.MARCH, 30), LocalTime.of(12, 0), "Some note"
         ));
 

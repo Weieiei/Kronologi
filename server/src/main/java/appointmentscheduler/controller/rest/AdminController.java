@@ -6,16 +6,13 @@ import appointmentscheduler.dto.employee.EmployeeShiftDTO;
 import appointmentscheduler.dto.service.ServiceCreateDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
-import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.repository.EmployeeRepository;
-import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.serializer.*;
 import appointmentscheduler.service.appointment.AppointmentService;
@@ -25,7 +22,6 @@ import appointmentscheduler.service.service.ServiceService;
 import appointmentscheduler.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +41,6 @@ public class AdminController extends AbstractController {
 
     private AppointmentService appointmentService;
     private UserService userService;
-    private RoleRepository roleRepository;
     private ServiceService serviceService;
     private ServiceRepository serviceRepository;
     private EmployeeRepository wmployeeRepository;
@@ -57,14 +52,12 @@ public class AdminController extends AbstractController {
 
     //from ema's branch
     @Autowired
-    public AdminController( AppointmentService appointmentService, UserService userService, ServiceService serviceService,
-                            RoleRepository roleRepository, ServiceRepository serviceRepository,
+    public AdminController( AppointmentService appointmentService, UserService userService, ServiceService serviceService, ServiceRepository serviceRepository,
                            EmployeeRepository employeeRepository, EmployeeShiftService employeeShiftService,
                             ObjectMapperFactory objectMapperFactory) {
         this.appointmentService = appointmentService;
         this.userService = userService;
         this.serviceService = serviceService;
-        this.roleRepository = roleRepository;
         this.serviceRepository = serviceRepository;
         this.employeeShiftService = employeeShiftService;
         this.objectMapperFactory = objectMapperFactory;
@@ -162,10 +155,10 @@ public class AdminController extends AbstractController {
         return ResponseEntity.ok(userService.updateUser(user));
     }*/
     //todo change to new backend
-    private boolean containAnyRole(Set<Role> roles, RoleEnum roleType) {
+   /* private boolean containAnyRole(Set<Role> roles, RoleEnum roleType) {
         return roles.stream().anyMatch(role -> role.getRole() == roleType);
     }
-
+*/
     //todo change to new backend , user table doesnt have businessId
     // for assigning services to employees (employees can perform certain services)
     /*@PostMapping("business/{businessId}/admin/service/{employeeId}/{serviceId}")

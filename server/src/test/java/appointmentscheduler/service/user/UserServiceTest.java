@@ -42,8 +42,6 @@ public class UserServiceTest {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private UserRepository userRepository;
 
-    @Mock
-    private RoleRepository roleRepository;
 
     @Mock
     private VerificationRepository verificationRepository;
@@ -68,7 +66,7 @@ public class UserServiceTest {
     @Before
     public void before() {
         userService = new UserService(
-                userRepository, roleRepository, jwtProvider, verificationRepository,
+                userRepository, jwtProvider, verificationRepository,
                 bCryptPasswordEncoder, authenticationManager, settingsRepository, phoneNumberRepository
         );
     }

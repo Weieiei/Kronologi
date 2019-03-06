@@ -2,7 +2,7 @@ package appointmentscheduler.serializer;
 
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.repository.RoleRepository;
+import appointmentscheduler.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class AdminChangeRoleSerializer extends StdSerializer<User>{
 
-    private RoleRepository roleRepository;
+    private UserRepository roleRepository;
 
     public AdminChangeRoleSerializer() {
         this(null);

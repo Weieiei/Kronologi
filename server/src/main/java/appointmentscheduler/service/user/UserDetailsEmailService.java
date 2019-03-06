@@ -38,7 +38,7 @@ public class UserDetailsEmailService implements UserDetailsService {
 //            authorities.add(new SimpleGrantedAuthority(role.getRole().name()));
 //        });
 
-        authorities.add(new SimpleGrantedAuthority(user.getRole().getRole().name()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
         return authorities;
 

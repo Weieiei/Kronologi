@@ -7,14 +7,12 @@ import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
-import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.PhoneNumberRepository;
-import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.SettingsRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.repository.VerificationRepository;
@@ -36,15 +34,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class UserService {
 
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final VerificationRepository verificationRepository;
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -54,12 +49,11 @@ public class UserService {
 
     @Autowired
     public UserService(
-            UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider,
+            UserRepository userRepository, JwtProvider jwtProvider,
             VerificationRepository verificationRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
             AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
     ) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.verificationRepository = verificationRepository;
         this.jwtProvider = jwtProvider;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
