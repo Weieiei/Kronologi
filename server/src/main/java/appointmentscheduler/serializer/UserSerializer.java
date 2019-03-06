@@ -32,7 +32,7 @@ public class UserSerializer extends StdSerializer<User> {
         gen.writeStringField("firstName", user.getFirstName());
         gen.writeObjectField("lastName", user.getLastName());
         gen.writeObjectField("email", user.getEmail());
-        gen.writeObjectField("roles", user.getRoles());
+        gen.writeObjectField("roles", user.getRole());
 
         if (user instanceof Employee) {
             gen.writeArrayFieldStart("services");

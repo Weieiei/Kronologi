@@ -148,7 +148,7 @@ public class AdminController extends AbstractController {
 
     //todo change to new backend
 //todo refactor to use existing code , user table doesnt have businessId
-    @PostMapping("/admin/user/employee/{id}")
+   /* @PostMapping("/admin/user/employee/{id}")
     public ResponseEntity<Map<String, String>> changeRoleToEmployee(@PathVariable long businessId,
                                                                     @PathVariable long id){
         User user = this.userService.findUserByIdAndBusinessId(id, businessId);
@@ -160,7 +160,7 @@ public class AdminController extends AbstractController {
         }
         user.addRoles(this.roleRepository.findByRole(RoleEnum.EMPLOYEE));
         return ResponseEntity.ok(userService.updateUser(user));
-    }
+    }*/
     //todo change to new backend
     private boolean containAnyRole(Set<Role> roles, RoleEnum roleType) {
         return roles.stream().anyMatch(role -> role.getRole() == roleType);
@@ -168,7 +168,7 @@ public class AdminController extends AbstractController {
 
     //todo change to new backend , user table doesnt have businessId
     // for assigning services to employees (employees can perform certain services)
-    @PostMapping("business/{businessId}/admin/service/{employeeId}/{serviceId}")
+    /*@PostMapping("business/{businessId}/admin/service/{employeeId}/{serviceId}")
     public ResponseEntity<Map<String, String>> assignService(@PathVariable long businessId,
                                                              @PathVariable long employeeId, @PathVariable long serviceId){
         User user = this.userService.findUserByIdAndBusinessId(employeeId, businessId);
@@ -178,7 +178,7 @@ public class AdminController extends AbstractController {
             user.addEmployeeService(service);
             return ResponseEntity.ok(message("service assigned"));
         }).orElseThrow(() -> new ResourceNotFoundException(String.format("Service id %d not found.", serviceId)));
-    }
+    }*/
 
 
     // for adding a new service

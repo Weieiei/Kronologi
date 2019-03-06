@@ -89,8 +89,8 @@ public class UserService {
             phoneNumber.setUser(user);
 
         }
-
-        user.setRoles(Stream.of(roleRepository.findByRole(RoleEnum.CLIENT)).collect(Collectors.toSet()));
+    //TODO fix this for user having a single role
+      //  user.setRole(Stream.of(roleRepository.findByRole(RoleEnum.CLIENT)).collect(Collectors.toSet()));
 
         User savedUser = userRepository.save(user);
 

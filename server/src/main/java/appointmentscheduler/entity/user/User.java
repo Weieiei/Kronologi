@@ -43,13 +43,16 @@ public class User extends AuditableEntity {
     @JoinColumn(name = "business_id")
     private Business business;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+/*    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
-    private Set<Role> roles;
+    private Set<Role> roles;*/
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @OneToOne(
             cascade = CascadeType.ALL,
@@ -72,6 +75,14 @@ public class User extends AuditableEntity {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof User && ((User) obj).getId() == this.getId();
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public long getId() {
@@ -118,6 +129,7 @@ public class User extends AuditableEntity {
         this.password = password;
     }
 
+/*
     public Set<Role> getRoles() {
         return roles;
     }
@@ -133,6 +145,7 @@ public class User extends AuditableEntity {
     public void addRoles(Role role) {
         this.roles.add(role);
     }
+*/
 
     public List<Service> getEmployeeServices() {
         return employeeServices;

@@ -55,6 +55,9 @@ public class Seed {
     private VerificationRepository verificationRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private BusinessRepository businessRepository;
 
     @Autowired
@@ -71,8 +74,8 @@ public class Seed {
         business2 = new Business("2", "2", "2");
         businessRepository.save(business2);
 
-        boolean noAdmin = userRepository.findByRoles_Role(RoleEnum.ADMIN).isEmpty();
-
+      //  boolean noAdmin = userRepository.findByRoles_Role(RoleEnum.ADMIN).isEmpty();
+        boolean noAdmin = true;
         if (noAdmin) {
             seedAdminAndClientsAndPhoneNumbers();
             seedEmployeeServicesAndShifts();
@@ -85,21 +88,34 @@ public class Seed {
 
         Role adminRole = new Role(RoleEnum.ADMIN);
         Role clientRole = new Role(RoleEnum.CLIENT);
-
+        roleRepository.save(clientRole);
+        roleRepository.save(adminRole);
         User admin = UserFactory.createUser(business, User.class, "Admin", "User", "admin@admin.com", hash("admin123"));
         admin.setVerified(true);
-        admin.setRoles(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
+        //admin.setRole(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
+        admin.setRole(adminRole);
+        User adminCopy = UserFactory.createUser(business, User.class, "Admin", "User", "admin@admin.com", hash(
+                "admin123"));
+        adminCopy.setVerified(true);
+
+        adminCopy.setRole(clientRole);
 
         User client1 = UserFactory.createUser(business, User.class, "John", "Doe", "johndoe@johndoe.com", hash(
                 "johndoe123"));
-        client1.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
+        client1.setRole(clientRole);
+
+        User client1Copy = UserFactory.createUser(business, User.class, "John", "Doe", "johndoe@johndoe.com", hash(
+                "johndoe123"));
+        client1Copy.setRole(clientRole);
 
         User client2 = UserFactory.createUser(business, User.class, "Test", "User", "test@test.com", hash("test123"));
         client2.setVerified(true);
-        client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
+        client2.setRole(clientRole);
+        //client2.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
 
         User client3 = UserFactory.createUser(business, User.class, "Test2", "User", "test2@test.com", hash("test123"));
-        client3.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
+//        client3.setRoles(Stream.of(clientRole).collect(Collectors.toSet()));
+        client3.setRole(clientRole);
 
         Verification verifyUser1 = new Verification(client1);
         Verification verifyUser2 = new Verification(client2);
@@ -138,7 +154,7 @@ public class Seed {
 
         // Employee Role
         Role employeeRole = new Role(RoleEnum.EMPLOYEE);
-
+        roleRepository.save(employeeRole);
 
         // Create services for employees
 
@@ -152,7 +168,8 @@ public class Seed {
        // employee.setServices(set);
         employee.setVerified(true);
         employee.setShifts(generateShifts(employee));
-        employee.setRoles(Sets.newHashSet(employeeRole));
+//        employee.setRoles(Sets.newHashSet(employeeRole));
+        employee.setRole(employeeRole);
         employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
 
         Employee employee2 = (Employee) UserFactory.createUser(business, Employee.class, "Employee2", "User",
@@ -160,22 +177,23 @@ public class Seed {
       //  employee2.setServices(set);
         employee2.setVerified(true);
         employee2.setShifts(generateShifts(employee2));
-        employee2.setRoles(Sets.newHashSet(employeeRole));
+//        employee2.setRoles(Sets.newHashSet(employeeRole));
+        employee2.setRole(employeeRole);
 
         Employee employee3 = (Employee) UserFactory.createUser(business2, Employee.class, "Employee3", "User",
                 "employee3@employee.com", hash("employee123"));
         //employee3.setServices(set);
         employee3.setVerified(true);
         employee3.setShifts(generateShifts(employee3));
-        employee3.setRoles(Sets.newHashSet(employeeRole));
-
+//        employee3.setRoles(Sets.newHashSet(employeeRole));
+        employee3.setRole(employeeRole);
         Employee employee4 = (Employee) UserFactory.createUser(business2, Employee.class, "Employee4", "User",
                 "employe4e@employee.com", hash("employee123"));
-      //  employee4.setServices(set);
+     //   employee4.setServices(set);
         employee4.setVerified(true);
         employee4.setShifts(generateShifts(employee4));
-        employee4.setRoles(Sets.newHashSet(employeeRole));
-
+//        employee4.setRoles(Sets.newHashSet(employeeRole));
+        employee4.setRole(employeeRole);
 
         employeeRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
 
@@ -206,7 +224,7 @@ public class Seed {
 
     public void seedAppointments() {
 
-        List<User> clients = userRepository.findByRoles_Role(RoleEnum.CLIENT);
+        List<User> clients = userRepository.findByRole(RoleEnum.CLIENT);
         List<Employee> employees = employeeRepository.findAll();
         List<Service> services = serviceRepository.findAll();
 
