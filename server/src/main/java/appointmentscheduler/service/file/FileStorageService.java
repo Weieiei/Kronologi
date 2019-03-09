@@ -15,7 +15,8 @@ public class FileStorageService {
     @Autowired
     private FileRepository fileRepository;
 
-    public File saveFile(MultipartFile file) {
+
+    public  File saveFile(MultipartFile file) {
         // clean file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
