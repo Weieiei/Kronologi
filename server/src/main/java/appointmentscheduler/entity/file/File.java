@@ -16,7 +16,6 @@ public class File {
 
     private String fileType;
 
-    private String contentType;
 
     private long size;
 
@@ -27,12 +26,11 @@ public class File {
 
     }
 
-    public File(String fileName, String fileType, byte[] data, String contentType) {
+    public File(String fileName, String fileType, byte[] data) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.data = data;
         size = data.length;
-        this.contentType = contentType;
     }
 
     public String getFileType() {
@@ -55,7 +53,4 @@ public class File {
         return  size;
     }
 
-    public String getContentType() {
-        return contentType;
-    }
 }
