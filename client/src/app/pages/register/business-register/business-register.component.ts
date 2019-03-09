@@ -13,16 +13,16 @@ import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
 
 
-@Component({
+@Component ({
   selector: 'app-business-register',
   templateUrl: './business-register.component.html',
   styleUrls: ['./business-register.component.scss']
 })
 export class BusinessRegisterComponent implements OnInit {
 
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-
+    firstFormGroup: FormGroup;
+    secondFormGroup: FormGroup;
+    thirdFormGroup: FormGroup;
     selectedFile: File = null;
 // new business object
     businessName: string;
@@ -65,6 +65,9 @@ export class BusinessRegisterComponent implements OnInit {
         this.secondFormGroup = this._formBuilder.group({
           secondCtrl: ['', Validators.required]
         });
+        this.thirdFormGroup = this._formBuilder.group({
+            thirdCtrl: ['', Validators.required]
+          });
       }
 
     onFileSelected(event) {
@@ -94,8 +97,8 @@ export class BusinessRegisterComponent implements OnInit {
         );
         //create new service
         const payload_service: ServiceCreateDto = {
-            name: this.secondFormGroup.controls['service'].value,
-            duration: this.secondFormGroup.controls['service_duration'].value,
+            name: this.thirdFormGroup.controls['service'].value,
+            duration: this.thirdFormGroup.controls['service_duration'].value,
             };
         this.serviceService.createService(payload_service).subscribe(
             res => {

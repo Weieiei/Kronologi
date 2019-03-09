@@ -3,9 +3,10 @@
         <img src="assets/images/asapp_logo.png" width="128"/>
         <span class="title">Register a business account</span>
 
-<mat-horizontal-stepper [linear]="isLinear" #stepper>
+<mat-horizontal-stepper [linear]="isLinear" #stepper class = "stepper">
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
+    <ng-template matStepLabel>Personal Information</ng-template>
                 <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>First Name</mat-label>
@@ -83,12 +84,14 @@
 
 
       <div>
-        <button mat-button matStepperNext color="primary" fxLayoutAlign="space-between">Next</button>
+       <button mat-button matStepperNext>Next</button>
+
       </div>
     </form>
 
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
+  <ng-template matStepLabel>Business Information</ng-template>
     <form [formGroup]="secondFormGroup">
 
       <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
@@ -121,6 +124,25 @@
 
 
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+            <p> Upload your business logo </p>
+            <input type="file" (change) = "onFileSelected($event)" placeholder="Upload file" accept=".jpeg,.png">
+            <button mat-button color="primary" type="button" (click)="onUpload()">Upload</button>
+
+            </div>
+            <div>
+             <button mat-button matStepperNext>Next</button>
+             <button mat-button matStepperPrevious>Back</button>
+        </div>
+
+
+    </form>
+  </mat-step>
+
+<mat-step [stepControl]="thirdFormGroup">
+<ng-template matStepLabel>Service Information</ng-template>
+    <form [formGroup]="thirdFormGroup">
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                 <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Add a service that your business offers</mat-label>
                             <input matInput [(ngModel)]="service" [ngModelOptions]="{standalone: true}" type="text" name="service" pattern=".{1,}" required appAutofocus>
@@ -135,12 +157,7 @@
             </div>
 
 
-            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-            <p> Upload your business logo </p>
-            <input type="file" (change) = "onFileSelected($event)" placeholder="Upload file" accept=".jpeg,.png">
-            <button mat-button color="primary" type="button" (click)="onUpload()">Upload</button>
 
-            </div>
             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
             <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
             <button mat-raised-button color="primary" type="submit">Register</button>
