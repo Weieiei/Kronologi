@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
+@RequestMapping(value = "/${rest.api.path}/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FileController {
 
     @Autowired

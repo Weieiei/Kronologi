@@ -12,8 +12,10 @@ public class File {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
+    @Column(name = "name")
     private String fileName;
 
+    @Column(name = "type")
     private String fileType;
 
 
