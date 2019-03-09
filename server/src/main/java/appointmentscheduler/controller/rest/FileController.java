@@ -20,7 +20,7 @@ public class FileController {
     private FileStorageService fileStorageService;
 
     @PostMapping("/uploadFile")
-    public File uploadFile(@RequestParam("file") MultipartFile aFile) {
+    public String uploadFile(@RequestParam("file") MultipartFile aFile) {
         File file = fileStorageService.saveFile(aFile);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -28,7 +28,7 @@ public class FileController {
                 .path(file.getId())
                 .toUriString();
 
-        return file;
+        return fileDownloadUri;
     }
 
     @GetMapping("/downloadFile/{fileId}")

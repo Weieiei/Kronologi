@@ -15,6 +15,9 @@ public class FileStorageService {
     @Autowired
     private FileRepository fileRepository;
 
+    public FileStorageService(FileRepository fileRepository) {
+        this.fileRepository = fileRepository;
+    }
 
     public  File saveFile(MultipartFile file) {
         // clean file name
