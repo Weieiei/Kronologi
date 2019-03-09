@@ -1,34 +1,43 @@
 package appointmentscheduler.controller.rest;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import appointmentscheduler.controller.rest.AbstractController;
+import appointmentscheduler.entity.verification.GoogleCred;
+import appointmentscheduler.repository.GoogleCredentialRepository;
 import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.employee.EmployeeShiftService;
+import appointmentscheduler.service.googleService.JPADataStoreFactory;
+import appointmentscheduler.service.googleService.JPADataStoreService;
 import appointmentscheduler.service.service.ServiceService;
 import appointmentscheduler.service.user.UserService;
+import appointmentscheduler.util.JwtProvider;
+import com.google.api.client.auth.oauth2.StoredCredential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.util.store.DataStore;
+import com.google.api.client.util.store.DataStoreFactory;
+import com.google.api.client.util.store.DataStoreUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
@@ -47,7 +56,7 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 
 @Controller
-@RequestMapping(value = "/${rest.api.path}/google")
+@RequestMapping(value = "/external/google")
 public class GoogleCalendarController extends AbstractController {
 
     private final static Log logger = LogFactory.getLog(GoogleCalendarController.class);
@@ -60,6 +69,11 @@ public class GoogleCalendarController extends AbstractController {
     GoogleAuthorizationCodeFlow flow;
     Credential credential;
 
+    @Autowired
+    GoogleCredentialRepository repo;
+
+
+
     @Value("${google.client.client-id}")
     private String clientId;
     @Value("${google.client.client-secret}")
@@ -69,12 +83,13 @@ public class GoogleCalendarController extends AbstractController {
 
     private Set<Event> events = new HashSet<>();
 
-    final DateTime date1 = new DateTime("2017-05-05T16:30:00.000+05:30");
-    final DateTime date2 = new DateTime(new Date());
+    final DateTime date1 = new DateTime(new Date());
 
+    private JPADataStoreFactory dataStore;
 
     @Autowired
-    public GoogleCalendarController() {
+    public GoogleCalendarController(JPADataStoreFactory jpaDataStoreFactory) {
+         dataStore  = jpaDataStoreFactory;
     }
     public void setEvents(Set<Event> events) {
         this.events = events;
@@ -91,17 +106,29 @@ public class GoogleCalendarController extends AbstractController {
         //return ResponseEntity.ok(authorize());
     }
 
-    @GetMapping(value = "/login/calendarCallback", params = "code")
-    public ResponseEntity<String> oauth2Callback(@RequestParam(value = "code") String code) {
+    @GetMapping(value = "/login/calendarCallback")
+    public RedirectView oauth2Callback(@RequestParam(value = "code") String code) {
         com.google.api.services.calendar.model.Events eventList;
         String message;
         try {
             TokenResponse response = flow.newTokenRequest(code).setRedirectUri(redirectURI).execute();
-            credential = flow.createAndStoreCredential(response, "userID");
+            logger.warn(response);
+            logger.warn(response.getAccessToken());
+            credential = flow.createAndStoreCredential(response, String.valueOf(getUserId()));
             client = new com.google.api.services.calendar.Calendar.Builder(httpTransport, JSON_FACTORY, credential)
                     .setApplicationName(APPLICATION_NAME).build();
+
+
+            JsonFactory jsonFactory = new JacksonFactory();
+            GoogleCredential credential = new GoogleCredential.Builder()
+                    .setTransport(httpTransport)
+                    .setJsonFactory(jsonFactory)
+                    .setClientSecrets("client_id", "client_secret").build();
+
+            credential.setAccessToken("access_token");
+
             Events events = client.events();
-            eventList = events.list("primary").setTimeMin(date1).setTimeMax(date2).execute();
+            eventList = events.list("primary").setTimeMin(date1).execute();
             message = eventList.getItems().toString();
             System.out.println("My:" + eventList.getItems());
         } catch (Exception e) {
@@ -112,7 +139,7 @@ public class GoogleCalendarController extends AbstractController {
         }
 
         System.out.println("cal message:" + message);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        return new RedirectView("http://localhost:4200/");
     }
 
     public Set<Event> getEvents() throws IOException {
@@ -128,10 +155,14 @@ public class GoogleCalendarController extends AbstractController {
             clientSecrets = new GoogleClientSecrets().setWeb(web);
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets,
-                    Collections.singleton(CalendarScopes.CALENDAR)).build();
+                    Collections.singleton(CalendarScopes.CALENDAR)).setDataStoreFactory(dataStore).build();
         }
-        authorizationUrl = flow.newAuthorizationUrl().setRedirectUri(redirectURI);
+
+        JwtProvider jwt = new JwtProvider();
+        String calendarToken = jwt.generateCalendarToken(getUserId());
+        authorizationUrl = flow.newAuthorizationUrl().setRedirectUri(redirectURI).setState(calendarToken);
         System.out.println("cal authorizationUrl->" + authorizationUrl);
         return authorizationUrl.build();
     }
+
 }

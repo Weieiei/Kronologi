@@ -53,6 +53,6 @@ export class AppointmentService {
     }
 
     public googleLogin(): Observable<any>{
-        return this.http.get(['api', 'google','login','google'].join('/'));
+        return this.http.get(['external', 'google','login','google'].join('/'));
     }
 }
