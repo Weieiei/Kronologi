@@ -184,6 +184,16 @@ public class AppointmentService {
         return appointment;
     }
 
+    public Appointment findMyAppointmentByIdAndBusinessId(long userId, long appointmentId, long businessId) {
+        Appointment appointment = appointmentRepository.findByIdAndBusinessId(appointmentId, businessId).orElse(null);
+
+        if (appointment == null || appointment.getClient().getId() != userId) {
+            throw new NotYourAppointmentException("This appointment either belongs to another user or doesn't exist.");
+        }
+
+        return appointment;
+    }
+
 
     public List<Employee> getAvailableEmployeesByServiceAndByDate(long serviceId, LocalDate date) {
         return employeeRepository.findByServices_IdAndShifts_Date(serviceId, date);

@@ -219,22 +219,22 @@ public class Seed {
 
         appointments.add(AppointmentFactory.createAppointment(
                 business, clients.get(0), employees.get(0), services.get(11),
-                LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12, 0), "Some note"
+                LocalDate.of(2020, Month.FEBRUARY, 27), LocalTime.of(12, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
                 business, clients.get(1), employees.get(0), services.get(6),
-                LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(16, 0), "Some note"
+                LocalDate.of(2020, Month.FEBRUARY, 27), LocalTime.of(16, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
                 business, clients.get(2), employees.get(1), services.get(6),
-                LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0), "Some note"
+                LocalDate.of(2020, Month.MARCH, 6), LocalTime.of(12, 0), "Some note"
         ));
 
         appointments.add(AppointmentFactory.createAppointment(
                 business, clients.get(2), employees.get(2), services.get(4),
-                LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(12, 0), "Some note"
+                LocalDate.of(2020, Month.MARCH, 30), LocalTime.of(12, 0), "Some note"
         ));
 
         //past appointments
@@ -266,11 +266,11 @@ public class Seed {
     private Set<Shift> generateShifts(Employee employee) {
         // Create shifts for employee
         Set<Shift> shifts = new HashSet<>();
-        shifts.add(new Shift (business, employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12,
+        shifts.add(new Shift(business, employee, LocalDate.of(2020, Month.FEBRUARY, 27), LocalTime.of(12,
                 0), LocalTime.of(22, 0)));
-        shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0),
+        shifts.add(new Shift(business, employee, LocalDate.of(2020, Month.MARCH, 6), LocalTime.of(12, 0),
                 LocalTime.of(21, 0)));
-        shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0),
+        shifts.add(new Shift(business, employee, LocalDate.of(2020, Month.MARCH, 30), LocalTime.of(8, 0),
                 LocalTime.of(22, 0)));
         return shifts;
     }

@@ -8,12 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     Optional<Appointment> findByIdAndBusinessIdAndClientId(long appointmentId, long businessId, long clientId);
+
+    Optional<Appointment> findByIdAndBusinessId(long userId, long businessId);
 
     List<Appointment> findByClientId(long clientId);
 
