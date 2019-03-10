@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeShiftService {
@@ -32,16 +31,6 @@ public class EmployeeShiftService {
         this.businessRepository = businessRepository;
     }
 
-//    @Autowired
-//    public EmployeeShiftService(ShiftRepository shiftRepository,
-//                                EmployeeRepository employeeRepository,
-//                                BusinessRepository businessRepository) {
-//        this.shiftRepository = shiftRepository;
-//        this.employeeRepository = employeeRepository;
-//           this.businessRepository = businessRepository;
-//    }
-
-
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
     }
@@ -54,37 +43,20 @@ public class EmployeeShiftService {
     }
 
     public Employee getEmployeeByBusinessId(long id, long businessId) {
-        Employee employee = employeeRepository.findByIdAndBusinessId(id, businessId);
-        if (employee == null)
-                throw new ResourceNotFoundException(String.format("Employee with id %d not found.", id));
-        else
-            return employee;
+        return employeeRepository.findByIdAndBusinessId(id, businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.", id)));
     }
-
-/*
-    public Shift createShift(long employeeId, EmployeeShiftDTO employeeShiftDTO) {
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.", employeeId)));
-
-        Shift shift = ShiftFactory.createShift(employee, employeeShiftDTO.getDate(), employeeShiftDTO.getStartTime(), employeeShiftDTO.getEndTime());
-
-        if(!shiftConflict(employeeId,businessId shift)) {
-            return shiftRepository.save(shift);
-        }
-
-        throw new ShiftConflictException("This shift conflicts with another one that the employee has.");
-    }
-*/
 
     public Shift createShiftForBusiness(long employeeId, long businessId, EmployeeShiftDTO employeeShiftDTO) {
 
-        Employee employee = employeeRepository.findByIdAndBusinessId(employeeId, businessId);
+        Employee employee = employeeRepository.findByIdAndBusinessId(employeeId, businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.",
+                        employeeId)));
         Business business =
                 businessRepository.findById(businessId) .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with id %d not found.", businessId)));
                 if (employee == null) throw new ResourceNotFoundException(String.format("Employee with id %d not " +
                         "found.", employeeId));
 
-//        Shift shift = ShiftFactory.createShift(employee, employeeShiftDTO.getDate(), employeeShiftDTO.getStartTime(), employeeShiftDTO.getEndTime());
     Shift shift = new Shift();
     shift.setEmployee(employee);
     shift.setDate(employeeShiftDTO.getDate());
@@ -130,19 +102,6 @@ public class EmployeeShiftService {
     public List<Shift> getEmployeeShiftsForBusiness(long employeeId, long businessId) {
         return shiftRepository.findByEmployeeIdAndBusinessId(employeeId,businessId);
     }
-
-   /* public Shift modifyShift(long employeeId, EmployeeShiftDTO employeeShiftDTO, long shiftId) {
-        Shift shift = shiftRepository.findById(shiftId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Shift with id %d not found.", shiftId)));
-        shift.setDate(employeeShiftDTO.getDate());
-        shift.setStartTime(employeeShiftDTO.getStartTime());
-        shift.setEndTime(employeeShiftDTO.getEndTime());
-        if(!shiftConflict(employeeId, shift)) {
-           return  shiftRepository.save(shift);
-        }
-        throw new IllegalArgumentException("Shift conflicts with other shift");
-    }*/
-
      public Shift modifyShift(long businessId, long employeeId, EmployeeShiftDTO employeeShiftDTO, long shiftId) {
 
          Shift shift = shiftRepository.findByIdAndBusinessId(shiftId, businessId);

@@ -3,7 +3,7 @@ package appointmentscheduler.seed;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentFactory;
 import appointmentscheduler.entity.business.Business;
-import appointmentscheduler.entity.employee_service.employee_service;
+import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
@@ -11,10 +11,9 @@ import appointmentscheduler.entity.service.ServiceFactory;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.entity.user.UserFactory;
+import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.repository.*;
-import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -26,8 +25,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class Seed {
@@ -85,8 +82,8 @@ public class Seed {
 
 
         User admin = UserFactory.createUser(business, User.class, "Admin", "User", "admin@admin.com", hash("admin123"));
+        admin.setBusiness(business);
         admin.setVerified(true);
-        //admin.setRole(Stream.of(adminRole, clientRole).collect(Collectors.toSet()));
         admin.setRole(RoleEnum.ADMIN.toString());
         User adminCopy = UserFactory.createUser(business, User.class, "Admin", "User", "admin@admin.com", hash(
                 "admin123"));
@@ -188,22 +185,22 @@ public class Seed {
         employeeRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
 
 
-        employee.createService(services.get(0));
-        employee.createService(services.get(1));
-        employee2.createService(services.get(2));
-        employee2.createService(services.get(3));
-        employee2.createService(services.get(4));
-        employee3.createService(services.get(6));
-        employee3.createService(services.get(6));
-        employee4.createService(services.get(6));
-        employee4.createService(services.get(6));
+        employee.createService(services.get(0), business);
+        employee.createService(services.get(1), business);
+        employee2.createService(services.get(2), business);
+        employee2.createService(services.get(3), business);
+        employee2.createService(services.get(4), business);
+        employee3.createService(services.get(6), business);
+        employee3.createService(services.get(6), business);
+        employee4.createService(services.get(6), business);
+        employee4.createService(services.get(6), business);
 
-        Set<employee_service> service1 = employee.getServices();
-        Set<employee_service> service2 = employee2.getServices();
-        Set<employee_service> service3 = employee3.getServices();
-        Set<employee_service> service4 = employee4.getServices();
+        Set<EmployeeService> service1 = employee.getServices();
+        Set<EmployeeService> service2 = employee2.getServices();
+        Set<EmployeeService> service3 = employee3.getServices();
+        Set<EmployeeService> service4 = employee4.getServices();
 
-        Set<employee_service> totalSet = new HashSet<>();
+        Set<EmployeeService> totalSet = new HashSet<>();
         totalSet.addAll(service1);
         totalSet.addAll(service2);
         totalSet.addAll(service3);

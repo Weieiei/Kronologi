@@ -4,16 +4,13 @@ import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
-import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "employee_service")
-public class employee_service extends AuditableEntity {
+public class EmployeeService extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +29,10 @@ public class employee_service extends AuditableEntity {
     @PrimaryKeyJoinColumn(name="service_id", referencedColumnName="id")
     private Service service;
 
-    public employee_service(){}
-    public employee_service(Business business, Employee employee, Service service){
+    public EmployeeService() {
+    }
+
+    public EmployeeService(Business business, Employee employee, Service service) {
         this.businessId = business;
         this.employee = employee;
         this.service = service;

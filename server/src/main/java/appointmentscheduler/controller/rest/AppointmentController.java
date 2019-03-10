@@ -29,10 +29,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @RestController
-@RequestMapping(value = "/${rest.api.path}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/${rest.api.path}", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentController extends AbstractController {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
@@ -81,7 +80,7 @@ public class AppointmentController extends AbstractController {
         return appointment;
     }
 
-    @PostMapping("/business/{id}")
+    @PostMapping("/business/{id}/appointments")
     public ResponseEntity<String> addAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
         Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());

@@ -6,16 +6,15 @@ import appointmentscheduler.dto.user.UpdateEmailDTO;
 import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
-import appointmentscheduler.repository.PhoneNumberRepository;
-import appointmentscheduler.repository.SettingsRepository;
-import appointmentscheduler.repository.UserRepository;
-import appointmentscheduler.repository.VerificationRepository;
+import appointmentscheduler.repository.*;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -40,19 +39,24 @@ public class UserService {
 
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
     private final UserRepository userRepository;
+    private final EmployeeRepository employeeRepository;
     private final VerificationRepository verificationRepository;
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
     private final SettingsRepository settingsRepository;
     private final PhoneNumberRepository phoneNumberRepository;
+    private final BusinessRepository businessRepository;
 
     @Autowired
     public UserService(
-            UserRepository userRepository, JwtProvider jwtProvider,
+            EmployeeRepository employeeRepository, BusinessRepository businessRepository, UserRepository userRepository,
+            JwtProvider jwtProvider,
             VerificationRepository verificationRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
             AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
     ) {
+        this.employeeRepository = employeeRepository;
+        this.businessRepository = businessRepository;
         this.userRepository = userRepository;
         this.verificationRepository = verificationRepository;
         this.jwtProvider = jwtProvider;
@@ -124,26 +128,41 @@ public class UserService {
         return map;
     }
 
+    public User findUserById(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %d not found.", id)));
+    }
+
 //todo change user repository to query the businessId also, user table doesnt have businessId
     public User findUserByIdAndBusinessId(long id, long businessId) {
-        User user = userRepository.findByIdAndBusinessId(id, businessId);
-        if (user==null) {
-            throw new UserDoesNotExistException(
-                    "User id: " + id + " " +
-                            "does not exist.");
-        }
-        else
-            return user;
+        User user = userRepository.findByIdAndBusinessId(id, businessId).
+                orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %d and business id %d " +
+                        "not found.", id, businessId)));
+        return user;
     }
 
-    //TODO change the user repository to include query with businessId
+    public Employee findByIdAndBusinessId(long id, long businessId) {
+        Employee employee = employeeRepository.findByIdAndBusinessId(id, businessId).
+                orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d and business id %d" +
+                        " " +
+                        "not found.", id, businessId)));
+        return employee;
+    }
+
+
     public List<User> findAllByBusinessId(long id) {
-        return userRepository.findAll();
+        return userRepository.findAllByBusinessId(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Users for business ID %d " +
+                        "not found.", id)));
     }
 
-    public Map<String, String> updateUser(User user) throws DataAccessException{
+    public Map<String, String> updateUser(User user, long businessId) throws DataAccessException {
+        Business business = businessRepository.findById(businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with ID %d not found.",
+                        businessId)));
+        user.setBusiness(business);
         userRepository.save(user);
-        return message("user updated");
+        return message("User updated");
     }
 
     private String generateToken(User user, String unhashedPassword) {

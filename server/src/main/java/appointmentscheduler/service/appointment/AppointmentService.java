@@ -3,20 +3,22 @@ package appointmentscheduler.service.appointment;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
-import appointmentscheduler.entity.employee_service.employee_service;
+import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.*;
-import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.AppointmentRepository;
+import appointmentscheduler.repository.CancelledRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
-import appointmentscheduler.repository.CancelledRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class AppointmentService {
@@ -134,7 +136,7 @@ public class AppointmentService {
 
         // Make sure the employee can perform the service requested
         boolean employeeCanDoService = false;
-        for(employee_service service:  appointment.getService().getEmployees()){
+        for (EmployeeService service : appointment.getService().getEmployees()) {
             if(service.getEmployee().getId() == employee.getId()){
                 employeeCanDoService = true;
                 break;
