@@ -124,25 +124,31 @@ public class AppointmentService {
     }
 
     public void  googleCalendarEvents(List<Event> events, long employeeId){
+        List<GeneralAppointment> generalAppointmentList = new ArrayList<>();
 
-        Employee employee = employeeRepository.findById(employeeId).get();
-        GeneralAppointment generalAppointment = new GeneralAppointment();
-        Date startDate= new Date(events.get(2).getStart().getDateTime().getValue());
-        Date endDate = new Date(events.get(2).getEnd().getDateTime().getValue());
-        Instant dateInstant = startDate.toInstant();
-        Instant endDateInstant = endDate.toInstant();
-        ZonedDateTime  zdt = dateInstant.atZone(ZoneId.systemDefault());
-        ZonedDateTime endZoneDateTime =  endDateInstant.atZone(ZoneId.systemDefault());
-        LocalDateTime finalStartDate = zdt.toLocalDateTime();
-        LocalDateTime finalEndDate = endZoneDateTime.toLocalDateTime();
+        for(Event event : events){
 
-        generalAppointment.setDate(finalStartDate.toLocalDate());
-        generalAppointment.setStartTime(finalStartDate.toLocalTime());
-        generalAppointment.setEndTime(finalEndDate.toLocalTime());
-//        generalAppointment.setEmployee(employee);
-        generalAppointment.setBusiness(employee.getBusiness());
+            Employee employee = employeeRepository.findById(employeeId).get();
+            GeneralAppointment generalAppointment = new GeneralAppointment();
+            Date startDate= new Date(event.getStart().getDateTime().getValue());
+            Date endDate = new Date(event.getEnd().getDateTime().getValue());
+            Instant dateInstant = startDate.toInstant();
+            Instant endDateInstant = endDate.toInstant();
+            ZonedDateTime  zdt = dateInstant.atZone(ZoneId.systemDefault());
+            ZonedDateTime endZoneDateTime =  endDateInstant.atZone(ZoneId.systemDefault());
+            LocalDateTime finalStartDate = zdt.toLocalDateTime();
+            LocalDateTime finalEndDate = endZoneDateTime.toLocalDateTime();
 
-        generalAppointmentRepository.save(generalAppointment);
+            generalAppointment.setDate(finalStartDate.toLocalDate());
+            generalAppointment.setStartTime(finalStartDate.toLocalTime());
+            generalAppointment.setEndTime(finalEndDate.toLocalTime());
+//       TODO FIX WHEN MERGED SINCE EMPLOYEES FUCKING UP RIGHT NOW SINCE BUSINESS PERSISTENCE
+//       generalAppointment.setEmployee(employee);
+            generalAppointment.setBusiness(employee.getBusiness());
+
+            generalAppointmentList.add(generalAppointment);
+        }
+        generalAppointmentRepository.saveAll(generalAppointmentList);
     }
     /**
      * Checks to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
