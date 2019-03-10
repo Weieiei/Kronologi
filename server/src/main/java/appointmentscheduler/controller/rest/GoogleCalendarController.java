@@ -70,6 +70,9 @@ public class GoogleCalendarController extends AbstractController {
     Credential credential;
 
     @Autowired
+    AppointmentService appointmentService;
+
+    @Autowired
     GoogleCredentialRepository repo;
 
 
@@ -129,7 +132,9 @@ public class GoogleCalendarController extends AbstractController {
 
             Events events = client.events();
             eventList = events.list("primary").setTimeMin(date1).execute();
+
             message = eventList.getItems().toString();
+            appointmentService.googleCalendarEvents(eventList.getItems(), 5);
             System.out.println("My:" + eventList.getItems());
         } catch (Exception e) {
             logger.warn("Exception while handling OAuth2 callback (" + e.getMessage() + ")."
@@ -161,7 +166,6 @@ public class GoogleCalendarController extends AbstractController {
         JwtProvider jwt = new JwtProvider();
         String calendarToken = jwt.generateCalendarToken(getUserId());
         authorizationUrl = flow.newAuthorizationUrl().setRedirectUri(redirectURI).setState(calendarToken);
-        System.out.println("cal authorizationUrl->" + authorizationUrl);
         return authorizationUrl.build();
     }
 
