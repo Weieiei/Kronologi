@@ -1,6 +1,8 @@
 package appointmentscheduler.controller.rest;
 
+import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.entity.file.File;
+import appointmentscheduler.service.business.BusinessService;
 import appointmentscheduler.service.file.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -19,11 +21,20 @@ public class FileController {
     @Autowired
     private FileStorageService fileStorageService;
 
-    @PostMapping("/uploadFile")
-    public String uploadFile(@RequestParam("file") MultipartFile aFile) {
-        File file = fileStorageService.saveFile(aFile);
+    private final BusinessService businessService;
+
+    public FileController(BusinessService businessService) {
+        this.businessService = businessService;
+    }
+
+    @LogREST
+    @PostMapping("/business/{businessId}/uploadFile")
+    public String uploadFile(@RequestParam("file") MultipartFile aFile, @PathVariable long businessId) {
+        File file = fileStorageService.saveFile(aFile, businessId);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/business/")
+                .path(String.valueOf(businessId))
                 .path("/downloadFile/")
                 .path(file.getId())
                 .toUriString();
@@ -31,10 +42,11 @@ public class FileController {
         return fileDownloadUri;
     }
 
-    @GetMapping("/downloadFile/{fileId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
+    @LogREST
+    @GetMapping("/business/{businessId}/downloadFile/{fileId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId, @PathVariable long businessId) {
         // Load file from database
-        File file = fileStorageService.getFile(fileId);
+        File file = fileStorageService.getFile(fileId, businessId);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(file.getFileType()))

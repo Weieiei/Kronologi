@@ -1,4 +1,5 @@
 package appointmentscheduler.entity.file;
+import appointmentscheduler.entity.business.Business;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -18,6 +19,12 @@ public class File {
     @Column(name = "type")
     private String fileType;
 
+    @Column(name = "fileOrigin")
+    private FileOrigin fileOrigin;
+
+    @ManyToOne
+    @JoinColumn(name = "business_id")
+    private Business business;
 
     private long size;
 
@@ -25,14 +32,25 @@ public class File {
     private byte[] data;
 
     public File() {
-
+        this.fileOrigin = FileOrigin.MISC;
     }
 
-    public File(String fileName, String fileType, byte[] data) {
+    public File(String fileName, String fileType, byte[] data, Business business) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.data = data;
         size = data.length;
+        this.fileOrigin = FileOrigin.MISC;
+        this.business = business;
+    }
+
+    public File(String fileName, String fileType, byte[] data, FileOrigin fileOrigin, Business business) {
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.data = data;
+        size = data.length;
+        this.fileOrigin = fileOrigin;
+        this.business = business;
     }
 
     public String getFileType() {
@@ -55,4 +73,19 @@ public class File {
         return  size;
     }
 
+    public FileOrigin getFileOrigin() {
+        return fileOrigin;
+    }
+
+    public void setFileOrigin(FileOrigin fileOrigin) {
+        this.fileOrigin = fileOrigin;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
 }
