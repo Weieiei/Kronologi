@@ -3,10 +3,16 @@ package appointmentscheduler.service.appointment;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
+import appointmentscheduler.entity.appointment.GeneralAppointment;
 import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.*;
+import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.repository.*;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.Event;
 import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.CancelledRepository;
 import appointmentscheduler.repository.EmployeeRepository;
@@ -14,6 +20,10 @@ import appointmentscheduler.repository.ShiftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.util.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +37,7 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
     private EmployeeRepository employeeRepository;
     private ShiftRepository shiftRepository;
+    private GeneralAppointmentRepository generalAppointmentRepository;
 
 
     public AppointmentService(AppointmentRepository appointmentRepository) {
@@ -49,12 +60,13 @@ public class AppointmentService {
 
     @Autowired
     public AppointmentService(
-            AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository
+            AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository, GeneralAppointmentRepository generalAppointmentRepository
     ) {
         this.cancelledRepository = cancelledRepository;
         this.appointmentRepository = appointmentRepository;
         this.employeeRepository = employeeRepository;
         this.shiftRepository = shiftRepository;
+        this.generalAppointmentRepository = generalAppointmentRepository;
     }
 
     public List<Appointment> findByClientIdAndBusinessId(long clientId, long businessId){
@@ -119,7 +131,32 @@ public class AppointmentService {
 
     }
 
+    public void  googleCalendarEvents(List<Event> events, long employeeId){
+        List<GeneralAppointment> generalAppointmentList = new ArrayList<>();
 
+        for(Event event : events){
+
+            Employee employee = employeeRepository.findById(employeeId).get();
+            GeneralAppointment generalAppointment = new GeneralAppointment();
+            Date startDate= new Date(event.getStart().getDateTime().getValue());
+            Date endDate = new Date(event.getEnd().getDateTime().getValue());
+            Instant dateInstant = startDate.toInstant();
+            Instant endDateInstant = endDate.toInstant();
+            ZonedDateTime  zdt = dateInstant.atZone(ZoneId.systemDefault());
+            ZonedDateTime endZoneDateTime =  endDateInstant.atZone(ZoneId.systemDefault());
+            LocalDateTime finalStartDate = zdt.toLocalDateTime();
+            LocalDateTime finalEndDate = endZoneDateTime.toLocalDateTime();
+
+            generalAppointment.setDate(finalStartDate.toLocalDate());
+            generalAppointment.setStartTime(finalStartDate.toLocalTime());
+            generalAppointment.setEndTime(finalEndDate.toLocalTime());
+            generalAppointment.setEmployee(employee);
+            generalAppointment.setBusiness(employee.getBusiness());
+
+            generalAppointmentList.add(generalAppointment);
+        }
+        generalAppointmentRepository.saveAll(generalAppointmentList);
+    }
     /**
      * Checks to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
      *

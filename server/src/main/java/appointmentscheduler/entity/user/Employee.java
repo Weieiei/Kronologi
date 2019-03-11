@@ -15,7 +15,6 @@ import java.util.Set;
 @Entity
 public class Employee extends User {
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "employee",  fetch=FetchType.EAGER)
     Set<EmployeeService> services = new HashSet<>();
 

@@ -25,6 +25,7 @@ public class EmployeeService extends AuditableEntity {
     @PrimaryKeyJoinColumn(name="employee", referencedColumnName="id")
     private Employee employee;
 
+    @JsonBackReference
     @ManyToOne
     @PrimaryKeyJoinColumn(name="service_id", referencedColumnName="id")
     private Service service;

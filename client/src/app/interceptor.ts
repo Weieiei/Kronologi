@@ -18,7 +18,7 @@ export class UrlInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
 
         // Forward all api/ paths to server path.
-        if (request.url.startsWith('api/')) {
+        if (request.url.startsWith('api/')  || request.url.startsWith('external')) {
             const url = environment.baseUrl;
             request = request.clone({
                 url: url + request.url,

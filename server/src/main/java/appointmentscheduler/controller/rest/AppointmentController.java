@@ -31,7 +31,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @RestController
-@RequestMapping(value = "/${rest.api.path}", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/${rest.api.path}/business/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentController extends AbstractController {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
@@ -80,8 +80,9 @@ public class AppointmentController extends AbstractController {
         return appointment;
     }
 
-    @PostMapping("/business/{id}/appointments")
-    public ResponseEntity<String> addAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
+    @PostMapping("/{businessId}/appointments")
+    public ResponseEntity<String> addAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO, @PathVariable long businessId) throws MessagingException {
+        appointmentDTO.setBusinessId(businessId);
         Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment savedAppointment = appointmentService.add(appointment);
@@ -89,16 +90,16 @@ public class AppointmentController extends AbstractController {
         return getJson(mapper, savedAppointment);
     }
 
-    @PutMapping("/business/{/{id}")
-    public ResponseEntity<String> update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
+    @PutMapping("/{businessId}")
+    public ResponseEntity<String> update(@PathVariable long businessId, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
         Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        Appointment modifiedAppointment = appointmentService.update(id, getUserId(), appointment);
+        Appointment modifiedAppointment = appointmentService.update(businessId, getUserId(), appointment);
         sendConfirmationMessage(modifiedAppointment, true);
         return getJson(mapper, modifiedAppointment);
     }
 
-    @DeleteMapping("business/{businessId}/{id}")
+    @DeleteMapping("{businessId}/{id}")
     public ResponseEntity delete(@PathVariable long id, @PathVariable long businessId) throws MessagingException {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment cancelledAppointment = appointmentService.cancel(id,businessId, getUserId());
@@ -107,7 +108,7 @@ public class AppointmentController extends AbstractController {
     }
 
     @LogREST
-    @GetMapping("/employees/{serviceId}")
+    @GetMapping("/{businessId}/employee/{serviceId}")
     public ResponseEntity<String> getAvailableEmployeesByServiceAndByDate(@PathVariable long serviceId, @RequestParam String date) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());

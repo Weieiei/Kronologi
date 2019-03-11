@@ -14,7 +14,7 @@ export class AdminService {
     }
 
     public getAllEmployees(): Observable<AdminEmployeeDTO[]> {
-        return this.http.get<AdminEmployeeDTO[]>(['api', 'admin', 'employee'].join('/'));
+        return this.http.get<AdminEmployeeDTO[]>(['api', 'business','admin','1', 'employees'].join('/'));
     }
 
     getEmployee(employeeId: number): Observable<AdminEmployeeDTO> {
