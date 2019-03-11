@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/${rest.api.path}/user")
+@RequestMapping("${rest.api.path}/user")
 public class UserController extends AbstractController {
 
     private final UserService userService;
@@ -148,9 +148,8 @@ public class UserController extends AbstractController {
         return getJson(mapper, appointment);
     }
 
-    //TODO fix this route
     @LogREST
-    @DeleteMapping("/business/{businessId}/appointment/{id}")
+    @PostMapping("/business/{businessId}/appointment/{id}")
     public ResponseEntity<Map<String, String>> delete(@PathVariable long businessId, @PathVariable long id,
                                                       @RequestBody CancelAppointmentDTO cancel) {
         cancel.setIdPersonWhoCancelled(getUserId());

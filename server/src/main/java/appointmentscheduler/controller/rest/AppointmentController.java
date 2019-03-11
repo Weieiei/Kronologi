@@ -89,7 +89,7 @@ public class AppointmentController extends AbstractController {
         return getJson(mapper, savedAppointment);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/business/{/{id}")
     public ResponseEntity<String> update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
         Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
