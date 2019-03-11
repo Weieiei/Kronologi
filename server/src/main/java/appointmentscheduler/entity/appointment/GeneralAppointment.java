@@ -20,10 +20,10 @@ public class GeneralAppointment  extends AuditableEntity {
     @ManyToOne
     @JoinColumn(name = "business_id")
     private Business business;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "employee_id", nullable = false)
-//    private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
 
 
     @Column(name = "date")
@@ -53,14 +53,14 @@ public class GeneralAppointment  extends AuditableEntity {
     public void setBusiness(Business business) {
         this.business = business;
     }
-//
-//    public Employee getEmployee() {
-//        return employee;
-//    }
-//
-//    public void setEmployee(Employee employee) {
-//        this.employee = employee;
-//    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     public LocalTime getStartTime() {
         return startTime;

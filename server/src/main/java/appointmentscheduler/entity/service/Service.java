@@ -24,7 +24,7 @@ public class Service extends AuditableEntity {
     private int duration;
 
 
-    @OneToMany(mappedBy = "businessId",  fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "service",  fetch=FetchType.EAGER)
     Set<EmployeeService> employees = new HashSet<>();
 
 //    @JoinTable(

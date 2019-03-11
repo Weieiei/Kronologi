@@ -11,45 +11,46 @@ import { AppointmentDetailed } from '../../models/appointment/AppointmentDetaile
 @Injectable({
     providedIn: 'root'
 })
+//TODO FIX TO GET REAL BUSINESSID
 export class AppointmentService {
 
     constructor(private http: HttpClient) {
     }
 
     public getAllAppointments(): Observable<AppointmentDetailed[]> {
-        return this.http.get<AppointmentDetailed[]>(['api', 'admin', 'appointments'].join('/'));
+        return this.http.get<AppointmentDetailed[]>(['api','business','admin', '1', 'appointments'].join('/'));
     }
 
     public getMyAppointments(): Observable<UserAppointmentDTO[]> {
-        return this.http.get<UserAppointmentDTO[]>(['api', 'user', 'appointments'].join('/'));
+        return this.http.get<UserAppointmentDTO[]>(['api', 'user', 'business', '1','appointments',].join('/'));
     }
 
     public getAppointmentById(id: number): Observable<UserAppointmentDTO> {
-        return this.http.get<UserAppointmentDTO>(['api', 'user', 'appointments', id].join('/'));
+        return this.http.get<UserAppointmentDTO>(['api', 'user', 'business','1', 'appointments', id].join('/'));
     }
 
     public bookAppointment(payload: BookAppointmentDTO): Observable<any> {
-        return this.http.post<any>(['api', 'appointments'].join('/'), payload);
+        return this.http.post<any>(['api', 'business','appointments','1','appointments'].join('/'), payload);
     }
 
     public updateAppointment(id: number, payload: BookAppointmentDTO): Observable<any> {
-        return this.http.put<any>(['api', 'appointments', id].join('/'), payload);
+        return this.http.put<any>(['api','business','1','appointments', id].join('/'), payload);
     }
 
     public cancelAppointments(id:number, payload: CancelAppointmentDTO): Observable<any> {
-        return this.http.post<CancelAppointmentDTO>(['api','user','appointments',id].join('/'),payload)
+        return this.http.post<CancelAppointmentDTO>(['api','user','business','1','appointments',id].join('/'),payload)
     }
 
     public getMyAppointmentsEmployee(): Observable<Appointment[]> {
-        return this.http.get<Appointment[]>(['api', 'employee', 'appointments'].join('/'));
+        return this.http.get<Appointment[]>(['api', 'business','employee','1','appointments'].join('/'));
     }
 
     public cancelAppointmentsEmployee(appointment:CancelAppointmentDTO): Observable<any>{        
-        return this.http.post<CancelAppointmentDTO>(['api','employee','appointments','cancel'].join('/'),  appointment);
+        return this.http.post<CancelAppointmentDTO>(['api','business','employee','1','appointments','cancel'].join('/'),  appointment);
     }
 
     public cancelAppointmentReason(id:any): Observable<any>{
-        return this.http.get(['api', 'appointments','cancel',id].join('/'));
+        return this.http.get(['api', 'business','appointments','1','cancel',id].join('/'));
     }
 
     public googleLogin(): Observable<any>{

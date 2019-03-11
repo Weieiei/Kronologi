@@ -150,8 +150,7 @@ public class AppointmentService {
             generalAppointment.setDate(finalStartDate.toLocalDate());
             generalAppointment.setStartTime(finalStartDate.toLocalTime());
             generalAppointment.setEndTime(finalEndDate.toLocalTime());
-//       TODO FIX WHEN MERGED SINCE EMPLOYEES FUCKING UP RIGHT NOW SINCE BUSINESS PERSISTENCE
-//       generalAppointment.setEmployee(employee);
+            generalAppointment.setEmployee(employee);
             generalAppointment.setBusiness(employee.getBusiness());
 
             generalAppointmentList.add(generalAppointment);
