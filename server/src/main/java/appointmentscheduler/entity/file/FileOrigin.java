@@ -3,7 +3,7 @@ package appointmentscheduler.entity.file;
 //enum used to determine usage of file
 public enum FileOrigin {
     BUSINESS,
-    EMPLOYEE,
+    USER,
     SERVICE,
     REVIEW,
     MISC
