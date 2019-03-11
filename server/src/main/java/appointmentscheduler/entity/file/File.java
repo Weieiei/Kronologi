@@ -9,9 +9,8 @@ import javax.persistence.*;
 public class File {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @Column(name = "name")
     private String fileName;
@@ -23,7 +22,7 @@ public class File {
     private FileOrigin fileOrigin;
 
     @ManyToOne
-    @JoinColumn(name = "business_id")
+    @JoinColumn(name = "businessId", nullable = true)
     private Business business;
 
     private long size;
@@ -65,7 +64,7 @@ public class File {
         return data;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 

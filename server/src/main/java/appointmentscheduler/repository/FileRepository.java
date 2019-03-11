@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface FileRepository extends JpaRepository<File, String> {
-    Optional<File> findFileByBusinessIdAndAndId(String fileId, long businessId);
+public interface FileRepository extends JpaRepository<File, Long> {
+    Optional<File> findByIdAndBusinessId(long fileId, long businessId);
 }

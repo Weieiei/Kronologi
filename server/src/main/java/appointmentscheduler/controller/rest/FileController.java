@@ -33,10 +33,10 @@ public class FileController {
         File file = fileStorageService.saveFile(aFile, businessId);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/business/")
+                .path("/api/business/")
                 .path(String.valueOf(businessId))
                 .path("/downloadFile/")
-                .path(file.getId())
+                .path(String.valueOf(file.getId()))
                 .toUriString();
 
         return fileDownloadUri;
@@ -44,7 +44,7 @@ public class FileController {
 
     @LogREST
     @GetMapping("/business/{businessId}/downloadFile/{fileId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId, @PathVariable long businessId) {
+    public ResponseEntity<Resource> downloadFile(@PathVariable long businessId, @PathVariable long fileId) {
         // Load file from database
         File file = fileStorageService.getFile(fileId, businessId);
 

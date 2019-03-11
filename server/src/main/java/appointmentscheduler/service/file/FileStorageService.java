@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -46,8 +47,9 @@ public class FileStorageService {
         }
     }
 
-    public File getFile(String fileId, long businessId) {
-        return fileRepository.findFileByBusinessIdAndAndId(fileId, businessId)
+    @Transactional
+    public File getFile(long fileId, long businessId) {
+        return fileRepository.findByIdAndBusinessId(fileId, businessId)
                 .orElseThrow(() -> new FileStorageException("File not found with id " + fileId));
     }
 }

@@ -65,14 +65,14 @@ public class FileStorageServiceTest {
     public void getFile() {
         File expectedFile = new File("test","text/plain", "Spring Framework".getBytes(), business);
         File retrievedFile;
-        when(fileRepository.findFileByBusinessIdAndAndId("test",business.getId())).thenReturn(Optional.of(expectedFile));
-        retrievedFile = fileStorageService.getFile("test", business.getId());
-        verify(fileRepository, times(1)).findFileByBusinessIdAndAndId("test", business.getId());
+        when(fileRepository.findByIdAndBusinessId(1,business.getId())).thenReturn(Optional.of(expectedFile));
+        retrievedFile = fileStorageService.getFile(1, business.getId());
+        verify(fileRepository, times(1)).findByIdAndBusinessId(1, business.getId());
         assertEquals(expectedFile, retrievedFile);
     }
 
     @Test(expected = FileStorageException.class)
     public void getInvalidFile() {
-        fileStorageService.getFile("test", business.getId());
+        fileStorageService.getFile(1, business.getId());
     }
 }
