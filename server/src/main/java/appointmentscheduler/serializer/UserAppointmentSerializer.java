@@ -1,6 +1,7 @@
 package appointmentscheduler.serializer;
 
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -26,14 +27,15 @@ public class UserAppointmentSerializer extends StdSerializer<Appointment> {
         gen.writeStartObject();
 
         gen.writeObjectField("id", appointment.getId());
-        serializeEmployee(appointment.getEmployee(), gen);
-        serializeService(appointment.getService(), gen);
-        serializeUser(appointment.getClient(),gen);
         gen.writeStringField("date", appointment.getDate().toString());
         gen.writeStringField("startTime", appointment.getStartTime().toString());
         gen.writeStringField("endTime", appointment.getEndTime().toString());
         gen.writeStringField("notes", appointment.getNotes());
         gen.writeObjectField("status", appointment.getStatus());
+        serializeBusiness(appointment.getBusiness(), gen);
+        serializeEmployee(appointment.getEmployee(), gen);
+        serializeService(appointment.getService(), gen);
+        serializeUser(appointment.getClient(), gen);
 
         gen.writeEndObject();
     }
@@ -60,6 +62,18 @@ public class UserAppointmentSerializer extends StdSerializer<Appointment> {
         gen.writeStringField("firstName", user.getFirstName());
         gen.writeObjectField("lastName", user.getLastName());
         gen.writeEndObject();
+    }
+
+    public void serializeBusiness(Business business, JsonGenerator gen) throws IOException {
+
+        gen.writeObjectFieldStart("business");
+        gen.writeObjectField("id", business.getId());
+        gen.writeStringField("name", business.getName());
+        gen.writeObjectField("domain", business.getDomain());
+        gen.writeObjectField("description", business.getDescription());
+
+        gen.writeEndObject();
+
     }
 }
 

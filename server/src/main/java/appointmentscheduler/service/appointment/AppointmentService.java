@@ -3,19 +3,22 @@ package appointmentscheduler.service.appointment;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
+import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.*;
-import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.AppointmentRepository;
+import appointmentscheduler.repository.CancelledRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
-import appointmentscheduler.repository.CancelledRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class AppointmentService {
@@ -30,16 +33,18 @@ public class AppointmentService {
         this.appointmentRepository = appointmentRepository;
     }
 
-    public List<Appointment> findAll() {
-        return appointmentRepository.findAll();
+    public List<Appointment> findByBusinessId(long id) {
+        return appointmentRepository.findByBusinessId(id);
     }
 
-    public List<Appointment> findByEmployeeId(long employeeId) {
-        return appointmentRepository.findByEmployeeId(employeeId);
+    public List<Appointment> findByEmployeeIdAndBusinessId(long employeeId, long businessId) {
+        return appointmentRepository.findByEmployeeIdAndBusinessId(employeeId, businessId);
     }
 
-    public List<Appointment> findByBusinessIdAndEmployeeId(long busninessId, long employeeId) {
-        return appointmentRepository.findByBusinessIdAndEmployeeId(busninessId, employeeId);
+    public List<Appointment> findByBusinessIdAndEmployeeId(long businessId, long employeeId) {
+        return appointmentRepository.findByBusinessIdAndEmployeeId(businessId, employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment list with employee id %d " +
+                        "and business id %d not found", employeeId, businessId)));
     }
 
     @Autowired
@@ -52,17 +57,14 @@ public class AppointmentService {
         this.shiftRepository = shiftRepository;
     }
 
-    public List<Appointment> findByClientId(long id) {
-        return appointmentRepository.findByClientId(id);
-    }
-/* //from Ema's branch
-    //for admin to view all appointments for a client
-    public List<Appointment> findByClientId(long id){
-        Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByClientId(id));
-        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with client id %d not found", id)));
+    public List<Appointment> findByClientIdAndBusinessId(long clientId, long businessId){
+        Optional<List<Appointment>> opt =
+                Optional.ofNullable(appointmentRepository.findByClientIdAndBusinessId(clientId, businessId));
+        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with client id %d " +
+                "and business id %d not found", clientId, businessId)));
     }
 
-
+/*
     //for admin to see employee's appointments
     public List<Appointment> findByEmployeeId(long id) {
         Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByEmployeeId(id));
@@ -84,7 +86,7 @@ public class AppointmentService {
 
     public Appointment update(long appointmentId, long clientId, Appointment appointment) {
 
-        return appointmentRepository.findByIdAndClientId(appointmentId, clientId).map(a -> {
+        return appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, appointment.getBusiness().getId(), clientId).map(a -> {
 
             a.setClient(appointment.getClient());
             a.setEmployee(appointment.getEmployee());
@@ -102,9 +104,9 @@ public class AppointmentService {
 
     }
 
-    public Appointment cancel(long appointmentId, long clientId) {
+    public Appointment cancel(long appointmentId, long businessId, long clientId) {
 
-        Appointment appointment = appointmentRepository.findByIdAndClientId(appointmentId, clientId)
+        Appointment appointment = appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, businessId , clientId)
                 .orElseThrow(() -> new NotYourAppointmentException("This appointment either belongs to another user or doesn't exist."));
 
         if (appointment.getStatus().equals(AppointmentStatus.CANCELLED)) {
@@ -139,7 +141,14 @@ public class AppointmentService {
         }
 
         // Make sure the employee can perform the service requested
-        boolean employeeCanDoService = appointment.getService().getEmployees().contains(employee);
+        boolean employeeCanDoService = false;
+        for (EmployeeService service : appointment.getService().getEmployees()) {
+            if(service.getEmployee().getId() == employee.getId()){
+                employeeCanDoService = true;
+                break;
+            }
+        }
+
 
         if (!employeeCanDoService) {
             throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");
@@ -153,7 +162,7 @@ public class AppointmentService {
         }
 
         // Check if the employee does not have an appointment scheduled already in that time slot
-        List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndStatus(appointment.getDate(), employee.getId(), AppointmentStatus.CONFIRMED);
+        List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(appointment.getDate(), employee.getId(), appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
 
         for (Appointment employeeAppointment : employeeAppointments) {
             if (employeeAppointment.isConflicting(appointment) && !(modifying && employeeAppointment.equals(appointment))) {
@@ -162,7 +171,7 @@ public class AppointmentService {
         }
 
         // Check if the client does not have an appointment scheduled already
-        List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndStatus(appointment.getDate(), appointment.getClient().getId(), AppointmentStatus.CONFIRMED);
+        List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndBusinessIdAndStatus(appointment.getDate(), appointment.getClient().getId(),appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
 
         for (Appointment clientAppointment : clientAppointments) {
             if (clientAppointment.isConflicting(appointment) && !(modifying && clientAppointment.equals(appointment))) {
@@ -181,17 +190,27 @@ public class AppointmentService {
         return appointment;
     }
 
+    public Appointment findMyAppointmentByIdAndBusinessId(long userId, long appointmentId, long businessId) {
+        Appointment appointment = appointmentRepository.findByIdAndBusinessId(appointmentId, businessId).orElse(null);
+
+        if (appointment == null || appointment.getClient().getId() != userId) {
+            throw new NotYourAppointmentException("This appointment either belongs to another user or doesn't exist.");
+        }
+
+        return appointment;
+    }
+
 
     public List<Employee> getAvailableEmployeesByServiceAndByDate(long serviceId, LocalDate date) {
         return employeeRepository.findByServices_IdAndShifts_Date(serviceId, date);
     }
 
-    public List<Shift> getEmployeeShiftsByDate(LocalDate date) {
-        return shiftRepository.findByDate(date);
+    public List<Shift> getEmployeeShiftsByDateAndBusinessId(LocalDate date, long businessId) {
+        return shiftRepository.findByDateAndBusinessId(date, businessId);
     }
 
-    public List<Appointment> getConfirmedAppointmentsByDate(LocalDate date) {
-        return appointmentRepository.findByDateAndStatus(date, AppointmentStatus.CONFIRMED);
+    public List<Appointment> getConfirmedAppointmentsByDateAndBusinessId(LocalDate date, long businessId) {
+        return appointmentRepository.findByDateAndStatusAndBusinessId(date, AppointmentStatus.CONFIRMED, businessId);
     }
 
     public Map<String, String> cancel(CancelledAppointment cancel) {
@@ -230,9 +249,8 @@ public class AppointmentService {
         }).orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
     }
 
-    public CancelledAppointment findByCancelledId(long id) {
-        return cancelledRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with id %d not found.", id)));
+    public CancelledAppointment findByCancelledIdAndBusinessId(long id, long businessId) {
+        return cancelledRepository.findByIdAndBusinessId(id, businessId);
     }
 
 
