@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class File {
 
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
