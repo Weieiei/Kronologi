@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import appointmentscheduler.controller.rest.AbstractController;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.repository.GoogleCredentialRepository;
-import appointmentscheduler.repository.RoleRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.service.appointment.AppointmentService;

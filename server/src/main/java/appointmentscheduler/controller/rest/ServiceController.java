@@ -66,7 +66,7 @@ public class ServiceController {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
 
         try {
-            final Service service = serviceService.findByBusinessIdAndServiceId(id,businessId);
+            final Service service = serviceService.findByIdAndBusinessId(id, businessId);
             return ResponseEntity.ok(mapper.writeValueAsString(service));
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();

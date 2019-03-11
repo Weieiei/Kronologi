@@ -14,6 +14,7 @@ import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.serializer.*;
 import appointmentscheduler.service.appointment.AppointmentService;
+import appointmentscheduler.service.business.BusinessService;
 import appointmentscheduler.service.email.EmailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
@@ -28,10 +29,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @RestController
-@RequestMapping(value = "/${rest.api.path}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/${rest.api.path}", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentController extends AbstractController {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
@@ -42,12 +42,13 @@ public class AppointmentController extends AbstractController {
     private final ModelMapper modelMapper;
     private final ObjectMapperFactory objectMapperFactory;
     private final EmailService emailService;
+    private final BusinessService businessService;
 
     @Autowired
     public AppointmentController(
             AppointmentService appointmentService, UserRepository userRepository, ServiceRepository serviceRepository,
             ModelMapper modelMapper, EmployeeRepository employeeRepository, ObjectMapperFactory objectMapperFactory,
-            EmailService emailService
+            EmailService emailService, BusinessService businessService
     ) {
         this.appointmentService = appointmentService;
         this.userRepository = userRepository;
@@ -61,6 +62,7 @@ public class AppointmentController extends AbstractController {
         });
         this.objectMapperFactory = objectMapperFactory;
         this.emailService = emailService;
+        this.businessService = businessService;
     }
 
     private Appointment mapAppointmentDTOToAppointment(AppointmentDTO appointmentDTO) {
@@ -78,8 +80,8 @@ public class AppointmentController extends AbstractController {
         return appointment;
     }
 
-    @PostMapping
-    public ResponseEntity<String> add(@RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
+    @PostMapping("/business/{id}/appointments")
+    public ResponseEntity<String> addAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
         Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment savedAppointment = appointmentService.add(appointment);
@@ -87,7 +89,7 @@ public class AppointmentController extends AbstractController {
         return getJson(mapper, savedAppointment);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/business/{/{id}")
     public ResponseEntity<String> update(@PathVariable long id, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
         Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
@@ -96,10 +98,10 @@ public class AppointmentController extends AbstractController {
         return getJson(mapper, modifiedAppointment);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable long id) throws MessagingException {
+    @DeleteMapping("business/{businessId}/{id}")
+    public ResponseEntity delete(@PathVariable long id, @PathVariable long businessId) throws MessagingException {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        Appointment cancelledAppointment = appointmentService.cancel(id, getUserId());
+        Appointment cancelledAppointment = appointmentService.cancel(id,businessId, getUserId());
         sendCancellationMessage(cancelledAppointment);
         return getJson(mapper, cancelledAppointment);
     }
@@ -113,19 +115,19 @@ public class AppointmentController extends AbstractController {
     }
 
     @LogREST
-    @GetMapping("employee/shifts")
-    public ResponseEntity<String> getEmployeesShift(@RequestParam String date) {
+    @GetMapping("{businessId}/employee/shifts")
+    public ResponseEntity<String> getEmployeesShift(@RequestParam String date, @PathVariable long businessId) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new ShiftSerializer());
-        return getJson(mapper, appointmentService.getEmployeeShiftsByDate(pickedDate));
+        return getJson(mapper, appointmentService.getEmployeeShiftsByDateAndBusinessId(pickedDate, businessId));
     }
 
     @LogREST
-    @GetMapping("employee/appointments")
-    public ResponseEntity<String> getEmployeesConfirmedAppointments(@RequestParam String date) {
+    @GetMapping("{businessId}/employee/appointments")
+    public ResponseEntity<String> getEmployeesConfirmedAppointments(@RequestParam String date, @PathVariable long businessId) {
         LocalDate pickedDate = parseDate(date);
         ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new EmployeeAppointmentSerializer());
-        return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDate(pickedDate));
+        return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDateAndBusinessId(pickedDate,businessId));
     }
 
     private LocalDate parseDate(String date) {
@@ -161,10 +163,10 @@ public class AppointmentController extends AbstractController {
 
     }
 
-    @GetMapping("cancel/{id}")
-    public ResponseEntity<String> findId(@PathVariable long id){
+    @GetMapping("{businessId}/cancel/{id}")
+    public ResponseEntity<String> findId(@PathVariable long id, @PathVariable long businessId){
         ObjectMapper mapper = objectMapperFactory.createMapper(CancelledAppointment.class, new CancelledAppointmentSerializer());
-        return getJson(mapper, appointmentService.findByCancelledId(id));
+        return getJson(mapper, appointmentService.findByCancelledIdAndBusinessId(id,  businessId));
     }
 
 

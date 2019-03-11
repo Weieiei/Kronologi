@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface CancelledRepository extends JpaRepository<CancelledAppointment, Long> {
 
-    Optional<CancelledAppointment> findByAppointmentId(long appointmentId);
+    CancelledAppointment findByIdAndBusinessId(long appointmentId, long businessId);
 }

@@ -29,7 +29,7 @@ public class EmployeeController  extends AbstractController {
     private final BusinessService businessService;
     private CancelledDTOToCancelled cancelledAppointmentConverted;
     @Autowired
-    public EmployeeController(AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory,CancelledDTOToCancelled cancelledAppointmentConverted, BusinessService businessService) {
+    public EmployeeController(AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory, CancelledDTOToCancelled cancelledAppointmentConverted, BusinessService businessService) {
         this.cancelledAppointmentConverted = cancelledAppointmentConverted;
         this.appointmentService = appointmentService;
         this.objectMapperFactory = objectMapperFactory;
@@ -37,18 +37,18 @@ public class EmployeeController  extends AbstractController {
     }
 
     @LogREST
-    @GetMapping(value="/employee/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String>  findByCurrentEmployee() {
-        List<Appointment> listOfAppointment = appointmentService.findByEmployeeId(getUserId());
+    @GetMapping(value = "/business/{businessId}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String>  findByCurrentEmployee(@PathVariable long businessId) {
+        List<Appointment> listOfAppointment = appointmentService.findByEmployeeIdAndBusinessId(getUserId(), businessId);
         listOfAppointment.sort(Comparator.comparing(Appointment::getStartTime)
-                    .thenComparing(Appointment::getDate));
+                .thenComparing(Appointment::getDate));
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         return getJson(mapper, listOfAppointment);
     }
 
     @LogREST
-    @GetMapping(value="/business/{businessId}/employee/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String>  getEmployeeAppointments(@PathVariable long businessId) {
+    @GetMapping(value = "/business/{businessId}/employee/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getEmployeeAppointments(@PathVariable long businessId) {
         List<Appointment> listOfAppointment = appointmentService.findByBusinessIdAndEmployeeId(businessId, getUserId());
         listOfAppointment.sort(Comparator.comparing(Appointment::getStartTime)
                 .thenComparing(Appointment::getDate));

@@ -3,7 +3,6 @@ package appointmentscheduler.entity.user;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
-import appointmentscheduler.entity.role.Role;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.settings.Settings;
@@ -11,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -39,13 +37,12 @@ public class User extends AuditableEntity {
     @Column(name = "verified")
     private boolean verified;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")}
-    )
-    private Set<Role> roles;
+    @ManyToOne
+    @JoinColumn(name = "business_id")
+    private Business business;
+
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
 
     @OneToOne(
             cascade = CascadeType.ALL,
@@ -68,6 +65,14 @@ public class User extends AuditableEntity {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof User && ((User) obj).getId() == this.getId();
+    }
+
+    public String getRole() {
+        return role.toString();
+    }
+
+    public void setRole(String role) {
+        this.role =  RoleEnum.valueOf(role);
     }
 
     public long getId() {
@@ -114,6 +119,7 @@ public class User extends AuditableEntity {
         this.password = password;
     }
 
+/*
     public Set<Role> getRoles() {
         return roles;
     }
@@ -129,6 +135,7 @@ public class User extends AuditableEntity {
     public void addRoles(Role role) {
         this.roles.add(role);
     }
+*/
 
     public List<Service> getEmployeeServices() {
         return employeeServices;
@@ -164,6 +171,14 @@ public class User extends AuditableEntity {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 
     @PrePersist
