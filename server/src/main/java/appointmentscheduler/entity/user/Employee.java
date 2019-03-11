@@ -25,17 +25,13 @@ public class Employee extends User {
     Business business;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shift_id")
     private Set<Shift> shifts;
 
 
     public Set<EmployeeService> getServices() {
         return services;
     }
-
-/*    public void createService(Service service){
-        EmployeeService temp = new EmployeeService(this.business, this, service);
-        this.services.add(temp);
-    }*/
 
     public void createService(Service service, Business business) {
         EmployeeService temp = new EmployeeService(business, this, service);

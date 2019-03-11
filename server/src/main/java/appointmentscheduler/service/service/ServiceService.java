@@ -6,6 +6,7 @@ import appointmentscheduler.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @org.springframework.stereotype.Service
@@ -27,9 +28,14 @@ public class ServiceService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Service with id %d not found for " +
                         "business with id %d.", id, businessId)));
     }
+
     public Map<String, String> add(Service service) {
         serviceRepository.save(service);
         return message("Service successfully added.");
+    }
+
+    public List<Service> findByBusinessId(long businessId) {
+        return serviceRepository.findServicesByBusinessId(businessId);
     }
 
     private Map<String, String> message(String message) {
