@@ -1,7 +1,5 @@
 package appointmentscheduler.service.verification;
 
-import appointmentscheduler.entity.role.Role;
-import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.ResourceNotFoundException;
