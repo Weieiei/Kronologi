@@ -143,7 +143,7 @@ public class GoogleCalendarController extends AbstractController {
         }
 
         System.out.println("cal message:" + message);
-        return new RedirectView("http://localhost:4200/");
+        return new RedirectView("http://localhost:4200/syncCalendars");
     }
 
     public Set<Event> getEvents() throws IOException {

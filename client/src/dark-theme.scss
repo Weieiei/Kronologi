@@ -1,0 +1,14 @@
+@import 'variables';
+@include mat-core();
+
+// mat-palette accepts $palette-name, main, lighter and darker variants
+$dark-theme-primary: mat-palette($mat-deep-purple);
+$dark-theme-accent: mat-palette($mat-blue-grey);
+$dark-theme-warn: mat-palette($mat-pink);
+
+
+$dark-theme: mat-dark-theme(
+        $dark-theme-primary,
+        $dark-theme-accent,
+        $dark-theme-warn
+);
