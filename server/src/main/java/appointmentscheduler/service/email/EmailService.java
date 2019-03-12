@@ -82,7 +82,7 @@ public class EmailService {
 
     public String generateRegistrationMessage(String hash)
     {
-        String message = "Welcome to ASApp! Please Confirm your email by clicking on the button below.<br />" ;
+        String message = "Welcome to Kronologi! Please Confirm your email by clicking on the button below.<br />" ;
         String button = "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">\n" +
                 "  <tr>\n" +
                 "      <td>\n" +

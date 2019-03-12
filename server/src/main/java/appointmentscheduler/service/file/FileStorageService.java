@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class FileStorageService {
@@ -28,6 +29,12 @@ public class FileStorageService {
         this.businessRepository = businessRepository;
     }
 
+    public static boolean verifyNaming(String fileName) {
+        //alphanumeric character followed by dot and alpha character
+        final Pattern pattern = Pattern.compile("\\w*.[A-Z-a-z]");
+        return pattern.matcher(fileName).matches();
+    }
+
     public  File saveFile(MultipartFile file, long businessId) {
         // clean file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -35,7 +42,7 @@ public class FileStorageService {
 
         try {
             // Check if the file's name contains invalid characters
-            if(fileName.contains("..")) {
+            if(!verifyNaming(fileName)) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
