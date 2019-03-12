@@ -1,43 +1,41 @@
 package appointmentscheduler.entity.user;
 
 import appointmentscheduler.entity.business.Business;
-import appointmentscheduler.entity.employee_service.employee_service;
+import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 public class Employee extends User {
 
-
-    @OneToMany
-    Set<employee_service> services = new HashSet<>();
+    @OneToMany(mappedBy = "employee",  fetch=FetchType.EAGER)
+    Set<EmployeeService> services = new HashSet<>();
 
 
     @ManyToOne
-    @JoinColumn(name = "business_id", nullable = true)
+    @JoinColumn(name = "business_id", nullable = false)
     Business business;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "shift_id")
     private Set<Shift> shifts;
 
 
-    public Set<employee_service> getServices() {
+    public Set<EmployeeService> getServices() {
         return services;
     }
 
-    public void createService(Service service){
-        employee_service temp = new employee_service(this.business, this, service);
+    public void createService(Service service, Business business) {
+        EmployeeService temp = new EmployeeService(business, this, service);
         this.services.add(temp);
     }
-
 
     public Business getBusiness() {
         return business;

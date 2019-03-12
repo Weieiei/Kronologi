@@ -1,5 +1,6 @@
 package appointmentscheduler.serializer;
 
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -23,6 +24,7 @@ public class AdminEmployeeShiftSerializer extends StdSerializer<Shift> {
         gen.writeStartObject();
 
         gen.writeObjectField("id", shift.getId());
+        serializeBusiness(shift.getBusiness(), gen);
         serializeEmployee(shift.getEmployee(), gen);
         gen.writeStringField("date", shift.getDate().toString());
         gen.writeStringField("startTime", shift.getStartTime().toString());
@@ -38,5 +40,17 @@ public class AdminEmployeeShiftSerializer extends StdSerializer<Shift> {
         gen.writeStringField("lastName", employee.getLastName());
         gen.writeStringField("email", employee.getEmail());
         gen.writeEndObject();
+    }
+
+    public void serializeBusiness(Business business, JsonGenerator gen) throws IOException {
+
+        gen.writeObjectFieldStart("business");
+        gen.writeObjectField("id", business.getId());
+        gen.writeStringField("name", business.getName());
+        gen.writeObjectField("domain", business.getDomain());
+        gen.writeObjectField("description", business.getDescription());
+
+        gen.writeEndObject();
+
     }
 }

@@ -1,6 +1,9 @@
 package appointmentscheduler.service.business;
 
+import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.BusinessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,6 +15,10 @@ public class BusinessService {
 
     @Autowired
     private BusinessRepository businessRepository;
+
+    public BusinessService(BusinessRepository businessRepository) {
+        this.businessRepository = businessRepository;
+    }
 
     public Map<String, String> add(Business business) {
         try{
@@ -29,4 +36,8 @@ public class BusinessService {
         return map;
     }
 
+    public Business findById(long id) {
+        return businessRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with id %d not found.", id)));
+    }
 }

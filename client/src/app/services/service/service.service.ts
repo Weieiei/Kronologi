@@ -14,18 +14,18 @@ export class ServiceService {
     }
 
     public getServices(): Observable<ServiceDTO[]> {
-        return this.http.get<ServiceDTO[]>(['api', 'services'].join('/'));
+        return this.http.get<ServiceDTO[]>(['api', 'business','services', 1].join('/'));
     }
 
     public getPlainServices(): Observable<Service[]> {
-        return this.http.get<Service[]>(['api', 'services'].join('/'));
+        return this.http.get<Service[]>(['api', 'business','services','1'].join('/'));
     }
 
     public createService(service: ServiceCreateDto): Observable<any> {
-        return this.http.post<Service>(['api', 'admin', 'service'].join('/'), service);
+        return this.http.post<Service>(['api','business', 'admin','1', 'service'].join('/'), service);
     }
 
     public addServiceToUser(employeedId: number, serviceId: number):Observable<any> {
-        return this.http.post<any>(['api', 'admin', 'service', employeedId, serviceId].join('/'), "");
+        return this.http.post<any>(['api', 'business', 'admin','1', 'service', employeedId, serviceId].join('/'), "");
     }
 }

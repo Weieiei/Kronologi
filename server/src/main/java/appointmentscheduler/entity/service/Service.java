@@ -2,12 +2,11 @@ package appointmentscheduler.entity.service;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.business.Business;
-import appointmentscheduler.entity.employee_service.employee_service;
+import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.user.Employee;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,8 +24,8 @@ public class Service extends AuditableEntity {
     private int duration;
 
 
-    @OneToMany
-    Set<employee_service> employees = new HashSet<>();
+    @OneToMany(mappedBy = "service",  fetch=FetchType.EAGER)
+    Set<EmployeeService> employees = new HashSet<>();
 
 //    @JoinTable(
 //            name = "employee_services",
@@ -77,12 +76,12 @@ public class Service extends AuditableEntity {
         this.duration = duration;
     }
 
-    public Set<employee_service> getEmployees() {
+    public Set<EmployeeService> getEmployees() {
         return employees;
     }
 
     public void setEmployee(Employee employee) {
-        employee_service temp = new employee_service(business, employee, this);
+        EmployeeService temp = new EmployeeService(business, employee, this);
         this.employees.add(temp);
     }
 
