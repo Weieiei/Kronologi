@@ -8,6 +8,7 @@ import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -88,7 +89,8 @@ public class UserService {
 
         }
     //TODO fix this for user having a single role
-      //  user.setRole(Stream.of(roleRepository.findByRole(RoleEnum.CLIENT)).collect(Collectors.toSet()));
+        //user.setRole(Stream.of(roleRepository.findByRole(RoleEnum.CLIENT)).collect(Collectors.toSet()));
+        user.setRole(RoleEnum.CLIENT.toString());
 
         User savedUser = userRepository.save(user);
 
