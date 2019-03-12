@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 public class AppointmentDTO {
 
+    private long businessId;
     private long employeeId;
     private long serviceId;
 
@@ -13,6 +14,9 @@ public class AppointmentDTO {
 
     private String notes;
 
+    public long getBusinessId() { return businessId;}
+
+    public void setBusinessId(long businessId){this.businessId = businessId;}
     public long getEmployeeId() {
         return employeeId;
     }

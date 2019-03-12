@@ -1,32 +1,28 @@
 package appointmentscheduler.dto.appointment;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class CancelAppointmentDTO {
 
-    @JsonProperty("idOfAppointment")
-    private long idOfAppointment;
-
-    @JsonProperty("reason")
-    private String reason;
-
+    private long businessId;
+    private long appointmentId;
     private long userWhoCancelled;
+    private String reason;
 
     public CancelAppointmentDTO() {
     }
 
-    public CancelAppointmentDTO(String reason, long idOfAppointment) {
+    public CancelAppointmentDTO(String reason, long appointmentId, long businessId) {
         this.reason = reason;
-        this.idOfAppointment = idOfAppointment;
+        this.appointmentId = appointmentId;
+        this.businessId = businessId;
     }
 
 
     public long getIdOfCancelledAppointment() {
-        return idOfAppointment;
+        return appointmentId;
     }
 
     public void setIdOfCancelledAppointment(long idOfCancelledAppointment) {
-        this.idOfAppointment = idOfCancelledAppointment;
+        this.appointmentId = idOfCancelledAppointment;
     }
 
     public long getIdPersonWhoCancelled(){ return userWhoCancelled; }
@@ -37,4 +33,11 @@ public class CancelAppointmentDTO {
 
     public void  setCancelReason(String cancelReason){ this.reason = cancelReason;}
 
+    public long getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(long businessId) {
+        this.businessId = businessId;
+    }
 }

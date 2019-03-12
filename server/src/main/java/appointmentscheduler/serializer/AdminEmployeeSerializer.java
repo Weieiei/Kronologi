@@ -23,6 +23,7 @@ public class AdminEmployeeSerializer extends StdSerializer<Employee> {
         gen.writeStartObject();
 
         serializeBusiness(employee.getBusiness(), gen);
+
         gen.writeObjectField("id", employee.getId());
         gen.writeStringField("firstName", employee.getFirstName());
         gen.writeObjectField("lastName", employee.getLastName());
@@ -39,4 +40,6 @@ public class AdminEmployeeSerializer extends StdSerializer<Employee> {
         gen.writeObjectField("description", business.getDescription());
         gen.writeEndObject();
     }
+
+
 }

@@ -11,42 +11,34 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "appointments")
-public class Appointment extends AuditableEntity {
+public class Appointment extends GeneralAppointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
     private User client;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
     private Service service;
 
     @ManyToOne
-    @JoinColumn(name = "business_id")
     private Business business;
 
-    @Column(name = "date")
+    private String type;
+
     private LocalDate date;
 
-    @Column(name = "start_time")
     private LocalTime startTime;
 
-    @Column(name = "end_time")
     private LocalTime endTime;
 
-    @Column(name = "notes")
     private String notes;
 
-    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 

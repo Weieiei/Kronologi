@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
@@ -16,4 +17,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     //TODO REFACTOR TO JPQL AND NOT NATIVEQUERY
     @Query(value = "select DISTINCT * from users u INNER JOIN employee_service emp ON emp.employee_id = u.id INNER JOIN employee_shifts shift ON shift.employee_id = u.id where emp.service_id = :#{#serviceId} AND u.dtype = 'Employee' AND shift.date = :#{#date}",nativeQuery = true)
     List<Employee> findByServices_IdAndShifts_Date(@Param("serviceId") long serviceId, @Param("date") LocalDate date);
+
+    List<Employee>  findByBusinessId(long businessId);
+
+    Optional<Employee> findByIdAndBusinessId(long employeeId, long businessId);
 }
