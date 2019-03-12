@@ -57,6 +57,7 @@ import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
 import { ServicesComponent } from './pages/services/services.component';
+import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 
 @NgModule({
     declarations: [
@@ -106,7 +107,8 @@ import { ServicesComponent } from './pages/services/services.component';
         ReasonDialogComponent,
         BusinessViewComponent,
         CardsUiComponent,
-        ServicesComponent
+        ServicesComponent,
+        SyncCalendarsComponent
     ],
     imports: [
         BrowserModule,

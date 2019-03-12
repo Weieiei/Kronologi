@@ -88,6 +88,9 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['employee', 'appts']);
     }
 
+    goToSyncCalendars(){
+        this.router.navigate(['syncCalendars']);
+    }
     goToAdminAppointmens() {
         this.router.navigate(['admin/appts']);
     }

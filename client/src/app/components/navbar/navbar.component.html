@@ -16,12 +16,13 @@
               <ul>
                 <li class="menu-link" routerLink="/business" routerLinkActive="link-active" (click)="goToHome()" >Home</li>
                 <li class="menu-link" routerLink="/settings" routerLinkActive="link-active" (click)="goToSettings()">Settings</li>
-                <li class="menu-link" routerLinkActive="link-active" *ngIf="userService.isAdmin()" (click)="goToEmployees()">Employees</li>
-                <li class="menu-link" routerLinkActive="link-active" *ngIf="userService.isEmployee()" (click)="goToEmployeeAppointments()">Appointments</li>
-                <li class="menu-link " routerLinkActive="link-active" (click)="goToAdminAppointmens()" *ngIf="authService.isAdmin()">Appointments Management</li>
-                <li class="menu-link " routerLinkActive="link-active" (click)="goToAdminServices()" *ngIf="authService.isAdmin()">Services</li> 
-                <li class="menu-link" routerLinkActive="link-active" (click)="goToAdminUsers()" *ngIf="authService.isAdmin()">User Management</li>
-                <li class="menu-link" routerLinkActive="link-active" (click)="logout()">Logout</li>
+                <li class="menu-link" routerLink="/admin/employees" routerLinkActive="link-active" *ngIf="userService.isAdmin()" (click)="goToEmployees()">Employees</li>
+                <li class="menu-link" routerLink="/employee/appts" routerLinkActive="link-active" *ngIf="userService.isEmployee()" (click)="goToEmployeeAppointments()">Appointments</li>
+                <li class="menu-link" routerLink="/syncCalendars" routerLinkActive="link-active" *ngIf="userService.isEmployee()" (click)="goToSyncCalendars()">Sync External Calendar</li>
+                <li class="menu-link " routerLink="/admin/appts" routerLinkActive="link-active" (click)="goToAdminAppointmens()" *ngIf="authService.isAdmin()">Appointments Management</li>
+                <li class="menu-link " routerLink="/admin/services" routerLinkActive="link-active" (click)="goToAdminServices()" *ngIf="authService.isAdmin()">Services</li> 
+                <li class="menu-link" routerLink="/admin/users" routerLinkActive="link-active" (click)="goToAdminUsers()" *ngIf="authService.isAdmin()">User Management</li>
+                <li class="menu-link"  routerLinkActive="link-active" (click)="logout()">Logout</li>
               </ul>
           </section>
           <section class="menu-footer" [ngClass]="{'main__header-dark': darkModeActive}">
