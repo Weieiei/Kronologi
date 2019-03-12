@@ -31,7 +31,7 @@ public class FileStorageService {
 
     public static boolean verifyNaming(String fileName) {
         //alphanumeric character followed by dot and alpha character
-        final Pattern pattern = Pattern.compile("\\w*.[A-Z-a-z]");
+        final Pattern pattern = Pattern.compile("\\w*.[A-Za-z]*");
         return pattern.matcher(fileName).matches();
     }
 
