@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ThemeService} from "../../core/theme/theme.service";
 
 @Component({
     selector: 'app-dashboard',
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
-    constructor() {
+    darkModeActive: boolean;
+    constructor(private themeService: ThemeService) {
     }
 
     ngOnInit() {
+        this.themeService.darkModeState.subscribe(value => {
+            this.darkModeActive = value;
+        })
     }
 }
