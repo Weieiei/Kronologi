@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
                 const token = res['token'];
                 this.userService.setToken(token);
 
-                this.router.navigate(['business']);
+                this.router.navigate(['']);
             },
             err => {
                 this.googleAnalytics.trackValues('security', 'login', 'failure');

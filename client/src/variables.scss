@@ -4,12 +4,11 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-//$primary-palette: mat-palette($mat-deep-orange); //old orange color
-$primary-palette: mat-palette($mat-deep-purple);
+$primary-palette: mat-palette($mat-deep-orange);
 $accent-palette:  mat-palette($mat-light-blue, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$warn-palette:    mat-palette($mat-pink);
+$warn-palette:    mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $app-theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);
@@ -22,10 +21,4 @@ $app-theme: mat-light-theme($primary-palette, $accent-palette, $warn-palette);
 $primary-color: mat-color($primary-palette);
 $accent-color: mat-color($accent-palette);
 $warn-color: mat-color($warn-palette);
-$success-color: #25bf6d;
-
-//Dark theme
-$dark-primary: mat-palette($mat-indigo);
-$dark-accent:  mat-palette($mat-pink, A200, A100, A400);
-$dark-warn:    mat-palette($mat-red);
-$dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+$success-color: #7dbf43;

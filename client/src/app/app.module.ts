@@ -54,10 +54,6 @@ import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-us
 import { AssignServicesDialogComponent } from "./pages/dashboard/home/admin-users/assign-services-dialog/assign-services-dialog.component";
 import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/admin-users/change-client-to-employee-dialog/change-client-to-employee-dialog.component";
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
-import { BusinessViewComponent } from './pages/business-view/business-view.component';
-import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
-import { ServicesComponent } from './pages/services/services.component';
-import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 
 @NgModule({
     declarations: [
@@ -104,11 +100,7 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
         AddShiftFormComponent,
         CancelDialogComponent,
         ReviewComponent,
-        ReasonDialogComponent,
-        BusinessViewComponent,
-        CardsUiComponent,
-        ServicesComponent,
-        SyncCalendarsComponent
+        ReasonDialogComponent
     ],
     imports: [
         BrowserModule,

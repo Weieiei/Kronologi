@@ -1,4 +1,4 @@
-<mat-sidenav-container fullscreen #sidenav [ngClass]="{'main-container__bg-dark mat-drawer-container  mat-hint': darkModeActive}" class="bg-container">
+<mat-sidenav-container fullscreen #sidenav>
     <mat-sidenav #sidenav mode="over">
         <!--	
         <button mat-button id="my-appts-button" *ngIf="authService.loggedIn()" routerLink="/my/appts">My Appointments</button>	
@@ -11,16 +11,13 @@
         <button mat-button>Contact</button>	
         -->
         <mat-nav-list fxFlex="300px">
-            <mat-list-item (click)="sidenav.close()">asdasdasdads</mat-list-item>
-            <mat-list-item (click)="sidenav.close()" routerLink="appointments">ADFOIHPOIUHIUGEHPIUGHEPGIU</mat-list-item>
+            <mat-list-item (click)="sidenav.close()">Profile</mat-list-item>
+            <mat-list-item (click)="sidenav.close()" routerLink="appointments">Appointments</mat-list-item>
         </mat-nav-list>
     </mat-sidenav>
 
     <mat-sidenav-content fxLayout="column">
         <app-navbar [sidenav]="sidenav"></app-navbar>
-        <main class="main__container">
-                <div class="main-container__bg" [ngClass]="{'main-container__bg-dark': darkModeActive}"></div>
-                <router-outlet></router-outlet>
-        </main>
+        <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>
