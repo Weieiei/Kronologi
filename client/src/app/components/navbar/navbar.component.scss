@@ -311,7 +311,13 @@
     transition: opacity 300ms linear;
   }
   
+  .mat-drawer-container-trial {
+    background-color: #fafafa;
+    color: white(0, 0, 0, 0.87);
+}
+
   .main-container__bg-dark {
+
     opacity: 1;
     background: linear-gradient(to bottom, #B290FF, #2E1D65);
     transition: opacity 300ms linear;

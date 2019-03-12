@@ -1,4 +1,11 @@
-.bg-container-dark {
-    background-color: #0a0315;
-    color: whitesmoke;
+
+  .main-container__bg-dark {
+    opacity: 1;
+    background: linear-gradient(to bottom, #B290FF, #2E1D65);
+    transition: opacity 300ms linear;
+  }
+
+.mat-drawer-container{
+    color: white;
 }
+

@@ -9,3 +9,10 @@ div.content {
     background-color: black;
     overflow: auto;
 }
+
+.main-container__bg-dark {
+    opacity: 1;
+    background: linear-gradient(to bottom, #B290FF, #2E1D65);
+    transition: opacity 300ms linear;
+}
+
