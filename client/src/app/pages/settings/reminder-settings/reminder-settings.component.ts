@@ -3,7 +3,6 @@ import { UserService } from '../../../services/user/user.service';
 import { UpdateSettingsDTO } from '../../../interfaces/settings/update-settings-dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBar } from '../../../snackbar';
-import {ThemeService} from "../../../core/theme/theme.service";
 
 @Component({
     selector: 'app-reminder-settings',
@@ -14,22 +13,18 @@ export class ReminderSettingsComponent implements OnInit {
 
     emailReminder: boolean;
     textReminder: boolean;
-    darkModeActive: boolean;
+
     successMessage: string;
     errorMessage: string;
 
     constructor(
         private userService: UserService,
-        private snackBar: SnackBar,
-        public themeService: ThemeService
+        private snackBar: SnackBar
     ) {
     }
 
     ngOnInit() {
         this.getSettings();
-        this.themeService.darkModeState.subscribe(value => {
-            this.darkModeActive = value;
-        })
     }
 
     getSettings(): void {

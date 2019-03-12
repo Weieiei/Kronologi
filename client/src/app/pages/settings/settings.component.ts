@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ThemeService } from "../../core/theme/theme.service";
 
 @Component({
     selector: 'app-settings',
@@ -8,15 +7,10 @@ import { ThemeService } from "../../core/theme/theme.service";
 })
 export class SettingsComponent implements OnInit {
 
-    darkModeActive: boolean;
-
-    constructor(private themeService: ThemeService) {
+    constructor() {
     }
 
     ngOnInit() {
-        this.themeService.darkModeState.subscribe(value => {
-            this.darkModeActive = value;
-        })
     }
 
 }

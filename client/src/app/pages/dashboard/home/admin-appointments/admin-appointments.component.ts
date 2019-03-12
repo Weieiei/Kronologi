@@ -4,7 +4,6 @@ import { AppointmentDetailed } from '../../../../models/appointment/AppointmentD
 import { map } from 'rxjs/operators';
 import { User } from '../../../../models/user/User';
 import { Service } from '../../../../models/service/Service';
-import {ThemeService} from "../../../../core/theme/theme.service";
 
 @Component({
     selector: 'app-admin-appointments',
@@ -15,16 +14,12 @@ export class AdminAppointmentsComponent implements OnInit {
 
     displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee'];
     appointments: AppointmentDetailed[];
-    darkModeActive: boolean;
-    constructor(private appointmentService: AppointmentService, private themeService: ThemeService) {
 
+    constructor(private appointmentService: AppointmentService) {
     }
 
     ngOnInit() {
         this.getAllAppointments();
-        this.themeService.darkModeState.subscribe( value => {
-            this.darkModeActive = value;
-        });
     }
 
     getAllAppointments(): void {
