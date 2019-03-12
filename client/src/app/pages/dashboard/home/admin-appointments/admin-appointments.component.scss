@@ -1,22 +1,3 @@
 table {
     width: 100%;
 }
-
-.appointments-container-dark {
-    color: whitesmoke;
-    opacity: 1;
-    background: #2B244D; //linear-gradient(to bottom, #B290FF, #2E1D65);
-    transition: opacity 300ms linear;
-    table: {
-        //backgroud-color: #f2f2f2;
-        color: whitesmoke;
-    }
-    .mat-cell, .mat-footer-cell {
-        color: whitesmoke;
-    }
-    .mat-header-cell {
-        color: whitesmoke;
-    }
-
-}
-

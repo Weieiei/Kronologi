@@ -13,8 +13,6 @@ export interface DialogData {
 })
 export class ChangeClientToEmployeeDialogComponent {
 
-    displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee', 'status', 'actions'];
-    
     constructor(
         public dialogRef: MatDialogRef<ChangeClientToEmployeeDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,

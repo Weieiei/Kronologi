@@ -6,13 +6,6 @@ div.content {
     border-radius: 10px;
     padding: 2rem;
     left: 50%;
-    background-color: black;
+    background-color: white;
     overflow: auto;
 }
-
-.main-container__bg-dark {
-    opacity: 1;
-    background: linear-gradient(to bottom, #B290FF, #2E1D65);
-    transition: opacity 300ms linear;
-}
-

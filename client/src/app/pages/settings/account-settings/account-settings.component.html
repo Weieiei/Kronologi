@@ -1,4 +1,4 @@
-<div class="account-settings-container" fxLayout="column" fxLayoutGap="60px" [ngClass]="{'account-settings-container-dark': darkModeActive }">
+<div class="account-settings-container" fxLayout="column" fxLayoutGap="60px">
 
     <div fxLayout="column" fxLayoutGap="20px">
 
@@ -7,30 +7,30 @@
             <mat-divider></mat-divider>
         </div>
 
-        <div class="change-email-container" fxLayout="column" fxLayoutGap="10px" >
+        <div class="change-email-container" fxLayout="column" fxLayoutGap="10px">
 
             <div fxLayout="row">
-                <mat-hint fxFlex="60" fxFlex.lt-md [ngClass]="{'text-color-dark' : darkModeActive}">After changing your email, you will be logged out and prompted to log back in.</mat-hint>
+                <mat-hint fxFlex="60" fxFlex.lt-md>After changing your email, you will be logged out and prompted to log back in.</mat-hint>
             </div>
 
             <form (submit)="updateEmail()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
-                <div fxLayout="row" >
-                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md color="primary">
-                        <mat-label [ngClass]="{'text-color-dark' : darkModeActive}">Password</mat-label>
+                <div fxLayout="row">
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
+                        <mat-label>Password</mat-label>
                         <input matInput [(ngModel)]="password" type="password" name="password" required>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row">
                     <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
-                        <mat-label [ngClass]="{'text-color-dark' : darkModeActive}">New Email</mat-label>
+                        <mat-label>New Email</mat-label>
                         <input matInput [(ngModel)]="newEmail" type="email" name="newemail" required>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row" class="submit-button-container">
-                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md >Save</button>
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md>Save</button>
                 </div>
 
             </form>
