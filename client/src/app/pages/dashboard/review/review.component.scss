@@ -17,3 +17,38 @@
     }
 
 }
+.bg-container-dark {
+    background-color: #0a0315;
+    color: whitesmoke;
+
+
+}
+
+/* Border */
+mat-label {
+    color: rebeccapurple;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick{
+    color: mediumpurple;
+}
+
+/* default and hover color */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: mediumpurple;
+}
+
+/* focused color */
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: mediumpurple;
+}
+
+/* floating label color */
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+    color: mediumpurple;
+}
+
+::ng-deep .mat-raised-button.mat-primary {
+    background-color: mediumpurple;
+}
+

@@ -1,27 +1,74 @@
-<mat-toolbar color="primary">
-    <mat-toolbar-row>
-        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
-            <!--<button mat-icon-button (click)="sidenav.open()">
-                <mat-icon>menu</mat-icon>
-            </button>-->
-            <div class="nav-title" (click)="goToHome()">Appointment Scheduler</div>
-            <div>
-                <button mat-button [matMenuTriggerFor]="menu">
-                    <span fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
-                        <span>{{ userService.getFirstNameFromToken() }}</span>
-                        <mat-icon>account_circle</mat-icon>
-                    </span>
-                </button>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="goToSettings()">Settings</button>
-                    <button mat-menu-item *ngIf="userService.isAdmin()" (click)="goToEmployees()">Employees</button>
-                    <button mat-menu-item *ngIf="userService.isEmployee()" (click)="goToEmployeeAppointments()">Appointments</button>
-                    <button mat-menu-item (click)="goToAdminAppointmens()" *ngIf="authService.isAdmin()">Appointments Management</button>
-                    <button mat-menu-item (click)="goToAdminServices()" *ngIf="authService.isAdmin()">Services</button>
-                    <button mat-menu-item (click)="goToAdminUsers()" *ngIf="authService.isAdmin()">User Management</button>
-                    <button mat-menu-item (click)="logout()">Logout</button>
-                </mat-menu>
+<!-- Slide Menu-->
+<aside class="side-menu__container bg-container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
+        <nav class="slide-menu" [ngClass]="{'slide-menu-active': showMenu, 'slide-menu-active-dark': darkModeActive}" (click)="$event.stopImmediatePropagation();">
+          <section class="menu-header" [ngClass] = "{'menu-header-dark': darkModeActive}">
+            <span class="greeting__text">Welcome Back</span>
+            <div class="profile-image__container">
+              <img  alt="profile-image"
+                   class="profile__image">
             </div>
-        </div>
-    </mat-toolbar-row>
-</mat-toolbar>
+            <div class="account-details">
+              <span class="name__text">{{ userName }} </span>
+              <span class="email__text">{{ userEmail }}</span>
+            </div>
+          </section>
+          <section class="menu-body" [ngClass]="{'main__header-dark': darkModeActive}">
+              <ul>
+                <li class="menu-link" routerLink="/business" routerLinkActive="link-active" (click)="goToHome()" >Home</li>
+                <li class="menu-link" routerLink="/settings" routerLinkActive="link-active" (click)="goToSettings()">Settings</li>
+                <li class="menu-link" routerLink="/admin/employees" routerLinkActive="link-active" *ngIf="userService.isAdmin()" (click)="goToEmployees()">Employees</li>
+                <li class="menu-link" routerLink="/employee/appts" routerLinkActive="link-active" *ngIf="userService.isEmployee()" (click)="goToEmployeeAppointments()">Appointments</li>
+                <li class="menu-link" routerLink="/syncCalendars" routerLinkActive="link-active" *ngIf="userService.isEmployee()" (click)="goToSyncCalendars()">Sync External Calendar</li>
+                <li class="menu-link " routerLink="/admin/appts" routerLinkActive="link-active" (click)="goToAdminAppointmens()" *ngIf="authService.isAdmin()">Appointments Management</li>
+                <li class="menu-link " routerLink="/admin/services" routerLinkActive="link-active" (click)="goToAdminServices()" *ngIf="authService.isAdmin()">Services</li> 
+                <li class="menu-link" routerLink="/admin/users" routerLinkActive="link-active" (click)="goToAdminUsers()" *ngIf="authService.isAdmin()">User Management</li>
+                <li class="menu-link"  routerLinkActive="link-active" (click)="logout()">Logout</li>
+              </ul>
+          </section>
+          <section class="menu-footer" [ngClass]="{'main__header-dark': darkModeActive}">
+      
+          </section>
+        </nav>
+      </aside>
+      
+        <header [ngClass]="{'main__header-dark': darkModeActive}" class="main__header">
+      
+          <div class="left__section bg-container">
+            <svg (click)="toggleMenu()" class="hamburger__icon" id="Menu_Burger_Icon" data-name="Menu Burger Icon"
+                 viewBox="31.5 30 49.9 32">
+              <defs>
+                <style>.hamburger__icon__fill {
+                  fill: #594e78
+                }</style>
+              </defs>
+              <rect id="Rectangle_9" width="49.9" height="4" [ngClass]="{'hamburger__icon__fill-dark': darkModeActive}"
+                    class="hamburger__icon__fill" data-name="Rectangle 9" rx="2"
+                    transform="translate(31.5 58)"/>
+              <rect id="Rectangle_10" width="49.9" height="4" [ngClass]="{'hamburger__icon__fill-dark': darkModeActive}"
+                    class="hamburger__icon__fill" data-name="Rectangle 10" rx="2"
+                    transform="translate(31.5 44)"/>
+              <rect id="Rectangle_11" width="49.9" height="4" [ngClass]="{'hamburger__icon__fill-dark': darkModeActive}"
+                    class="hamburger__icon__fill" data-name="Rectangle 11" rx="2"
+                    transform="translate(31.5 30)"/>
+            </svg>
+      
+      
+          </div>
+      
+          <div class="nav-title" (click)="goToHome()"><img src="assets/images/asapp_logo.png" width="128"  /></div>
+      
+      
+          <div class="mode-toggle__container">
+            <span class="mode-toggle__text">Light</span>
+      
+            <label class="toggle-button__container">
+              <input (click)="modeToggleSwitch()" type="checkbox" class="mode-toggle__input"/>
+              <span [ngClass]="{'mode-toggle__bg-checked': darkModeActive}" class="mode-toggle__bg"></span>
+              <span [ngClass]="{'mode-toggle__circle-checked': darkModeActive}" class="mode-toggle__circle"></span>
+            </label>
+      
+      
+            <span class="mode-toggle__text">Dark</span>
+          </div>
+
+        </header>
