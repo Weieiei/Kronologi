@@ -54,6 +54,7 @@ import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-us
 import { AssignServicesDialogComponent } from "./pages/dashboard/home/admin-users/assign-services-dialog/assign-services-dialog.component";
 import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/admin-users/change-client-to-employee-dialog/change-client-to-employee-dialog.component";
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
     declarations: [
@@ -110,7 +111,8 @@ import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.
         MaterialModule,
         FlexLayoutModule,
         HttpClientModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SlickCarouselModule
     ],
     entryComponents: [
         TimePickerDialogComponent,
