@@ -97,10 +97,11 @@
       <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                     <p>Select a domain</p>
                     <mat-form-field>
-                        <mat-select [(value)]="selectedDomain">
-                            <mat-option value="Beauty">Beauty</mat-option>
-                            <mat-option value="Healthcare">Healthcare</mat-option>
-                            <mat-option value="Retail">Retail</mat-option>
+                        <mat-select placeholder="Domain type" [(ngModel)]="businessDomain" [ngModelOptions]="{standalone: true}">
+                        <mat-option *ngFor="let domain of domains" [value]="domain.value">
+      {{domain.value}}
+    </mat-option>
+
                         </mat-select>
                         </mat-form-field>
 
@@ -110,14 +111,14 @@
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Business Name</mat-label>
-                            <input matInput [(ngModel)]="businessName" [ngModelOptions]="{standalone: true}" type="text" name="businessName" pattern=".{1,}" required appAutofocus>
+                            <input matInput [(ngModel)]="businessName" [ngModelOptions]="{standalone: true}" type="text" name="businessName" required appAutofocus>
                         </mat-form-field>
             </div>
 
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Description</mat-label>
-                            <input matInput [(ngModel)]="description" [ngModelOptions]="{standalone: true}" type="text" name="description" pattern=".{1,}" required appAutofocus>
+                            <input matInput [(ngModel)]="description" [ngModelOptions]="{standalone: true}" type="text" name="description" required appAutofocus>
                         </mat-form-field>
 
             </div>
@@ -145,7 +146,7 @@
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                 <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Add a service that your business offers</mat-label>
-                            <input matInput [(ngModel)]="service" [ngModelOptions]="{standalone: true}" type="text" name="service" pattern=".{1,}" required appAutofocus>
+                            <input matInput [(ngModel)]="service" [ngModelOptions]="{standalone: true}" type="text" name="service"  required appAutofocus>
                         </mat-form-field>
 
 
@@ -160,7 +161,7 @@
 
             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
             <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
-            <button mat-raised-button color="primary" type="submit">Register</button>
+            <button mat-raised-button color="primary" type="submit" (click)="business_register()">Register</button>
         </div>
 
         <div>

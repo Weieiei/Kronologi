@@ -4,15 +4,18 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ServiceService } from '../../../services/service/service.service';
 import { BusinessService } from '../../../services/business/business.service';
-import { UserRegisterDTO } from '../../../interfaces/user/user-register-dto';
+import { BusinessUserRegisterDTO } from '../../../interfaces/user/business-user-register-dto';
 import { BusinessRegisterDTO } from '../../../interfaces/business/business-register-dto';
+import { BusinessDTO } from '../../../interfaces/business/business-dto';
 import { UserService } from '../../../services/user/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
 
-
+export interface Domain {
+    value: string;
+  }
 @Component ({
   selector: 'app-business-register',
   templateUrl: './business-register.component.html',
@@ -25,8 +28,15 @@ export class BusinessRegisterComponent implements OnInit {
     thirdFormGroup: FormGroup;
     selectedFile: File = null;
 // new business object
+    business: BusinessDTO;
     businessName: string;
-    selectedDomain: string;
+    businessDomain: string;
+
+    domains: Domain[] = [
+        {value: 'Beauty'},
+        {value: 'Healthcare'},
+        {value: 'Retail'}
+      ];
     description: string;
 // new service object
     service: string;
@@ -47,6 +57,8 @@ export class BusinessRegisterComponent implements OnInit {
     isPasswordVisible = false;
 
     registerPhone = false;
+
+    businessId: number;
 
     constructor(
         private http: HttpClient,
@@ -82,60 +94,80 @@ export class BusinessRegisterComponent implements OnInit {
                     console.log(response);
                 });
     }
+
+    getBusinessById(businessId: Number): BusinessDTO {
+        this.businessService.getBusinessById(this.businessId).subscribe(
+            res => {
+                this.business = res;
+            },
+        );
+        return this.business;
+    }
+
     business_register() {
         // register business
+        console.log(this.businessName);
+        console.log(this.businessDomain);
+        console.log(this.description);
         const payload_business: BusinessRegisterDTO = {
-            businessName: this.secondFormGroup.controls['businessName'].value,
-            domain: this.secondFormGroup.controls['selectedDomain'].value,
-            description: this.secondFormGroup.controls['description'].value
+            name: this.businessName,
+            domain: this.businessDomain,
+            description: this.description
         };
         this.businessService.createBusiness(payload_business).subscribe(
             res => {
+                console.log(res);
+                this.businessId = res;
 
+                const payload_service: ServiceCreateDto = {
+
+                    name: this.service,
+                    duration: this.service_duration,
+                   // businessId: this.businessId
+                     };
+                 this.serviceService.registerService(this.businessId, payload_service).subscribe(
+                     res => {
+                        console.log(res);
+                     },
+                     err => console.log(err)
+                 );
+         // TODO: when register user, we need to add business id, also need to link service to the user
+                 if (this.password === this.confirmPassword ) {
+         console.log(this.firstName);
+                     const payload: BusinessUserRegisterDTO = {
+
+                        firstName: this.firstName,
+                        lastName: this.lastName,
+                        email: this.email,
+                        password: this.password,
+                        phoneNumber: null
+                      //  businessId: this.businessId
+                     };
+
+                     if ( this.registerPhone) {
+                         payload.phoneNumber = {
+                            countryCode: this.selectedCountry['dialCode'],
+                            areaCode: this.areaCode,
+                            number: this.number
+
+                         };
+                     }
+
+                     this.googleAnalytics.trackValues('formSubmit', 'register');
+
+                     this.userService.businessRegister(this.businessId, payload).subscribe(
+                         res => {
+                             console.log(res);
+                             this.router.navigate(['login']);
+                         },
+                         err => console.log(err)
+                     );
+                    } else {
+                        alert('The passwords don\'t match.');
+                    }
             },
             err => console.log(err)
         );
-        //create new service
-        const payload_service: ServiceCreateDto = {
-            name: this.thirdFormGroup.controls['service'].value,
-            duration: this.thirdFormGroup.controls['service_duration'].value,
-            };
-        this.serviceService.createService(payload_service).subscribe(
-            res => {
-
-            },
-            err => console.log(err)
-        );
-// TODO: when register user, we need to add business id, also need to link service to the user
-        if (this.firstFormGroup.controls['password'].value === this.firstFormGroup.controls['confirmPassword'].value ) {
-
-            const payload: UserRegisterDTO = {
-                firstName: this.firstFormGroup.controls['firstName'].value,
-                lastName: this.firstFormGroup.controls['lastName'].value,
-                email: this.firstFormGroup.controls['email'].value,
-                password: this.firstFormGroup.controls['password'].value,
-                phoneNumber: null
-            };
-
-            if ( this.registerPhone) {
-                payload.phoneNumber = {
-                    countryCode: this.firstFormGroup.controls['selectedCountry'].value['dialCode'],
-                    areaCode: this.firstFormGroup.controls['areaCode'].value,
-                    number: this.firstFormGroup.controls['number'].value
-                };
-            }
-
-            this.googleAnalytics.trackValues('formSubmit', 'register');
-
-            this.userService.register(payload).subscribe(
-                res => {
-                    // this.router.navigate(['login']);
-                },
-                err => console.log(err)
-            );
-        } else {
-            alert('The passwords don\'t match.');
-        }
 
     }
     togglePasswordVisibility() {

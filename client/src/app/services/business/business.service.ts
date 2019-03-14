@@ -15,7 +15,10 @@ export class BusinessService {
     }
 
     public createBusiness(business: BusinessRegisterDTO): Observable<any> {
-        return this.http.post<Business>(['api', 'admin', 'service'].join('/'), business);
+        return this.http.post<BusinessRegisterDTO>(['api', 'businesses', 'business'].join('/'), business);
+    }
+    public getBusinessById(businessId: number): Observable<BusinessDTO> {
+        return this.http.get<BusinessDTO>(['api', 'businesses', businessId.toString()].join('/'));
     }
 
 }

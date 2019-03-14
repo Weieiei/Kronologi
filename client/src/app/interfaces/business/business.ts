@@ -1,6 +1,6 @@
 export interface Business {
     readonly id: number;
-    businessName: string;
+    name: string;
     domain: string;
     description: string;
     readonly createdAt: Date;

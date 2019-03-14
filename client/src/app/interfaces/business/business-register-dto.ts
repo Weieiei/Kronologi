@@ -1,6 +1,6 @@
 
 export interface BusinessRegisterDTO {
-    businessName: string;
+    name: string;
     domain: string;
     description: string;
 }
