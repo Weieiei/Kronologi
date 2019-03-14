@@ -32,37 +32,43 @@ public class Verification extends AuditableEntity {
 
     public Verification() { }
 
-    public Verification(User user) throws NoSuchAlgorithmException {
+    public Verification(User user) {
         this.user = user;
     }
 
-    public Verification(User user, Business business) throws NoSuchAlgorithmException {
+    public Verification(User user, Business business) {
         this.user = user;
         this.business = business;
     }
 
     @PostPersist
-    public void afterInsert() throws NoSuchAlgorithmException {
+    public void afterInsert()  {
         generateHash();
     }
 
-    private void generateHash() throws NoSuchAlgorithmException {
-        String hashtext;
-        if(this.user!= null) {
-            MessageDigest m = MessageDigest.getInstance("MD5");
-            m.reset();
-            m.update(this.user.getEmail().getBytes());
-            byte[] digest = m.digest();
-            BigInteger bigInt = new BigInteger(1, digest);
-            hashtext = bigInt.toString(16);
-            //retrieve hashed text
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
-            }
+    private void generateHash()  {
+        try {
+            String hashtext;
+            if (this.user != null) {
+
+                MessageDigest m = MessageDigest.getInstance("SHA-256");
+                m.reset();
+                m.update(this.user.getEmail().getBytes());
+                byte[] digest = m.digest();
+                BigInteger bigInt = new BigInteger(1, digest);
+                hashtext = bigInt.toString(16);
+                //retrieve hashed text
+                while (hashtext.length() < 32) {
+                    hashtext = "0" + hashtext;
+                }
+
+            } else
+                hashtext = "";
+            this.hash = hashtext;
         }
-        else
-            hashtext = "";
-        this.hash = hashtext;
+        catch (NoSuchAlgorithmException e){
+            System.err.println("SHA-256 is not a valid message digest algorithm");
+        }
     }
 
     public long getId() { return id; }

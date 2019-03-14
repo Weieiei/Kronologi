@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {GoogleAnalyticsService} from "../../services/google/google-analytics.service";
+import {ThemeService} from "../../core/theme/theme.service";
+import {MatDialog, MatDialogConfig} from "@angular/material";
 
 @Component({
   selector: 'app-business-view',
@@ -8,20 +11,24 @@ import { Router } from '@angular/router';
 })
 export class BusinessViewComponent implements OnInit {
 
-  constructor(private router: Router) { }
-
+    darkModeActive :boolean;
+  constructor(private router: Router,private dialog: MatDialog, public themeService: ThemeService) { }
   ngOnInit() {
+      this.themeService.darkModeState.subscribe(value => {
+          this.darkModeActive = value;
+      })
   }
 
   getAllAppointmentsForUserForBusiness(businessId: number){
     //TODO CALL GET ALL APPOINTMENTS BY BUSINESS ID GOTTEN FROM CARD -- HAVE TO WAIT FOR GET ALL BUSINESS ROUTE FROM BACKEND
     //TEMP FIX TO FIX LAYOUT
-    console.log("bye")
     this.router.navigate(['home']);
   }
 
-  bookAppointmentForBusiness(businessId:number){
-    //TODO GET BUSINESS APPOINTMENT FROM CARD AND CALL THIS FUNCTION -- HAVE TO WAIT FOR GET ALL BUSINESS ROUTE FROM BACKEND
+  openModalForService(businessId:number){
+    //TODO GET BUSINESS SERVICES FROM CARD AND CALL THIS FUNCTION -- HAVE TO WAIT FOR GET ALL BUSINESS ROUTE FROM BACKEND
+
+    }
   }
 
-}
+

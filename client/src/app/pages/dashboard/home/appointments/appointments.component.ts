@@ -38,12 +38,6 @@ export class AppointmentsComponent implements OnInit {
             this.pastAppointments = [];
             this.getMyAppointments();
         });
-        let googleToken  : string = this.getUrlParameter('code');
-        if(googleToken !== ""){
-            this.authService.googleAuth(googleToken).subscribe((() => {
-                console.log("hurray");
-            }))
-        }
     }
 
     getMyAppointments(): void {
@@ -65,16 +59,4 @@ export class AppointmentsComponent implements OnInit {
         );
     }
 
-    login(){
-        this.appointmentService.googleLogin().subscribe(result=>{
-            window.location.href = result['url'];
-        })
-    }
-
-    getUrlParameter(sParam)  {
-        return decodeURIComponent(window.location.search.substring(1)).split('&')
-         .map((v) => { return v.split("=") })
-         .filter((v) => { return (v[0] === sParam) ? true : false })
-         .reduce((acc:any,curr:any) => { return curr[1]; },undefined); 
-    };
 }
