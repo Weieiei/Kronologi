@@ -28,6 +28,7 @@ public class UserFactory {
             employee.setBusiness(business);
             return employee;
         }
+
         else{
             final User user = createFromType(clazz);
 

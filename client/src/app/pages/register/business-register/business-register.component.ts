@@ -35,7 +35,8 @@ export class BusinessRegisterComponent implements OnInit {
     domains: Domain[] = [
         {value: 'Beauty'},
         {value: 'Healthcare'},
-        {value: 'Retail'}
+        {value: 'Retail'},
+        {value: 'Other'}
       ];
     description: string;
 // new service object
@@ -179,3 +180,14 @@ export class BusinessRegisterComponent implements OnInit {
     }
 
 }
+
+/*
+frontend for uploading
+ <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+            <p> Upload your business logo </p>
+            <input type="file" (change) = "onFileSelected($event)" placeholder="Upload file" accept=".jpeg,.png">
+            <button mat-button color="primary" type="button" (click)="onUpload()">Upload</button>
+
+            </div>
+
+            */

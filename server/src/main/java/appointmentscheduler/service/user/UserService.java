@@ -316,7 +316,7 @@ public class UserService {
         }
         //TODO fix this for user having a single role
         //  user.setRole(Stream.of(roleRepository.findByRole(RoleEnum.EMPLOYEE)).collect(Collectors.toSet()));
-//set the user to employee or admin beacuase it is a business register
+        user.setRole(RoleEnum.ADMIN.toString());
         User savedUser = userRepository.save(user);
 
         Verification verification = new Verification(savedUser,business);
