@@ -23,7 +23,7 @@ public final class DateConflictChecker {
 
                 if((eventStart.isBefore(currentEnd) && (eventStart.isAfter(currentStart) || eventStart.equals(currentStart)))
                         || (eventEnd.isAfter(currentStart) && (eventEnd.isBefore(currentEnd) || eventEnd.equals(currentEnd)))
-                        || (eventStart.isBefore(currentStart) || eventStart.equals(currentStart)) && (eventEnd.isAfter(currentEnd) || shiftEnd.equals(currentEnd)))
+                        || (eventStart.isBefore(currentStart) || eventStart.equals(currentStart)) && (eventEnd.isAfter(currentEnd) || eventEnd.equals(currentEnd)))
                     return true;
             }
         }
