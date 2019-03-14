@@ -300,7 +300,7 @@ public class UserService {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
         }
 
-        User user = UserFactory.createUser(business, User.class, userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(), userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
+        User user = UserFactory.createAdmin(business, User.class, userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(), userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
         if (userRegisterDTO.getPhoneNumber() != null) {
 
             PhoneNumberDTO phoneNumberDTO = userRegisterDTO.getPhoneNumber();
@@ -314,9 +314,8 @@ public class UserService {
             phoneNumber.setUser(user);
 
         }
-        //TODO fix this for user having a single role
-        //  user.setRole(Stream.of(roleRepository.findByRole(RoleEnum.EMPLOYEE)).collect(Collectors.toSet()));
-        user.setRole(RoleEnum.ADMIN.toString());
+
+         user.setRole(RoleEnum.ADMIN.toString());
         User savedUser = userRepository.save(user);
 
         Verification verification = new Verification(savedUser,business);
