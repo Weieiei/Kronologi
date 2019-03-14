@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.appointment;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.Event;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
@@ -12,7 +13,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "appointments")
-public class Appointment extends AuditableEntity {
+public class Appointment extends AuditableEntity implements Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

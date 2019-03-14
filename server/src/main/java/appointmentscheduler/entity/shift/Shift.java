@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.shift;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.Event;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ModelValidationException;
@@ -14,7 +15,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "employee_shifts")
-public class Shift extends AuditableEntity {
+public class Shift extends AuditableEntity implements Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
