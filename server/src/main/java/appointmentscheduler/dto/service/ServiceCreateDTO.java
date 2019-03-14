@@ -1,18 +1,18 @@
 package appointmentscheduler.dto.service;
 
 public class ServiceCreateDTO {
-    private long serviceId;
+  //  private long serviceId;
     private String name;
     private int duration;
 
-    public long getId() {
+  /*  public long getId() {
         return serviceId;
     }
 
     public void setId(long serviceId) {
         this.serviceId = serviceId;
     }
-
+*/
     public String getName() {
         return name;
     }

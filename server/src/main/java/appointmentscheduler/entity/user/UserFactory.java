@@ -35,7 +35,7 @@ public class UserFactory {
             user.setLastName(lastName);
             user.setEmail(email);
             user.setPassword(password);
-
+            user.setBusiness(business);
             return user;
         }
     }

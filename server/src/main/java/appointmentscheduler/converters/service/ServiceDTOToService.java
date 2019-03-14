@@ -17,7 +17,7 @@ public class ServiceDTOToService implements Converter<ServiceCreateDTO, Service>
     public Service convert(ServiceCreateDTO serviceDTO) {
         Service service = new Service();
 
-        service.setId(serviceDTO.getId());
+       // service.setId(serviceDTO.getId());
         service.setName(serviceDTO.getName());
         service.setDuration(serviceDTO.getDuration());
 

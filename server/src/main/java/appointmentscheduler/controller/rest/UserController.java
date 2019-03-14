@@ -16,11 +16,13 @@ import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.email.EmailService;
+import appointmentscheduler.service.service.ServiceService;
 import appointmentscheduler.service.user.UserService;
 import appointmentscheduler.service.verification.VerificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +38,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
+import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.service.business.BusinessService;
+import appointmentscheduler.repository.BusinessRepository;
 
 @RestController
 @RequestMapping("${rest.api.path}/user")
@@ -44,6 +49,8 @@ public class UserController extends AbstractController {
     private final UserService userService;
     private final EmailService emailService;
     private final VerificationService verificationService;
+    private final BusinessRepository businessRepository;
+    private final BusinessService businessService;
 
     @Autowired
     VerificationRepository verificationRepository;
@@ -51,12 +58,14 @@ public class UserController extends AbstractController {
     private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
-    public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory) {
+    public UserController(UserService userService, EmailService emailService, BusinessRepository businessRepository, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.emailService = emailService;
         this.verificationService = verificationService;
         this.objectMapperFactory = objectMapperFactory;
+        this.businessRepository = businessRepository;
+        this.businessService = new BusinessService(businessRepository);
     }
 
     @Autowired
@@ -84,7 +93,20 @@ public class UserController extends AbstractController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+    @PostMapping("/{businessId}/business_register")
+    public ResponseEntity<Map<String, Object>> business_register(@PathVariable long businessId, @RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+        try {
+            Business business = businessService.findById(businessId);
 
+            Map<String, Object> tokenMap = userService.business_register(userRegisterDTO,business);
+            Verification verification = (Verification) tokenMap.get("verification");
+            emailService.sendRegistrationEmail(userRegisterDTO.getEmail(),verification.getHash(), true);
+            return ResponseEntity.ok(tokenMap);
+        } catch (BadCredentialsException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
     @LogREST(LoggingLevel.WARN)
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO userLoginDTO) {
@@ -159,4 +181,5 @@ public class UserController extends AbstractController {
         CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
         return ResponseEntity.ok(appointmentService.cancel(cancelled));
     }
+    
 }

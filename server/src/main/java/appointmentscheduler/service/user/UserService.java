@@ -101,6 +101,8 @@ public class UserService {
         return buildTokenRegisterMap( token, verification);
     }
 
+
+
     public Map<String, String> login(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmailIgnoreCase(userLoginDTO.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect email/password combination."));
@@ -289,4 +291,39 @@ public class UserService {
         map.put("message", message);
         return map;
     }
+
+    public Map<String, Object> business_register(UserRegisterDTO userRegisterDTO, Business business) throws IOException, MessagingException, NoSuchAlgorithmException {
+
+        if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
+            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
+        }
+
+        User user = UserFactory.createUser(business, User.class, userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(), userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
+        if (userRegisterDTO.getPhoneNumber() != null) {
+
+            PhoneNumberDTO phoneNumberDTO = userRegisterDTO.getPhoneNumber();
+            PhoneNumber phoneNumber = new PhoneNumber(
+                    phoneNumberDTO.getCountryCode(),
+                    phoneNumberDTO.getAreaCode(),
+                    phoneNumberDTO.getNumber()
+            );
+
+            user.setPhoneNumber(phoneNumber);
+            phoneNumber.setUser(user);
+
+        }
+        //TODO fix this for user having a single role
+        //  user.setRole(Stream.of(roleRepository.findByRole(RoleEnum.EMPLOYEE)).collect(Collectors.toSet()));
+//set the user to employee or admin beacuase it is a business register
+        User savedUser = userRepository.save(user);
+
+        Verification verification = new Verification(savedUser,business);
+
+        verificationRepository.save(verification);
+
+        String token = generateToken(savedUser, userRegisterDTO.getPassword());
+
+        return buildTokenRegisterMap( token, verification);
+    }
+
 }
