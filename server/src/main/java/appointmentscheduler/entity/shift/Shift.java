@@ -1,7 +1,7 @@
 package appointmentscheduler.entity.shift;
 
 import appointmentscheduler.entity.AuditableEntity;
-import appointmentscheduler.entity.Event;
+import appointmentscheduler.entity.event.Event;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ModelValidationException;

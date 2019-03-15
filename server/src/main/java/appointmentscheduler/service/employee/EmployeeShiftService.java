@@ -1,22 +1,18 @@
 package appointmentscheduler.service.employee;
 
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
-import appointmentscheduler.entity.Event;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.shift.ShiftFactory;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.ShiftConflictException;
-import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import appointmentscheduler.util.DateConflictChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeShiftService {

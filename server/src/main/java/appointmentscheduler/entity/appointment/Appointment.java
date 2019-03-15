@@ -1,7 +1,7 @@
 package appointmentscheduler.entity.appointment;
 
 import appointmentscheduler.entity.AuditableEntity;
-import appointmentscheduler.entity.Event;
+import appointmentscheduler.entity.event.Event;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;

@@ -1,4 +1,4 @@
-package appointmentscheduler.entity;
+package appointmentscheduler.entity.event;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

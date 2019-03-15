@@ -154,6 +154,7 @@ public class AppointmentService {
 
         // Check if the employee does not have an appointment scheduled already in that time slot
         List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndStatus(appointment.getDate(), employee.getId(), AppointmentStatus.CONFIRMED);
+        //TODO replace with UTIL
 
         for (Appointment employeeAppointment : employeeAppointments) {
             if (employeeAppointment.isConflicting(appointment) && !(modifying && employeeAppointment.equals(appointment))) {
@@ -163,6 +164,7 @@ public class AppointmentService {
 
         // Check if the client does not have an appointment scheduled already
         List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndStatus(appointment.getDate(), appointment.getClient().getId(), AppointmentStatus.CONFIRMED);
+        //TODO replace with UTIL
 
         for (Appointment clientAppointment : clientAppointments) {
             if (clientAppointment.isConflicting(appointment) && !(modifying && clientAppointment.equals(appointment))) {
