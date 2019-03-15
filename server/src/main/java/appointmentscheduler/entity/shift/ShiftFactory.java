@@ -1,3 +1,4 @@
+/*
 package appointmentscheduler.entity.shift;
 
 import appointmentscheduler.entity.business.Business;
@@ -25,6 +26,15 @@ public class ShiftFactory {
         return shift;
     }
 
+    public static Shift createShiftForBusiness(Employee employee, LocalDate date, LocalTime startTime,
+                                             LocalTime endTime) {
+        Shift shift = new Shift();
+        shift.setEmployee(employee);
+        shift.
+        return shift;
+    }
+
+
 
     public static Shift createShift(Business business, Employee employee, LocalDate date, LocalTime startTime,
                                     LocalTime endTime) {
@@ -36,3 +46,4 @@ public class ShiftFactory {
     }
 
 }
+*/

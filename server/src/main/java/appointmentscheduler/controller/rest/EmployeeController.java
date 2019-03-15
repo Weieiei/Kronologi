@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/${rest.api.path}")
+@RequestMapping("/${rest.api.path}/business/employee")
 @PreAuthorize("hasAuthority('EMPLOYEE')")
 public class EmployeeController  extends AbstractController {
 
@@ -28,27 +28,19 @@ public class EmployeeController  extends AbstractController {
     private final ObjectMapperFactory objectMapperFactory;
     private final BusinessService businessService;
     private CancelledDTOToCancelled cancelledAppointmentConverted;
+
     @Autowired
-    public EmployeeController(AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory,CancelledDTOToCancelled cancelledAppointmentConverted, BusinessService businessService) {
+    public EmployeeController(AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory, CancelledDTOToCancelled cancelledAppointmentConverted, BusinessService businessService) {
         this.cancelledAppointmentConverted = cancelledAppointmentConverted;
         this.appointmentService = appointmentService;
         this.objectMapperFactory = objectMapperFactory;
         this.businessService = businessService;
     }
 
-    @LogREST
-    @GetMapping(value="/employee/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String>  findByCurrentEmployee() {
-        List<Appointment> listOfAppointment = appointmentService.findByEmployeeId(getUserId());
-        listOfAppointment.sort(Comparator.comparing(Appointment::getStartTime)
-                    .thenComparing(Appointment::getDate));
-        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        return getJson(mapper, listOfAppointment);
-    }
 
     @LogREST
-    @GetMapping(value="/business/{businessId}/employee/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String>  getEmployeeAppointments(@PathVariable long businessId) {
+    @GetMapping(value = "/{businessId}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getEmployeeAppointments(@PathVariable long businessId) {
         List<Appointment> listOfAppointment = appointmentService.findByBusinessIdAndEmployeeId(businessId, getUserId());
         listOfAppointment.sort(Comparator.comparing(Appointment::getStartTime)
                 .thenComparing(Appointment::getDate));
@@ -57,19 +49,10 @@ public class EmployeeController  extends AbstractController {
     }
 
     @LogREST
-    @DeleteMapping("/employee/appointments/cancel")
+    @PostMapping("{businessId}/appointments/cancel")
     public ResponseEntity delete(@RequestBody CancelAppointmentDTO cancel) {
         cancel.setIdPersonWhoCancelled(getUserId());
         CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
-        return ResponseEntity.ok(appointmentService.cancel(cancelled));
-    }
-
-    @LogREST
-    @DeleteMapping("/business/{businessId}/employee/appointments/cancel")
-    public ResponseEntity delete(@RequestBody CancelAppointmentDTO cancel, @PathVariable long businessId) {
-        cancel.setIdPersonWhoCancelled(getUserId());
-        CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
-        cancelled.setBusiness(businessService.findById(businessId));
-        return ResponseEntity.ok(appointmentService.cancel(cancelled, businessId));
+        return ResponseEntity   .ok(appointmentService.cancel(cancelled));
     }
 }

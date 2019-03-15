@@ -46,6 +46,19 @@ public class JwtProvider implements Serializable {
 
     }
 
+    public String generateCalendarToken(long userId) {
+
+
+        return Jwts.builder()
+                .claim("sub", userId)
+                .claim("roles", "Calendar")
+                .signWith(SignatureAlgorithm.HS256, KEY)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .compact();
+
+    }
+
     public UsernamePasswordAuthenticationToken getAuthentication(String token, UserDetails userDetails) {
 
         JwtParser jwtParser = Jwts.parser().setSigningKey(KEY);

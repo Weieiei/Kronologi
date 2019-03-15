@@ -1,9 +1,9 @@
 package appointmentscheduler.service.service;
 
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import appointmentscheduler.exception.ResourceNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,17 +23,19 @@ public class ServiceService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Service with id %d not found.", id)));
     }
 
-    public Map<String, String> add(Service service) {
-        serviceRepository.save(service);
-        return message("Service successful added.");
-    }
-    
-    public List<Service> findByBusinessId(long businessId) {
-        return serviceRepository.findServicesByBusinessId(businessId);
+    public Service findByIdAndBusinessId(long id, long businessId) {
+        return serviceRepository.findByIdAndBusinessId(id, businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Service with id %d not found for " +
+                        "business with id %d.", id, businessId)));
     }
 
-    public Service findByBusinessIdAndServiceId(long businessId, long serviceId) {
-        return serviceRepository.findServiceByBusinessIdAndAndId(serviceId, businessId);
+    public Map<String, String> add(Service service) {
+        serviceRepository.save(service);
+        return message("Service successfully added.");
+    }
+
+    public List<Service> findByBusinessId(long businessId) {
+        return serviceRepository.findServicesByBusinessId(businessId);
     }
 
     private Map<String, String> message(String message) {

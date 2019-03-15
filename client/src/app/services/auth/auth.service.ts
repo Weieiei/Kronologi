@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import * as decode from 'jwt-decode';
@@ -35,9 +35,15 @@ export class AuthService {
         return this.http.post(['api', 'user', 'login'].join('/'), payload);
     }
 
+    googleAuth(token:string) :  Observable<any>{
+        return this.http.get(['api','google','login','calendarCallback'].join('/'), { params: { code: token }})
+    }
+
+
     loggedIn(): boolean {
         return !!(this.getToken());
     }
+
 
     setToken(token: string): void {
         localStorage.setItem('token', token);

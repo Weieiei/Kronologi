@@ -7,6 +7,7 @@ import { UpdatePasswordDTO } from '../../../interfaces/user/update-password-dto'
 import { PhoneNumberDTO } from '../../../interfaces/phonenumber/phone-number-dto';
 import * as countryData from 'country-telephone-data';
 import { SnackBar } from '../../../snackbar';
+import { ThemeService } from 'src/app/core/theme/theme.service';
 
 @Component({
     selector: 'app-account-settings',
@@ -36,18 +37,23 @@ export class AccountSettingsComponent implements OnInit {
     countries: Object[] = countryData.allCountries;
     selectedCountry: Object;
 
+    darkModeActive: boolean;
     newAreaCode: string;
     newNumber: string;
 
     constructor(
         private userService: UserService,
         private snackBar: SnackBar,
-        private router: Router
+        private router: Router,
+        private themeService :ThemeService
     ) {
     }
 
     ngOnInit() {
         this.getPhoneNumber();
+        this.themeService.darkModeState.subscribe(value => {
+            this.darkModeActive = value;
+        })
     }
 
     updateEmail(): void {
