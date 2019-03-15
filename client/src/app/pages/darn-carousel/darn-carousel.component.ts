@@ -9,17 +9,16 @@ import { NgModule } from '@angular/core';
   templateUrl: './darn-carousel.component.html',
   styleUrls: ['./darn-carousel.component.scss']
 })
-export class DarnCarouselComponent {
+export class DarnCarouselComponent  implements OnInit {
     slides = [
-        {img: "http://placehold.it/350x150/000000"},
-        {img: "http://placehold.it/350x150/111111"},
-        {img: "http://placehold.it/350x150/333333"},
-        {img: "http://placehold.it/350x150/666666"}
+        {img: "assets/images/alex-bertha-215867-unsplash.jpg"},
+        {img: "assets/images/anshu-a-1147827-unsplash.jpg"},
     ];
-    slideConfig = {"slidesToShow": 4, "slidesToScroll": 4};
+    slideConfig = {"slidesToShow": 1, "slidesToScroll": 1};
 
     addSlide() {
-        this.slides.push({img: "http://placehold.it/350x150/777777"})
+        this.slides.push({img: "assets/images/alex-bertha-215867-unsplash.jpg"})
+        this.slides.push({img: "assets/images/anshu-a-1147827-unsplash.jpg"})
     }
 
     removeSlide() {
@@ -40,5 +39,8 @@ export class DarnCarouselComponent {
 
     beforeChange(e) {
         console.log('beforeChange');
+    }
+
+    ngOnInit(): void {
     }
 }
