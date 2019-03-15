@@ -1,10 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "angular-theme";
+@import "~@angular/material/theming";
+@include mat-core();
 
-* {
-    box-sizing: border-box;
-}
+@import "angular-theme";
+@import "variables.scss";
+@import "primary-theme.scss";
+@import "dark-theme.scss";
+
 
 html, body {
     height: 100%;
@@ -29,11 +32,11 @@ h2 {
     letter-spacing: -0.5px;
 }
 
-h3 {
-    font-weight: 400;
-    font-size: 48px;
-    letter-spacing: 0;
-}
+// h3 {
+//     font-weight: 400;
+//     font-size: 48px;
+//     letter-spacing: 0;
+// }
 
 h4 {
     font-weight: 400;
@@ -73,4 +76,12 @@ table {
 
 .chosen {
     background-color: #ddd !important;
+}
+
+.primary-theme {
+    @include angular-material-theme($primary-theme);
+}
+
+.dark-theme {
+    @include angular-material-theme($dark-theme);
 }

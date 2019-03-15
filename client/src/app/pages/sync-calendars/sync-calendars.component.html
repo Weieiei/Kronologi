@@ -1,0 +1,25 @@
+
+<div class = "body-content" [ngClass]="{'body-content-dark' : darkModeActive}">
+  <div class = "wrapper">
+    <div class = "row-menu">
+      <div class = "divLast">
+          <div class = "col3of4 mbm">
+              <i class="logo circle-option-icon" [ngClass]="{'circle-option-icon-dark' : darkModeActive}">
+                  <img src="../../../assets/images/google_calendar.png" width="95"  />
+              </i>
+              <div class="last-col">
+                  <h3 class="mbs">
+                    Your Google Calendar
+                  </h3>
+                  <div class="muted mbs">
+                    Sync up all your google appointments with Kronologica to avoid conflicts and sync up!
+                  </div>
+              </div>
+          </div>
+          <div class="col1of4">
+              <button mat-raised-button class="light-mat" [ngClass]="{'dark-mat': darkModeActive}" (click)=login() >Let's Sync Up!</button>
+          </div>
+      </div>
+      </div>
+  </div>
+</div>

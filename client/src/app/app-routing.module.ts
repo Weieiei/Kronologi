@@ -20,6 +20,7 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
+
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
@@ -41,9 +42,12 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
 
-            // Home page
-            { path: '', component: HomeComponent },
+            //Appointments for business
+            { path: 'business', component: BusinessViewComponent },
 
+            //Home
+            { path: 'home', component: HomeComponent },
+          
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
@@ -55,6 +59,7 @@ const routes: Routes = [
                 ]
             },
 
+            {path : 'syncCalendars', component: SyncCalendarsComponent, canActivate: [EmployeeGuard]},
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },

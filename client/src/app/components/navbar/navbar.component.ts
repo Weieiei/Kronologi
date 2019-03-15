@@ -4,6 +4,8 @@ import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { ThemeService } from "../../core/theme/theme.service";
+import {OverlayContainer} from "@angular/cdk/overlay";
 
 @Component({
     selector: 'app-navbar',
@@ -13,20 +15,48 @@ import { AuthService } from '../../services/auth/auth.service';
 export class NavbarComponent implements OnInit {
 
     @Input() sidenav: MatSidenav;
-
+    
+    userEmail = "";
+    userName = "";
+    route = "";
+    showMenu = false;
+    darkModeActive: boolean;
     user;
+    theme :string = 'dark-theme';
 
     constructor(
         private userService: UserService,
         private authService: AuthService,
         private router: Router,
-        private googleAnalytics: GoogleAnalyticsService
+        private googleAnalytics: GoogleAnalyticsService,
+        public themeService: ThemeService,
+        private overlayContainer: OverlayContainer
+
     ) {
+
     }
 
     ngOnInit() {
         // this.user = this.userService.getUser();
         this.authService.checkAdmin();
+        this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
+        this.userEmail = this.userService.getEmailFromToken();
+        this.themeService.darkModeState.subscribe(value => {
+            this.darkModeActive = value;
+        });
+        this.overlayContainer.getContainerElement().classList.add(this.theme);
+
+    }
+
+    onThemeChange(theme:string) {
+        this.theme = theme;
+        //console.log(theme);
+        const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;
+        const themeClassesToRemove = Array.from(overlayContainerClasses).filter((item: string) => item.includes('-theme'));
+        if (themeClassesToRemove.length) {
+            overlayContainerClasses.remove(...themeClassesToRemove);
+        }
+        overlayContainerClasses.add(theme);
     }
 
     logout(): void {
@@ -35,8 +65,19 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['login']);
     }
 
+    modeToggleSwitch() {
+        this.darkModeActive = !this.darkModeActive;
+        this.themeService.darkModeState.next(this.darkModeActive);
+        const currentTheme: string = this.darkModeActive ? 'dark-theme': '';
+        this.onThemeChange(currentTheme);
+    }
+
+    toggleMenu() {
+        this.showMenu = !this.showMenu;
+      }
+
     goToHome() {
-        this.router.navigate(['']);
+        this.router.navigate(['business']);
     }
 
     goToSettings() {
@@ -47,6 +88,9 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['employee', 'appts']);
     }
 
+    goToSyncCalendars(){
+        this.router.navigate(['syncCalendars']);
+    }
     goToAdminAppointmens() {
         this.router.navigate(['admin/appts']);
     }
