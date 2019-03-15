@@ -22,12 +22,15 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider implements Serializable {
 
-    private final String KEY = generateRandomSecret();
+    private static String KEY;
+
+    private static String googleKey;
 
     // min * sec * ms == 1 hour
     private final int EXPIRATION = 60 * 60 * 1000 * 24;
 
     public String generateToken(User user, Authentication authentication) {
+
 
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -39,20 +42,25 @@ public class JwtProvider implements Serializable {
                 .claim("firstName", user.getFirstName())
                 .claim("lastName", user.getLastName())
                 .claim("email", user.getEmail())
-                .signWith(SignatureAlgorithm.HS256, KEY)
+                .signWith(SignatureAlgorithm.HS256, getKey())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .compact();
 
     }
 
-    public String generateCalendarToken(long userId) {
+    public String generateCalendarToken(User user, Authentication authentication) {
+
+
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
 
         return Jwts.builder()
-                .claim("sub", userId)
-                .claim("roles", "Calendar")
-                .signWith(SignatureAlgorithm.HS256, KEY)
+                .claim("sub", user.getId())
+                .claim("roles", authorities)
+                .signWith(SignatureAlgorithm.HS256, getGoogleKey())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .compact();
@@ -62,6 +70,19 @@ public class JwtProvider implements Serializable {
     public UsernamePasswordAuthenticationToken getAuthentication(String token, UserDetails userDetails) {
 
         JwtParser jwtParser = Jwts.parser().setSigningKey(KEY);
+        Claims claims = jwtParser.parseClaimsJws(token).getBody();
+
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
+
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
+
+    }
+
+    public UsernamePasswordAuthenticationToken getGoogleAuthentication(String token, UserDetails userDetails) {
+
+        JwtParser jwtParser = Jwts.parser().setSigningKey(googleKey);
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
 
         Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().split(","))
@@ -101,6 +122,16 @@ public class JwtProvider implements Serializable {
         return expiration.before(new Date());
     }
 
+
+    private Claims getClaimsFromGoogleToken(String token) {
+        return Jwts.parser().setSigningKey(googleKey).parseClaimsJws(token).getBody();
+    }
+
+    public String getUserIdFromGoogleToken(String token) {
+        return getClaimsFromGoogleToken(token).getSubject();
+    }
+
+
     public boolean tokenIsValid(String token, UserDetails userDetails) {
         String userId = getUserIdFromToken(token);
         // userDetails.getUsername() is actually the id
@@ -117,5 +148,24 @@ public class JwtProvider implements Serializable {
 
         return generator.generate(128);
     }
+
+    private String getKey(){
+        if(KEY == null){
+            KEY = generateRandomSecret();
+        }
+
+        return KEY;
+    }
+
+
+    private String getGoogleKey(){
+        if(googleKey == null){
+            googleKey = generateRandomSecret();
+        }
+
+        return googleKey;
+    }
+
+
 
 }

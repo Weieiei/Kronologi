@@ -8,16 +8,30 @@ import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.*;
+import appointmentscheduler.service.googleService.JPADataStoreFactory;
+import appointmentscheduler.service.googleService.JPADataStoreService;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.CancelledRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
+import com.google.api.services.calendar.model.EventDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
 import java.text.DateFormat;
@@ -33,12 +47,32 @@ import java.util.Optional;
 @org.springframework.stereotype.Service
 public class AppointmentService {
 
+
+
+
+    GoogleClientSecrets clientSecrets;
+
+    @Value("${google.client.client-id}")
+    private String clientId;
+    @Value("${google.client.client-secret}")
+    private String clientSecret;
+    @Value("${google.client.redirectUri}")
+    private String redirectURI;
+
+
+
+    private static final String APPLICATION_NAME = "";
+    private static HttpTransport httpTransport;
+    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private static com.google.api.services.calendar.Calendar client;
+    GoogleAuthorizationCodeFlow flow;
+    Credential credential;
     private CancelledRepository cancelledRepository;
     private AppointmentRepository appointmentRepository;
     private EmployeeRepository employeeRepository;
     private ShiftRepository shiftRepository;
     private GeneralAppointmentRepository generalAppointmentRepository;
-
+    private GoogleCredentialRepository googleCredentialRepository;
 
     public AppointmentService(AppointmentRepository appointmentRepository) {
         this.appointmentRepository = appointmentRepository;
@@ -60,13 +94,16 @@ public class AppointmentService {
 
     @Autowired
     public AppointmentService(
-            AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository, GeneralAppointmentRepository generalAppointmentRepository
+            AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository,
+            GeneralAppointmentRepository generalAppointmentRepository, GoogleCredentialRepository googleCredentialRepository
     ) {
+        this.googleCredentialRepository = googleCredentialRepository;
         this.cancelledRepository = cancelledRepository;
         this.appointmentRepository = appointmentRepository;
         this.employeeRepository = employeeRepository;
         this.shiftRepository = shiftRepository;
         this.generalAppointmentRepository = generalAppointmentRepository;
+        this.googleCredentialRepository = googleCredentialRepository;
     }
 
     public List<Appointment> findByClientIdAndBusinessId(long clientId, long businessId){
@@ -92,6 +129,40 @@ public class AppointmentService {
         // Throwing exception is nice because then you can display the http error message to the user, indicating where
         // the validation went wrong
         validate(appointment, false);
+
+        try{
+
+            GoogleCred googleCred = googleCredentialRepository.findByKey(String.valueOf(appointment.getEmployee().getId())).get();
+
+            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            GoogleCredential credential = new GoogleCredential().setAccessToken(googleCred.getAccessToken());
+
+            client = new com.google.api.services.calendar.Calendar.Builder(httpTransport, JSON_FACTORY, credential)
+                    .setApplicationName(APPLICATION_NAME).build();
+
+
+            Event event = new Event();
+
+            LocalDateTime startTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
+            Date finalStartTime = Date.from(startTime.atZone(ZoneId.systemDefault()).toInstant());
+            DateTime startDateTime = new DateTime(finalStartTime, Calendar.getInstance().getTimeZone());
+
+
+            LocalDateTime endTime = LocalDateTime.of(appointment.getDate(), appointment.getEndTime());
+            Date finalEndTime = Date.from(endTime.atZone(ZoneId.systemDefault()).toInstant());
+            DateTime dt2 = new DateTime(finalEndTime, Calendar.getInstance().getTimeZone());
+
+            event.setStart(new EventDateTime().setDateTime(startDateTime));
+            event.setEnd(new EventDateTime().setDateTime(dt2));
+            event.setId(UUID.randomUUID().toString().replaceAll("-",""));
+            event.setSummary(appointment.getService().getName() + " with " + appointment.getEmployee().getFirstName() + " on " + appointment.getDate().toString());
+            Event.Creator creator = new Event.Creator().setEmail("asd@gmail.com").setDisplayName("asd");
+            event.setCreator(creator);
+
+            client.events().insert("primary", event).execute();
+        }catch( Exception e){
+            e.printStackTrace();
+        }
 
         return appointmentRepository.save(appointment);
     }
@@ -157,6 +228,7 @@ public class AppointmentService {
         }
         generalAppointmentRepository.saveAll(generalAppointmentList);
     }
+
     /**
      * Checks to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
      *
@@ -171,6 +243,7 @@ public class AppointmentService {
      */
     private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
         final Employee employee = appointment.getEmployee();
+
 
         // Make sure the client and employee are not the same
         if (appointment.getClient().equals(employee)) {

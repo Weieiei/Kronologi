@@ -1,6 +1,7 @@
 package appointmentscheduler.controller.rest;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +24,10 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.util.store.DataStore;
 import com.google.api.client.util.store.DataStoreFactory;
 import com.google.api.client.util.store.DataStoreUtils;
+import com.google.api.services.calendar.model.EventDateTime;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -70,6 +75,9 @@ public class GoogleCalendarController extends AbstractController {
 
     @Autowired
     AppointmentService appointmentService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     GoogleCredentialRepository repo;
@@ -113,13 +121,13 @@ public class GoogleCalendarController extends AbstractController {
         com.google.api.services.calendar.model.Events eventList;
         String message;
         try {
+
             TokenResponse response = flow.newTokenRequest(code).setRedirectUri(redirectURI).execute();
             logger.warn(response);
             logger.warn(response.getAccessToken());
-            credential = flow.createAndStoreCredential(response, String.valueOf(getUserId()));
+            credential = flow.createAndStoreCredential(response, String.valueOf(getSessionUser()));
             client = new com.google.api.services.calendar.Calendar.Builder(httpTransport, JSON_FACTORY, credential)
                     .setApplicationName(APPLICATION_NAME).build();
-
 
             JsonFactory jsonFactory = new JacksonFactory();
             GoogleCredential credential = new GoogleCredential.Builder()
@@ -159,13 +167,17 @@ public class GoogleCalendarController extends AbstractController {
             clientSecrets = new GoogleClientSecrets().setWeb(web);
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets,
-                    Collections.singleton(CalendarScopes.CALENDAR)).setDataStoreFactory(dataStore).build();
+                    Collections.singleton(CalendarScopes.CALENDAR)).setAccessType("offline").setDataStoreFactory(dataStore).build();
         }
 
         JwtProvider jwt = new JwtProvider();
-        String calendarToken = jwt.generateCalendarToken(getUserId());
+
+        String calendarToken = jwt.generateCalendarToken(userService.findUserById(getUserId()),SecurityContextHolder.getContext().getAuthentication() );
+
         authorizationUrl = flow.newAuthorizationUrl().setRedirectUri(redirectURI).setState(calendarToken);
         return authorizationUrl.build();
     }
+
+
 
 }

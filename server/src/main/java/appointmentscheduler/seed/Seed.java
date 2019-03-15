@@ -268,9 +268,9 @@ public class Seed {
         Set<Shift> shifts = new HashSet<>();
         shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12,
                 0), LocalTime.of(22, 0)));
-        shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.MARCH, 6), LocalTime.of(12, 0),
+        shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.JUNE, 6), LocalTime.of(12, 0),
                 LocalTime.of(21, 0)));
-        shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.MARCH, 30), LocalTime.of(8, 0),
+        shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.APRIL, 30), LocalTime.of(8, 0),
                 LocalTime.of(22, 0)));
         return shifts;
     }
