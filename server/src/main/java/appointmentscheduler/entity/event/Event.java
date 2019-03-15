@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 public interface Event {
 
+     long getId();
      LocalTime getStartTime();
      LocalTime getEndTime();
      LocalDate getDate();

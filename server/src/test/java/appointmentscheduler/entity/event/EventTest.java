@@ -16,6 +16,11 @@ public class EventTest implements Event {
     }
 
     @Override
+    public long getId() {
+        return 0;
+    }
+
+    @Override
     public LocalTime getStartTime() {
         return startTime;
     }
