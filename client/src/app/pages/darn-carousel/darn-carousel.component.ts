@@ -10,17 +10,35 @@ import { NgModule } from '@angular/core';
   styleUrls: ['./darn-carousel.component.scss']
 })
 export class DarnCarouselComponent {
-    title = 'NG7Swiper';
+    slides = [
+        {img: "http://placehold.it/350x150/000000"},
+        {img: "http://placehold.it/350x150/111111"},
+        {img: "http://placehold.it/350x150/333333"},
+        {img: "http://placehold.it/350x150/666666"}
+    ];
+    slideConfig = {"slidesToShow": 4, "slidesToScroll": 4};
 
+    addSlide() {
+        this.slides.push({img: "http://placehold.it/350x150/777777"})
+    }
 
-    config: SwiperOptions = {
-        autoplay: 3000, // Autoplay option having value in milliseconds
-        initialSlide: 3, // Slide Index Starting from 0
-        slidesPerView: 3, // Slides Visible in Single View Default is 1
-        pagination: '.swiper-pagination', // Pagination Class defined
-        paginationClickable: true, // Making pagination dots clicable
-        nextButton: '.swiper-button-next', // Class for next button
-        prevButton: '.swiper-button-prev', // Class for prev button
-        spaceBetween: 30 // Space between each Item
-    };
+    removeSlide() {
+        this.slides.length = this.slides.length - 1;
+    }
+
+    slickInit(e) {
+        console.log('slick initialized');
+    }
+
+    breakpoint(e) {
+        console.log('breakpoint');
+    }
+
+    afterChange(e) {
+        console.log('afterChange');
+    }
+
+    beforeChange(e) {
+        console.log('beforeChange');
+    }
 }

@@ -56,6 +56,8 @@ import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/ad
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
 import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
 import { SwiperModule } from 'angular2-useful-swiper';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+
 
 @NgModule({
     declarations: [
@@ -114,7 +116,9 @@ import { SwiperModule } from 'angular2-useful-swiper';
         FlexLayoutModule,
         HttpClientModule,
         ReactiveFormsModule,
-        SwiperModule
+        SwiperModule,
+        SlickCarouselModule
+
     ],
     entryComponents: [
         TimePickerDialogComponent,

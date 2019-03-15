@@ -23,13 +23,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-            "node_modules/swiper/dist/css/swiper.css"
-
+                "src/styles.scss",
+                "node_modules/swiper/dist/css/swiper.css",
+                "node_modules/slick-carousel/slick/slick.scss",
+                "node_modules/slick-carousel/slick/slick-theme.scss"
             ],
             "scripts": ["src/assets/js/google-analytics.js",
-                "node_modules/swiper/dist/js/swiper.js",
-                ]
+                "node_modules/jquery/dist/jquery.min.js",
+                "node_modules/slick-carousel/slick/slick.min.js"
+
+            ]
           },
           "configurations": {
             "production": {
@@ -81,7 +84,7 @@
                 "node_modules/slick-carousel/slick/slick-theme.scss"
             ],
             "scripts": [
-                "node_modules/jquery/dist/jquery.min.js",
+                "node_modules/jquery/dist/jquery.min.js"
             ],
             "assets": [
               "src/favicon.ico",
