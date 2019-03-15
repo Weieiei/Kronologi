@@ -7,6 +7,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.controller.rest.AbstractController;
 import appointmentscheduler.entity.googleEntity.SyncEntity;
 import appointmentscheduler.entity.user.User;
@@ -36,15 +37,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
@@ -61,6 +61,7 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar.Events;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 @RequestMapping(value = "/external/google")
@@ -114,6 +115,7 @@ public class GoogleCalendarController extends AbstractController {
 
 
 
+    @LogREST
     @GetMapping(value = "/login/google")
     public ResponseEntity googleConnectionStatus(HttpServletRequest request) throws Exception {
         JSONObject obj = new JSONObject();
@@ -123,15 +125,13 @@ public class GoogleCalendarController extends AbstractController {
         //return ResponseEntity.ok(authorize());
     }
 
+    @LogREST
     @GetMapping(value = "/login/calendarCallback")
     public RedirectView oauth2Callback(@RequestParam(value = "code") String code) {
         com.google.api.services.calendar.model.Events eventList;
         String message;
         try {
-
             TokenResponse response = flow.newTokenRequest(code).setRedirectUri(redirectURI).execute();
-            logger.warn(response);
-            logger.warn(response.getAccessToken());
             credential = flow.createAndStoreCredential(response, String.valueOf(getSessionUser()));
             client = new com.google.api.services.calendar.Calendar.Builder(httpTransport, JSON_FACTORY, credential)
                     .setApplicationName(APPLICATION_NAME).build();
@@ -151,6 +151,7 @@ public class GoogleCalendarController extends AbstractController {
 
             User user = userService.findUserById(Integer.valueOf(getSessionUser()));
             appointmentService.googleCalendarEvents(eventList, user);
+
         } catch (Exception e) {
             logger.warn("Exception while handling OAuth2 callback (" + e.getMessage() + ")."
                     + " Redirecting to google connection status page.");

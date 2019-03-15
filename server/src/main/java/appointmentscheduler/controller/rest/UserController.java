@@ -14,8 +14,10 @@ import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.repository.GoogleCredentialRepository;
 import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
@@ -24,14 +26,16 @@ import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.user.UserService;
 import appointmentscheduler.service.verification.VerificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -45,18 +49,23 @@ public class UserController extends AbstractController {
     private final EmailService emailService;
     private final VerificationService verificationService;
 
+
+    GoogleCredentialRepository repo;
+
     @Autowired
     VerificationRepository verificationRepository;
     private final AppointmentService appointmentService;
     private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
-    public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory) {
+    public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory,
+                          GoogleCredentialRepository repo) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.emailService = emailService;
         this.verificationService = verificationService;
         this.objectMapperFactory = objectMapperFactory;
+        this.repo = repo;
     }
 
     @Autowired
@@ -158,5 +167,30 @@ public class UserController extends AbstractController {
         cancel.setCancelReason(cancel.getCancelReason());
         CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
         return ResponseEntity.ok(appointmentService.cancel(cancelled));
+    }
+
+    @LogREST
+    @GetMapping(value = "/unlinkAccount")
+    public ResponseEntity unlinkGoogleAccount(HttpServletResponse request) throws Exception{
+
+        GoogleCred cred = repo.findByKey(String.valueOf(getUserId())).get();
+
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://accounts.google.com/o/oauth2/revoke")
+                .queryParam("token", cred.getAccessToken());
+
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
+        HttpEntity<String> response = restTemplate.exchange(
+                builder.toUriString(),
+                HttpMethod.GET,
+                entity,
+                String.class);
+
+        repo.delete(cred);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

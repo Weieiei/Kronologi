@@ -143,7 +143,7 @@ public class AppointmentService {
         if(googleCredentialRepository.findByKey(String.valueOf(appointment.getClient().getId())).isPresent()) {
             saveEventToGoogleCalendar(appointment, appointment.getClient());
         }
-        
+
         return appointmentRepository.save(appointment);
     }
 
