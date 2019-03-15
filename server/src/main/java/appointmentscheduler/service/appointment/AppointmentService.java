@@ -5,6 +5,7 @@ import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.appointment.GeneralAppointment;
 import appointmentscheduler.entity.employee_service.EmployeeService;
+import appointmentscheduler.entity.googleEntity.SyncEntity;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -12,6 +13,7 @@ import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.*;
+import appointmentscheduler.service.googleService.GoogleSyncService;
 import appointmentscheduler.service.googleService.JPADataStoreFactory;
 import appointmentscheduler.service.googleService.JPADataStoreService;
 import com.google.api.client.auth.oauth2.Credential;
@@ -30,6 +32,7 @@ import appointmentscheduler.repository.CancelledRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.Events;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -65,8 +68,9 @@ public class AppointmentService {
     private static HttpTransport httpTransport;
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static com.google.api.services.calendar.Calendar client;
-    GoogleAuthorizationCodeFlow flow;
-    Credential credential;
+
+
+    private GoogleSyncService googleSyncService;
     private CancelledRepository cancelledRepository;
     private AppointmentRepository appointmentRepository;
     private EmployeeRepository employeeRepository;
@@ -95,7 +99,7 @@ public class AppointmentService {
     @Autowired
     public AppointmentService(
             AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository,
-            GeneralAppointmentRepository generalAppointmentRepository, GoogleCredentialRepository googleCredentialRepository
+            GeneralAppointmentRepository generalAppointmentRepository, GoogleCredentialRepository googleCredentialRepository, GoogleSyncService googleSyncService
     ) {
         this.googleCredentialRepository = googleCredentialRepository;
         this.cancelledRepository = cancelledRepository;
@@ -104,6 +108,7 @@ public class AppointmentService {
         this.shiftRepository = shiftRepository;
         this.generalAppointmentRepository = generalAppointmentRepository;
         this.googleCredentialRepository = googleCredentialRepository;
+        this.googleSyncService = googleSyncService;
     }
 
     public List<Appointment> findByClientIdAndBusinessId(long clientId, long businessId){
@@ -130,40 +135,15 @@ public class AppointmentService {
         // the validation went wrong
         validate(appointment, false);
 
-        try{
 
-            GoogleCred googleCred = googleCredentialRepository.findByKey(String.valueOf(appointment.getEmployee().getId())).get();
-
-            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-            GoogleCredential credential = new GoogleCredential().setAccessToken(googleCred.getAccessToken());
-
-            client = new com.google.api.services.calendar.Calendar.Builder(httpTransport, JSON_FACTORY, credential)
-                    .setApplicationName(APPLICATION_NAME).build();
-
-
-            Event event = new Event();
-
-            LocalDateTime startTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
-            Date finalStartTime = Date.from(startTime.atZone(ZoneId.systemDefault()).toInstant());
-            DateTime startDateTime = new DateTime(finalStartTime, Calendar.getInstance().getTimeZone());
-
-
-            LocalDateTime endTime = LocalDateTime.of(appointment.getDate(), appointment.getEndTime());
-            Date finalEndTime = Date.from(endTime.atZone(ZoneId.systemDefault()).toInstant());
-            DateTime dt2 = new DateTime(finalEndTime, Calendar.getInstance().getTimeZone());
-
-            event.setStart(new EventDateTime().setDateTime(startDateTime));
-            event.setEnd(new EventDateTime().setDateTime(dt2));
-            event.setId(UUID.randomUUID().toString().replaceAll("-",""));
-            event.setSummary(appointment.getService().getName() + " with " + appointment.getEmployee().getFirstName() + " on " + appointment.getDate().toString());
-            Event.Creator creator = new Event.Creator().setEmail("asd@gmail.com").setDisplayName("asd");
-            event.setCreator(creator);
-
-            client.events().insert("primary", event).execute();
-        }catch( Exception e){
-            e.printStackTrace();
+        //Save to google calendar of employee and / or client if they have their credentials in our db
+        if(googleCredentialRepository.findByKey(String.valueOf(appointment.getEmployee().getId())).isPresent()) {
+            saveEventToGoogleCalendar(appointment, appointment.getEmployee());
         }
-
+        if(googleCredentialRepository.findByKey(String.valueOf(appointment.getClient().getId())).isPresent()) {
+            saveEventToGoogleCalendar(appointment, appointment.getClient());
+        }
+        
         return appointmentRepository.save(appointment);
     }
 
@@ -202,12 +182,13 @@ public class AppointmentService {
 
     }
 
-    public void  googleCalendarEvents(List<Event> events, long employeeId){
+    public void  googleCalendarEvents(Events events, User user){
         List<GeneralAppointment> generalAppointmentList = new ArrayList<>();
 
-        for(Event event : events){
 
-            Employee employee = employeeRepository.findById(employeeId).get();
+        for(Event event : events.getItems()){
+
+            Employee employee = employeeRepository.findById(user.getId()).get();
             GeneralAppointment generalAppointment = new GeneralAppointment();
             Date startDate= new Date(event.getStart().getDateTime().getValue());
             Date endDate = new Date(event.getEnd().getDateTime().getValue());
@@ -226,6 +207,11 @@ public class AppointmentService {
 
             generalAppointmentList.add(generalAppointment);
         }
+
+        //keep track of sync token
+        SyncEntity syncEntity = new SyncEntity(events.getNextSyncToken(), user);
+        googleSyncService.saveSyncToken(syncEntity);
+
         generalAppointmentRepository.saveAll(generalAppointmentList);
     }
 
@@ -244,6 +230,11 @@ public class AppointmentService {
     private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
         final Employee employee = appointment.getEmployee();
 
+        GoogleCred employeeCred =  googleCredentialRepository.findByKey(String.valueOf(employee.getId())).get();
+
+        if(googleCredentialRepository.findByKey(String.valueOf(employee.getId())).isPresent() && googleSyncService.findById(employee.getId()) != null){
+            checkCalendarSync(googleCredentialRepository.findByKey(String.valueOf(employee.getId())).get().getAccessToken(), googleSyncService.findById(employee.getId()).getSyncToken(), employee);
+        }
 
         // Make sure the client and employee are not the same
         if (appointment.getClient().equals(employee)) {
@@ -369,4 +360,71 @@ public class AppointmentService {
         map.put("message", message);
         return map;
     }
+
+    /**
+     * Syncs with Google Calendar using stored Sync token.
+     * Refer to : https://developers.google.com/calendar/v3/sync
+     *
+     * @param accessToken user acceess token have access to the googel calendar
+     * @param syncToken token to identify last element app sync'd with
+     * @param employee id of employee to sync to find  possible new conflicts
+     */
+   private void checkCalendarSync(String accessToken, String syncToken, Employee employee) {
+       try {
+           httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+           GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
+
+           client = new com.google.api.services.calendar.Calendar.Builder(httpTransport, JSON_FACTORY, credential)
+                   .setApplicationName(APPLICATION_NAME).build();
+
+           com.google.api.services.calendar.Calendar.Events.List request = client.events().list("primary");
+           request.setSyncToken(syncToken);
+
+           Events eventList = request.execute();
+
+           if (eventList.size() > 0) {
+               this.googleCalendarEvents(eventList,employee);
+           }
+       } catch (Exception e) {
+
+       }
+   }
+
+
+   private void saveEventToGoogleCalendar(Appointment appointment, User userToSave){
+       try{
+           GoogleCred googleCred = googleCredentialRepository.findByKey(String.valueOf(userToSave.getId())).get();
+
+           httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+           GoogleCredential credential = new GoogleCredential().setAccessToken(googleCred.getAccessToken());
+
+           client = new com.google.api.services.calendar.Calendar.Builder(httpTransport, JSON_FACTORY, credential)
+                   .setApplicationName(APPLICATION_NAME).build();
+
+
+           Event event = new Event();
+
+           LocalDateTime startTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
+           Date finalStartTime = Date.from(startTime.atZone(ZoneId.systemDefault()).toInstant());
+           DateTime startDateTime = new DateTime(finalStartTime, Calendar.getInstance().getTimeZone());
+
+
+           LocalDateTime endTime = LocalDateTime.of(appointment.getDate(), appointment.getEndTime());
+           Date finalEndTime = Date.from(endTime.atZone(ZoneId.systemDefault()).toInstant());
+           DateTime dt2 = new DateTime(finalEndTime, Calendar.getInstance().getTimeZone());
+
+           event.setStart(new EventDateTime().setDateTime(startDateTime));
+           event.setEnd(new EventDateTime().setDateTime(dt2));
+           event.setId(UUID.randomUUID().toString().replaceAll("-",""));
+           event.setSummary(appointment.getService().getName() + " with " + appointment.getEmployee().getFirstName() + " on " + appointment.getDate().toString());
+           Event.Creator creator = new Event.Creator().setEmail(appointment.getClient().getEmail()).setDisplayName(appointment.getClient().getFirstName() + " "  + appointment.getClient().getLastName());
+           event.setCreator(creator);
+
+           client.events().insert("primary", event).execute();
+       }catch( Exception e){
+           e.printStackTrace();
+       }
+
+   }
+
 }

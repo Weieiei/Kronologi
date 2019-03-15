@@ -8,12 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import appointmentscheduler.controller.rest.AbstractController;
+import appointmentscheduler.entity.googleEntity.SyncEntity;
+import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.repository.GoogleCredentialRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.employee.EmployeeShiftService;
+import appointmentscheduler.service.googleService.GoogleSyncService;
 import appointmentscheduler.service.googleService.JPADataStoreFactory;
 import appointmentscheduler.service.googleService.JPADataStoreService;
 import appointmentscheduler.service.service.ServiceService;
@@ -72,6 +75,10 @@ public class GoogleCalendarController extends AbstractController {
     GoogleClientSecrets clientSecrets;
     GoogleAuthorizationCodeFlow flow;
     Credential credential;
+
+
+    @Autowired
+    GoogleSyncService googleSyncService;
 
     @Autowired
     AppointmentService appointmentService;
@@ -141,8 +148,9 @@ public class GoogleCalendarController extends AbstractController {
             eventList = events.list("primary").setTimeMin(date1).execute();
 
             message = eventList.getItems().toString();
-            appointmentService.googleCalendarEvents(eventList.getItems(), 5);
-            System.out.println("My:" + eventList.getItems());
+
+            User user = userService.findUserById(Integer.valueOf(getSessionUser()));
+            appointmentService.googleCalendarEvents(eventList, user);
         } catch (Exception e) {
             logger.warn("Exception while handling OAuth2 callback (" + e.getMessage() + ")."
                     + " Redirecting to google connection status page.");
