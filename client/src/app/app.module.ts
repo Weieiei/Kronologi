@@ -54,7 +54,8 @@ import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-us
 import { AssignServicesDialogComponent } from "./pages/dashboard/home/admin-users/assign-services-dialog/assign-services-dialog.component";
 import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/admin-users/change-client-to-employee-dialog/change-client-to-employee-dialog.component";
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
+import { SwiperModule } from 'angular2-useful-swiper';
 
 @NgModule({
     declarations: [
@@ -101,7 +102,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
         AddShiftFormComponent,
         CancelDialogComponent,
         ReviewComponent,
-        ReasonDialogComponent
+        ReasonDialogComponent,
+        DarnCarouselComponent
     ],
     imports: [
         BrowserModule,
@@ -112,7 +114,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
         FlexLayoutModule,
         HttpClientModule,
         ReactiveFormsModule,
-        SlickCarouselModule
+        SwiperModule
     ],
     entryComponents: [
         TimePickerDialogComponent,

@@ -20,10 +20,10 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
-
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
+import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
 
 const routes: Routes = [
     // Login
@@ -67,6 +67,7 @@ const routes: Routes = [
             { path: 'admin/services', component: AdminServicesComponent },
             { path: 'admin/services/create', component: CreateServiceComponent },
             { path: 'admin/users', component: AdminUsersComponent },
+            { path: 'darn-carousel', component: DarnCarouselComponent },
 
             // User settings
             {

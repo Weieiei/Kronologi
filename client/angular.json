@@ -23,9 +23,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+            "node_modules/swiper/dist/css/swiper.css"
+
             ],
-            "scripts": ["src/assets/js/google-analytics.js"]
+            "scripts": ["src/assets/js/google-analytics.js",
+                "node_modules/swiper/dist/js/swiper.js",
+                ]
           },
           "configurations": {
             "production": {
@@ -78,7 +82,6 @@
             ],
             "scripts": [
                 "node_modules/jquery/dist/jquery.min.js",
-                "node_modules/slick-carousel/slick/slick.min.js"
             ],
             "assets": [
               "src/favicon.ico",
