@@ -84,4 +84,49 @@ public class EventComparerTest {
         //event 2 less than event 1
         assertEquals(1, result);
     }
+
+    @Test
+    public void compareSameTimeEvent() {
+        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event2 = new EventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        int result = eventComparer.compare(event1,event2);
+        //events conflicting
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void compareConflictStart() {
+        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event2 = new EventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        int result = eventComparer.compare(event1,event2);
+        //events conflicting
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void compareConflictEnd() {
+        event1 = new EventTest(LocalTime.of(1,57), LocalTime.of(1,59), LocalDate.of(2018,1, 2));
+        event2 = new EventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        int result = eventComparer.compare(event1,event2);
+        //events conflicting
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void compareConflictInside() {
+        event1 = new EventTest(LocalTime.of(1,46), LocalTime.of(1,55), LocalDate.of(2018,1, 2));
+        event2 = new EventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        int result = eventComparer.compare(event1,event2);
+        //events conflicting
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void compareConflictInsideSecond() {
+        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
+        event2 = new EventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        int result = eventComparer.compare(event1,event2);
+        //events conflicting
+        assertEquals(0, result);
+    }
 }
