@@ -169,7 +169,7 @@ public class Appointment extends GeneralAppointment implements Event{
     private void adjustEndTime() {
         this.endTime = startTime.plusMinutes(this.service.getDuration());
     }
-
+    //TODO integrate UTIL
     public boolean isConflicting(Appointment appointment) {
         return appointment.getDate().equals(this.getDate()) &&
                 !(appointment.getEndTime().isBefore(this.getStartTime()) || appointment.getEndTime().equals(this.getStartTime()) || appointment.getStartTime().isAfter(this.getEndTime()) || appointment.getStartTime().equals(this.getEndTime()));

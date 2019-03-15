@@ -200,7 +200,7 @@ public class AppointmentService {
 
         // Check if the employee does not have an appointment scheduled already in that time slot
         List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(appointment.getDate(), employee.getId(), appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
-
+        //TODO integrate UTIL
         for (Appointment employeeAppointment : employeeAppointments) {
             if (employeeAppointment.isConflicting(appointment) && !(modifying && employeeAppointment.equals(appointment))) {
                 throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee.");
@@ -209,7 +209,7 @@ public class AppointmentService {
 
         // Check if the client does not have an appointment scheduled already
         List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndBusinessIdAndStatus(appointment.getDate(), appointment.getClient().getId(),appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
-
+        //TODO integrate UTIL
         for (Appointment clientAppointment : clientAppointments) {
             if (clientAppointment.isConflicting(appointment) && !(modifying && clientAppointment.equals(appointment))) {
                 throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
