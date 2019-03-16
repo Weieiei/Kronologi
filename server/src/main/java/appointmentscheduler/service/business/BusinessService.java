@@ -33,7 +33,8 @@ public class BusinessService {
     public long add(Business business) {
         try{
             business = businessRepository.save(business);
-            return business.getId();
+            long id = business.getId();
+            return id;
         }
         catch (Exception e) {
             return e.hashCode();
