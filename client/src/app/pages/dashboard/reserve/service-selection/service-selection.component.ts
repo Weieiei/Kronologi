@@ -19,12 +19,11 @@ export class ServiceSelectionComponent implements OnInit, OnDestroy {
     @Input() serviceEvent: Observable<number>;
 
     @Output() serviceChange = new EventEmitter();
-    slideConfig = {"slidesToShow": 4, "slidesToScroll": 1};
+    slideConfig = {"slidesToShow": 3, "slidesToScroll": 1};
     constructor(private serviceService: ServiceService) {
         this.items=[
             {name : 'assets/images/alex-bertha-215867-unsplash.jpg'},
             {name : 'assets/images/anshu-a-1147827-unsplash.jpg'},
-           // {name : 'assets/images/deniz-altindas-38128-unsplash.jpg'}
         ];
 
 

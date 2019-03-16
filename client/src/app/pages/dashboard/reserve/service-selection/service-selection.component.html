@@ -1,49 +1,3 @@
-<mat-nav-list>
-    <ng-container >
-       <!-- *ngFor="let service of services"-->
-
-<!--        <div ng2-carouselamos class="slides-wrapper"
-             [items]="items"
-             [width]="900"
-             [$prev]="prev"
-             [$next]="next"
-             [$item]="item">
-        </div>
-        <ng-template #prev>
-            <img src="assets/images/left-arrow.png" id="left" >
-        </ng-template>
-        <ng-template #prev>
-            <img src="assets/images/right-arrow.png" id="right">
-        </ng-template>
-        <ng-template #item let-item let-i="index">
-            <div class="items">
-                <img src="{{item.name}}">
-            </div>
-        </ng-template>-->
-
-
-        <!--<mat-nav-list>-->
-            <!--<ng-container *ngFor="let service of services">-->
-                <!--<mat-list-item (click)="selectService(service)" [class.chosen]="service.id === serviceId">-->
-                    <!--<div matLine>{{ service.name }}</div>-->
-                    <!--<div matLine fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">-->
-                        <!--<mat-icon appButtonIcon>access_time</mat-icon>-->
-                        <!--<span>{{ service.duration }} minutes</span>-->
-                    <!--</div>-->
-                <!--</mat-list-item>-->
-                <!--<mat-divider></mat-divider>-->
-            <!--</ng-container>-->
-        <!--</mat-nav-list>-->
-
-
-
-
-        <!--<mat-divider></mat-divider>-->
-    <!--</ng-container>-->
-<!--</mat-nav-list>-->
-
-
-
 <ngx-slick-carousel class="carousel"
                     #slickModal="slick-carousel"
                     [config]="slideConfig"
@@ -52,35 +6,13 @@
                     (afterChange)="afterChange($event)"
                     (beforeChange)="beforeChange($event)">
     <div ngxSlickItem *ngFor="let service of services" class="slide">
-        <div matLine>{{ service.name }}</div>
+        <div (click)="selectService(service)">{{ service.name }}</div>
         <div>
-            <img src="../assets/images/alex-bertha-215867-unsplash.jpg" alt="Italian Trulli">div matLine></div>
-        <div matLine fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+            <img class="card-image" src="../assets/images/alex-bertha-215867-unsplash.jpg" alt="my-img">
+        </div>
+        <!--<div matLine fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">-->
             <mat-icon appButtonIcon>access_time</mat-icon>
             <span>{{ service.duration }} minutes</span>
-        </div>
+        <!--</div>-->
     </div>
 </ngx-slick-carousel>
-
-<!--<div id="container">
-    <div ng2-carouselamos class="slides-wrapper"
-    [items]="items"
-     [width]="900"
-     [$prev]="prev"
-     [$next]="next"
-     [$item]="item">
-     </div>
-    <ng-template #prev>
-        <img source="assets/images/left-arrow.png" id="left">
-    </ng-template>
-    <ng-template #prev>
-        <img source="assets/images/right-arrow.png" id="right">
-    </ng-template>
-    <ng-template #item let-item let-i="index">
-        <div class="item">
-            <img src="{{item.name}}">
-        </div>
-    </ng-template>
-</div>-->
-
-
