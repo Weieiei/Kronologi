@@ -18,6 +18,7 @@ public class EventTest implements Event {
     }
 
     public EventTest(LocalTime startTime, LocalTime endTime, LocalDate date) {
+        this.id = 0;
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;

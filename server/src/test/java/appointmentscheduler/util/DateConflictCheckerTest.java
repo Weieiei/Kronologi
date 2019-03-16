@@ -56,4 +56,69 @@ public class DateConflictCheckerTest {
         events.add(new EventTest(LocalTime.of(3,0), LocalTime.of(4,0), LocalDate.of(2018,1,1)));
         assertTrue(DateConflictChecker.hasConflictList(events,newEvent, true));
     }
+
+    @Test
+    public void noConflictSeveralTest() {
+        List<Event> events = new ArrayList<>();
+        List<Event> newEvents = new ArrayList<>();
+
+        events.add(new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1,1)));
+        events.add(new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1,1)));
+        events.add(new EventTest(LocalTime.of(3,0), LocalTime.of(4,0), LocalDate.of(2018,1,1)));
+
+        newEvents.add(new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1,2)));
+        newEvents.add(new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1,3)));
+        newEvents.add(new EventTest(LocalTime.of(3,0), LocalTime.of(4,0), LocalDate.of(2018,1,4)));
+
+        assertFalse(DateConflictChecker.hasConflictSeveralEvents(events,newEvents));
+    }
+
+    @Test
+    public void conflictEndSeveralTest() {
+        List<Event> events = new ArrayList<>();
+        List<Event> newEvents = new ArrayList<>();
+
+        events.add(new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1,1)));
+        events.add(new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1,1)));
+        events.add(new EventTest(LocalTime.of(3,0), LocalTime.of(4,0), LocalDate.of(2018,1,1)));
+
+        newEvents.add(new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1,2)));
+        newEvents.add(new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1,3)));
+        newEvents.add(new EventTest(LocalTime.of(3,0), LocalTime.of(4,0), LocalDate.of(2018,1,1)));
+
+        assertTrue(DateConflictChecker.hasConflictSeveralEvents(events,newEvents));
+    }
+
+    @Test
+    public void conflictMiddleSeveralTest() {
+        List<Event> events = new ArrayList<>();
+        List<Event> newEvents = new ArrayList<>();
+
+        events.add(new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1,1)));
+        events.add(new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1,1)));
+        events.add(new EventTest(LocalTime.of(3,0), LocalTime.of(4,0), LocalDate.of(2018,1,1)));
+
+        newEvents.add(new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1,2)));
+        newEvents.add(new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1,1)));
+        newEvents.add(new EventTest(LocalTime.of(3,0), LocalTime.of(4,0), LocalDate.of(2018,1,4)));
+
+        assertTrue(DateConflictChecker.hasConflictSeveralEvents(events,newEvents));
+    }
+
+    @Test
+    public void conflictStartSeveralTest() {
+        List<Event> events = new ArrayList<>();
+        List<Event> newEvents = new ArrayList<>();
+
+        events.add(new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1,1)));
+        events.add(new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1,1)));
+        events.add(new EventTest(LocalTime.of(3,0), LocalTime.of(4,0), LocalDate.of(2018,1,1)));
+
+        newEvents.add(new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1,1)));
+        newEvents.add(new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1,2)));
+        newEvents.add(new EventTest(LocalTime.of(3,0), LocalTime.of(4,0), LocalDate.of(2018,1,4)));
+
+        assertTrue(DateConflictChecker.hasConflictSeveralEvents(events,newEvents));
+    }
+
 }
