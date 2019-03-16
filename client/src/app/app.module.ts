@@ -112,7 +112,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
         CardsUiComponent,
         ServicesComponent,
         SyncCalendarsComponent,
-	DarnCarouselComponent
+        DarnCarouselComponent
     ],
     imports: [
         BrowserModule,
