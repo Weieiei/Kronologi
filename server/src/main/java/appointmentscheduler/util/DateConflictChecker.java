@@ -38,9 +38,9 @@ public final class DateConflictChecker {
         Collections.sort(events, eventComparer);
         Collections.sort(newEvents, eventComparer);
 
+        currentEvent = events.get(currentIndex);
+        currentNewEvent = newEvents.get(newIndex);
         while (true) {
-            currentEvent = events.get(currentIndex);
-            currentNewEvent = newEvents.get(newIndex);
             comparison = eventComparer.compare(currentNewEvent, currentEvent);
             if(comparison == -1) {
                 //last new event is before current old event
@@ -48,6 +48,7 @@ public final class DateConflictChecker {
                     return false;
                 } else {
                     newIndex++;
+                    currentNewEvent = newEvents.get(newIndex);
                 }
             } else if(comparison == 1) {
                 //last old event is before current new event
@@ -55,6 +56,7 @@ public final class DateConflictChecker {
                     return false;
                 } else {
                     currentIndex++;
+                    currentEvent = events.get(currentIndex);
                 }
             } else
                 return true;

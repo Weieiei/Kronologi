@@ -3,6 +3,7 @@ package appointmentscheduler.entity.appointment;
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.event.Event;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.event.EventComparer;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -169,9 +170,9 @@ public class Appointment extends GeneralAppointment implements Event{
     private void adjustEndTime() {
         this.endTime = startTime.plusMinutes(this.service.getDuration());
     }
-    //TODO integrate UTIL
+
     public boolean isConflicting(Appointment appointment) {
-        return appointment.getDate().equals(this.getDate()) &&
-                !(appointment.getEndTime().isBefore(this.getStartTime()) || appointment.getEndTime().equals(this.getStartTime()) || appointment.getStartTime().isAfter(this.getEndTime()) || appointment.getStartTime().equals(this.getEndTime()));
+        EventComparer eventComparer = new EventComparer();
+        return eventComparer.compare(this, appointment) == 0;
     }
 }
