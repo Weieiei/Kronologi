@@ -1,5 +1,15 @@
-img {
-    width: 800px;
-    height: 800px;
-    object-fit: contain;
+//img {
+//    width: 800px;
+//    height: 800px;
+//    object-fit: contain;
+//}
+
+.service-card {
+    max-width: 800px;
+    border-style:hidden;
+}
+
+.example-header-image {
+    //background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    //background-size: auto;
 }
