@@ -52,9 +52,36 @@ public class FileStorageServiceTest {
         verify(fileRepository, times(1)).save(any());
     }
 
+    @Test
+    public void saveValidAlphaNumFile() throws IOException {
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "tes12_blob.txt",
+                "text/plain", "Spring Framework".getBytes());
+        when(businessRepository.findById(any())).thenReturn(Optional.of(business));
+        fileStorageService.saveFile(multipartFile, business.getId());
+
+        //method to save file was called
+        verify(fileRepository, times(1)).save(any());
+    }
+
     @Test(expected = FileStorageException.class)
     public void saveInvalidFile() throws IOException {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "test..txt",
+                "text/plain", "Spring Framework".getBytes());
+        when(businessRepository.findById(any())).thenReturn(Optional.of(business));
+        fileStorageService.saveFile(multipartFile, business.getId());
+    }
+
+    @Test(expected = FileStorageException.class)
+    public void saveInvalidCharFile() throws IOException {
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test#blob.txt",
+                "text/plain", "Spring Framework".getBytes());
+        when(businessRepository.findById(any())).thenReturn(Optional.of(business));
+        fileStorageService.saveFile(multipartFile, business.getId());
+    }
+
+    @Test(expected = FileStorageException.class)
+    public void saveInvalidExtFile() throws IOException {
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test.tx1t",
                 "text/plain", "Spring Framework".getBytes());
         when(businessRepository.findById(any())).thenReturn(Optional.of(business));
         fileStorageService.saveFile(multipartFile, business.getId());

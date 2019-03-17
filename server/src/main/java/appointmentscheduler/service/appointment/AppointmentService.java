@@ -24,6 +24,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import appointmentscheduler.util.DateConflictChecker;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
@@ -264,20 +265,14 @@ public class AppointmentService {
 
         // Check if the employee does not have an appointment scheduled already in that time slot
         List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(appointment.getDate(), employee.getId(), appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
-
-        for (Appointment employeeAppointment : employeeAppointments) {
-            if (employeeAppointment.isConflicting(appointment) && !(modifying && employeeAppointment.equals(appointment))) {
-                throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee.");
-            }
+        if (DateConflictChecker.hasConflictList(employeeAppointments, appointment, modifying)) {
+            throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee.");
         }
 
         // Check if the client does not have an appointment scheduled already
         List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndBusinessIdAndStatus(appointment.getDate(), appointment.getClient().getId(),appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
-
-        for (Appointment clientAppointment : clientAppointments) {
-            if (clientAppointment.isConflicting(appointment) && !(modifying && clientAppointment.equals(appointment))) {
-                throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
-            }
+        if(DateConflictChecker.hasConflictList(clientAppointments, appointment, modifying)) {
+            throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
         }
     }
 

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider implements Serializable {
 
-    private static String KEY;
+    private  String KEY;
 
     private static String googleKey;
 
@@ -142,7 +142,7 @@ public class JwtProvider implements Serializable {
         RandomStringGenerator.Builder builder = new RandomStringGenerator.Builder();
         char[] numbers = new char[]{'0', '9'};
         char[] lowercase = new char[]{'a', 'z'};
-        char[] uppercase = new char[]{'A', 'Z'};
+        char[]  uppercase = new char[]{'A', 'Z'};
         builder.withinRange(numbers, lowercase, uppercase);
         RandomStringGenerator generator = builder.build();
 
