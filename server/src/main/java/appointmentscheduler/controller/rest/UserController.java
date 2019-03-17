@@ -146,7 +146,6 @@ public class UserController extends AbstractController {
     public ResponseEntity<Map<String, String>> updateSettings(@RequestBody UpdateSettingsDTO updateSettingsDTO) {
         return ResponseEntity.ok(userService.updateSettings(getUserId(), updateSettingsDTO));
     }
-
     @GetMapping("/phone")
     public PhoneNumber getPhoneNumber(@RequestAttribute long userId) {
         return userService.getPhoneNumber(userId);
