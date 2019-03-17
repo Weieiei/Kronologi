@@ -13,12 +13,12 @@ export class ImageResizeService {
 
     //expected image sizes for the business profile image and for the user profile image:
     private businessImgHeight = 250;
-    private businessImageWidth = 200;
+    private businessImgWidth = 200;
     private userImgHeight = 100;
     private userImgWidth = 100;
 
     // ratios between height and width:
-    private businessImageRatio = this.businessImgHeight/this.businessImageWidth;
+    private businessImageRatio = this.businessImgHeight/this.businessImgWidth;
     private userImageRatio = this.userImgHeight/this.userImgWidth;
 
   constructor() { }
@@ -39,20 +39,46 @@ export class ImageResizeService {
 
   }
 
-  cropImage (img, width, height) {
-      const context: CanvasRenderingContext2D = (<HTMLCanvasElement>this.myCanvas.nativeElement).getContext('2d');
-      return context.drawImage(img, 33, 71, 104, 124, 21, 20, 87, 104);
-  }
-
     // to properly crop the image, we calculate the ratio
     // this allows us to crop either the top and bottom or the left and right parts of the image
     // we crop first and then resize to avoid stretching the image the user provides us
-    imgResize(img){
-      // TO DO: cropping the image before resizing it
-        // calculate the ratio and crop the image as needed, the call the resize function
 
-      //img.naturalHeight
+    businessImgResize(img) {
+        const context: CanvasRenderingContext2D = (<HTMLCanvasElement>this.myCanvas.nativeElement).getContext('2d');
+        // getting the actual dimensions of the uploaded image and comparing to the expected ratio
+        if ((img.naturalHeight / img.naturalWidth) > this.businessImageRatio) { // if the image is taller than expected
+            // crop the top and bottom:
+            const destinationHeight = img.naturalHeight - (img.naturalWidth * this.businessImageRatio);
+            context.drawImage(img, 0, (img.naturalHeight - destinationHeight) / 2, img.naturalWidth, destinationHeight, 0, 0, img.naturalWidth, destinationHeight);
+
+        }
+        else if ((img.naturalHeight / img.naturalWidth) < this.businessImageRatio) { // if the image is wider than expected
+            // crop the right and left:
+            const destinationWidth = img.naturalWidth - (img.naturalHeight / this.businessImageRatio);
+            context.drawImage(img, (img.naturalWidth - destinationWidth) / 2, 0, destinationWidth, img.naturalHeight, 0, 0, destinationWidth, img.naturalWidth);
+        }
+        // else, the ratios are equal and there is no need to crop, so we go straight to resizing
+        this.resizeImage(img, this.businessImgWidth, this.businessImgHeight);
     }
+
+    userImgResize(img){
+      // same logic as method above, we are just using the values for userImg
+        const context: CanvasRenderingContext2D = (<HTMLCanvasElement>this.myCanvas.nativeElement).getContext('2d');
+        if ((img.naturalHeight / img.naturalWidth) > this.userImageRatio) { // if the image is taller than expected
+            // crop the top and bottom:
+            const destinationHeight = img.naturalHeight - (img.naturalWidth * this.userImageRatio);
+            context.drawImage(img, 0, (img.naturalHeight - destinationHeight) / 2, img.naturalWidth, destinationHeight, 0, 0, img.naturalWidth, destinationHeight);
+
+        }
+        else if ((img.naturalHeight / img.naturalWidth) < this.userImageRatio) { // if the image is wider than expected
+            // crop the right and left:
+            const destinationWidth = img.naturalWidth - (img.naturalHeight / this.userImageRatio);
+            context.drawImage(img, (img.naturalWidth - destinationWidth) / 2, 0, destinationWidth, img.naturalHeight, 0, 0, destinationWidth, img.naturalWidth);
+        }
+        // else, the ratios are equal and there is no need to crop, so we go straight to resizing
+        this.resizeImage(img, this.userImgWidth, this.userImgHeight);
+    }
+
 }
 
 
