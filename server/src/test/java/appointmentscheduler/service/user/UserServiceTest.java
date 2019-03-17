@@ -1,76 +1,88 @@
-//package appointmentscheduler.service.user;
-//
-//import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
-//import appointmentscheduler.dto.settings.UpdateSettingsDTO;
-//import appointmentscheduler.dto.user.UpdateEmailDTO;
-//import appointmentscheduler.dto.user.UpdatePasswordDTO;
-//import appointmentscheduler.dto.user.UserLoginDTO;
-//import appointmentscheduler.dto.user.UserRegisterDTO;
-//import appointmentscheduler.entity.phonenumber.PhoneNumber;
-//import appointmentscheduler.entity.settings.Settings;
-//import appointmentscheduler.entity.user.User;
-//import appointmentscheduler.exception.IncorrectPasswordException;
-//import appointmentscheduler.exception.InvalidUpdateException;
-//import appointmentscheduler.exception.ResourceNotFoundException;
-//import appointmentscheduler.exception.UserAlreadyExistsException;
-//import appointmentscheduler.repository.*;
-//import appointmentscheduler.util.JwtProvider;
-//import org.junit.Before;
-//import org.junit.Ignore;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.mockito.Answers;
-//import org.mockito.Mock;
-//import org.mockito.junit.MockitoJUnitRunner;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.authentication.BadCredentialsException;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//
-//import javax.mail.MessagingException;
-//import java.io.IOException;
-//import java.security.NoSuchAlgorithmException;
-//import java.util.Map;
-//import java.util.Optional;
-//
-//import static org.junit.Assert.*;
-//import static org.mockito.ArgumentMatchers.anyString;
-//import static org.mockito.Mockito.*;
-//
-//@RunWith(MockitoJUnitRunner.class)
-//public class UserServiceTest {
-//
-//    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-//    private UserRepository userRepository;
-//
-//
-//    @Mock
-//    private VerificationRepository verificationRepository;
-//
-//    @Mock
-//    private JwtProvider jwtProvider;
-//
-//    @Mock
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
-//
-//    @Mock
-//    private AuthenticationManager authenticationManager;
-//
-//    @Mock
-//    private SettingsRepository settingsRepository;
-//
-//    @Mock
-//    private PhoneNumberRepository phoneNumberRepository;
-//
-//    private UserService userService;
-//
-//    @Before
-//    public void before() {
-//        userService = new UserService(
-//                userRepository, jwtProvider, verificationRepository,
-//                bCryptPasswordEncoder, authenticationManager, settingsRepository, phoneNumberRepository
-//        );
-//    }
-//
+package appointmentscheduler.service.user;
+
+import appointmentscheduler.converters.business.BusinessDTOToBusiness;
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+import appointmentscheduler.dto.service.ServiceCreateDTO;
+import appointmentscheduler.dto.business.BusinessDTO;
+import appointmentscheduler.dto.settings.UpdateSettingsDTO;
+import appointmentscheduler.dto.user.UpdateEmailDTO;
+import appointmentscheduler.dto.user.UpdatePasswordDTO;
+import appointmentscheduler.dto.user.UserLoginDTO;
+import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.phonenumber.PhoneNumber;
+import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.user.UserFactory;
+import appointmentscheduler.entity.verification.Verification;
+import appointmentscheduler.exception.IncorrectPasswordException;
+import appointmentscheduler.exception.InvalidUpdateException;
+import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.exception.UserAlreadyExistsException;
+import appointmentscheduler.repository.*;
+import appointmentscheduler.util.JwtProvider;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Answers;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+
+@RunWith(MockitoJUnitRunner.class)
+public class UserServiceTest {
+
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private UserRepository userRepository;
+
+
+    @Mock
+    private VerificationRepository verificationRepository;
+
+    @Mock
+    private JwtProvider jwtProvider;
+
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private SettingsRepository settingsRepository;
+
+    @Mock
+    private PhoneNumberRepository phoneNumberRepository;
+
+    @Mock
+    private BusinessRepository businessRepository;
+    @Mock
+    private EmployeeRepository employeeRepository;
+
+    private UserService userService;
+
+    @Before
+    public void before() {
+        userService = new UserService(
+                employeeRepository, businessRepository, userRepository, jwtProvider, verificationRepository,
+                bCryptPasswordEncoder, authenticationManager, settingsRepository, phoneNumberRepository
+        );
+    }
+
 //    @Test(expected = UserAlreadyExistsException.class)
 //    public void registerFailed() throws IOException, MessagingException, NoSuchAlgorithmException {
 //        // create mocks
@@ -321,4 +333,57 @@
 //        Map<String, String> map = userService.deletePhoneNumber(1L);
 //        assertEquals("You've successfully deleted your phone number.", map.get("message"));
 //    }
-//}
+@Test(expected = UserAlreadyExistsException.class)
+public void businessRegisterFailed() throws IOException, MessagingException, NoSuchAlgorithmException {
+    // create mocks
+    final User mockedUser = mock(User.class);
+    final UserRegisterDTO userRegisterDTO = mock(UserRegisterDTO.class);
+
+
+    // mock methods
+    when(userRegisterDTO.getEmail()).thenReturn("testEmail");
+    when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(mockedUser));
+
+    // run method
+    userService.register(userRegisterDTO);
+
+    // fail if it didn't throw an error
+    fail("Exception should have been thrown");
+}
+
+    @Test
+    public void businessRegisterSucceeded() throws IOException, MessagingException, NoSuchAlgorithmException{
+        // create mocks
+        final User mockedUser = mock(User.class);
+        final User savedUser =mock(User.class);
+        final UserRegisterDTO userRegisterDTO = mock(UserRegisterDTO.class);
+        final Business mockedBusiness= mock(Business.class);
+        final Verification mockedVerification = mock(Verification.class);
+        final Verification savedVerification = mock(Verification.class);
+        final VerificationRepository verificationRepository =mock(VerificationRepository.class);
+        final UserRepository userRepository = mock(UserRepository.class);
+        final UserFactory userFactory = mock(UserFactory.class);
+
+
+        when(userRegisterDTO.getFirstName()).thenReturn("Test");
+        when(userRegisterDTO.getLastName()).thenReturn("Test");
+        when(userRegisterDTO.getEmail()).thenReturn("TestMail");
+        when(userRegisterDTO.getPassword()).thenReturn("test1");
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        when(verificationRepository.save(any(Verification.class))).thenReturn(savedVerification);
+
+        //when(userFactory.createAdmin(any(Business.class),User.class,anyString(),anyString()
+         //       ,anyString(),anyString())
+       //).thenReturn(mockedUser);
+
+        Map<String, Object> map = userService.business_register_test(userRepository, userRegisterDTO, mockedBusiness,mockedUser,mockedVerification ,savedUser, savedVerification);
+
+
+       // verify(userFactory).createAdmin(any(Business.class),User.class,anyString(),anyString()
+        //        ,anyString(),anyString());
+       // verify(mockedUser).setRole(anyString());
+        verify(userRepository).save(any(User.class));
+       // verify(verificationRepository).save(any(Verification.class));
+
+    }
+}
