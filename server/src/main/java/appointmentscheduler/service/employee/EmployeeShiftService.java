@@ -9,6 +9,7 @@ import appointmentscheduler.exception.ShiftConflictException;
 import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
+import appointmentscheduler.util.DateConflictChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,27 +73,7 @@ public class EmployeeShiftService {
 
     public boolean shiftConflict(long employeeId, long businessId, Shift shift) {
         List<Shift> shifts = shiftRepository.findByEmployeeIdAndBusinessId(employeeId, businessId);
-        Shift currentShift;
-        LocalTime shiftStart;
-        LocalTime shiftEnd;
-        LocalTime currentStart;
-        LocalTime currentEnd;
-
-       for(int i = 0; i < shifts.size();i++) {
-           currentShift = shifts.get(i);
-           if(shift.getDate().isEqual(currentShift.getDate())){
-               shiftStart = shift.getStartTime();
-               shiftEnd = shift.getEndTime();
-               currentStart = currentShift.getStartTime();
-               currentEnd =currentShift.getEndTime();
-
-               if((shiftStart.isBefore(currentEnd) && (shiftStart.isAfter(currentStart) || shiftStart.equals(currentStart)))
-                   || (shiftEnd.isAfter(currentStart) && (shiftEnd.isBefore(currentEnd) || shiftEnd.equals(currentEnd)))
-                   || (shiftStart.isBefore(currentStart) || shiftStart.equals(currentStart)) && (shiftEnd.isAfter(currentEnd) || shiftEnd.equals(currentEnd)))
-                   return true;
-           }
-       }
-       return false;
+        return  DateConflictChecker.hasConflictList(shifts, shift);
     }
 
     public List<Shift> getEmployeeShifts(long employeeId) {

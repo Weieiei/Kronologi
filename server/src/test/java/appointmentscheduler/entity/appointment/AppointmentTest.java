@@ -37,12 +37,14 @@ public class AppointmentTest {
     public void isNotConflictingSameDateBeforeAnother() {
         final Appointment nonTouchingAppointment = mock(Appointment.class);
         when(nonTouchingAppointment.getDate()).thenReturn(date);
-        when(nonTouchingAppointment.getEndTime()).thenReturn(LocalTime.of(13, 59, 59));
+        when(nonTouchingAppointment.getStartTime()).thenReturn(LocalTime.of(13, 58));
+        when(nonTouchingAppointment.getEndTime()).thenReturn(LocalTime.of(13, 59));
 
         assertFalse(mockAppointment.isConflicting(nonTouchingAppointment));
 
         final Appointment touchingAppointment = mock(Appointment.class);
         when(touchingAppointment.getDate()).thenReturn(date);
+        when(touchingAppointment.getStartTime()).thenReturn(LocalTime.of(13, 59));
         when(touchingAppointment.getEndTime()).thenReturn(LocalTime.of(14, 0));
 
         assertFalse(mockAppointment.isConflicting(touchingAppointment));
