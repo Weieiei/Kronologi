@@ -8,11 +8,11 @@ import java.time.LocalTime;
 
 import static org.junit.Assert.*;
 
-public class EventComparerTest {
+public class AppEventComparerTest {
 
     private EventComparer eventComparer;
-    private EventTest event1;
-    private EventTest event2;
+    private AppEventTest event1;
+    private AppEventTest event2;
 
     @Before
     public void setup() {
@@ -21,8 +21,8 @@ public class EventComparerTest {
 
     @Test
     public void compareLessThanDay() {
-        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 3));
+        event1 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 3));
         int result = eventComparer.compare(event1,event2);
         //events not conflicting
         assertFalse(0 == result);
@@ -32,8 +32,8 @@ public class EventComparerTest {
 
     @Test
     public void compareGreaterThanDay() {
-        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 3));
-        event2 = new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 3));
+        event2 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events not conflicting
         assertFalse(0 == result);
@@ -43,8 +43,8 @@ public class EventComparerTest {
 
     @Test
     public void compareLessThanHour() {
-        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events not conflicting
         assertFalse(0 == result);
@@ -54,8 +54,8 @@ public class EventComparerTest {
 
     @Test
     public void compareGreaterThanHour() {
-        event1 = new EventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(2,0), LocalTime.of(3,0), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events not conflicting
         assertFalse(0 == result);
@@ -65,8 +65,8 @@ public class EventComparerTest {
 
     @Test
     public void compareLessThanMinute() {
-        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(1,59), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(1,59), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events not conflicting
         assertFalse(0 == result);
@@ -76,8 +76,8 @@ public class EventComparerTest {
 
     @Test
     public void compareGreaterThanMinute() {
-        event1 = new EventTest(LocalTime.of(1,59), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(1,59), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events not conflicting
         assertFalse(0 == result);
@@ -87,8 +87,8 @@ public class EventComparerTest {
 
     @Test
     public void compareSameTimeEvent() {
-        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events conflicting
         assertEquals(0, result);
@@ -96,8 +96,8 @@ public class EventComparerTest {
 
     @Test
     public void compareConflictStart() {
-        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events conflicting
         assertEquals(0, result);
@@ -105,8 +105,8 @@ public class EventComparerTest {
 
     @Test
     public void compareConflictEnd() {
-        event1 = new EventTest(LocalTime.of(1,57), LocalTime.of(1,59), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(1,57), LocalTime.of(1,59), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events conflicting
         assertEquals(0, result);
@@ -114,8 +114,8 @@ public class EventComparerTest {
 
     @Test
     public void compareConflictInside() {
-        event1 = new EventTest(LocalTime.of(1,46), LocalTime.of(1,55), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(1,46), LocalTime.of(1,55), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events conflicting
         assertEquals(0, result);
@@ -123,8 +123,8 @@ public class EventComparerTest {
 
     @Test
     public void compareConflictInsideSecond() {
-        event1 = new EventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
-        event2 = new EventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
+        event1 = new AppEventTest(LocalTime.of(1,0), LocalTime.of(2,0), LocalDate.of(2018,1, 2));
+        event2 = new AppEventTest(LocalTime.of(1,45), LocalTime.of(1,58), LocalDate.of(2018,1, 2));
         int result = eventComparer.compare(event1,event2);
         //events conflicting
         assertEquals(0, result);

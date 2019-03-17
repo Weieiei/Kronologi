@@ -1,54 +1,53 @@
 package appointmentscheduler.util;
 
-import appointmentscheduler.entity.event.Event;
+import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.event.EventComparer;
 
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
 public final class DateConflictChecker {
-    public static boolean hasConflictList(List<? extends Event> events, Event newEvent) {
-        return hasConflictList(events, newEvent, false);
+    public static boolean hasConflictList(List<? extends AppEvent> events, AppEvent newAppEvent) {
+        return hasConflictList(events, newAppEvent, false);
     }
 
-    public static boolean hasConflictList(List<? extends Event> events, Event newEvent, boolean modify) {
-        Event currentEvent;
+    public static boolean hasConflictList(List<? extends AppEvent> events, AppEvent newAppEvent, boolean modify) {
+        AppEvent currentAppEvent;
         EventComparer eventComparer = new EventComparer();
 
         for(int i = 0; i < events.size();i++) {
-            currentEvent = events.get(i);
+            currentAppEvent = events.get(i);
             //if events equal then there is a conflict with the events
             //if modification then can reset to same time
-            if(eventComparer.compare(currentEvent, newEvent) == 0 && !(modify && currentEvent.getId() == newEvent.getId())) {
+            if(eventComparer.compare(currentAppEvent, newAppEvent) == 0 && !(modify && currentAppEvent.getId() == newAppEvent.getId())) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean hasConflictSeveralEvents(List<? extends Event> events, List<? extends Event> newEvents) {
+    public static boolean hasConflictSeveralEvents(List<? extends AppEvent> events, List<? extends AppEvent> newEvents) {
         EventComparer eventComparer = new EventComparer();
-        Event currentEvent;
+        AppEvent currentAppEvent;
         int currentIndex = 0;
-        Event currentNewEvent;
+        AppEvent currentNewAppEvent;
         int newIndex = 0;
         int comparison;
         //sort event lists, sorting allows conflict checking to be done in O(n) instead of O(n^2)
         Collections.sort(events, eventComparer);
         Collections.sort(newEvents, eventComparer);
 
-        currentEvent = events.get(currentIndex);
-        currentNewEvent = newEvents.get(newIndex);
+        currentAppEvent = events.get(currentIndex);
+        currentNewAppEvent = newEvents.get(newIndex);
         while (true) {
-            comparison = eventComparer.compare(currentNewEvent, currentEvent);
+            comparison = eventComparer.compare(currentNewAppEvent, currentAppEvent);
             if(comparison == -1) {
                 //last new event is before current old event
                 if(newIndex >= newEvents.size() - 1) {
                     return false;
                 } else {
                     newIndex++;
-                    currentNewEvent = newEvents.get(newIndex);
+                    currentNewAppEvent = newEvents.get(newIndex);
                 }
             } else if(comparison == 1) {
                 //last old event is before current new event
@@ -56,7 +55,7 @@ public final class DateConflictChecker {
                     return false;
                 } else {
                     currentIndex++;
-                    currentEvent = events.get(currentIndex);
+                    currentAppEvent = events.get(currentIndex);
                 }
             } else
                 return true;

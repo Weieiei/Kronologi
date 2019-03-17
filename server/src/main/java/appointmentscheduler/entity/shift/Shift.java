@@ -1,13 +1,12 @@
 package appointmentscheduler.entity.shift;
 
 import appointmentscheduler.entity.AuditableEntity;
-import appointmentscheduler.entity.event.Event;
+import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ModelValidationException;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,7 +14,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "employee_shifts")
-public class Shift extends AuditableEntity implements Event {
+public class Shift extends AuditableEntity implements AppEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

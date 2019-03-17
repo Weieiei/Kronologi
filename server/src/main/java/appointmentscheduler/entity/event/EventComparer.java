@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
 
-public final class EventComparer implements Comparator<Event> {
+public final class EventComparer implements Comparator<AppEvent> {
     @Override
-    public int compare(Event o1, Event o2) {
+    public int compare(AppEvent o1, AppEvent o2) {
         LocalDate d1 = o1.getDate();
         LocalDate d2 = o2.getDate();
 
