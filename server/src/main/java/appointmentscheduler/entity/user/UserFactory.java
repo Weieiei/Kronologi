@@ -28,7 +28,8 @@ public class UserFactory {
             employee.setBusiness(business);
             return employee;
         }
-        else{
+
+        else {
             final User user = createFromType(clazz);
 
             user.setFirstName(firstName);
@@ -40,6 +41,8 @@ public class UserFactory {
         }
     }
 
+
+
     private static User createFromType(Class<? extends User> clazz) {
         try {
             return clazz.newInstance();
@@ -48,4 +51,20 @@ public class UserFactory {
         }
         throw new RuntimeException("User cannot be created");
     }
+    public static User createAdmin(Business business,Class<? extends User> clazz, String firstName, String lastName,
+                                  String email,
+                                  String password
+    ) {
+
+            final User user = createFromType(clazz);
+
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setBusiness(business);
+            return user;
+
+    }
 }
+

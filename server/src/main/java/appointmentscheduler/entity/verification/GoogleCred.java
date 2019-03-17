@@ -48,4 +48,16 @@ public class GoogleCred {
         this.refreshToken = credential.getRefreshToken();
         this.updatedAt = Instant.now();
     }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public Long getExpirationTimeMilliseconds() {
+        return expirationTimeMilliseconds;
+    }
 }

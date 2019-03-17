@@ -21,10 +21,13 @@ export class ServiceService {
         return this.http.get<Service[]>(['api', 'business','services','1'].join('/'));
     }
 
-    public createService(service: ServiceCreateDto): Observable<any> {
-        return this.http.post<Service>(['api','business', 'admin','1', 'service'].join('/'), service);
+    public createService(businessId: number, service: ServiceCreateDto): Observable<any> {
+        return this.http.post<Service>(['api', 'business', 'admin', businessId.toString(), 'service'].join('/'), service);
     }
-
+    public registerService(businessId: number, service: ServiceCreateDto): Observable<any> {
+        return this.http.post<Service>(['api', 'business', 'services', businessId.toString(), 'service'].join('/'), service);
+    }
+//TODO: need to add the businessID instead of s=using '1'
     public addServiceToUser(employeedId: number, serviceId: number):Observable<any> {
         return this.http.post<any>(['api', 'business', 'admin','1', 'service', employeedId, serviceId].join('/'), "");
     }
