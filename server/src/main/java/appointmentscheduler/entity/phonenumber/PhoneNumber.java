@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.phonenumber;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
@@ -24,6 +25,10 @@ public class PhoneNumber extends AuditableEntity {
 
     @Column(name = "number")
     private String number;
+
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    private Business business;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -86,5 +91,13 @@ public class PhoneNumber extends AuditableEntity {
 
     public String getRawPhoneNumber() {
         return countryCode + areaCode + number;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 }

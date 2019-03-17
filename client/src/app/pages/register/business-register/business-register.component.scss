@@ -1,0 +1,33 @@
+.container {
+    padding: 50px;
+
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .sub-title {
+        font-size: 16px;
+    }
+
+    .buttons {
+        button {
+            font-weight: bold;
+        }
+    }
+
+}
+
+.mat-stepper-horizontal .mat-horizontal-stepper-header {
+
+    padding: 0 10px !important;
+    box-shadow: 0px 0px 0px 0px rgba(255,255,255, 0.3);
+    background:rgba(255,255,255, 0.9);
+
+}
+.mat-stepper-horizontal .mat-stepper-horizontal-line {
+    margin: 0 -4px !important;
+    box-shadow: 0px 0px 0px 0px rgba(255,255,255, 0.3);
+    background:rgba(255,255,255, 0.9);
+}
+

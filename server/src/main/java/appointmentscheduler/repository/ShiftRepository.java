@@ -10,7 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface ShiftRepository extends JpaRepository<Shift, Long> {
-    List<Shift> findByDate(LocalDate date);
+    Shift findByIdAndBusinessId(long employeeId, long businessId);
+    List<Shift> findByDateAndBusinessId(LocalDate date, long businessId);
     List<Shift> findByEmployeeId(long id);
     Optional<Shift> findByEmployeeIdAndDate(long employeeId, LocalDate date);
+    List<Shift> findByEmployeeIdAndBusinessId(long employeeId, long businessId);
 }

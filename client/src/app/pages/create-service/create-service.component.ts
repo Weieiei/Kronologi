@@ -13,6 +13,7 @@ export class CreateServiceComponent implements OnInit {
 
     name: string;
     duration: number;
+    businessId: number;
     serviceForm: FormGroup;
 
     constructor(
@@ -35,11 +36,13 @@ export class CreateServiceComponent implements OnInit {
 
     createService() {
         const serviceCreateDTO: ServiceCreateDto = {
-            id: 0,
             name: this.serviceForm.value.name,
-            duration: this.serviceForm.value.duration
+            duration: this.serviceForm.value.duration,
+            //TODO: need to get Admin' business
+           // businessId: 0
         };
-        this.serviceService.createService(serviceCreateDTO).subscribe(
+        //TODO: updated the 0 to the real businessID
+        this.serviceService.createService(0,serviceCreateDTO).subscribe(
             res => this.router.navigate(['admin/services']),
             err => console.log(err)
         );

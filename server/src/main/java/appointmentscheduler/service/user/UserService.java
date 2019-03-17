@@ -6,18 +6,16 @@ import appointmentscheduler.dto.user.UpdateEmailDTO;
 import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
-import appointmentscheduler.repository.PhoneNumberRepository;
-import appointmentscheduler.repository.RoleRepository;
-import appointmentscheduler.repository.SettingsRepository;
-import appointmentscheduler.repository.UserRepository;
-import appointmentscheduler.repository.VerificationRepository;
+import appointmentscheduler.repository.*;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -36,30 +34,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class UserService {
 
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final EmployeeRepository employeeRepository;
     private final VerificationRepository verificationRepository;
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
     private final SettingsRepository settingsRepository;
     private final PhoneNumberRepository phoneNumberRepository;
+    private final BusinessRepository businessRepository;
 
     @Autowired
     public UserService(
-            UserRepository userRepository, RoleRepository roleRepository, JwtProvider jwtProvider,
+            EmployeeRepository employeeRepository, BusinessRepository businessRepository, UserRepository userRepository,
+            JwtProvider jwtProvider,
             VerificationRepository verificationRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
             AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
     ) {
+        this.employeeRepository = employeeRepository;
+        this.businessRepository = businessRepository;
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.verificationRepository = verificationRepository;
         this.jwtProvider = jwtProvider;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -89,8 +88,7 @@ public class UserService {
             phoneNumber.setUser(user);
 
         }
-
-        user.setRoles(Stream.of(roleRepository.findByRole(RoleEnum.CLIENT)).collect(Collectors.toSet()));
+    user.setRole(RoleEnum.CLIENT.toString());
 
         User savedUser = userRepository.save(user);
 
@@ -102,6 +100,8 @@ public class UserService {
 
         return buildTokenRegisterMap( token, verification);
     }
+
+
 
     public Map<String, String> login(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmailIgnoreCase(userLoginDTO.getEmail())
@@ -130,18 +130,41 @@ public class UserService {
         return map;
     }
 
-
-    public User findUserByid(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserDoesNotExistException("User id: " + id + " does not exist."));
+    public User findUserById(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %d not found.", id)));
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+//todo change user repository to query the businessId also, user table doesnt have businessId
+    public User findUserByIdAndBusinessId(long id, long businessId) {
+        User user = userRepository.findByIdAndBusinessId(id, businessId).
+                orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %d and business id %d " +
+                        "not found.", id, businessId)));
+        return user;
     }
 
-    public Map<String, String> updateUser(User user) throws DataAccessException{
+    public Employee findByIdAndBusinessId(long id, long businessId) {
+        Employee employee = employeeRepository.findByIdAndBusinessId(id, businessId).
+                orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d and business id %d" +
+                        " " +
+                        "not found.", id, businessId)));
+        return employee;
+    }
+
+
+    public List<User> findAllByBusinessId(long id) {
+        return userRepository.findAllByBusinessId(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Users for business ID %d " +
+                        "not found.", id)));
+    }
+
+    public Map<String, String> updateUser(User user, long businessId) throws DataAccessException {
+        Business business = businessRepository.findById(businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with ID %d not found.",
+                        businessId)));
+        user.setBusiness(business);
         userRepository.save(user);
-        return message("user updated");
+        return message("User updated");
     }
 
     private String generateToken(User user, String unhashedPassword) {
@@ -267,5 +290,72 @@ public class UserService {
         Map<String, String> map = new HashMap<>();
         map.put("message", message);
         return map;
+    }
+
+    public Map<String, Object> business_register(UserRegisterDTO userRegisterDTO, Business business) throws IOException, MessagingException, NoSuchAlgorithmException {
+
+        if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
+            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
+        }
+
+        User user = UserFactory.createAdmin(business, User.class, userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(), userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
+        if (userRegisterDTO.getPhoneNumber() != null) {
+
+            PhoneNumberDTO phoneNumberDTO = userRegisterDTO.getPhoneNumber();
+            PhoneNumber phoneNumber = new PhoneNumber(
+                    phoneNumberDTO.getCountryCode(),
+                    phoneNumberDTO.getAreaCode(),
+                    phoneNumberDTO.getNumber()
+            );
+
+            user.setPhoneNumber(phoneNumber);
+            phoneNumber.setUser(user);
+
+        }
+
+         user.setRole(RoleEnum.ADMIN.toString());
+        User savedUser = userRepository.save(user);
+
+        Verification verification = new Verification(savedUser,business);
+
+        verificationRepository.save(verification);
+
+        String token = generateToken(savedUser, userRegisterDTO.getPassword());
+
+        return buildTokenRegisterMap( token, verification);
+    }
+
+public Map<String, Object> business_register_test(UserRepository userRepository,UserRegisterDTO userRegisterDTO, Business business, User user, Verification verification,User savedUser, Verification savedVerification) throws IOException, MessagingException, NoSuchAlgorithmException {
+//works the same as the business_register, just put the class this method depends as
+//parameters, so it is easy to mock
+        if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
+            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
+        }
+
+         user = UserFactory.createAdmin(business, User.class, userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(), userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
+        if (userRegisterDTO.getPhoneNumber() != null) {
+
+            PhoneNumberDTO phoneNumberDTO = userRegisterDTO.getPhoneNumber();
+            PhoneNumber phoneNumber = new PhoneNumber(
+                    phoneNumberDTO.getCountryCode(),
+                    phoneNumberDTO.getAreaCode(),
+                    phoneNumberDTO.getNumber()
+            );
+
+            user.setPhoneNumber(phoneNumber);
+            phoneNumber.setUser(user);
+
+        }
+
+         user.setRole(RoleEnum.ADMIN.toString());
+         savedUser = userRepository.save(user);
+
+         verification = new Verification(savedUser,business);
+
+        savedVerification = verificationRepository.save(verification);
+
+        String token = generateToken(savedUser, userRegisterDTO.getPassword());
+
+        return buildTokenRegisterMap( token, verification);
     }
 }
