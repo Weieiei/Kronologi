@@ -24,7 +24,7 @@ export class EmployeeAppointmentsComponent implements OnInit {
     ngOnInit() {
         this.dialog.afterAllClosed
         .subscribe(() => {
-        //update appointments when we cancel one on dialog close.
+        // update appointments when we cancel one on dialog close.
           this.appointments=[];
           this.getAllAppointments();
         })
@@ -55,10 +55,10 @@ export class EmployeeAppointmentsComponent implements OnInit {
         let appointmentToCancel: Appointment = this.appointments[row_id-1];
         const dialogConfig = new MatDialogConfig();
         let longDescription: any;
-        
+
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-    
+
         dialogConfig.data = {
             appointment: appointmentToCancel,
             serviceName: appointmentToCancel.service.name,

@@ -4,6 +4,7 @@ import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { HttpClient } from '@angular/common/http';
 import * as decode from 'jwt-decode';
 import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
+import { BusinessUserRegisterDTO } from '../../interfaces/user/business-user-register-dto';
 import { UpdateEmailDTO } from '../../interfaces/user/update-email-dto';
 import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
 import { SettingsDTO } from '../../interfaces/settings/settings-dto';
@@ -22,6 +23,10 @@ export class UserService {
 
     register(payload: UserRegisterDTO): Observable<any> {
         return this.http.post<any>(['api', 'user', 'register'].join('/'), payload);
+    }
+
+    businessRegister(businessId: number, payload: BusinessUserRegisterDTO): Observable<any> {
+        return this.http.post<any>(['api', 'user', businessId.toString(), 'business_register'].join('/'), payload);
     }
 
     login(payload: UserLoginDTO): Observable<any> {
