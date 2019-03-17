@@ -364,13 +364,8 @@ public void businessRegisterFailed() throws IOException, MessagingException, NoS
         final UserRepository userRepository = mock(UserRepository.class);
         final UserFactory userFactory = mock(UserFactory.class);
 
-
-        when(userRegisterDTO.getFirstName()).thenReturn("Test");
-        when(userRegisterDTO.getLastName()).thenReturn("Test");
-        when(userRegisterDTO.getEmail()).thenReturn("TestMail");
-        when(userRegisterDTO.getPassword()).thenReturn("test1");
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
-        when(verificationRepository.save(any(Verification.class))).thenReturn(savedVerification);
+       // when(verificationRepository.save(any(Verification.class))).thenReturn(savedVerification);
 
         //when(userFactory.createAdmin(any(Business.class),User.class,anyString(),anyString()
          //       ,anyString(),anyString())
