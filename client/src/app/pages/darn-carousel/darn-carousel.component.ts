@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {MatDatepickerInputEvent, MatDialogConfig, MatTabChangeEvent, MatTabsModule} from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {DialogOverviewExampleDialogComponent} from "../dialog-overview-example-dialog/dialog-overview-example-dialog.component";
 import { BrowserModule } from '@angular/platform-browser';
 import { SwiperModule } from 'angular2-useful-swiper';
 import { NgModule } from '@angular/core';
