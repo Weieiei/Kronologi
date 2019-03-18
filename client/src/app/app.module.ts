@@ -61,6 +61,7 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
 import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
 import { SwiperModule } from 'angular2-useful-swiper';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/service-selection-grid-list/service-selection-grid-list.component';
 
 @NgModule({
     declarations: [
@@ -112,7 +113,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
         CardsUiComponent,
         ServicesComponent,
         SyncCalendarsComponent,
-        DarnCarouselComponent
+        DarnCarouselComponent,
+        ServiceSelectionGridListComponent
     ],
     imports: [
         BrowserModule,
