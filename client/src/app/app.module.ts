@@ -61,6 +61,9 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
 import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
 import { SwiperModule } from 'angular2-useful-swiper';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { DialogOverviewExampleDialogComponent } from './pages/dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 
 @NgModule({
     declarations: [
@@ -112,7 +115,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
         CardsUiComponent,
         ServicesComponent,
         SyncCalendarsComponent,
-	DarnCarouselComponent
+	    DarnCarouselComponent,
+	    DialogOverviewExampleDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -124,7 +128,9 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
         HttpClientModule,
         ReactiveFormsModule,
         SwiperModule,
-        SlickCarouselModule
+        SlickCarouselModule,
+        MatTabsModule,
+        MatDatepickerModule
 
     ],
     entryComponents: [
