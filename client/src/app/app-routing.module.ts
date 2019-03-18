@@ -25,12 +25,12 @@ import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
-import {BusinessViewComponent} from "./pages/business-view/business-view.component";
-import {SyncCalendarsComponent} from "./pages/sync-calendars/sync-calendars.component";
+import { BusinessViewComponent } from './pages/business-view/business-view.component';
+import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 
 const routes: Routes = [
     // Login
-    { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
+    { path: 'login', component: LoginComponent },
 
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
@@ -44,12 +44,12 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
 
-            //Appointments for business
+            // Appointments for business
             { path: 'business', component: BusinessViewComponent },
 
-            //Home
+            // Home
             { path: 'home', component: HomeComponent },
-          
+
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },

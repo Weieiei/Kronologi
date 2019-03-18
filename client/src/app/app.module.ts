@@ -64,6 +64,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DialogOverviewExampleDialogComponent } from './pages/dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/service-selection-grid-list/service-selection-grid-list.component';
 
 @NgModule({
     declarations: [
@@ -115,8 +116,9 @@ import { DialogOverviewExampleDialogComponent } from './pages/dialog-overview-ex
         CardsUiComponent,
         ServicesComponent,
         SyncCalendarsComponent,
-	    DarnCarouselComponent,
-	    DialogOverviewExampleDialogComponent
+	DarnCarouselComponent,
+	ServiceSelectionGridListComponent
+	DialogOverviewExampleDialogComponent
     ],
     imports: [
         BrowserModule,
