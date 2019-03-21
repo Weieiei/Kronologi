@@ -1,111 +1,118 @@
-//package appointmentscheduler.service.employee;
-//
-//import appointmentscheduler.dto.employee.EmployeeShiftDTO;
-//import appointmentscheduler.entity.shift.Shift;
-//import appointmentscheduler.entity.user.Employee;
-//import appointmentscheduler.entity.user.User;
-//import appointmentscheduler.exception.ResourceNotFoundException;
-//import appointmentscheduler.repository.EmployeeRepository;
-//import appointmentscheduler.repository.ShiftRepository;
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.mockito.Mock;
-//import org.mockito.junit.MockitoJUnitRunner;
-//
-//import java.time.LocalDate;
-//import java.time.LocalTime;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//
-//import static org.junit.Assert.*;
-//import static org.mockito.ArgumentMatchers.anyLong;
-//import static org.mockito.Mockito.*;
-//
-//@RunWith(MockitoJUnitRunner.class)
-//public class EmployeeShiftServiceTest {
-//
-//    @Mock
-//    private EmployeeRepository employeeRepository;
-//
-//    @Mock
-//    private ShiftRepository shiftRepository;
-//
-//    private EmployeeShiftService employeeShiftService;
-//
-//
-//    @Before
-//    public void before() {
-//        employeeShiftService = new EmployeeShiftService(shiftRepository, employeeRepository);
-//    }
-//
-//    @Test
-//    public void createShift() {
-//        final Employee mockEmployee = mock(Employee.class);
-//        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
-//        final LocalDate localDate = LocalDate.now();
-//        final LocalTime startTime = LocalTime.of(1,0);
-//        final LocalTime endTime = LocalTime.of(2,0);
-//        Shift createdShift;
-//
-//        when(employeeShiftDTO.getDate()).thenReturn(localDate);
-//        when(employeeShiftDTO.getStartTime()).thenReturn(startTime);
-//        when(employeeShiftDTO.getEndTime()).thenReturn(endTime);
-//
-//        when(employeeRepository.findById(anyLong())).thenReturn(Optional.of(mockEmployee));
-//
-//        employeeShiftService.createShift(1, employeeShiftDTO);
-//
-//        verify(shiftRepository,times(1)).save(any());
-//    }
-//
-//    @Test
-//    public void getEmployeeShifts() {
-//        final Shift mockedShift1 = mock(Shift.class);
-//        final Shift mockedShift2 = mock(Shift.class);
-//        final List<Shift> shifts = new ArrayList<>();
-//        List<Shift> employeeShifts;
-//
-//        when(mockedShift1.getId()).thenReturn((long) 1);
-//        when(mockedShift2.getId()).thenReturn((long) 2);
-//
-//        shifts.add(mockedShift1);
-//        shifts.add(mockedShift2);
-//
-//        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(shifts);
-//
-//        employeeShifts = employeeShiftService.getEmployeeShifts(1);
-//
-//        assertEquals(shifts.size(), employeeShifts.size());
-//        assertEquals(shifts.get(0).getId(), employeeShifts.get(0).getId());
-//        assertEquals(shifts.get(1).getId(), employeeShifts.get(1).getId());
-//
-//    }
-//
-//    @Test
-//    public void getShiftsInvalidEmployee() {
-//        List<Shift> employeeShifts;
-//        employeeShifts = employeeShiftService.getEmployeeShifts(anyLong());
-//
-//       assertTrue(employeeShifts.isEmpty());
-//    }
-//
-//    @Test
-//    public void deleteShift() {
-//        final Shift mockedShift1 = mock(Shift.class);
-//
-//        when(shiftRepository.findById(anyLong())).thenReturn(Optional.of(mockedShift1));
-//
-//        employeeShiftService.deleteShift(0);
-//        verify(shiftRepository,times(1)).delete(any());
-//    }
-//
-//    @Test(expected = ResourceNotFoundException.class)
-//    public void deleteInvalidShift() {
-//        employeeShiftService.deleteShift(1L);
-//        fail("Should have thrown an exception.");
-//    }
+package appointmentscheduler.service.employee;
+
+import appointmentscheduler.dto.employee.EmployeeShiftDTO;
+import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.User;
+import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.repository.BusinessRepository;
+import appointmentscheduler.repository.EmployeeRepository;
+import appointmentscheduler.repository.ShiftRepository;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+
+@RunWith(MockitoJUnitRunner.class)
+public class EmployeeShiftServiceTest {
+
+    @Mock
+    private EmployeeRepository employeeRepository;
+
+    @Mock
+    private ShiftRepository shiftRepository;
+
+    @Mock
+    private BusinessRepository businessRepository;
+
+    private EmployeeShiftService employeeShiftService;
+
+
+    @Before
+    public void before() {
+        employeeShiftService = new EmployeeShiftService(shiftRepository, employeeRepository, businessRepository);
+    }
+
+    @Test
+    public void createShift() {
+        final Employee mockEmployee = mock(Employee.class);
+        final Business mockBusiness= mock(Business.class);
+        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
+        final LocalDate localDate = LocalDate.now();
+        final LocalTime startTime = LocalTime.of(1,0);
+        final LocalTime endTime = LocalTime.of(2,0);
+        Shift createdShift;
+
+        when(employeeShiftDTO.getDate()).thenReturn(localDate);
+        when(employeeShiftDTO.getStartTime()).thenReturn(startTime);
+        when(employeeShiftDTO.getEndTime()).thenReturn(endTime);
+
+        when(employeeRepository.findByIdAndBusinessId(anyLong(), anyLong())).thenReturn(Optional.of(mockEmployee));
+        when(businessRepository.findById(anyLong())).thenReturn(Optional.of(mockBusiness));
+
+        employeeShiftService.createShiftForBusiness(anyLong(), anyLong(), employeeShiftDTO);
+
+        verify(shiftRepository,times(1)).save(any());
+    }
+
+    @Test
+    public void getEmployeeShifts() {
+        final Shift mockedShift1 = mock(Shift.class);
+        final Shift mockedShift2 = mock(Shift.class);
+        final List<Shift> shifts = new ArrayList<>();
+        List<Shift> employeeShifts;
+
+        when(mockedShift1.getId()).thenReturn((long) 1);
+        when(mockedShift2.getId()).thenReturn((long) 2);
+
+        shifts.add(mockedShift1);
+        shifts.add(mockedShift2);
+
+        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(shifts);
+
+        employeeShifts = employeeShiftService.getEmployeeShifts(1);
+
+        assertEquals(shifts.size(), employeeShifts.size());
+        assertEquals(shifts.get(0).getId(), employeeShifts.get(0).getId());
+        assertEquals(shifts.get(1).getId(), employeeShifts.get(1).getId());
+
+    }
+
+    @Test
+    public void getShiftsInvalidEmployee() {
+        List<Shift> employeeShifts;
+        employeeShifts = employeeShiftService.getEmployeeShifts(anyLong());
+
+       assertTrue(employeeShifts.isEmpty());
+    }
+
+    @Test
+    public void deleteShift() {
+        final Shift mockedShift1 = mock(Shift.class);
+
+        when(shiftRepository.findByIdAndBusinessId(anyLong(), anyLong())).thenReturn(Optional.of(mockedShift1));
+
+        employeeShiftService.deleteShift(anyLong(), anyLong());
+        verify(shiftRepository,times(1)).delete(any());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void deleteInvalidShift() {
+        employeeShiftService.deleteShift(anyLong(), anyLong());
+        fail("Should have thrown an exception.");
+    }
 //
 //    @Test
 //    public void modifyShift() {
@@ -141,29 +148,29 @@
 //        employeeShiftService.modifyShift(1, employeeShiftDTO, anyLong());
 //        fail("Should have thrown an exception.");
 //    }
-//
-//    @Test
-//    public void getAllEmployees() {
-//        List<Employee> employees = new ArrayList<>();
-//        List<Employee> retrievedEmployees;
-//        final Employee employee1 = mock(Employee.class);
-//        final Employee employee2 = mock(Employee.class);
-//
-//        employees.add(employee1);
-//        employees.add(employee2);
-//
-//        when(employee1.getId()).thenReturn((long) 1);
-//        when(employee2.getId()).thenReturn((long) 2);
-//
-//        when(employeeRepository.findAll()).thenReturn(employees);
-//
-//        retrievedEmployees = employeeShiftService.getEmployees();
-//
-//        assertEquals(employees.size(), retrievedEmployees.size());
-//        assertEquals(1, retrievedEmployees.get(0).getId());
-//        assertEquals(2, retrievedEmployees.get(1).getId());
-//    }
-//
+
+    @Test
+    public void getAllEmployees() {
+        List<Employee> employees = new ArrayList<>();
+        List<Employee> retrievedEmployees;
+        final Employee employee1 = mock(Employee.class);
+        final Employee employee2 = mock(Employee.class);
+
+        employees.add(employee1);
+        employees.add(employee2);
+
+        when(employee1.getId()).thenReturn((long) 1);
+        when(employee2.getId()).thenReturn((long) 2);
+
+        when(employeeRepository.findAll()).thenReturn(employees);
+
+        retrievedEmployees = employeeShiftService.getEmployees();
+
+        assertEquals(employees.size(), retrievedEmployees.size());
+        assertEquals(1, retrievedEmployees.get(0).getId());
+        assertEquals(2, retrievedEmployees.get(1).getId());
+    }
+
 //    @Test
 //    public void noConflict() {
 //        List<Shift> oldShifts = new ArrayList<>();
@@ -331,4 +338,4 @@
 //
 //        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
 //    }
-//}
+}

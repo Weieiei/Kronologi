@@ -110,29 +110,21 @@ public class EmployeeShiftService {
     }
      public Shift modifyShift(long businessId, long employeeId, EmployeeShiftDTO employeeShiftDTO, long shiftId) {
 
-         Shift shift = shiftRepository.findByIdAndBusinessId(shiftId, businessId);
-      if (shift==null){
-          throw new ResourceNotFoundException(String.format("Shift with id %d not found.", shiftId));
-      }
-         Business business =
-                 businessRepository.findById(businessId) .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with id %d not found.", businessId)));
+        Shift shift = shiftRepository.findByIdAndBusinessId(shiftId, businessId).orElseThrow(() -> new ResourceNotFoundException(String.format("Shift with id %d and business %d not found.", shiftId, businessId)));
+        Business business = businessRepository.findById(businessId) .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with id %d not found.", businessId)));
 
-      shift.setDate(employeeShiftDTO.getDate());
-      shift.setStartTime(employeeShiftDTO.getStartTime());
-      shift.setEndTime(employeeShiftDTO.getEndTime());
-      shift.setBusiness(business);
-      if(!shiftConflict(businessId, employeeId, shift)) {
-         return  shiftRepository.save(shift);
-      }
-      throw new IllegalArgumentException("Shift conflicts with other shift");
+        shift.setDate(employeeShiftDTO.getDate());
+        shift.setStartTime(employeeShiftDTO.getStartTime());
+        shift.setEndTime(employeeShiftDTO.getEndTime());
+        shift.setBusiness(business);
+        if(!shiftConflict(businessId, employeeId, shift)) {
+            return  shiftRepository.save(shift);
+        }
+        throw new IllegalArgumentException("Shift conflicts with other shift");
   }
 
     public void deleteShift(long shiftId, long businessId){
-
-            Shift shift = shiftRepository.findByIdAndBusinessId(shiftId, businessId);
-            if (shift == null) {
-                throw new ResourceNotFoundException(String.format("Shift with id %d not found.", shiftId));
-            } else
-                shiftRepository.delete(shift);
+            Shift shift = shiftRepository.findByIdAndBusinessId(shiftId, businessId).orElseThrow(() -> new ResourceNotFoundException(String.format("Shift with id %d and business %d not found.", shiftId, businessId)));
+            shiftRepository.delete(shift);
         }
 }
