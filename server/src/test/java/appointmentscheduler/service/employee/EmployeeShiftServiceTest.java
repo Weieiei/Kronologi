@@ -49,15 +49,17 @@ public class EmployeeShiftServiceTest {
     public void createShift() {
         final Employee mockEmployee = mock(Employee.class);
         final Business mockBusiness= mock(Business.class);
-        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
+
         final LocalDate localDate = LocalDate.now();
         final LocalTime startTime = LocalTime.of(1,0);
         final LocalTime endTime = LocalTime.of(2,0);
-        Shift createdShift;
 
-        when(employeeShiftDTO.getDate()).thenReturn(localDate);
-        when(employeeShiftDTO.getStartTime()).thenReturn(startTime);
-        when(employeeShiftDTO.getEndTime()).thenReturn(endTime);
+        Shift createdShift;
+        EmployeeShiftDTO employeeShiftDTO = new EmployeeShiftDTO();
+        employeeShiftDTO.setDate(localDate);
+        employeeShiftDTO.setStartTime(startTime);
+        employeeShiftDTO.setEndTime(endTime);
+
 
         when(employeeRepository.findByIdAndBusinessId(anyLong(), anyLong())).thenReturn(Optional.of(mockEmployee));
         when(businessRepository.findById(anyLong())).thenReturn(Optional.of(mockBusiness));
