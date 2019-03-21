@@ -54,7 +54,6 @@ public class EmployeeShiftServiceTest {
         final LocalTime startTime = LocalTime.of(1,0);
         final LocalTime endTime = LocalTime.of(2,0);
 
-        Shift createdShift;
         EmployeeShiftDTO employeeShiftDTO = new EmployeeShiftDTO();
         employeeShiftDTO.setDate(localDate);
         employeeShiftDTO.setStartTime(startTime);
@@ -115,41 +114,43 @@ public class EmployeeShiftServiceTest {
         employeeShiftService.deleteShift(anyLong(), anyLong());
         fail("Should have thrown an exception.");
     }
-//
-//    @Test
-//    public void modifyShift() {
-//        final LocalDate localDate = LocalDate.now();
-//        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
-//        final LocalTime startTime = LocalTime.of(1,0);
-//        final LocalTime endTime = LocalTime.of(2,0);
-//        final LocalTime newStartTime = LocalTime.of(2,0);
-//        final LocalTime newEndTime = LocalTime.of(3,0);
-//        Shift shift = new Shift();
-//
-//
-//        shift.setId(1);
-//        shift.setDate(localDate);
-//        shift.setStartTime(startTime);
-//        shift.setEndTime(endTime);
-//
-//        when(shiftRepository.findById(anyLong())).thenReturn(Optional.of(shift));
-//        when(employeeShiftDTO.getDate()).thenReturn(localDate);
-//        when(employeeShiftDTO.getStartTime()).thenReturn(newStartTime);
-//        when(employeeShiftDTO.getEndTime()).thenReturn(newEndTime);
-//
-//        employeeShiftService.modifyShift(1, employeeShiftDTO, 1);
-//
-//        verify(shiftRepository,times(1)).save(shift);
-//
-//    }
-//
-//    @Test(expected = ResourceNotFoundException.class)
-//    public void modifyInvalidShift() {
-//        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
-//
-//        employeeShiftService.modifyShift(1, employeeShiftDTO, anyLong());
-//        fail("Should have thrown an exception.");
-//    }
+
+    @Test
+    public void modifyShift() {
+        final Business mockBusiness = mock(Business.class);
+        final LocalDate localDate = LocalDate.now();
+        final LocalTime startTime = LocalTime.of(1,0);
+        final LocalTime endTime = LocalTime.of(2,0);
+        final LocalTime newStartTime = LocalTime.of(2,0);
+        final LocalTime newEndTime = LocalTime.of(3,0);
+
+        Shift shift = new Shift();
+        shift.setId(1);
+        shift.setDate(localDate);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+
+        EmployeeShiftDTO employeeShiftDTO = new EmployeeShiftDTO();
+        employeeShiftDTO.setDate(localDate);
+        employeeShiftDTO.setStartTime(newStartTime);
+        employeeShiftDTO.setEndTime(newEndTime);
+
+        when(shiftRepository.findByIdAndBusinessId(anyLong(),anyLong())).thenReturn(Optional.of(shift));
+        when(businessRepository.findById(anyLong())).thenReturn(Optional.of(mockBusiness));
+
+        employeeShiftService.modifyShift(anyLong(), anyLong(), employeeShiftDTO, 1);
+
+        verify(shiftRepository,times(1)).save(shift);
+
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void modifyInvalidShift() {
+        final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
+
+        employeeShiftService.modifyShift(anyLong(), anyLong(), employeeShiftDTO, 1);
+        fail("Should have thrown an exception.");
+    }
 
     @Test
     public void getAllEmployees() {
@@ -173,171 +174,5 @@ public class EmployeeShiftServiceTest {
         assertEquals(2, retrievedEmployees.get(1).getId());
     }
 
-//    @Test
-//    public void noConflict() {
-//        List<Shift> oldShifts = new ArrayList<>();
-//        Shift oldShift = new Shift();
-//        Shift newShift = new Shift();
-//
-//        oldShift.setDate(LocalDate.of(2019,1,1));
-//        oldShift.setStartTime(LocalTime.of(1,0));
-//        oldShift.setEndTime(LocalTime.of(2,0));
-//
-//        oldShifts.add(oldShift);
-//
-//        newShift.setDate(LocalDate.of(2019,1,1));
-//        newShift.setStartTime(LocalTime.of(3,0));
-//        newShift.setEndTime(LocalTime.of(4,0));
-//
-//        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
-//
-//        assertFalse(employeeShiftService.shiftConflict(anyLong(),newShift));
-//    }
-//
-//    @Test
-//    public void noDiffDateConflict() {
-//        List<Shift> oldShifts = new ArrayList<>();
-//        Shift oldShift = new Shift();
-//        Shift newShift = new Shift();
-//
-//        oldShift.setDate(LocalDate.of(2018,1,1));
-//        oldShift.setStartTime(LocalTime.of(1,0));
-//        oldShift.setEndTime(LocalTime.of(2,0));
-//
-//        oldShifts.add(oldShift);
-//
-//        newShift.setDate(LocalDate.of(2019,1,1));
-//        newShift.setStartTime(LocalTime.of(1,0));
-//        newShift.setEndTime(LocalTime.of(2,0));
-//
-//        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
-//
-//        assertFalse(employeeShiftService.shiftConflict(anyLong(),newShift));
-//    }
-//
-//    @Test
-//    public void conflictStart() {
-//        List<Shift> oldShifts = new ArrayList<>();
-//        Shift oldShift = new Shift();
-//        Shift newShift = new Shift();
-//
-//        oldShift.setDate(LocalDate.of(2019,1,1));
-//        oldShift.setStartTime(LocalTime.of(1,0));
-//        oldShift.setEndTime(LocalTime.of(2,0));
-//
-//        oldShifts.add(oldShift);
-//
-//        newShift.setDate(LocalDate.of(2019,1,1));
-//        newShift.setStartTime(LocalTime.of(0,30));
-//        newShift.setEndTime(LocalTime.of(1,30));
-//
-//        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
-//
-//        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
-//    }
-//
-//    @Test
-//    public void conflictEnd() {
-//        List<Shift> oldShifts = new ArrayList<>();
-//        Shift oldShift = new Shift();
-//        Shift newShift = new Shift();
-//
-//        oldShift.setDate(LocalDate.of(2019,1,1));
-//        oldShift.setStartTime(LocalTime.of(1,0));
-//        oldShift.setEndTime(LocalTime.of(2,0));
-//
-//        oldShifts.add(oldShift);
-//
-//        newShift.setDate(LocalDate.of(2019,1,1));
-//        newShift.setStartTime(LocalTime.of(1,30));
-//        newShift.setEndTime(LocalTime.of(4,0));
-//
-//        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
-//
-//        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
-//    }
-//
-//    @Test
-//    public void conflictOver() {
-//        List<Shift> oldShifts = new ArrayList<>();
-//        Shift oldShift = new Shift();
-//        Shift newShift = new Shift();
-//
-//        oldShift.setDate(LocalDate.of(2019,1,1));
-//        oldShift.setStartTime(LocalTime.of(1,0));
-//        oldShift.setEndTime(LocalTime.of(2,0));
-//
-//        oldShifts.add(oldShift);
-//
-//        newShift.setDate(LocalDate.of(2019,1,1));
-//        newShift.setStartTime(LocalTime.of(0,30));
-//        newShift.setEndTime(LocalTime.of(3,30));
-//
-//        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
-//
-//        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
-//    }
-//
-//    @Test
-//    public void conflictSame() {
-//        List<Shift> oldShifts = new ArrayList<>();
-//        Shift oldShift = new Shift();
-//        Shift newShift = new Shift();
-//
-//        oldShift.setDate(LocalDate.of(2019,1,1));
-//        oldShift.setStartTime(LocalTime.of(1,0));
-//        oldShift.setEndTime(LocalTime.of(2,0));
-//
-//        oldShifts.add(oldShift);
-//
-//        newShift.setDate(LocalDate.of(2019,1,1));
-//        newShift.setStartTime(LocalTime.of(1,0));
-//        newShift.setEndTime(LocalTime.of(2,0));
-//
-//        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
-//
-//        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
-//    }
-//
-//    @Test
-//    public void conflictSameStart() {
-//        List<Shift> oldShifts = new ArrayList<>();
-//        Shift oldShift = new Shift();
-//        Shift newShift = new Shift();
-//
-//        oldShift.setDate(LocalDate.of(2019,1,1));
-//        oldShift.setStartTime(LocalTime.of(1,0));
-//        oldShift.setEndTime(LocalTime.of(2,0));
-//
-//        oldShifts.add(oldShift);
-//
-//        newShift.setDate(LocalDate.of(2019,1,1));
-//        newShift.setStartTime(LocalTime.of(1,0));
-//        newShift.setEndTime(LocalTime.of(3,0));
-//
-//        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
-//
-//        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
-//    }
-//
-//    @Test
-//    public void conflictSameEnd() {
-//        List<Shift> oldShifts = new ArrayList<>();
-//        Shift oldShift = new Shift();
-//        Shift newShift = new Shift();
-//
-//        oldShift.setDate(LocalDate.of(2019,1,1));
-//        oldShift.setStartTime(LocalTime.of(1,0));
-//        oldShift.setEndTime(LocalTime.of(2,0));
-//
-//        oldShifts.add(oldShift);
-//
-//        newShift.setDate(LocalDate.of(2019,1,1));
-//        newShift.setStartTime(LocalTime.of(0,50));
-//        newShift.setEndTime(LocalTime.of(2,0));
-//
-//        when(shiftRepository.findByEmployeeId(anyLong())).thenReturn(oldShifts);
-//
-//        assertTrue(employeeShiftService.shiftConflict(anyLong(),newShift));
-//    }
+
 }
