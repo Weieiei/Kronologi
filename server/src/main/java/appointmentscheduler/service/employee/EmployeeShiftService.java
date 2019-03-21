@@ -58,17 +58,17 @@ public class EmployeeShiftService {
                 if (employee == null) throw new ResourceNotFoundException(String.format("Employee with id %d not " +
                         "found.", employeeId));
 
-    Shift shift = new Shift();
-    shift.setEmployee(employee);
-    shift.setDate(employeeShiftDTO.getDate());
-    shift.setStartTime(employeeShiftDTO.getStartTime());
-    shift.setEndTime(employeeShiftDTO.getEndTime());
-    shift.setBusiness(business);
+        Shift shift = employeeShiftDTO.convertToShift(employee, business);
         if(!shiftConflict(employeeId, businessId, shift)) {
             return shiftRepository.save(shift);
         }
 
         throw new ShiftConflictException("This shift conflicts with another one that the employee has.");
+    }
+
+    public List<Shift> addShiftList(long employeeId, long businessId, List<EmployeeShiftDTO> employeeShiftDTOS) {
+        //TODO
+        return  null;
     }
 
     public boolean shiftConflict(long employeeId, long businessId, Shift shift) {
