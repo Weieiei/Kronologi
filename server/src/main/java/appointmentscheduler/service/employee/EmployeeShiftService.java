@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -67,13 +68,37 @@ public class EmployeeShiftService {
     }
 
     public List<Shift> addShiftList(long employeeId, long businessId, List<EmployeeShiftDTO> employeeShiftDTOS) {
-        //TODO
-        return  null;
+        List<Shift> shifts = new ArrayList<>();
+
+        Employee employee = employeeRepository.findByIdAndBusinessId(employeeId, businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.",
+                        employeeId)));
+        Business business =
+                businessRepository.findById(businessId) .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with id %d not found.", businessId)));
+        if (employee == null) throw new ResourceNotFoundException(String.format("Employee with id %d not " +
+                "found.", employeeId));
+
+        for(int i = 0;i < employeeShiftDTOS.size(); i++) {
+            shifts.add(employeeShiftDTOS.get(i).convertToShift(employee, business));
+        }
+
+        if(!shiftConflict(employeeId, businessId, shifts)){
+            for(int i = 0;i < shifts.size(); i++) {
+                shiftRepository.save(shifts.get(i));
+            }
+        }
+
+        return  shifts;
     }
 
-    public boolean shiftConflict(long employeeId, long businessId, Shift shift) {
+    private boolean shiftConflict(long employeeId, long businessId, Shift shift) {
         List<Shift> shifts = shiftRepository.findByEmployeeIdAndBusinessId(employeeId, businessId);
         return  DateConflictChecker.hasConflictList(shifts, shift);
+    }
+
+    private boolean shiftConflict(long employeeId, long businessId, List<Shift> shift) {
+        List<Shift> shifts = shiftRepository.findByEmployeeIdAndBusinessId(employeeId, businessId);
+        return  DateConflictChecker.hasConflictSeveralEvents(shifts, shift);
     }
 
     public List<Shift> getEmployeeShifts(long employeeId) {
