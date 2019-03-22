@@ -2,8 +2,10 @@ package appointmentscheduler.service.employee;
 
 import appointmentscheduler.dto.employee.EmployeeShiftDTO;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.exception.AppEventTimeConflict;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.exception.ShiftConflictException;
 import appointmentscheduler.repository.BusinessRepository;
@@ -59,17 +61,15 @@ public class EmployeeShiftService {
                 if (employee == null) throw new ResourceNotFoundException(String.format("Employee with id %d not " +
                         "found.", employeeId));
 
-        Shift shift = employeeShiftDTO.convertToShift(employee, business);
-        if(!shiftConflict(employeeId, businessId, shift)) {
+        if(!shiftConflict(employeeId, businessId, employeeShiftDTO)) {
+            Shift shift = employeeShiftDTO.convertToShift(employee, business);
             return shiftRepository.save(shift);
         }
 
         throw new ShiftConflictException("This shift conflicts with another one that the employee has.");
     }
 
-    public List<Shift> addShiftList(long employeeId, long businessId, List<EmployeeShiftDTO> employeeShiftDTOS) {
-        List<Shift> shifts = new ArrayList<>();
-
+    public List<EmployeeShiftDTO> addShiftList(long employeeId, long businessId, List<EmployeeShiftDTO> employeeShiftDTOS) {
         Employee employee = employeeRepository.findByIdAndBusinessId(employeeId, businessId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.",
                         employeeId)));
@@ -78,27 +78,25 @@ public class EmployeeShiftService {
         if (employee == null) throw new ResourceNotFoundException(String.format("Employee with id %d not " +
                 "found.", employeeId));
 
-        for(int i = 0;i < employeeShiftDTOS.size(); i++) {
-            shifts.add(employeeShiftDTOS.get(i).convertToShift(employee, business));
-        }
-
-        if(!shiftConflict(employeeId, businessId, shifts)){
-            for(int i = 0;i < shifts.size(); i++) {
-                shiftRepository.save(shifts.get(i));
+        if(!shiftConflict(employeeId, businessId, employeeShiftDTOS)){
+            for(int i = 0;i < employeeShiftDTOS.size(); i++) {
+                shiftRepository.save(employeeShiftDTOS.get(i).convertToShift(employee, business));
             }
+        } else {
+            throw new AppEventTimeConflict("Conflict between new shifts and existing shifts");
         }
 
-        return  shifts;
+        return  employeeShiftDTOS;
     }
 
-    private boolean shiftConflict(long employeeId, long businessId, Shift shift) {
+    private boolean shiftConflict(long employeeId, long businessId, AppEvent shift) {
         List<Shift> shifts = shiftRepository.findByEmployeeIdAndBusinessId(employeeId, businessId);
         return  DateConflictChecker.hasConflictList(shifts, shift);
     }
 
-    private boolean shiftConflict(long employeeId, long businessId, List<Shift> shift) {
+    private boolean shiftConflict(long employeeId, long businessId, List<? extends AppEvent> newShift) {
         List<Shift> shifts = shiftRepository.findByEmployeeIdAndBusinessId(employeeId, businessId);
-        return  DateConflictChecker.hasConflictSeveralEvents(shifts, shift);
+        return  DateConflictChecker.hasConflictSeveralEvents(shifts, newShift);
     }
 
     public List<Shift> getEmployeeShifts(long employeeId) {

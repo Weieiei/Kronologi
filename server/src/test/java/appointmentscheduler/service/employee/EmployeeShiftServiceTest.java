@@ -5,6 +5,7 @@ import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.exception.AppEventTimeConflict;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.repository.EmployeeRepository;
@@ -172,6 +173,63 @@ public class EmployeeShiftServiceTest {
         assertEquals(employees.size(), retrievedEmployees.size());
         assertEquals(1, retrievedEmployees.get(0).getId());
         assertEquals(2, retrievedEmployees.get(1).getId());
+    }
+
+    @Test
+    public void getAddShiftListValid() {
+        List<EmployeeShiftDTO> newShifts = new ArrayList<>();
+        List<EmployeeShiftDTO> storedShifts;
+        List<Shift> oldShifts = new ArrayList<>();
+
+        final Employee mockEmployee = mock(Employee.class);
+        final Business mockBusiness= mock(Business.class);
+
+        LocalDate localDate = LocalDate.now();
+        LocalTime startTime = LocalTime.of(1,0);
+        LocalTime endTime = LocalTime.of(2,0);
+
+        oldShifts.add(new Shift(mockBusiness,mockEmployee,localDate, startTime, endTime));
+        oldShifts.add(new Shift(mockBusiness,mockEmployee,localDate, startTime.plusHours(1), endTime.plusHours(1)));
+        oldShifts.add(new Shift(mockBusiness,mockEmployee,localDate, startTime.plusHours(2), endTime.plusHours(2)));
+
+        newShifts.add(new EmployeeShiftDTO(localDate,startTime.plusHours(3), endTime.plusHours(3)));
+        newShifts.add(new EmployeeShiftDTO(localDate,startTime.plusHours(4), endTime.plusHours(4)));
+
+        when(employeeRepository.findByIdAndBusinessId(anyLong(), anyLong())).thenReturn(Optional.of(mockEmployee));
+        when(businessRepository.findById(anyLong())).thenReturn(Optional.of(mockBusiness));
+        when(shiftRepository.findByEmployeeIdAndBusinessId(anyLong(), anyLong())).thenReturn(oldShifts);
+
+        storedShifts = employeeShiftService.addShiftList(0,0,newShifts);
+
+        assertNotNull(storedShifts);
+        assertEquals(newShifts.size(), storedShifts.size());
+    }
+
+    @Test(expected = AppEventTimeConflict.class)
+    public void getAddShiftListInalid() {
+        List<EmployeeShiftDTO> newShifts = new ArrayList<>();
+        List<Shift> oldShifts = new ArrayList<>();
+
+        final Employee mockEmployee = mock(Employee.class);
+        final Business mockBusiness= mock(Business.class);
+
+        LocalDate localDate = LocalDate.now();
+        LocalTime startTime = LocalTime.of(1,0);
+        LocalTime endTime = LocalTime.of(2,0);
+
+        oldShifts.add(new Shift(mockBusiness,mockEmployee,localDate, startTime, endTime));
+        oldShifts.add(new Shift(mockBusiness,mockEmployee,localDate, startTime.plusHours(1), endTime.plusHours(1)));
+        oldShifts.add(new Shift(mockBusiness,mockEmployee,localDate, startTime.plusHours(2), endTime.plusHours(2)));
+
+        newShifts.add(new EmployeeShiftDTO(localDate,startTime.plusHours(2), endTime.plusHours(3)));
+        newShifts.add(new EmployeeShiftDTO(localDate,startTime.plusHours(4), endTime.plusHours(4)));
+
+        when(employeeRepository.findByIdAndBusinessId(anyLong(), anyLong())).thenReturn(Optional.of(mockEmployee));
+        when(businessRepository.findById(anyLong())).thenReturn(Optional.of(mockBusiness));
+        when(shiftRepository.findByEmployeeIdAndBusinessId(anyLong(), anyLong())).thenReturn(oldShifts);
+
+        employeeShiftService.addShiftList(0,0,newShifts);
+        fail("Should have thrown an exception.");
     }
 
 
