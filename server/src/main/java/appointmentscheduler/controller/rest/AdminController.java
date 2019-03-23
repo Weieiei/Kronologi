@@ -101,7 +101,7 @@ public class AdminController extends AbstractController {
     }
 
     @LogREST
-    @PostMapping("/{businessId}/employee/{employeeId}/shifts")
+    @PostMapping("/{businessId}/employee/{employeeId}/shift-list")
     public ResponseEntity<String> createListShift(@PathVariable long employeeId, @PathVariable long businessId,
                                               @RequestBody List<EmployeeShiftDTO> employeeShiftDTO) {
         List<Shift> shift = employeeShiftService.addShiftList(employeeId, businessId, employeeShiftDTO);

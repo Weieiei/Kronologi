@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/${rest.api.path}/business", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,6 +64,14 @@ public class AppointmentController extends AbstractController {
         return getJson(mapper, savedAppointment);
     }
 
+    @PostMapping("/{businessId}/appointments-list")
+    public ResponseEntity<String> addAppointmentToBusiness(@RequestBody List<AppointmentDTO> appointmentDTOS, @PathVariable long businessId){
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+        List<Appointment> savedAppointment = appointmentService.addList(appointmentDTOS, getUserId(), businessId);
+
+        return getJson(mapper, savedAppointment);
+    }
+
     @PutMapping("/{businessId}/appointments/{id}")
     public ResponseEntity<String> update(@PathVariable long businessId, @PathVariable long appointmentId, @RequestBody AppointmentDTO appointmentDTO) {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
@@ -71,8 +80,9 @@ public class AppointmentController extends AbstractController {
         return getJson(mapper, modifiedAppointment);
     }
 
-    @DeleteMapping("{businessId}/appointments/{id}")
-    public ResponseEntity delete(@PathVariable long id, @PathVariable long businessId){
+    //Not delete mapping because method changes appointment status to cancelled, therefore doesn't delete the appointment
+    @PutMapping("{businessId}/appointments/{id}")
+    public ResponseEntity cancelAppointment(@PathVariable long id, @PathVariable long businessId){
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment cancelledAppointment = appointmentService.cancel(id,businessId, getUserId());
 

@@ -182,17 +182,21 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
-    public List<Appointment> addList(List<Appointment> appointments){
+    //All entries in list need to be valid in order for the method to save the list into the DB
+    public List<Appointment> addList(List<AppointmentDTO> appointmentDTOS, long userId, long businessId){
         List<Appointment> storedAppointments = new ArrayList<>();
         Appointment appointment;
-        //validate all appointmens before inserting into DB
-        for(int i = 0; i < appointments.size(); i++) {
-            validate(appointments.get(i), false);
+        //validate all appointments before inserting into DB
+        for(int i = 0; i < appointmentDTOS.size(); i++) {
+            appointment = getAppointment(appointmentDTOS.get(i), userId, businessId);
+            validate(appointment, false);
+            //appointment valid
+            storedAppointments.add(appointment);
         }
 
-        for(int j = 0; j < appointments.size(); j++) {
+        for(int j = 0; j < storedAppointments.size(); j++) {
 
-            appointment = appointments.get(j);
+            appointment = storedAppointments.get(j);
 
             if(googleCredentialRepository.findByKey(String.valueOf(appointment.getEmployee().getId())).isPresent()) {
                 saveEventToGoogleCalendar(appointment, appointment.getEmployee());
@@ -201,7 +205,6 @@ public class AppointmentService {
                 saveEventToGoogleCalendar(appointment, appointment.getClient());
             }
 
-            storedAppointments.add(appointment);
             appointmentRepository.save(appointment);
         }
         return storedAppointments;
