@@ -148,6 +148,31 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
+    public List<Appointment> addList(List<Appointment> appointments){
+        List<Appointment> storedAppointments = new ArrayList<>();
+        Appointment appointment;
+        //validate all appointmens before inserting into DB
+        for(int i = 0; i < appointments.size(); i++) {
+            validate(appointments.get(i), false);
+        }
+
+        for(int j = 0; j < appointments.size(); j++) {
+
+            appointment = appointments.get(j);
+
+            if(googleCredentialRepository.findByKey(String.valueOf(appointment.getEmployee().getId())).isPresent()) {
+                saveEventToGoogleCalendar(appointment, appointment.getEmployee());
+            }
+            if(googleCredentialRepository.findByKey(String.valueOf(appointment.getClient().getId())).isPresent()) {
+                saveEventToGoogleCalendar(appointment, appointment.getClient());
+            }
+
+            storedAppointments.add(appointment);
+            appointmentRepository.save(appointment);
+        }
+        return storedAppointments;
+    }
+
     public Appointment update(long appointmentId, long clientId, Appointment appointment) {
 
         return appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, appointment.getBusiness().getId(), clientId).map(a -> {

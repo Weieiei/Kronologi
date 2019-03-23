@@ -1,5 +1,12 @@
 package appointmentscheduler.dto.appointment;
 
+import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.User;
+import org.modelmapper.ModelMapper;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -55,5 +62,16 @@ public class AppointmentDTO {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public Appointment convertToAppointment(User client, Employee employee, Service service, Business business){
+        ModelMapper modelMapper = new ModelMapper();
+        Appointment appointment = modelMapper.map(this, Appointment.class);
+        appointment.setClient(client);
+        appointment.setEmployee(employee);
+        appointment.setService(service);
+        appointment.setBusiness(business);
+
+        return appointment;
     }
 }
