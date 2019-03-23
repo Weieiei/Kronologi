@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
+import {AuthService} from "../../services/auth/auth.service";
+
 
 @Component({
     selector: 'app-login',
@@ -30,14 +32,19 @@ export class LoginComponent implements OnInit {
             password: this.password
         };
 
-
+        debugger;
         this.userService.login(payload).subscribe(
             res => {
                 this.googleAnalytics.trackValues('security', 'login', 'success');
                 const token = res['token'];
                 this.userService.setToken(token);
 
+                if (this.userService.isAdmin()){
+                    this.router.navigate(['admin/appts']);
+                }
+
                 this.router.navigate(['business']);
+
             },
             err => {
                 this.googleAnalytics.trackValues('security', 'login', 'failure');
