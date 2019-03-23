@@ -74,7 +74,7 @@ public class AppointmentController extends AbstractController {
     }
 
     //Not delete mapping because method changes appointment status to cancelled, therefore doesn't delete the appointment
-    @PutMapping("{businessId}/appointments/{id}")
+    @PutMapping("{businessId}/appointments/cancel/{id}")
     public ResponseEntity cancelAppointment(@PathVariable long id, @PathVariable long businessId){
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment cancelledAppointment = appointmentService.cancel(id,businessId, getUserId());
