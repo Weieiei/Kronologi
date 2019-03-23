@@ -1,11 +1,14 @@
 package appointmentscheduler.service.appointment;
 
+import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.appointment.GeneralAppointment;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.googleEntity.SyncEntity;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -75,6 +78,9 @@ public class AppointmentService {
     private CancelledRepository cancelledRepository;
     private AppointmentRepository appointmentRepository;
     private EmployeeRepository employeeRepository;
+    private UserRepository userRepository;
+    private ServiceRepository serviceRepository;
+    private BusinessRepository businessRepository;
     private ShiftRepository shiftRepository;
     private GeneralAppointmentRepository generalAppointmentRepository;
     private GoogleCredentialRepository googleCredentialRepository;
@@ -100,6 +106,7 @@ public class AppointmentService {
     @Autowired
     public AppointmentService(
             AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository,
+            UserRepository userRepository, ServiceRepository serviceRepository, BusinessRepository businessRepository,
             GeneralAppointmentRepository generalAppointmentRepository, GoogleCredentialRepository googleCredentialRepository, GoogleSyncService googleSyncService
     ) {
         this.googleCredentialRepository = googleCredentialRepository;
@@ -107,6 +114,9 @@ public class AppointmentService {
         this.appointmentRepository = appointmentRepository;
         this.employeeRepository = employeeRepository;
         this.shiftRepository = shiftRepository;
+        this.userRepository = userRepository;
+        this.serviceRepository = serviceRepository;
+        this.businessRepository = businessRepository;
         this.generalAppointmentRepository = generalAppointmentRepository;
         this.googleCredentialRepository = googleCredentialRepository;
         this.googleSyncService = googleSyncService;
@@ -126,16 +136,27 @@ public class AppointmentService {
         return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with employee id %d not found.", id)));
     }
 */
-    public Appointment add(Appointment appointment) {
-        // todo should this return a boolean instead ?
-        // Right now this is void return type because it will throw exceptions if it doesn't work.
-        // It will never reach the return statement if it fails any of the checks.
-        // If this returns a boolean, then what do I return if the boolean is false?
 
-        // Throwing exception is nice because then you can display the http error message to the user, indicating where
-        // the validation went wrong
+    private Appointment getAppointment(AppointmentDTO appointmentDTO, long userId, long businessId){
+        Appointment appointment;
+
+        User client = userRepository.findById(userId).orElseThrow(ResourceNotFoundException::new);
+
+        Employee employee = employeeRepository.findById(appointmentDTO.getEmployeeId()).orElseThrow(ResourceNotFoundException::new);
+
+        Service service = serviceRepository.findById(appointmentDTO.getServiceId()).orElseThrow(ResourceNotFoundException::new);
+
+        Business business = businessRepository.findById(businessId).orElseThrow(ResourceNotFoundException::new);
+
+        appointment = appointmentDTO.convertToAppointment(client,employee,service,business);
+
+        return appointment;
+    }
+
+    public Appointment add(AppointmentDTO appointmentDTO, long userId, long businessId) {
+        Appointment appointment = getAppointment(appointmentDTO, userId, businessId);
+
         validate(appointment, false);
-
 
         //Save to google calendar of employee and / or client if they have their credentials in our db
         if(googleCredentialRepository.findByKey(String.valueOf(appointment.getEmployee().getId())).isPresent()) {
@@ -173,7 +194,9 @@ public class AppointmentService {
         return storedAppointments;
     }
 
-    public Appointment update(long appointmentId, long clientId, Appointment appointment) {
+    public Appointment update(AppointmentDTO appointmentDTO, long clientId, long businessId, long appointmentId) {
+
+        Appointment appointment = getAppointment(appointmentDTO, clientId, businessId);
 
         return appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, appointment.getBusiness().getId(), clientId).map(a -> {
 

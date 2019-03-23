@@ -65,36 +65,19 @@ public class AppointmentController extends AbstractController {
         this.businessService = businessService;
     }
 
-    private Appointment mapAppointmentDTOToAppointment(AppointmentDTO appointmentDTO) {
-        Appointment appointment = modelMapper.map(appointmentDTO, Appointment.class);
-
-        User client = userRepository.findById(getUserId()).orElseThrow(ResourceNotFoundException::new);
-        appointment.setClient(client);
-
-        Employee employee = employeeRepository.findById(appointmentDTO.getEmployeeId()).orElseThrow(ResourceNotFoundException::new);
-        appointment.setEmployee(employee);
-
-        Service service = serviceRepository.findById(appointmentDTO.getServiceId()).orElseThrow(ResourceNotFoundException::new);
-        appointment.setService(service);
-
-        return appointment;
-    }
 
     @PostMapping("/{businessId}/appointments")
     public ResponseEntity<String> addAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO, @PathVariable long businessId) throws MessagingException {
-        appointmentDTO.setBusinessId(businessId);
-        Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        Appointment savedAppointment = appointmentService.add(appointment);
+        Appointment savedAppointment = appointmentService.add(appointmentDTO, getUserId(), businessId);
         sendConfirmationMessage(savedAppointment, false);
         return getJson(mapper, savedAppointment);
     }
 
-    @PutMapping("/{businessId}")
-    public ResponseEntity<String> update(@PathVariable long businessId, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
-        Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
+    @PutMapping("/{businessId}/{id}")
+    public ResponseEntity<String> update(@PathVariable long businessId, @PathVariable long appointmentId, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        Appointment modifiedAppointment = appointmentService.update(businessId, getUserId(), appointment);
+        Appointment modifiedAppointment = appointmentService.update(appointmentDTO, getUserId(), businessId, appointmentId);
         sendConfirmationMessage(modifiedAppointment, true);
         return getJson(mapper, modifiedAppointment);
     }
