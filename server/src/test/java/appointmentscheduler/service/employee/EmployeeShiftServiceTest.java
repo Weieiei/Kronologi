@@ -178,7 +178,7 @@ public class EmployeeShiftServiceTest {
     @Test
     public void getAddShiftListValid() {
         List<EmployeeShiftDTO> newShifts = new ArrayList<>();
-        List<EmployeeShiftDTO> storedShifts;
+        List<Shift> storedShifts;
         List<Shift> oldShifts = new ArrayList<>();
 
         final Employee mockEmployee = mock(Employee.class);
