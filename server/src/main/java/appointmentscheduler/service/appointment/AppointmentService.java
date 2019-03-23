@@ -370,16 +370,19 @@ public class AppointmentService {
     }
 
 
-    public List<Employee> getAvailableEmployeesByServiceAndByDate(long serviceId, LocalDate date) {
-        return employeeRepository.findByServices_IdAndShifts_Date(serviceId, date);
+    public List<Employee> getAvailableEmployeesByServiceAndByDate(long serviceId, String date) {
+        LocalDate pickedDate = parseDate(date);
+        return employeeRepository.findByServices_IdAndShifts_Date(serviceId, pickedDate);
     }
 
-    public List<Shift> getEmployeeShiftsByDateAndBusinessId(LocalDate date, long businessId) {
-        return shiftRepository.findByDateAndBusinessId(date, businessId);
+    public List<Shift> getEmployeeShiftsByDateAndBusinessId(String date, long businessId) {
+        LocalDate pickedDate = parseDate(date);
+        return shiftRepository.findByDateAndBusinessId(pickedDate, businessId);
     }
 
-    public List<Appointment> getConfirmedAppointmentsByDateAndBusinessId(LocalDate date, long businessId) {
-        return appointmentRepository.findByDateAndStatusAndBusinessId(date, AppointmentStatus.CONFIRMED, businessId);
+    public List<Appointment> getConfirmedAppointmentsByDateAndBusinessId(String date, long businessId) {
+        LocalDate pickedDate = parseDate(date);
+        return appointmentRepository.findByDateAndStatusAndBusinessId(pickedDate, AppointmentStatus.CONFIRMED, businessId);
     }
 
     public Map<String, String> cancel(CancelledAppointment cancel) {
@@ -522,6 +525,10 @@ public class AppointmentService {
 
         emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
 
+    }
+
+    private LocalDate parseDate(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
     }
 
 }

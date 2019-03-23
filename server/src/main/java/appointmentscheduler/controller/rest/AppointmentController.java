@@ -36,33 +36,22 @@ public class AppointmentController extends AbstractController {
 
    
     private final AppointmentService appointmentService;
-    private final UserRepository userRepository;
-    private final EmployeeRepository employeeRepository;
-    private final ServiceRepository serviceRepository;
     private final ModelMapper modelMapper;
     private final ObjectMapperFactory objectMapperFactory;
-    private final EmailService emailService;
-    private final BusinessService businessService;
+
 
     @Autowired
     public AppointmentController(
-            AppointmentService appointmentService, UserRepository userRepository, ServiceRepository serviceRepository,
-            ModelMapper modelMapper, EmployeeRepository employeeRepository, ObjectMapperFactory objectMapperFactory,
-            EmailService emailService, BusinessService businessService
+            AppointmentService appointmentService, ModelMapper modelMapper,  ObjectMapperFactory objectMapperFactory
     ) {
         this.appointmentService = appointmentService;
-        this.userRepository = userRepository;
-        this.serviceRepository = serviceRepository;
         this.modelMapper = modelMapper;
-        this.employeeRepository = employeeRepository;
         this.modelMapper.addMappings(new PropertyMap<AppointmentDTO, Appointment>() {
             protected void configure() {
                 skip().setId(0);
             }
         });
         this.objectMapperFactory = objectMapperFactory;
-        this.emailService = emailService;
-        this.businessService = businessService;
     }
 
 
@@ -93,29 +82,22 @@ public class AppointmentController extends AbstractController {
     @LogREST
     @GetMapping("/{businessId}/employee/{serviceId}")
     public ResponseEntity<String> getAvailableEmployeesByServiceAndByDate(@PathVariable long serviceId, @RequestParam String date) {
-        LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());
-        return getJson(mapper, appointmentService.getAvailableEmployeesByServiceAndByDate(serviceId, pickedDate));
+        return getJson(mapper, appointmentService.getAvailableEmployeesByServiceAndByDate(serviceId, date));
     }
 
     @LogREST
     @GetMapping("{businessId}/employee/shifts")
     public ResponseEntity<String> getEmployeesShift(@RequestParam String date, @PathVariable long businessId) {
-        LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new ShiftSerializer());
-        return getJson(mapper, appointmentService.getEmployeeShiftsByDateAndBusinessId(pickedDate, businessId));
+        return getJson(mapper, appointmentService.getEmployeeShiftsByDateAndBusinessId(date, businessId));
     }
 
     @LogREST
     @GetMapping("{businessId}/employee/appointments")
     public ResponseEntity<String> getEmployeesConfirmedAppointments(@RequestParam String date, @PathVariable long businessId) {
-        LocalDate pickedDate = parseDate(date);
         ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new EmployeeAppointmentSerializer());
-        return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDateAndBusinessId(pickedDate,businessId));
-    }
-
-    private LocalDate parseDate(String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
+        return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDateAndBusinessId(date,businessId));
     }
 
 
