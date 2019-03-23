@@ -16,6 +16,7 @@ import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.*;
+import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.googleService.GoogleSyncService;
 import appointmentscheduler.service.googleService.JPADataStoreFactory;
 import appointmentscheduler.service.googleService.JPADataStoreService;
@@ -41,9 +42,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
+import javax.mail.MessagingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -75,6 +78,8 @@ public class AppointmentService {
 
 
     private GoogleSyncService googleSyncService;
+    private EmailService emailService;
+
     private CancelledRepository cancelledRepository;
     private AppointmentRepository appointmentRepository;
     private EmployeeRepository employeeRepository;
@@ -106,7 +111,7 @@ public class AppointmentService {
     @Autowired
     public AppointmentService(
             AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository,
-            UserRepository userRepository, ServiceRepository serviceRepository, BusinessRepository businessRepository,
+            UserRepository userRepository, ServiceRepository serviceRepository, BusinessRepository businessRepository, EmailService emailService,
             GeneralAppointmentRepository generalAppointmentRepository, GoogleCredentialRepository googleCredentialRepository, GoogleSyncService googleSyncService
     ) {
         this.googleCredentialRepository = googleCredentialRepository;
@@ -119,7 +124,9 @@ public class AppointmentService {
         this.businessRepository = businessRepository;
         this.generalAppointmentRepository = generalAppointmentRepository;
         this.googleCredentialRepository = googleCredentialRepository;
+
         this.googleSyncService = googleSyncService;
+        this.emailService = emailService;
     }
 
     public List<Appointment> findByClientIdAndBusinessId(long clientId, long businessId){
@@ -166,6 +173,12 @@ public class AppointmentService {
             saveEventToGoogleCalendar(appointment, appointment.getClient());
         }
 
+        try {
+            sendConfirmationMessage(appointment, false);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
         return appointmentRepository.save(appointment);
     }
 
@@ -210,6 +223,12 @@ public class AppointmentService {
 
             validate(a, true);
 
+            try {
+                sendConfirmationMessage(a, true);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+
             return appointmentRepository.save(a);
 
         }).orElseThrow(() -> new ResourceNotFoundException("This appointment either belongs to another user or doesn't exist."));
@@ -226,6 +245,12 @@ public class AppointmentService {
         }
 
         appointment.setStatus(AppointmentStatus.CANCELLED);
+
+        try {
+            sendCancellationMessage(appointment);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
 
         return appointmentRepository.save(appointment);
 
@@ -469,5 +494,34 @@ public class AppointmentService {
        }
 
    }
+
+    private void sendConfirmationMessage(Appointment appointment, boolean modifying) throws MessagingException {
+
+        String message = String.format(
+                "Hello %1$s,<br><br>" +
+                        "Your reservation at Sylvia Pizzi Spa has been " + (modifying ? "modified" : "confirmed") + ".<br><br>" +
+                        "%2$s with %3$s<br>" +
+                        "%4$s at %5$s<br><br>" +
+                        "We look forward to seeing you!",
+                appointment.getClient().getFirstName(),
+                appointment.getService().getName(), appointment.getEmployee().getFullName(),
+                appointment.getDate().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")), appointment.getStartTime().toString()
+        );
+
+        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
+
+    }
+
+    private void sendCancellationMessage(Appointment appointment) throws MessagingException {
+
+        String message = String.format(
+                "Hello %1$s,<br><br>" +
+                        "Your reservation at Sylvia Pizzi Spa has been cancelled.<br>",
+                appointment.getClient().getFirstName()
+        );
+
+        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
+
+    }
 
 }

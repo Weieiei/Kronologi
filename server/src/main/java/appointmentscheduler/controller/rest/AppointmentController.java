@@ -31,7 +31,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @RestController
-@RequestMapping(value = "/${rest.api.path}/business/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/${rest.api.path}/business", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentController extends AbstractController {
 
    
@@ -67,26 +67,26 @@ public class AppointmentController extends AbstractController {
 
 
     @PostMapping("/{businessId}/appointments")
-    public ResponseEntity<String> addAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO, @PathVariable long businessId) throws MessagingException {
+    public ResponseEntity<String> addAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO, @PathVariable long businessId){
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment savedAppointment = appointmentService.add(appointmentDTO, getUserId(), businessId);
-        sendConfirmationMessage(savedAppointment, false);
+
         return getJson(mapper, savedAppointment);
     }
 
-    @PutMapping("/{businessId}/{id}")
-    public ResponseEntity<String> update(@PathVariable long businessId, @PathVariable long appointmentId, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
+    @PutMapping("/{businessId}/appointments/{id}")
+    public ResponseEntity<String> update(@PathVariable long businessId, @PathVariable long appointmentId, @RequestBody AppointmentDTO appointmentDTO) {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment modifiedAppointment = appointmentService.update(appointmentDTO, getUserId(), businessId, appointmentId);
-        sendConfirmationMessage(modifiedAppointment, true);
+
         return getJson(mapper, modifiedAppointment);
     }
 
-    @DeleteMapping("{businessId}/{id}")
-    public ResponseEntity delete(@PathVariable long id, @PathVariable long businessId) throws MessagingException {
+    @DeleteMapping("{businessId}/appointments/{id}")
+    public ResponseEntity delete(@PathVariable long id, @PathVariable long businessId){
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment cancelledAppointment = appointmentService.cancel(id,businessId, getUserId());
-        sendCancellationMessage(cancelledAppointment);
+
         return getJson(mapper, cancelledAppointment);
     }
 
@@ -118,34 +118,6 @@ public class AppointmentController extends AbstractController {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
     }
 
-    private void sendConfirmationMessage(Appointment appointment, boolean modifying) throws MessagingException {
-
-        String message = String.format(
-                "Hello %1$s,<br><br>" +
-                        "Your reservation at Sylvia Pizzi Spa has been " + (modifying ? "modified" : "confirmed") + ".<br><br>" +
-                        "%2$s with %3$s<br>" +
-                        "%4$s at %5$s<br><br>" +
-                        "We look forward to seeing you!",
-                appointment.getClient().getFirstName(),
-                appointment.getService().getName(), appointment.getEmployee().getFullName(),
-                appointment.getDate().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")), appointment.getStartTime().toString()
-        );
-
-        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
-
-    }
-
-    private void sendCancellationMessage(Appointment appointment) throws MessagingException {
-
-        String message = String.format(
-                "Hello %1$s,<br><br>" +
-                        "Your reservation at Sylvia Pizzi Spa has been cancelled.<br>",
-                appointment.getClient().getFirstName()
-        );
-
-        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
-
-    }
 
     @GetMapping("{businessId}/cancel/{id}")
     public ResponseEntity<String> findId(@PathVariable long id, @PathVariable long businessId){
