@@ -1,74 +1,109 @@
-//package appointmentscheduler.service.appointment;
-//
-//import appointmentscheduler.entity.appointment.Appointment;
-//import appointmentscheduler.entity.user.Employee;
-//import appointmentscheduler.entity.user.User;
-//import appointmentscheduler.exception.*;
-//import appointmentscheduler.repository.AppointmentRepository;
-//import appointmentscheduler.repository.CancelledRepository;
-//import appointmentscheduler.repository.EmployeeRepository;
-//import appointmentscheduler.repository.ShiftRepository;
-//import com.google.common.collect.Sets;
-//import org.junit.Before;
-//import org.junit.Ignore;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.mockito.Mock;
-//import org.mockito.junit.MockitoJUnitRunner;
-//import org.mockito.Answers;
-//
-//import java.util.Collections;
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.Set;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.mockito.ArgumentMatchers.anyLong;
-//import static org.mockito.Mockito.*;
-//
-//@RunWith(MockitoJUnitRunner.class)
-//public class AppointmentServiceTest {
-//
-//    @Mock
-//    private AppointmentRepository appointmentRepository;
-//
-//    @Mock
-//    private EmployeeRepository employeeRepository;
-//
-//    @Mock
-//    private ShiftRepository shiftRepository;
-//
-//    @Mock
-//    private CancelledRepository cancelledRepository;
-//    private AppointmentService appointmentService;
-//
-//    @Before
-//    public void setup() {
-//        appointmentService = new AppointmentService(appointmentRepository, employeeRepository, shiftRepository, cancelledRepository);
-//    }
-//
-//    @Test(expected = ModelValidationException.class)
-//    public void addShouldFailWhenClientAndEmployeeAreSame() {
-//        final int ID = 1;
-//
-//        // Must create real objects because Mockito can't mock equals method
-//        final User client = new User();
-//        client.setId(ID);
-//
-//        // Must create real objects because Mockito can't mock equals method
-//        final Employee employee = new Employee();
-//        employee.setId(ID);
-//
-//        final Appointment mockAppointment = mock(Appointment.class);
-//
-//        when(mockAppointment.getClient()).thenReturn(client);
-//        when(mockAppointment.getEmployee()).thenReturn(employee);
-//
-//        appointmentService.add(mockAppointment);
-//    }
-//
+package appointmentscheduler.service.appointment;
+
+import appointmentscheduler.dto.appointment.AppointmentDTO;
+import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.verification.GoogleCred;
+import appointmentscheduler.exception.*;
+import appointmentscheduler.repository.*;
+import appointmentscheduler.service.email.EmailService;
+import appointmentscheduler.service.googleService.GoogleSyncService;
+import com.google.common.collect.Sets;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.Answers;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+
+@RunWith(MockitoJUnitRunner.class)
+public class AppointmentServiceTest {
+
+    @Mock
+    private AppointmentRepository appointmentRepository;
+
+    @Mock
+    private EmployeeRepository employeeRepository;
+
+    @Mock
+    private ShiftRepository shiftRepository;
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private ServiceRepository serviceRepository;
+
+    @Mock
+    private BusinessRepository businessRepository;
+
+    @Mock
+    private EmailService emailService;
+
+    @Mock
+    private GeneralAppointmentRepository generalAppointmentRepository;
+
+    @Mock
+    private GoogleCredentialRepository googleCredentialRepository;
+
+    @Mock
+    private GoogleSyncService googleSyncService;
+
+
+    @Mock
+    private CancelledRepository cancelledRepository;
+    private AppointmentService appointmentService;
+
+    @Before
+    public void setup() {
+        appointmentService = new AppointmentService(appointmentRepository, employeeRepository, shiftRepository, cancelledRepository, userRepository, serviceRepository, businessRepository, emailService, generalAppointmentRepository, googleCredentialRepository, googleSyncService);
+    }
+
+    public void mockGetAppointment(User user, Employee employee, Service service, Business business) {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+        when(employeeRepository.findByIdAndBusinessId(anyLong(), anyLong())).thenReturn(Optional.of(employee));
+        when(serviceRepository.findByIdAndBusinessId(anyLong(), anyLong())).thenReturn(Optional.of(service));
+        when(businessRepository.findById(anyLong())).thenReturn(Optional.of(business));
+        //when(googleCredentialRepository.findByKey(anyString())).thenReturn(Optional.of())
+    }
+
+    @Test(expected = ModelValidationException.class)
+    public void addShouldFailWhenClientAndEmployeeAreSame() {
+        final int ID = 1;
+
+        // Must create real objects because Mockito can't mock equals method
+        final User client = new User();
+        client.setId(ID);
+
+        // Must create real objects because Mockito can't mock equals method
+        final Employee employee = new Employee();
+        employee.setId(ID);
+
+        AppointmentDTO mockAppointmentTO = new AppointmentDTO();
+        final Service mockService = mock(Service.class);
+        final Business mockBusiness = mock(Business.class);
+
+
+        mockGetAppointment(client, employee, mockService, mockBusiness);
+
+        appointmentService.add(mockAppointmentTO, 1, 1);
+    }
+
 //    @Test(expected = EmployeeDoesNotOfferServiceException.class)
 //    public void addShouldFailBecauseEmployeeDoesNotOfferService() {
 //        final Appointment mockAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
@@ -268,4 +303,4 @@
 //        List<Appointment> result = this.appointmentService.findByEmployeeId(Long.valueOf(4));
 //        assertEquals(6, result.size());
 //    }
-//}
+}

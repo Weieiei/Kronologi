@@ -149,9 +149,9 @@ public class AppointmentService {
 
         User client = userRepository.findById(userId).orElseThrow(ResourceNotFoundException::new);
 
-        Employee employee = employeeRepository.findById(appointmentDTO.getEmployeeId()).orElseThrow(ResourceNotFoundException::new);
+        Employee employee = employeeRepository.findByIdAndBusinessId(appointmentDTO.getEmployeeId(), businessId).orElseThrow(ResourceNotFoundException::new);
 
-        Service service = serviceRepository.findById(appointmentDTO.getServiceId()).orElseThrow(ResourceNotFoundException::new);
+        Service service = serviceRepository.findByIdAndBusinessId(appointmentDTO.getServiceId(), businessId).orElseThrow(ResourceNotFoundException::new);
 
         Business business = businessRepository.findById(businessId).orElseThrow(ResourceNotFoundException::new);
 
@@ -307,7 +307,6 @@ public class AppointmentService {
     private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
         final Employee employee = appointment.getEmployee();
 
-        GoogleCred employeeCred =  googleCredentialRepository.findByKey(String.valueOf(employee.getId())).get();
 
         if(googleCredentialRepository.findByKey(String.valueOf(employee.getId())).isPresent() && googleSyncService.findById(employee.getId()) != null){
             checkCalendarSync(googleCredentialRepository.findByKey(String.valueOf(employee.getId())).get().getAccessToken(), googleSyncService.findById(employee.getId()).getSyncToken(), employee);

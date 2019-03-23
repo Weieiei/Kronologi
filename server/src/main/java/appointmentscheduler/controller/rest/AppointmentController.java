@@ -37,21 +37,14 @@ public class AppointmentController extends AbstractController {
 
    
     private final AppointmentService appointmentService;
-    private final ModelMapper modelMapper;
     private final ObjectMapperFactory objectMapperFactory;
 
 
     @Autowired
     public AppointmentController(
-            AppointmentService appointmentService, ModelMapper modelMapper,  ObjectMapperFactory objectMapperFactory
+            AppointmentService appointmentService,  ObjectMapperFactory objectMapperFactory
     ) {
         this.appointmentService = appointmentService;
-        this.modelMapper = modelMapper;
-        this.modelMapper.addMappings(new PropertyMap<AppointmentDTO, Appointment>() {
-            protected void configure() {
-                skip().setId(0);
-            }
-        });
         this.objectMapperFactory = objectMapperFactory;
     }
 
