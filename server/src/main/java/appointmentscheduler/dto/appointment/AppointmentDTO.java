@@ -57,6 +57,7 @@ public class AppointmentDTO {
         this.startTime = startTime;
     }
 
+
     public String getNotes() {
         return notes;
     }
@@ -77,6 +78,8 @@ public class AppointmentDTO {
         appointment.setEmployee(employee);
         appointment.setService(service);
         appointment.setBusiness(business);
+        //set endtime with service duration
+        appointment.setEndTime(startTime.plusMinutes(service.getDuration()));
 
         return appointment;
     }

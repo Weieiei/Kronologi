@@ -35,7 +35,7 @@ public class EmployeeTest {
    // @Test
     public void isWorkingSuccess() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 12:00 - 13:00
@@ -43,7 +43,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(12, 0);
         LocalTime endTime = LocalTime.of(13, 0);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
 
         assertTrue(result);
     }
@@ -51,7 +51,7 @@ public class EmployeeTest {
     @Test
     public void isWorkingWrongDate() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 28, 12:00 - 13:00
@@ -59,7 +59,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(12, 0);
         LocalTime endTime = LocalTime.of(13, 0);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
 
         assertFalse(result);
     }
@@ -67,7 +67,7 @@ public class EmployeeTest {
     @Test
     public void isWorkingWrongTimeAfterNoOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 16:00:01 - 17:00
@@ -75,7 +75,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(16, 0, 1);
         LocalTime endTime = LocalTime.of(17, 0);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
 
         assertFalse(result);
     }
@@ -83,7 +83,7 @@ public class EmployeeTest {
     @Test
     public void isWorkingWrongTimeBeforeNoOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 7:00 - 7:59:59
@@ -91,7 +91,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(7, 0);
         LocalTime endTime = LocalTime.of(7, 59, 59);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
 
         assertFalse(result);
     }
@@ -99,7 +99,7 @@ public class EmployeeTest {
     @Test
     public void isWorkingWrongTimeAfterWithOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 15:30 - 16:30
@@ -107,7 +107,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(15, 30);
         LocalTime endTime = LocalTime.of(16, 30);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
 
         assertFalse(result);
     }
@@ -115,7 +115,7 @@ public class EmployeeTest {
     @Test
     public void isWorkingWrongTimeBeforeWithOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 7:00 - 8:30 (1.5 hours)
@@ -123,7 +123,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(7, 0);
         LocalTime endTime = LocalTime.of(8, 30);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
 
         assertFalse(result);
     }

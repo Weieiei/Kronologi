@@ -332,9 +332,9 @@ public class AppointmentService {
         }
 
         // Check if the employee is working on the date specified
-        boolean employeeIsWorking = employee.isWorking(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+        boolean employeeIsAvailable = employee.isAvailable(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
 
-        if (!employeeIsWorking) {
+        if (!employeeIsAvailable) {
             throw new EmployeeNotWorkingException("The employee does not have a shift.");
         }
 

@@ -3,6 +3,7 @@ package appointmentscheduler.service.appointment;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -20,11 +21,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.Answers;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -94,33 +93,63 @@ public class AppointmentServiceTest {
         final Employee employee = new Employee();
         employee.setId(ID);
 
-        AppointmentDTO mockAppointmentTO = new AppointmentDTO();
+        AppointmentDTO mockAppointmentDTO = new AppointmentDTO();
         final Service mockService = mock(Service.class);
         final Business mockBusiness = mock(Business.class);
+
+        mockAppointmentDTO.setDate(LocalDate.now());
+        mockAppointmentDTO.setStartTime(LocalTime.now());
+
+        when(mockService.getDuration()).thenReturn(1);
+        mockGetAppointment(client, employee, mockService, mockBusiness);
+
+        appointmentService.add(mockAppointmentDTO, 1, 1);
+    }
+
+    @Test(expected = EmployeeDoesNotOfferServiceException.class)
+    public void addShouldFailBecauseEmployeeDoesNotOfferService() {
+        AppointmentDTO mockAppointment = mock(AppointmentDTO.class, RETURNS_DEEP_STUBS);
+        final Service mockService = mock(Service.class);
+        final Business mockBusiness = mock(Business.class);
+        final Employee employee = mock(Employee.class);
+        final User client = mock(User.class);
 
 
         mockGetAppointment(client, employee, mockService, mockBusiness);
 
-        appointmentService.add(mockAppointmentTO, 1, 1);
+        appointmentService.add(mockAppointment, 1, 1);
     }
 
-//    @Test(expected = EmployeeDoesNotOfferServiceException.class)
-//    public void addShouldFailBecauseEmployeeDoesNotOfferService() {
-//        final Appointment mockAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
-//
-//        appointmentService.add(mockAppointment);
-//    }
-//
-//    @Test(expected = EmployeeNotWorkingException.class)
-//    public void addShouldFailBecauseEmployeeDoesNotHaveShiftSpecified() {
-//        final Appointment mockAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
-//        final Employee mockEmployee = mock(Employee.class);
-//
-//        when(mockAppointment.getEmployee()).thenReturn(mockEmployee);
-//        when(mockAppointment.getService().getEmployees().contains(any(Employee.class))).thenReturn(true);
-//
-//        appointmentService.add(mockAppointment);
-//    }
+    @Test(expected = EmployeeNotWorkingException.class)
+    public void addShouldFailBecauseEmployeeDoesNotHaveShiftSpecified() {
+        AppointmentDTO mockAppointmentDTO = new AppointmentDTO();
+        final Employee mockEmployee = mock(Employee.class);
+        final Service mockService = mock(Service.class);
+        final Business mockBusiness = mock(Business.class);
+        EmployeeService mockEmployeeService = mock(EmployeeService.class);
+        final User client = mock(User.class);
+        final long empId = 1;
+        HashSet<EmployeeService> employeeServiceHashSet = new HashSet<>();
+
+        //set DTO times, will be converted into appointment object in service
+        mockAppointmentDTO.setDate(LocalDate.now());
+        mockAppointmentDTO.setStartTime(LocalTime.now());
+        when(mockService.getDuration()).thenReturn(1);
+
+        when(mockEmployee.getId()).thenReturn(empId);
+
+        //add employee to selected service
+        when(mockEmployeeService.getEmployee()).thenReturn(mockEmployee);
+        employeeServiceHashSet.add(mockEmployeeService);
+        when(mockService.getEmployees()).thenReturn(employeeServiceHashSet);
+
+        //employee is busy during appointment time
+        when(mockEmployee.isAvailable(any(), any(), any())).thenReturn(false);
+
+        mockGetAppointment(client, mockEmployee, mockService, mockBusiness);
+
+        appointmentService.add(mockAppointmentDTO, 1, 1);
+    }
 //
 //    @Test(expected = EmployeeAppointmentConflictException.class)
 //    public void addShouldFailBecauseEmployeeIsBookedAlready() {
