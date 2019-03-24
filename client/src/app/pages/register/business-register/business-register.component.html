@@ -152,6 +152,34 @@
 
             </div>
 
+            <div formArrayName="new_services">
+                <div *ngFor="let new_service of newServiceForms.controls; let i=index" [formGroupName]="i">
+
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                     <mat-form-field appearance="outline" fxFlex>
+                     <mat-label>Add a service that your business offers</mat-label>
+                            <input matInput  type="text" formControlName="new_service_name" required appAutofocus>
+                        </mat-form-field>
+
+
+                    <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Add the service duration(in minutes)</mat-label>
+                            <input matInput   type="text" formControlName="new_service_duration" required appAutofocus>
+                        </mat-form-field>
+                    </div>
+
+
+                         <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
+                                <button mat-button color="primary" (click)="deleteService()">Delete</button>
+                    </div>
+
+
+            </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
+                        <button mat-raised-button color="primary" (click)="addService()">Add another service</button>
+                    </div>
+            </div>
+
 
 
             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">

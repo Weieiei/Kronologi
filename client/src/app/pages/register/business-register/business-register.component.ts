@@ -8,7 +8,7 @@ import { BusinessUserRegisterDTO } from '../../../interfaces/user/business-user-
 import { BusinessRegisterDTO } from '../../../interfaces/business/business-register-dto';
 import { BusinessDTO } from '../../../interfaces/business/business-dto';
 import { UserService } from '../../../services/user/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
@@ -42,6 +42,7 @@ export class BusinessRegisterComponent implements OnInit {
 // new service object
     service: string;
     service_duration: number;
+
 //new user object
     firstName: string;
     lastName: string;
@@ -60,7 +61,7 @@ export class BusinessRegisterComponent implements OnInit {
     registerPhone = false;
 
     businessId: number;
-
+    index: number = 0;
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -80,6 +81,11 @@ export class BusinessRegisterComponent implements OnInit {
         });
         this.thirdFormGroup = this._formBuilder.group({
             thirdCtrl: ['', Validators.required]
+          });
+        this.thirdFormGroup = this._formBuilder.group({
+            service: '',
+            service_duration: '',
+            new_services: this._formBuilder.array([])
           });
       }
 
@@ -124,7 +130,6 @@ export class BusinessRegisterComponent implements OnInit {
 
                     name: this.service,
                     duration: this.service_duration,
-                   // businessId: this.businessId
                      };
                  this.serviceService.registerService(this.businessId, payload_service).subscribe(
                      res => {
@@ -132,9 +137,28 @@ export class BusinessRegisterComponent implements OnInit {
                      },
                      err => console.log(err)
                  );
-         // TODO: when register user, we need to add business id, also need to link service to the user
+
+//for (const item of this.newServiceForms) {
+    for( var _i = 0; _i < this.newServiceForms.length; _i++) {
+        const payload_new_service: ServiceCreateDto = {
+
+
+        name: this.newServiceForms.at(_i),
+        duration: this.service_duration,
+         };
+     this.serviceService.registerService(this.businessId, payload_service).subscribe(
+         res => {
+            console.log(res);
+         },
+         err => console.log(err)
+     );
+
+
+}
+
+
                  if (this.password === this.confirmPassword ) {
-         console.log(this.firstName);
+
                      const payload: BusinessUserRegisterDTO = {
 
                         firstName: this.firstName,
@@ -142,7 +166,6 @@ export class BusinessRegisterComponent implements OnInit {
                         email: this.email,
                         password: this.password,
                         phoneNumber: null
-                      //  businessId: this.businessId
                      };
 
                      if ( this.registerPhone) {
@@ -179,6 +202,21 @@ export class BusinessRegisterComponent implements OnInit {
         this.selectedCountry = country;
     }
 
+    get newServiceForms() {
+        return this.thirdFormGroup.get('new_services') as FormArray;
+      }
+
+    addService() {
+
+        const new_service = this._formBuilder.group({
+          new_service_name: [],
+          new_service_duration: [],
+    });
+    this.newServiceForms.push(new_service);
+}
+deleteService(i) {
+    this.newServiceForms.removeAt(i);
+  }
 }
 
 /*
