@@ -146,6 +146,7 @@ public class EmployeeTest {
         LocalTime startTime3 = LocalTime.of(12, 30);
         LocalTime endTime3 = LocalTime.of(20, 30);
 
+        //TODO fix tests
 //        shifts.add( new Shift((date1, startTime1, endTime1));
 //        shifts.add(ShiftFactory.createShift(date2, startTime2, endTime2));
 //        shifts.add(ShiftFactory.createShift(date3, startTime3, endTime3));

@@ -55,7 +55,7 @@ public class Employee extends User {
 
     public boolean isAvailable(LocalDate date, LocalTime startTime, LocalTime endTime) {
         final Set<Shift> shifts = getShifts();
-
+        //TODO fix to use conflict checker util
         for (final Shift shift : shifts) {
             final LocalTime shiftStartTime = shift.getStartTime();
             final LocalTime shiftEndTime = shift.getEndTime();
