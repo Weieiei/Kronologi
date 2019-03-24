@@ -31,6 +31,8 @@ export class DarnCarouselComponent {
     asyncTabs: Observable<ExampleTab[]>;
     events: string[] = [];
     private modal: any = [];
+    minDate = new Date(Date.now());
+    //maxDate = new Date(2020, 0, 1);
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
         this.events.push(`${type}: ${event.value}`);
@@ -71,5 +73,7 @@ export class DarnCarouselComponent {
     public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
         console.log(tabChangeEvent);
     }
+
+
 }
 
