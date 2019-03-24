@@ -53,7 +53,7 @@ public class Employee extends User {
         this.shifts = shifts;
     }
 
-    public boolean isWorking(LocalDate date, LocalTime startTime, LocalTime endTime) {
+    public boolean isAvailable(LocalDate date, LocalTime startTime, LocalTime endTime) {
         final Set<Shift> shifts = getShifts();
 
         for (final Shift shift : shifts) {

@@ -101,6 +101,15 @@ public class AdminController extends AbstractController {
     }
 
     @LogREST
+    @PostMapping("/{businessId}/employee/{employeeId}/shift-list")
+    public ResponseEntity<String> createListShift(@PathVariable long employeeId, @PathVariable long businessId,
+                                              @RequestBody List<EmployeeShiftDTO> employeeShiftDTO) {
+        List<Shift> shift = employeeShiftService.addShiftList(employeeId, businessId, employeeShiftDTO);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
+    }
+
+    @LogREST
     @PutMapping("/{businessId}/employee/{employeeId}/shift/{shiftId}")
     public ResponseEntity<String> modifyShift(@PathVariable long businessId, @PathVariable long employeeId,
                                               @PathVariable long shiftId,

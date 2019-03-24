@@ -4,6 +4,7 @@ import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { HttpClient } from '@angular/common/http';
 import * as decode from 'jwt-decode';
 import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
+import { BusinessUserRegisterDTO } from '../../interfaces/user/business-user-register-dto';
 import { UpdateEmailDTO } from '../../interfaces/user/update-email-dto';
 import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
 import { SettingsDTO } from '../../interfaces/settings/settings-dto';
@@ -16,12 +17,17 @@ import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
 export class UserService {
 
     private static readonly TOKEN_KEY = 'token';
+    private static readonly GOOGLE_KEY = 'google';
 
     constructor(private http: HttpClient) {
     }
 
     register(payload: UserRegisterDTO): Observable<any> {
         return this.http.post<any>(['api', 'user', 'register'].join('/'), payload);
+    }
+
+    businessRegister(businessId: number, payload: BusinessUserRegisterDTO): Observable<any> {
+        return this.http.post<any>(['api', 'user', businessId.toString(), 'business_register'].join('/'), payload);
     }
 
     login(payload: UserLoginDTO): Observable<any> {
@@ -36,6 +42,10 @@ export class UserService {
         return !!this.getToken();
     }
 
+    public forgetGoogleAccount(): Observable<any>{
+        return this.http.get(['api', 'user','unlinkAccount'].join('/'));
+    }
+
     setToken(token: string): void {
         localStorage.setItem(UserService.TOKEN_KEY, token);
     }
@@ -44,6 +54,13 @@ export class UserService {
         return localStorage.getItem(UserService.TOKEN_KEY);
     }
 
+    setGoogleLinked(flag : boolean):void{
+        localStorage.setItem(UserService.GOOGLE_KEY, String(flag));
+    }
+
+    isGoogleLinked() : boolean{
+        return JSON.parse(localStorage.getItem(UserService.GOOGLE_KEY));
+    }
     deleteToken(): void {
         localStorage.removeItem(UserService.TOKEN_KEY);
     }

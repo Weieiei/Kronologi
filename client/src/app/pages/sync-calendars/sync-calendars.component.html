@@ -17,7 +17,8 @@
               </div>
           </div>
           <div class="col1of4">
-              <button mat-raised-button class="light-mat" [ngClass]="{'dark-mat': darkModeActive}" (click)=login() >Let's Sync Up!</button>
+              <button mat-raised-button  *ngIf="!isGoogleLinked()" class="light-mat" [ngClass]="{'dark-mat': darkModeActive}" (click)=login() >Let's Sync Up!</button>
+              <button mat-raised-button  *ngIf="isGoogleLinked()" class="disconnect-mat" [ngClass]="{'dark-mat': darkModeActive}" (click)=forgetAccount() > Forget about me!</button>
           </div>
       </div>
       </div>
