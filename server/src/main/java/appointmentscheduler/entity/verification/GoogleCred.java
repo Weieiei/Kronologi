@@ -15,7 +15,6 @@ import java.time.Instant;
 
 @Entity(name = "google_credentials")
 @EntityListeners(AuditingEntityListener.class)
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "google_credentials")
@@ -49,15 +48,51 @@ public class GoogleCred {
         this.updatedAt = Instant.now();
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String getAccessToken() {
         return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public Long getExpirationTimeMilliseconds() {
+        return expirationTimeMilliseconds;
+    }
+
+    public void setExpirationTimeMilliseconds(Long expirationTimeMilliseconds) {
+        this.expirationTimeMilliseconds = expirationTimeMilliseconds;
     }
 
     public String getRefreshToken() {
         return refreshToken;
     }
 
-    public Long getExpirationTimeMilliseconds() {
-        return expirationTimeMilliseconds;
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

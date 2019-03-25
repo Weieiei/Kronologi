@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 public abstract class AbstractController {
 
+    @Autowired
+    private ServletRequest request1;
     @Autowired
     private HttpServletRequest request;
 
@@ -21,6 +24,7 @@ public abstract class AbstractController {
         }
     }
 
+    protected String getSessionUser() { return String.valueOf(request.getSession().getAttribute("userId"));}
     protected String getUserEmail() {
         return String.valueOf(request.getAttribute("email"));
     }

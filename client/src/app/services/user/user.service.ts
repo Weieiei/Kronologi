@@ -17,6 +17,7 @@ import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
 export class UserService {
 
     private static readonly TOKEN_KEY = 'token';
+    private static readonly GOOGLE_KEY = 'google';
 
     constructor(private http: HttpClient) {
     }
@@ -41,6 +42,10 @@ export class UserService {
         return !!this.getToken();
     }
 
+    public forgetGoogleAccount(): Observable<any>{
+        return this.http.get(['api', 'user','unlinkAccount'].join('/'));
+    }
+
     setToken(token: string): void {
         localStorage.setItem(UserService.TOKEN_KEY, token);
     }
@@ -49,6 +54,13 @@ export class UserService {
         return localStorage.getItem(UserService.TOKEN_KEY);
     }
 
+    setGoogleLinked(flag : boolean):void{
+        localStorage.setItem(UserService.GOOGLE_KEY, String(flag));
+    }
+
+    isGoogleLinked() : boolean{
+        return JSON.parse(localStorage.getItem(UserService.GOOGLE_KEY));
+    }
     deleteToken(): void {
         localStorage.removeItem(UserService.TOKEN_KEY);
     }

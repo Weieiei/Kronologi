@@ -34,7 +34,7 @@ import java.time.format.DateTimeFormatter;
 @RequestMapping(value = "/${rest.api.path}/business/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentController extends AbstractController {
 
-    Logger log = LoggerFactory.getLogger(this.getClass());
+   
     private final AppointmentService appointmentService;
     private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
