@@ -19,7 +19,7 @@
                     <mat-checkbox color="primary" [(ngModel)]="emailReminder" name="emailReminder">
                         Send appointment reminders to my email
                     </mat-checkbox>
-                    <mat-hint class="checkbox-hint">
+                    <mat-hint  [ngClass]="darkModeActive ? 'checkbox-hint-dark' : 'checkbox-hint'">
                         Receive reminders for upcoming appointments via email the day before an appointment.
                     </mat-hint>
                 </div>
@@ -28,7 +28,7 @@
                     <mat-checkbox color="primary" [(ngModel)]="textReminder" [checked]="textReminder" name="textReminder" fxFlex>
                         Send appointment reminders to my phone number
                     </mat-checkbox>
-                    <mat-hint class="checkbox-hint">
+                    <mat-hint [ngClass]="darkModeActive ? 'checkbox-hint-dark' : 'checkbox-hint'" >
                         Receive reminders for upcoming appointments via text message the day before an appointment.
                     </mat-hint>
                 </div>

@@ -34,9 +34,19 @@ public class UserDetailsEmailService implements UserDetailsService {
 
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getRole().name()));
-        });
+//        user.getRoles().forEach(role -> {
+//            authorities.add(new SimpleGrantedAuthority(role.getRole().name()));
+//        });
+
+        if(user.getRole().equals("ADMIN")){
+            authorities.add(new SimpleGrantedAuthority("CLIENT"));
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+            authorities.add(new SimpleGrantedAuthority("EMPLOYEE"));
+        }else if(user.getRole().equals("EMPLOYEE")) {
+            authorities.add(new SimpleGrantedAuthority("CLIENT"));
+            authorities.add(new SimpleGrantedAuthority("EMPLOYEE"));
+        }else
+            authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
         return authorities;
 

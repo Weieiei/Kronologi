@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
 import { MatDialog } from '@angular/material';
 import { UserAppointmentDTO } from '../../../../interfaces/appointment/user-appointment-dto';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
     selector: 'app-appointments',
@@ -25,7 +26,7 @@ export class AppointmentsComponent implements OnInit {
         'other': '# Previous Appointments'
     };
 
-    constructor(private dialog: MatDialog, private appointmentService: AppointmentService) {
+    constructor(private dialog: MatDialog, private appointmentService: AppointmentService, private authService : AuthService) {
         this.upcomingAppointments = [];
         this.pastAppointments = [];
     }
@@ -57,4 +58,5 @@ export class AppointmentsComponent implements OnInit {
             err => console.log(err)
         );
     }
+
 }

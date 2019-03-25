@@ -7,6 +7,7 @@ import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.ServiceSerializer;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
+import appointmentscheduler.service.service.ServiceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,37 +22,39 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("${rest.api.path}/services")
+@RequestMapping("${rest.api.path}/business/services")
 @PreAuthorize("hasAuthority('CLIENT')")
 public class ServiceController {
 
     private final ServiceRepository serviceRepository;
+    private final ServiceService serviceService;
     private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
     public ServiceController(ServiceRepository serviceRepository, ObjectMapperFactory objectMapperFactory) {
         this.serviceRepository = serviceRepository;
+        this.serviceService = new ServiceService(serviceRepository);
         this.objectMapperFactory = objectMapperFactory;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findAll() {
-        final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
+    @GetMapping(value = "/{businessId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findAll(@PathVariable long businessId) {
+            final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
 
         try {
-            return ResponseEntity.ok(mapper.writeValueAsString(serviceRepository.findAll()));
+            return ResponseEntity.ok(mapper.writeValueAsString(serviceService.findByBusinessId(businessId)));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findById(@PathVariable long id) {
-        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+    @GetMapping(value = "/{businessId}/{serviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> findById(@PathVariable long businessId, @PathVariable long serviceId) {
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
 
         try {
-            final Service service = serviceRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+            final Service service = serviceService.findByIdAndBusinessId(serviceId, businessId);
             return ResponseEntity.ok(mapper.writeValueAsString(service));
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();

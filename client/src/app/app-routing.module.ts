@@ -24,10 +24,13 @@ import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-us
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
+import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
+import { BusinessViewComponent } from './pages/business-view/business-view.component';
+import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 
 const routes: Routes = [
     // Login
-    { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
+    { path: 'login', component: LoginComponent },
 
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
@@ -41,8 +44,11 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
 
-            // Home page
-            { path: '', component: HomeComponent },
+            // Appointments for business
+            { path: 'business', component: BusinessViewComponent },
+
+            // Home
+            { path: 'home', component: HomeComponent },
 
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
@@ -55,6 +61,7 @@ const routes: Routes = [
                 ]
             },
 
+            {path : 'syncCalendars', component: SyncCalendarsComponent, canActivate: [EmployeeGuard]},
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
@@ -67,6 +74,7 @@ const routes: Routes = [
             { path: 'admin/services', component: AdminServicesComponent },
             { path: 'admin/services/create', component: CreateServiceComponent },
             { path: 'admin/users', component: AdminUsersComponent },
+            { path: 'darn-carousel', component: DarnCarouselComponent },
 
             // User settings
             {

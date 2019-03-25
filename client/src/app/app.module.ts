@@ -54,6 +54,16 @@ import { AdminUsersComponent } from "./pages/dashboard/home/admin-users/admin-us
 import { AssignServicesDialogComponent } from "./pages/dashboard/home/admin-users/assign-services-dialog/assign-services-dialog.component";
 import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/admin-users/change-client-to-employee-dialog/change-client-to-employee-dialog.component";
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
+import { BusinessViewComponent } from './pages/business-view/business-view.component';
+import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
+import { ServicesComponent } from './pages/services/services.component';
+import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
+import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
+import { SwiperModule } from 'angular2-useful-swiper';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/service-selection-grid-list/service-selection-grid-list.component';
 
 @NgModule({
     declarations: [
@@ -100,7 +110,13 @@ import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.
         AddShiftFormComponent,
         CancelDialogComponent,
         ReviewComponent,
-        ReasonDialogComponent
+        ReasonDialogComponent,
+        BusinessViewComponent,
+        CardsUiComponent,
+        ServicesComponent,
+        SyncCalendarsComponent,
+	DarnCarouselComponent,
+	ServiceSelectionGridListComponent,
     ],
     imports: [
         BrowserModule,
@@ -110,7 +126,12 @@ import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.
         MaterialModule,
         FlexLayoutModule,
         HttpClientModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SwiperModule,
+        SlickCarouselModule,
+        MatTabsModule,
+        MatDatepickerModule
+
     ],
     entryComponents: [
         TimePickerDialogComponent,

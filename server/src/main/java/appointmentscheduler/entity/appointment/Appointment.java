@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.appointment;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -10,40 +11,37 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "appointments")
-public class Appointment extends AuditableEntity {
+public class Appointment extends GeneralAppointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
     private User client;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
     private Service service;
 
-    @Column(name = "date")
+    @ManyToOne
+    private Business business;
+
+    private String type;
+
     private LocalDate date;
 
-    @Column(name = "start_time")
     private LocalTime startTime;
 
-    @Column(name = "end_time")
     private LocalTime endTime;
 
-    @Column(name = "notes")
     private String notes;
 
-    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
+
 
     public Appointment() {
     }
@@ -55,6 +53,17 @@ public class Appointment extends AuditableEntity {
         this.date = date;
         this.startTime = startTime;
         this.notes = notes;
+    }
+
+    public Appointment(User client, Employee employee, Service service, LocalDate date, LocalTime startTime,
+                       String notes, Business business) {
+        this.client = client;
+        this.employee = employee;
+        this.service = service;
+        this.date = date;
+        this.startTime = startTime;
+        this.notes = notes;
+        this.business = business;
     }
 
     @Override
@@ -135,6 +144,14 @@ public class Appointment extends AuditableEntity {
 
     public void setStatus(AppointmentStatus status) {
         this.status = status;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 
     @PrePersist
