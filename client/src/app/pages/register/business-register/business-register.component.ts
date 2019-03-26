@@ -112,11 +112,9 @@ export class BusinessRegisterComponent implements OnInit {
         return this.business;
     }
 
-    business_register() {
+    business_register(): void {
         // register business
-        //console.log(this.businessName);
-        //console.log(this.businessDomain);
-        //console.log(this.description);
+
         if (this.password === this.confirmPassword ) {
         console.log(this.newServiceForms.length);
         console.log(this.newServiceForms);
@@ -135,7 +133,7 @@ export class BusinessRegisterComponent implements OnInit {
                 this.businessId = res;
                 const payload_service: ServiceCreateDto = {
                     name: this.service,
-                    duration: this.service_duration,
+                    duration: this.service_duration
                 };
                 console.log(payload_service);
 
@@ -155,7 +153,7 @@ export class BusinessRegisterComponent implements OnInit {
                 const payload_new_service: ServiceCreateDto = {
 
                     name: this.newServiceForms.at(_i).value.new_service_name,
-                    duration: this.newServiceForms.at(_i).value.new_service_duration,
+                    duration: this.newServiceForms.at(_i).value.new_service_duration
                 };
                 this.serviceService.registerService(this.businessId, payload_new_service).subscribe(
                     res => {
@@ -167,8 +165,7 @@ export class BusinessRegisterComponent implements OnInit {
 
             }
 
-                // if (this.password === this.confirmPassword ) {
-
+            
                      const payload: BusinessUserRegisterDTO = {
 
                         firstName: this.firstName,
@@ -196,9 +193,7 @@ export class BusinessRegisterComponent implements OnInit {
                          },
                          err => console.log(err)
                      );
-                    // } else {
-                    //     alert('The passwords don\'t match.');
-                    // }
+
             },
             err => console.log(err)
         );
