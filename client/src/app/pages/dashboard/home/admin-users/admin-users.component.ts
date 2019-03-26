@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { UserService } from "../../../../services/user/user.service";
-import { UserToDisplay } from "../../../../models/user/UserToDisplay";
-import { MatDialog } from "@angular/material";
-import { AssignServicesDialogComponent } from "./assign-services-dialog/assign-services-dialog.component";
-import { ServiceService } from "../../../../services/service/service.service";
-import { Service } from "../../../../models/service/Service";
-import { ChangeClientToEmployeeDialogComponent } from "./change-client-to-employee-dialog/change-client-to-employee-dialog.component";
+import { UserService } from '../../../../services/user/user.service';
+import { UserToDisplay } from '../../../../models/user/UserToDisplay';
+import { MatDialog } from '@angular/material';
+import { AssignServicesDialogComponent } from './assign-services-dialog/assign-services-dialog.component';
+import { ServiceService } from '../../../../services/service/service.service';
+import { Service } from '../../../../models/service/Service';
+import { ChangeClientToEmployeeDialogComponent } from './change-client-to-employee-dialog/change-client-to-employee-dialog.component';
 
 @Component({
     selector: 'app-admin-users',
@@ -46,10 +46,10 @@ export class AdminUsersComponent implements OnInit {
     }
 
     generateServicesDisplayString(servicesDetailed: any[]): string {
-        let outputString: string = "";
+        let outputString = '';
         if (servicesDetailed) {
             servicesDetailed.forEach((service) => {
-                outputString += service.id + ", ";
+                outputString += service.id + ', ';
             });
             outputString = outputString.substring(0, outputString.length - 2)
         }
@@ -57,33 +57,37 @@ export class AdminUsersComponent implements OnInit {
     }
 
     generateRolesDisplayString(rolesDetailed: any[]): string {
-        let outputString: string = "";
+        let outputString = '';
         if (rolesDetailed) {
             rolesDetailed.forEach((individualRole) => {
-                outputString += individualRole.role + ", ";
+                outputString += individualRole.role + ', ';
             });
-            outputString = outputString.substring(0, outputString.length - 2)
+            outputString = outputString.substring(0, outputString.length - 2);
         }
         return outputString;
     }
 
     isEmployee(user: UserToDisplay): boolean {
-        let roleFound: number = 0;
-        user.userRoles.forEach((roles) => {
-            if(roles.role == 'EMPLOYEE') {
-                roleFound++;
-            }
-        });
+        let roleFound = 0;
+        // if (user.userRoles.length > 0) {
+        //     user.userRoles.forEach((roles) => {
+        //         if (roles.role === 'EMPLOYEE') {
+        //             roleFound++;
+        //         }
+        //     });
+        // }
         return roleFound > 0;
     }
 
     isClient(user: UserToDisplay): boolean {
-        let roleFound: number = 0;
-        user.userRoles.forEach((roles) => {
-            if(roles.role == 'CLIENT') {
-                roleFound++;
-            }
-        });
+        let roleFound = 0;
+        // if (user.userRoles.length > 0) {
+        //     user.userRoles.forEach((roles) => {
+        //         if (roles.role === 'CLIENT') {
+        //             roleFound++;
+        //         }
+        //     });
+        // }
         return roleFound > 0;
     }
 
@@ -110,7 +114,6 @@ export class AdminUsersComponent implements OnInit {
     getAllServices(): void {
         this.serviceService.getPlainServices().pipe(
             map(data => {
-                let i = 0;
                 return data.map(a => {
                     return a;
                 });
@@ -119,5 +122,9 @@ export class AdminUsersComponent implements OnInit {
             res => this.services = res,
             err => console.log(err)
         );
+    }
+
+    onSearch(searchTerm: string) {
+        console.log(searchTerm);
     }
 }

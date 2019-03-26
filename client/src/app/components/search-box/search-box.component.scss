@@ -1,0 +1,10 @@
+app-search-input {
+    padding: 0 8px;
+}
+.search-input-field {
+    ::ng-deep {
+        .mat-form-field-wrapper {
+            width: 215px;
+        }
+    }
+}
