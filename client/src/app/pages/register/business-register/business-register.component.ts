@@ -137,7 +137,7 @@ export class BusinessRegisterComponent implements OnInit {
                     duration: this.service_duration,
                 };
                 console.log(payload_service);
-                
+
                 console.log(this.businessId);
                 this.serviceService.registerService(this.businessId, payload_service).subscribe(
                      res => {
@@ -146,26 +146,25 @@ export class BusinessRegisterComponent implements OnInit {
                      err => console.log(err)
                  );
 
+                console.log(this.newServiceForms.length + 'length');
+                for( var _i = 0; _i < this.newServiceForms.length; _i++) {
+                    console.log(this.newServiceForms.at(_i).value.new_service_name);
 
-        for( var _i = 0; _i < this.newServiceForms.length; _i++) {
-     // var service = this.newServiceForms.at(_i).value;
-    //       service.new_service_name
-            console.log(this.newServiceForms.at(_i).value);
-            const payload_new_service: ServiceCreateDto = {
+                    console.log(this.newServiceForms.at(_i).value);
+                    const payload_new_service: ServiceCreateDto = {
 
-                name: this.newServiceForms.at(_i).value,
-                duration: this.service_duration,
-            };
-            this.serviceService.registerService(this.businessId, payload_new_service).subscribe(
-                res => {
-                 console.log(res);
-             },
-                err => console.log(err)
-            );
+                        name: this.newServiceForms.at(_i).value.new_service_name,
+                        duration: this.newServiceForms.at(_i).value.new_service_duration,
+                    };
+                    this.serviceService.registerService(this.businessId, payload_new_service).subscribe(
+                        res => {
+                         console.log(res);
+                     },
+                        err => console.log(err)
+                    );
 
 
-        }
-
+                }
 
                  if (this.password === this.confirmPassword ) {
 
