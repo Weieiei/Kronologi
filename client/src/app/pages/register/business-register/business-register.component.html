@@ -19,11 +19,18 @@
                 </mat-form-field>
             </div>
 
-            <mat-form-field appearance="outline">
+
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+            <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Email</mat-label>
                 <input matInput [(ngModel)]="email" [ngModelOptions]="{standalone: true}" type="email" name="email" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$" required>
                 <mat-hint>E.g.: johndoe@gmail.com</mat-hint>
             </mat-form-field>
+            </div>
+
+
+
+
 
             <div fxLayout="column" class="passwords-container">
                 <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">

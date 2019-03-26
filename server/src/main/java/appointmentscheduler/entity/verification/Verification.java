@@ -26,9 +26,9 @@ public class Verification extends AuditableEntity {
     @Column(name = "hash")
     private String hash;
 
-    @ManyToOne
-    @JoinColumn(name = "business_id", nullable = true)
-    private Business business;
+//    @ManyToOne
+//    @JoinColumn(name = "business_id", nullable = true)
+//    private Business business;
 
     public Verification() { }
 
@@ -36,10 +36,10 @@ public class Verification extends AuditableEntity {
         this.user = user;
     }
 
-    public Verification(User user, Business business) {
-        this.user = user;
-        this.business = business;
-    }
+//    public Verification(User user) {
+//        this.user = user;
+//       // this.business = business;
+//    }
 
     @PostPersist
     public void afterInsert()  {
@@ -83,11 +83,11 @@ public class Verification extends AuditableEntity {
 
     public void setHash(String date) { this.hash = date; }
 
-    public Business getBusiness() {
-        return business;
-    }
-
-    public void setBusiness(Business business) {
-        this.business = business;
-    }
+//    public Business getBusiness() {
+//        return business;
+//    }
+//
+//    public void setBusiness(Business business) {
+//        this.business = business;
+//    }
 }

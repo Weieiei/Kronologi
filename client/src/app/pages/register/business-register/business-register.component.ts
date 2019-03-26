@@ -117,6 +117,7 @@ export class BusinessRegisterComponent implements OnInit {
         //console.log(this.businessName);
         //console.log(this.businessDomain);
         //console.log(this.description);
+        if (this.password === this.confirmPassword ) {
         console.log(this.newServiceForms.length);
         console.log(this.newServiceForms);
         console.log(this.service_duration);
@@ -146,27 +147,27 @@ export class BusinessRegisterComponent implements OnInit {
                      err => console.log(err)
                  );
 
-                console.log(this.newServiceForms.length + 'length');
-                for( var _i = 0; _i < this.newServiceForms.length; _i++) {
-                    console.log(this.newServiceForms.at(_i).value.new_service_name);
+            console.log(this.newServiceForms.length + 'length');
+            for( var _i = 0; _i < this.newServiceForms.length; _i++) {
+                console.log(this.newServiceForms.at(_i).value.new_service_name);
 
-                    console.log(this.newServiceForms.at(_i).value);
-                    const payload_new_service: ServiceCreateDto = {
+                console.log(this.newServiceForms.at(_i).value);
+                const payload_new_service: ServiceCreateDto = {
 
-                        name: this.newServiceForms.at(_i).value.new_service_name,
-                        duration: this.newServiceForms.at(_i).value.new_service_duration,
-                    };
-                    this.serviceService.registerService(this.businessId, payload_new_service).subscribe(
-                        res => {
-                         console.log(res);
-                     },
-                        err => console.log(err)
-                    );
+                    name: this.newServiceForms.at(_i).value.new_service_name,
+                    duration: this.newServiceForms.at(_i).value.new_service_duration,
+                };
+                this.serviceService.registerService(this.businessId, payload_new_service).subscribe(
+                    res => {
+                     console.log(res);
+                 },
+                    err => console.log(err)
+                );
 
 
-                }
+            }
 
-                 if (this.password === this.confirmPassword ) {
+                // if (this.password === this.confirmPassword ) {
 
                      const payload: BusinessUserRegisterDTO = {
 
@@ -195,12 +196,15 @@ export class BusinessRegisterComponent implements OnInit {
                          },
                          err => console.log(err)
                      );
-                    } else {
-                        alert('The passwords don\'t match.');
-                    }
+                    // } else {
+                    //     alert('The passwords don\'t match.');
+                    // }
             },
             err => console.log(err)
         );
+     } else {
+         alert('The passwords don\'t match.');
+     }
 
     }
     togglePasswordVisibility() {
