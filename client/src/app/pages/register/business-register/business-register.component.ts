@@ -79,12 +79,13 @@ export class BusinessRegisterComponent implements OnInit {
         this.secondFormGroup = this._formBuilder.group({
           secondCtrl: ['', Validators.required]
         });
+        // this.thirdFormGroup = this._formBuilder.group({
+        //     thirdCtrl: ['', Validators.required]
+        //   });
         this.thirdFormGroup = this._formBuilder.group({
-            thirdCtrl: ['', Validators.required]
-          });
-        this.thirdFormGroup = this._formBuilder.group({
-            service: '',
-            service_duration: '',
+           // service: '',
+           // service_duration: '',
+           thirdCtrl: ['', Validators.required],
             new_services: this._formBuilder.array([])
           });
       }
@@ -113,48 +114,57 @@ export class BusinessRegisterComponent implements OnInit {
 
     business_register() {
         // register business
-        console.log(this.businessName);
-        console.log(this.businessDomain);
-        console.log(this.description);
+        //console.log(this.businessName);
+        //console.log(this.businessDomain);
+        //console.log(this.description);
+        console.log(this.newServiceForms.length);
+        console.log(this.newServiceForms);
+        console.log(this.service_duration);
+        console.log(this.service_duration +'service duration');
+        console.log('service duration');
         const payload_business: BusinessRegisterDTO = {
             name: this.businessName,
             domain: this.businessDomain,
             description: this.description
         };
+
         this.businessService.createBusiness(payload_business).subscribe(
             res => {
                 console.log(res);
                 this.businessId = res;
-
                 const payload_service: ServiceCreateDto = {
-
                     name: this.service,
                     duration: this.service_duration,
-                     };
-                 this.serviceService.registerService(this.businessId, payload_service).subscribe(
+                };
+                console.log(payload_service);
+                
+                console.log(this.businessId);
+                this.serviceService.registerService(this.businessId, payload_service).subscribe(
                      res => {
                         console.log(res);
                      },
                      err => console.log(err)
                  );
 
-//for (const item of this.newServiceForms) {
-    for( var _i = 0; _i < this.newServiceForms.length; _i++) {
-        const payload_new_service: ServiceCreateDto = {
+
+        for( var _i = 0; _i < this.newServiceForms.length; _i++) {
+     // var service = this.newServiceForms.at(_i).value;
+    //       service.new_service_name
+            console.log(this.newServiceForms.at(_i).value);
+            const payload_new_service: ServiceCreateDto = {
+
+                name: this.newServiceForms.at(_i).value,
+                duration: this.service_duration,
+            };
+            this.serviceService.registerService(this.businessId, payload_new_service).subscribe(
+                res => {
+                 console.log(res);
+             },
+                err => console.log(err)
+            );
 
 
-        name: this.newServiceForms.at(_i),
-        duration: this.service_duration,
-         };
-     this.serviceService.registerService(this.businessId, payload_service).subscribe(
-         res => {
-            console.log(res);
-         },
-         err => console.log(err)
-     );
-
-
-}
+        }
 
 
                  if (this.password === this.confirmPassword ) {
