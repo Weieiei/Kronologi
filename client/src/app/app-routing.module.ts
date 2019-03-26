@@ -29,8 +29,6 @@ import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
-import { BusinessViewComponent } from './pages/business-view/business-view.component';
-import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 
 const routes: Routes = [
     // Login
