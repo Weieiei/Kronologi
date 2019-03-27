@@ -2,8 +2,11 @@
     <!--<div class="main-container__bg" [ngClass]="{'main-container__bg-dark': darkModeActive}"></div>-->
 
 
-  <app-cards-ui class="cards-ui" [ngClass]="{'cards-ui-dark': darkModeActive}" businessName="business place holder" buttonName1="My Appointmenets" buttonName2="Book Appointment" 
-  
-  (button1FunctionMapping)="getAllAppointmentsForUserForBusiness(1)"  (button2FunctionMapping)="openModalForService(1)">  </app-cards-ui>
-
+ <div fxFlex="row" fxLayoutAlign="center">
+    <div gdColumns="repeat(auto-fill, 344px)" gdGap="16px" gdAlignRows="space-evenly" fxFlex.gt-sm="90" fxFlex.lt-md="100">
+      <app-cards-ui *ngFor="let business of businesses" class="cards-ui" [ngClass]="{'cards-ui-dark': darkModeActive}" businessName="business place holder" buttonName1="My Appointmenets" buttonName2="Book Appointment" 
+      
+      (button1FunctionMapping)="getAllAppointmentsForUserForBusiness(1)"  (button2FunctionMapping)="openModalForService(1)">  </app-cards-ui>
+    </div>  
+  </div>
 </div>

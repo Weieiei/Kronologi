@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output  } from '@angular/core';
 import {ThemeService} from "../../core/theme/theme.service";
+import { BusinessDTO } from 'src/app/interfaces/business/business-dto';
 
 @Component({
   selector: 'app-cards-ui',
@@ -9,11 +10,14 @@ import {ThemeService} from "../../core/theme/theme.service";
 export class CardsUiComponent implements OnInit {
 
   @Input() public businessName : String;
+  @Input() business: BusinessDTO;
   @Input() public buttonName1: String;
   @Input() public buttonName2: String;
   @Input() public image: String;
   @Output() public button1FunctionMapping : EventEmitter<any> = new EventEmitter<any>();
   @Output() public button2FunctionMapping : EventEmitter<any> = new EventEmitter<any>();
+
+
   constructor(public themeService: ThemeService) { }
     darkModeActive: boolean;
   ngOnInit() {

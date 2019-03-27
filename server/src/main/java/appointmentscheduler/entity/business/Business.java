@@ -21,6 +21,7 @@ public class Business extends AuditableEntity {
     @Column(name = "description")
     private String description;
 
+    @
     public Business() {
     }
 

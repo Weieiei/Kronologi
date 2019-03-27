@@ -26,10 +26,6 @@ export class UserService {
         return this.http.post<any>(['api', 'user', 'register'].join('/'), payload);
     }
 
-    businessRegister(businessId: number, payload: BusinessUserRegisterDTO): Observable<any> {
-        return this.http.post<any>(['api', 'user', businessId.toString(), 'business_register'].join('/'), payload);
-    }
-
     login(payload: UserLoginDTO): Observable<any> {
         return this.http.post(['api', 'user', 'login'].join('/'), payload);
     }

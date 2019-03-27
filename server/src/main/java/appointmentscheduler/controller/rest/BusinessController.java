@@ -1,7 +1,10 @@
 package appointmentscheduler.controller.rest;
 
 
+import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.dto.business.BusinessDTO;
+import appointmentscheduler.dto.service.ServiceCreateDTO;
+import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.converters.business.BusinessDTOToBusiness;
@@ -26,6 +29,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.mail.MessagingException;
 import java.util.HashMap;
 import java.util.Optional;
@@ -68,17 +73,12 @@ public class BusinessController extends AbstractController {
 //    }
 
 
+    @LogREST
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/")
     public ResponseEntity<String> findAll() {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Business.class, new BusinessSerializer());
-
-        try {
-            return ResponseEntity.ok(mapper.writeValueAsString(businessRepository.findAll()));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return getJson(mapper, businessRepository.findAll());
     }
 
     @GetMapping("/{id}")
@@ -114,23 +114,26 @@ public class BusinessController extends AbstractController {
     }
     */
   @PostMapping("/business")
-  public long add(@RequestBody BusinessDTO businessDTO) {
+  public long add(@RequestPart("file") MultipartFile aFile,  @RequestPart("business") BusinessDTO businessDTO,
+                     @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) {
+
       Business business = businessConverter.convert(businessDTO);
       long id =businessService.add(business);
-      Map<String, String> map = new HashMap<>();
-  if( id != 0) {
+          Map<String, String> map = new HashMap<>();
+      if( id != 0) {
 
-      map.put("message", "Successfully added business");
-      Map<String, String> message = map;
+          map.put("message", "Successfully added business");
+          Map<String, String> message = map;
 
-      ResponseEntity.ok(message);
-      return id;
-  }
-  else{
-      map.put("message", "Exception throws");
-      Map<String, String> message = map;
-      ResponseEntity.ok(message);
-      return 0;
-  }
+
+          ResponseEntity.ok(message);
+          return id;
+      }
+      else{
+          map.put("message", "Exception throws");
+          Map<String, String> message = map;
+          ResponseEntity.ok(message);
+          return 0;
+      }
   }
 }

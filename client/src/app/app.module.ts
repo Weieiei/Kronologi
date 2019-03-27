@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-
+import { CovalentFileModule  } from '@covalent/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -116,6 +116,7 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
         SyncCalendarsComponent
     ],
     imports: [
+        CovalentFileModule,
         BrowserModule,
         AppRoutingModule,
         FormsModule,
@@ -143,6 +144,7 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
             multi: true
         }
     ],
+    
     bootstrap: [AppComponent]
 })
 export class AppModule {

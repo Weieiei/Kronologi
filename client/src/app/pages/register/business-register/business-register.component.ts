@@ -12,7 +12,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
-
 export interface Domain {
     value: string;
   }
@@ -22,7 +21,9 @@ export interface Domain {
   styleUrls: ['./business-register.component.scss']
 })
 export class BusinessRegisterComponent implements OnInit {
-
+    fileSelectMsg: string = 'No file selected yet.';
+    fileUploadMsg: string = 'No file uploaded yet.';
+    disabled: boolean = false;
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
     thirdFormGroup: FormGroup;
@@ -83,18 +84,7 @@ export class BusinessRegisterComponent implements OnInit {
           });
       }
 
-    onFileSelected(event) {
-        this.selectedFile = <File> event.target.files[0];
-    }
-    onUpload()  {
-        const  fd = new FormData();
-        fd.append('image', this.selectedFile, this.selectedFile.name );
-        this.http.post('https://url', fd )
-                .subscribe(
-                    response => {
-                    console.log(response);
-                });
-    }
+    
 
     getBusinessById(businessId: Number): BusinessDTO {
         this.businessService.getBusinessById(this.businessId).subscribe(
@@ -115,70 +105,69 @@ export class BusinessRegisterComponent implements OnInit {
             domain: this.businessDomain,
             description: this.description
         };
-        this.businessService.createBusiness(payload_business).subscribe(
+
+        const payload_service: ServiceCreateDto = {
+
+          name: this.service,
+          duration: this.service_duration,
+           };
+        
+        let payload: BusinessUserRegisterDTO = null;
+        if (this.password === this.confirmPassword ) {
+           payload = {
+              firstName: this.firstName,
+              lastName: this.lastName,
+              email: this.email,
+              password: this.password,
+              phoneNumber: null
+            };
+
+            if ( this.registerPhone) {
+                payload.phoneNumber = {
+                   countryCode: this.selectedCountry['dialCode'],
+                   areaCode: this.areaCode,
+                   number: this.number
+
+                };
+            }
+
+            this.googleAnalytics.trackValues('formSubmit', 'register');
+        this.businessService.createBusiness(payload_business,payload_service,payload,this.selectedFile).subscribe(
             res => {
                 console.log(res);
-                this.businessId = res;
-
-                const payload_service: ServiceCreateDto = {
-
-                    name: this.service,
-                    duration: this.service_duration,
-                   // businessId: this.businessId
-                     };
-                 this.serviceService.registerService(this.businessId, payload_service).subscribe(
-                     res => {
-                        console.log(res);
-                     },
-                     err => console.log(err)
-                 );
-         // TODO: when register user, we need to add business id, also need to link service to the user
-                 if (this.password === this.confirmPassword ) {
-         console.log(this.firstName);
-                     const payload: BusinessUserRegisterDTO = {
-
-                        firstName: this.firstName,
-                        lastName: this.lastName,
-                        email: this.email,
-                        password: this.password,
-                        phoneNumber: null
-                      //  businessId: this.businessId
-                     };
-
-                     if ( this.registerPhone) {
-                         payload.phoneNumber = {
-                            countryCode: this.selectedCountry['dialCode'],
-                            areaCode: this.areaCode,
-                            number: this.number
-
-                         };
-                     }
-
-                     this.googleAnalytics.trackValues('formSubmit', 'register');
-
-                     this.userService.businessRegister(this.businessId, payload).subscribe(
-                         res => {
-                             console.log(res);
-                             this.router.navigate(['login']);
-                         },
-                         err => console.log(err)
-                     );
-                    } else {
-                        alert('The passwords don\'t match.');
-                    }
             },
             err => console.log(err)
         );
 
     }
-    togglePasswordVisibility() {
+  }
+  
+  togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;
     }
 
-    selectCountry(country: Object) {
+  selectCountry(country: Object) {
         this.selectedCountry = country;
-    }
+  }
 
+
+  selectEvent(file: File): void {
+    this.selectedFile = file;
+    this.fileSelectMsg = file.name;
+  }
+
+  uploadEvent(file: File): void {
+    this.fileUploadMsg = file.name;
+  }
+
+  cancelEvent(): void {
+    this.fileSelectMsg = 'No file selected yet.';
+    this.fileUploadMsg = 'No file uploaded yet.';
+  }
+
+  toggleDisabled(): void {
+    this.disabled = !this.disabled;
+  }
 }
 
 /*

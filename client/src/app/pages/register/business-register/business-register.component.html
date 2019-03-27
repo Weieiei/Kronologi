@@ -122,7 +122,20 @@
                         </mat-form-field>
 
             </div>
-
+            
+            <p>Selected Picture: {{fileSelectMsg}}</p>
+            <td-file-upload #singleFileUpload [(ngModel)]="files" (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
+                accept=".jpeg,.jpg,.png,.svg">
+              <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
+              <ng-template td-file-input-label>
+                <mat-icon>attach_file</mat-icon>
+                <span>
+                  Choose a file...
+                </span>
+                  <span [hidden]="!singleFileUpload?.required">*</span>
+              </ng-template>
+            </td-file-upload>
+            <button mat-button color="primary" (click)="toggleDisabled()">Toggle Disable</button>
 
 
             <div>
