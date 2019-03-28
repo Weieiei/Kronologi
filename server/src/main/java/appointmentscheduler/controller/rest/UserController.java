@@ -13,6 +13,7 @@ import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.entity.verification.Verification;
@@ -93,7 +94,7 @@ public class UserController extends AbstractController {
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
         try {
-            Map<String, Object> tokenMap = userService.register(userRegisterDTO);
+            Map<String, Object> tokenMap = userService.register(userRegisterDTO, RoleEnum.CLIENT);
             Verification verification = (Verification) tokenMap.get("verification");
             emailService.sendRegistrationEmail(userRegisterDTO.getEmail(),verification.getHash(), true);
             return ResponseEntity.ok(tokenMap);

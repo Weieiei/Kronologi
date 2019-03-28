@@ -1,5 +1,7 @@
 package appointmentscheduler.dto.business;
 
+import appointmentscheduler.entity.user.User;
+
 public class BusinessDTO {
 
     private String name;
@@ -11,6 +13,7 @@ public class BusinessDTO {
         this.description = description;
         this.domain = domain;
     }
+
     public String getName() {
         return name;
     }

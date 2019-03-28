@@ -28,6 +28,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import javax.management.relation.Role;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ public class UserService {
         this.phoneNumberRepository = phoneNumberRepository;
     }
 
-    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+    public Map<String, Object> register(UserRegisterDTO userRegisterDTO, RoleEnum role) throws IOException, MessagingException, NoSuchAlgorithmException {
 
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
@@ -88,7 +89,11 @@ public class UserService {
             phoneNumber.setUser(user);
 
         }
-    user.setRole(RoleEnum.CLIENT.toString());
+        if(role.toString().equals(RoleEnum.ADMIN.toString())){
+            user.setRole(RoleEnum.ADMIN.toString());
+        }else{
+            user.setRole(RoleEnum.CLIENT.toString());
+        }
 
         User savedUser = userRepository.save(user);
 

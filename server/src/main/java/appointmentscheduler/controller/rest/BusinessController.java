@@ -2,20 +2,28 @@ package appointmentscheduler.controller.rest;
 
 
 import appointmentscheduler.annotation.LogREST;
+import appointmentscheduler.converters.service.ServiceDTOToService;
 import appointmentscheduler.dto.business.BusinessDTO;
 import appointmentscheduler.dto.service.ServiceCreateDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.converters.business.BusinessDTOToBusiness;
+import appointmentscheduler.entity.file.File;
+import appointmentscheduler.entity.role.RoleEnum;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.serializer.BusinessSerializer;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.business.BusinessService;
+import appointmentscheduler.service.email.EmailService;
+import appointmentscheduler.service.file.FileStorageService;
+import appointmentscheduler.service.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
@@ -23,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +41,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Map;
@@ -45,16 +56,24 @@ public class BusinessController extends AbstractController {
     private final BusinessService businessService;
     private final ModelMapper modelMapper;
     private final BusinessDTOToBusiness businessConverter;
-
+    private ServiceDTOToService serviceConverter;
+    private UserService userService;
+    private EmailService emailService;
+    private FileStorageService fileStorageService;
     @Autowired
     public BusinessController(BusinessService businessService, BusinessRepository businessRepository,
-                              ObjectMapperFactory objectMapperFactory, ModelMapper modelMapper,BusinessDTOToBusiness businessConverter) {
+                              ObjectMapperFactory objectMapperFactory, ModelMapper modelMapper,BusinessDTOToBusiness businessConverter,
+                              ServiceDTOToService serviceConverter, UserService userService, EmailService emailService, FileStorageService fileStorageService) {
 
         this.businessService = businessService;
         this.businessRepository = businessRepository;
         this.objectMapperFactory = objectMapperFactory;
         this.modelMapper = modelMapper;
         this.businessConverter = businessConverter;
+        this.serviceConverter = serviceConverter;
+        this.userService = userService;
+        this.emailService = emailService;
+        this.fileStorageService = fileStorageService;
     }
 //TODO figure out how the buisness id will be handled
 //    private Business mapBusinessDTOToBusiness(BusinessDTO businessDTO){
@@ -113,27 +132,29 @@ public class BusinessController extends AbstractController {
         return ResponseEntity.ok(message);
     }
     */
+  @LogREST
   @PostMapping("/business")
-  public long add(@RequestPart("file") MultipartFile aFile,  @RequestPart("business") BusinessDTO businessDTO,
-                     @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) {
+  public ResponseEntity<Map<String, Object>>  add(@RequestPart("file") MultipartFile aFile,  @RequestPart("business") BusinessDTO businessDTO,
+                     @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+      try {
+          Map<String, Object> tokenMap = userService.register(userRegisterDTO, RoleEnum.ADMIN);
+          Verification verification = (Verification) tokenMap.get("verification");
+          emailService.sendRegistrationEmail(userRegisterDTO.getEmail(), verification.getHash(), true);
 
-      Business business = businessConverter.convert(businessDTO);
-      long id =businessService.add(business);
-          Map<String, String> map = new HashMap<>();
-      if( id != 0) {
+          //create business and save it.
+          Business business = businessConverter.convert(businessDTO);
+          business.setOwner(verification.getUser());
+          long businessId = businessService.add(business);
 
-          map.put("message", "Successfully added business");
-          Map<String, String> message = map;
+          //associate service to business
+          Service newService = serviceConverter.convert(service);
+          newService.setBusiness(business);
 
-
-          ResponseEntity.ok(message);
-          return id;
-      }
-      else{
-          map.put("message", "Exception throws");
-          Map<String, String> message = map;
-          ResponseEntity.ok(message);
-          return 0;
+          fileStorageService.saveFile(aFile, businessId);
+          return ResponseEntity.ok(tokenMap);
+      } catch (BadCredentialsException e) {
+          e.printStackTrace();
+          return ResponseEntity.status(HttpStatus.CONFLICT).build();
       }
   }
 }

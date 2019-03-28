@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.business;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.user.User;
 
 import javax.persistence.*;
 
@@ -21,7 +22,10 @@ public class Business extends AuditableEntity {
     @Column(name = "description")
     private String description;
 
-    @
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User business_owner;
+
     public Business() {
     }
 
@@ -62,4 +66,8 @@ public class Business extends AuditableEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public User getOwner(){return this.business_owner;}
+
+    public void setOwner(User user){this.business_owner = user;}
 }

@@ -4,4 +4,5 @@ export interface BusinessDTO {
     name: string;
     domain: string;
     description: string;
+    image : string;
 }

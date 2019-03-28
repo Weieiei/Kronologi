@@ -2,7 +2,9 @@ package appointmentscheduler.service.business;
 
 import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.exception.BusinessAlreadyExistException;
 import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.exception.UserAlreadyExistsException;
 import appointmentscheduler.repository.AppointmentRepository;
 import appointmentscheduler.repository.BusinessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +33,14 @@ public class BusinessService {
     }
     */
     public long add(Business business) {
-        try{
-            business = businessRepository.save(business);
-            long id = business.getId();
-            return id;
+
+        if(businessRepository.findByName(business.getName()).orElse(null) != null){
+            throw new BusinessAlreadyExistException(String.format("A user with the email %s already exists.", business.getName()));
         }
-        catch (Exception e) {
-            return e.hashCode();
-        }
+
+        business = businessRepository.save(business);
+        long id = business.getId();
+        return id;
     }
 
 

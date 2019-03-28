@@ -1,9 +1,13 @@
 <section class="cards-ui"  [ngClass]="{'weather__card-dark': darkModeActive}">
   <div class="body__container" class = 'image-cropper'>
+    <img [src] = "url"/>
+  </div>
     <span class="city-name__text">{{ businessName }}</span>
-    <div>
-        <button mat-button  class="button__card" (click)="button1Function()"> {{ buttonName1 }}</button>
-        <button mat-button class="button__card" (click)="button2Function()"> {{ buttonName2 }}</button>
-    </div>  
-    </div>
+  <div>
+        {{ businessDescription }}
+  </div>
+  <div>
+      <button mat-button  class="button__card" (click)="button1Function()"> {{ buttonName1 }}</button>
+      <button mat-button class="button__card" (click)="button2Function()"> {{ buttonName2 }}</button>
+  </div>  
 </section>
