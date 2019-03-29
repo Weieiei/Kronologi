@@ -7,6 +7,7 @@ import { ServiceDTO } from '../../interfaces/service/service-dto';
 import { BusinessRegisterDTO } from '../../interfaces/business/business-register-dto';
 import { ServiceCreateDto } from 'src/app/interfaces/service/service-create-dto';
 import { BusinessUserRegisterDTO } from 'src/app/interfaces/user/business-user-register-dto';
+import { BusinessHoursDTO } from 'src/app/interfaces/business/businessHours-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,7 @@ export class BusinessService {
     constructor(private http: HttpClient) {
     }
 
-    public createBusiness(business: BusinessRegisterDTO, service : ServiceCreateDto, newUser : BusinessUserRegisterDTO, avatar : File): Observable<boolean> {
+    public createBusiness(business: BusinessRegisterDTO, service : ServiceCreateDto, newUser : BusinessUserRegisterDTO, businessHoursDTO: BusinessHoursDTO[], avatar : File): Observable<boolean> {
         let formData = new FormData();
 
         formData.append('file',avatar);
@@ -30,6 +31,11 @@ export class BusinessService {
             }));
 
         formData.append('user', new Blob([JSON.stringify(newUser)],
+            {
+                type: "application/json",
+            }));
+        
+        formData.append('businessHour', new Blob([JSON.stringify(businessHoursDTO)],
             {
                 type: "application/json",
             }));

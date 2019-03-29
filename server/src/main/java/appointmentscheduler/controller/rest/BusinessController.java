@@ -2,13 +2,16 @@ package appointmentscheduler.controller.rest;
 
 
 import appointmentscheduler.annotation.LogREST;
+import appointmentscheduler.converters.business.BusinessHoursDTOToBusinessHours;
 import appointmentscheduler.converters.service.ServiceDTOToService;
 import appointmentscheduler.dto.business.BusinessDTO;
+import appointmentscheduler.dto.business.BusinessHoursDTO;
 import appointmentscheduler.dto.service.ServiceCreateDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.converters.business.BusinessDTOToBusiness;
+import appointmentscheduler.entity.business.BusinessHours;
 import appointmentscheduler.entity.file.File;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
@@ -43,9 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("${rest.api.path}/businesses")
@@ -60,10 +61,11 @@ public class BusinessController extends AbstractController {
     private UserService userService;
     private EmailService emailService;
     private FileStorageService fileStorageService;
+    private BusinessHoursDTOToBusinessHours businessHoursConverter;
     @Autowired
     public BusinessController(BusinessService businessService, BusinessRepository businessRepository,
                               ObjectMapperFactory objectMapperFactory, ModelMapper modelMapper,BusinessDTOToBusiness businessConverter,
-                              ServiceDTOToService serviceConverter, UserService userService, EmailService emailService, FileStorageService fileStorageService) {
+                              ServiceDTOToService serviceConverter, UserService userService, EmailService emailService, FileStorageService fileStorageService,BusinessHoursDTOToBusinessHours businessHoursConverter) {
 
         this.businessService = businessService;
         this.businessRepository = businessRepository;
@@ -71,6 +73,7 @@ public class BusinessController extends AbstractController {
         this.modelMapper = modelMapper;
         this.businessConverter = businessConverter;
         this.serviceConverter = serviceConverter;
+        this.businessHoursConverter = businessHoursConverter;
         this.userService = userService;
         this.emailService = emailService;
         this.fileStorageService = fileStorageService;
@@ -134,8 +137,8 @@ public class BusinessController extends AbstractController {
     */
   @LogREST
   @PostMapping("/business")
-  public ResponseEntity<Map<String, Object>>  add(@RequestPart("file") MultipartFile aFile,  @RequestPart("business") BusinessDTO businessDTO,
-                     @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+  public ResponseEntity<Map<String, Object>>  add(@RequestPart("file") MultipartFile aFile, @RequestPart("business") BusinessDTO businessDTO,
+                                                  @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
       try {
           Map<String, Object> tokenMap = userService.register(userRegisterDTO, RoleEnum.ADMIN);
           Verification verification = (Verification) tokenMap.get("verification");
@@ -146,6 +149,16 @@ public class BusinessController extends AbstractController {
           business.setOwner(verification.getUser());
           long businessId = businessService.add(business);
 
+
+          //businessHours
+          List<BusinessHours> businessHours = new ArrayList<>();
+          for(BusinessHoursDTO bhDTO : businessHoursDTO){
+              BusinessHours businessHour = businessHoursConverter.convert(bhDTO);
+              businessHour.setBusiness(business);
+              businessHours.add(businessHour);
+          }
+
+          businessService.addAll(businessHours);
           //associate service to business
           Service newService = serviceConverter.convert(service);
           newService.setBusiness(business);

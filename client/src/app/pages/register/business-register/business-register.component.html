@@ -95,9 +95,9 @@
     <form [formGroup]="secondFormGroup">
 
       <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-                    <p>Select a domain</p>
+                    <p>Select the sector your business services</p>
                     <mat-form-field>
-                        <mat-select placeholder="Domain type" [(ngModel)]="businessDomain" [ngModelOptions]="{standalone: true}">
+                        <mat-select placeholder="Sector" [(ngModel)]="businessDomain" [ngModelOptions]="{standalone: true}">
                         <mat-option *ngFor="let domain of domains" [value]="domain.value">
       {{domain.value}}
     </mat-option>
@@ -123,6 +123,43 @@
 
             </div>
             
+            <div>
+                    <p>Select the hours which your business operates:</p>
+            </div>
+            <div fxLayout="row">
+                    <div fxFlex="17">
+                            <div style="padding: 1.4rem" *ngFor="let day of daysOfWeek">
+                                   {{ day }} :
+                            </div>
+                        </div>
+                    <div fxFlex="30">
+                        <div *ngFor="let day of daysOfWeek">
+                                <mat-form-field>
+                                        <mat-label>Start</mat-label>
+                                        <mat-select [(ngModel)]="selectedValue"  name="food" >
+                                        <mat-option *ngFor="let time of possibleBusinessHours"  (onSelectionChange)="saveStartTime(day,time)" [value]="time">
+                                            {{time}}
+                                        </mat-option>
+                                        </mat-select>
+                                </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxFlex="30">
+                        <div *ngFor="let day of daysOfWeek">
+                                <mat-form-field>
+                                        <mat-label>End</mat-label>
+                                        <mat-select [(ngModel)]="selectedValue" name="food">
+                                        <mat-option *ngFor="let time of possibleBusinessHours" (onSelectionChange)="saveEndTime(day,time)" [disabled]="isTimeLower(day,time)" [value]="time">
+                                            {{time}}
+                                        </mat-option>
+                                        </mat-select>
+                                </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+               
+
+
             <p>Selected Picture: {{fileSelectMsg}}</p>
             <td-file-upload #singleFileUpload [(ngModel)]="files" (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
                 accept=".jpeg,.jpg,.png,.svg">
@@ -135,7 +172,6 @@
                   <span [hidden]="!singleFileUpload?.required">*</span>
               </ng-template>
             </td-file-upload>
-            <button mat-button color="primary" (click)="toggleDisabled()">Toggle Disable</button>
 
 
             <div>

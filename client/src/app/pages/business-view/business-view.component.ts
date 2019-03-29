@@ -24,8 +24,6 @@ export class BusinessViewComponent implements OnInit {
       this.themeService.darkModeState.subscribe(value => {
           this.darkModeActive = value;
       })
-      console.log("bussineses");
-      console.log(this.businesses);
   }
 
   getAllAppointmentsForUserForBusiness(businessId: number){
@@ -42,7 +40,6 @@ export class BusinessViewComponent implements OnInit {
     getAllBusiness(): void{
         this.businessService.getAllBusinesses().subscribe(
           result =>{
-            console.log(result)
             for(const business of result){
                 this.businesses.push(business)
             }

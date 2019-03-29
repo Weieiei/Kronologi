@@ -8,7 +8,7 @@ Card Styling
   box-shadow: 0 0 2rem rgba(0, 0, 255, 0.1);
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   padding: 2rem;
   margin: 2rem;
   width: 20rem;
@@ -37,6 +37,7 @@ Card Styling
     font-size: 1.4rem;
     letter-spacing: 0.1rem;
     margin-bottom: 1rem;
+    padding-top: 3rem;
   }
   
   .body__container {

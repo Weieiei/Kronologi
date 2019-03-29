@@ -4,6 +4,7 @@ import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.user.User;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "business")
@@ -25,6 +26,9 @@ public class Business extends AuditableEntity {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User business_owner;
+
+    @OneToMany(mappedBy = "business",  fetch=FetchType.EAGER)
+    private Set<BusinessHours> businessHours;
 
     public Business() {
     }
@@ -70,4 +74,8 @@ public class Business extends AuditableEntity {
     public User getOwner(){return this.business_owner;}
 
     public void setOwner(User user){this.business_owner = user;}
+
+    public void setBusinessHours(Set<BusinessHours> businessHours){this.businessHours = businessHours;}
+
+    public Set<BusinessHours> getBusinessHours(){return this.businessHours;}
 }
