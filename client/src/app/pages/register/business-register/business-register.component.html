@@ -154,24 +154,24 @@
 
                 <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Add the service duration(in minutes)</mat-label>
-                            <input matInput [(ngModel)]="service_duration" [ngModelOptions]="{standalone: true}"  type="text" name="service_duration" pattern=".{1,}" required appAutofocus>
+                            <input matInput [(ngModel)]="serviceDuration" [ngModelOptions]="{standalone: true}"  type="text" name="serviceDuration" pattern=".{1,}" required appAutofocus>
                         </mat-form-field>
 
             </div>
 
-            <div formArrayName="new_services">
-                <div *ngFor="let new_service of newServiceForms.controls; let i=index" [formGroupName]="i">
+            <div formArrayName="newServices">
+                <div *ngFor="let newService of newServiceForms.controls; let i=index" [formGroupName]="i">
 
                     <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                      <mat-form-field appearance="outline" fxFlex>
                      <mat-label>Add a service that your business offers</mat-label>
-                            <input matInput  type="text" formControlName="new_service_name" required appAutofocus>
+                            <input matInput  type="text" formControlName="newServiceName" required appAutofocus>
                         </mat-form-field>
 
 
                     <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Add the service duration(in minutes)</mat-label>
-                            <input matInput   type="text" formControlName="new_service_duration" required appAutofocus>
+                            <input matInput   type="text" formControlName="newServiceDuration" required appAutofocus>
                         </mat-form-field>
                     </div>
 
@@ -191,7 +191,7 @@
 
             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
             <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
-            <button mat-raised-button color="primary" type="submit" (click)="business_register()">Register</button>
+            <button mat-raised-button color="primary" type="submit" (click)="businessRegister()">Register</button>
         </div>
 
         <div>
