@@ -39,8 +39,11 @@ export class BusinessService {
             {
                 type: "application/json",
             }));
-
-        return this.http.post<boolean>(['api', 'businesses', 'business'].join('/'), formData);
+        if(avatar != null){
+            return this.http.post<boolean>(['api', 'businesses', 'businessWithAvatar'].join('/'), formData);
+        }else{
+            return this.http.post<boolean>(['api', 'businesses', 'businessNoLogo'].join('/'), formData);
+        }
     }
     public getBusinessById(businessId: number): Observable<BusinessDTO> {
         return this.http.get<BusinessDTO>(['api', 'businesses', businessId.toString()].join('/'));

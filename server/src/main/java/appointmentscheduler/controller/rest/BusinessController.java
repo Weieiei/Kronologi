@@ -136,38 +136,51 @@ public class BusinessController extends AbstractController {
     }
     */
   @LogREST
-  @PostMapping("/business")
-  public ResponseEntity<Map<String, Object>>  add(@RequestPart("file") MultipartFile aFile, @RequestPart("business") BusinessDTO businessDTO,
-                                                  @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
-      try {
-          Map<String, Object> tokenMap = userService.register(userRegisterDTO, RoleEnum.ADMIN);
-          Verification verification = (Verification) tokenMap.get("verification");
-          emailService.sendRegistrationEmail(userRegisterDTO.getEmail(), verification.getHash(), true);
-
-          //create business and save it.
-          Business business = businessConverter.convert(businessDTO);
-          business.setOwner(verification.getUser());
-          long businessId = businessService.add(business);
-
-
-          //businessHours
-          List<BusinessHours> businessHours = new ArrayList<>();
-          for(BusinessHoursDTO bhDTO : businessHoursDTO){
-              BusinessHours businessHour = businessHoursConverter.convert(bhDTO);
-              businessHour.setBusiness(business);
-              businessHours.add(businessHour);
-          }
-
-          businessService.addAll(businessHours);
-          //associate service to business
-          Service newService = serviceConverter.convert(service);
-          newService.setBusiness(business);
-
-          fileStorageService.saveFile(aFile, businessId);
-          return ResponseEntity.ok(tokenMap);
-      } catch (BadCredentialsException e) {
-          e.printStackTrace();
-          return ResponseEntity.status(HttpStatus.CONFLICT).build();
-      }
+  @PostMapping("/businessWithLogo")
+  public ResponseEntity<Map<String, Object>> createBusinessWithLogo(@RequestPart("file") MultipartFile aFile, @RequestPart("business") BusinessDTO businessDTO,
+                                                     @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+                return createBusiness(aFile,businessDTO,businessHoursDTO,service,userRegisterDTO);
   }
+
+    @LogREST
+    @PostMapping("/businessNoLogo")
+    public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO,
+                                                    @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+        return createBusiness(null,businessDTO,businessHoursDTO,service,userRegisterDTO);
+    }
+
+    private ResponseEntity<Map<String, Object>> createBusiness(MultipartFile aFile, BusinessDTO businessDTO, BusinessHoursDTO businessHoursDTO[], ServiceCreateDTO service, UserRegisterDTO userRegisterDTO)throws IOException, MessagingException, NoSuchAlgorithmException {
+        try {
+            Map<String, Object> tokenMap = userService.register(userRegisterDTO, RoleEnum.ADMIN);
+            Verification verification = (Verification) tokenMap.get("verification");
+            emailService.sendRegistrationEmail(userRegisterDTO.getEmail(), verification.getHash(), true);
+
+            //create business and save it.
+            Business business = businessConverter.convert(businessDTO);
+            business.setOwner(verification.getUser());
+            long businessId = businessService.add(business);
+
+
+            //businessHours
+            List<BusinessHours> businessHours = new ArrayList<>();
+            for(BusinessHoursDTO bhDTO : businessHoursDTO){
+                BusinessHours businessHour = businessHoursConverter.convert(bhDTO);
+                businessHour.setBusiness(business);
+                businessHours.add(businessHour);
+            }
+
+            businessService.addAll(businessHours);
+            //associate service to business
+            Service newService = serviceConverter.convert(service);
+            newService.setBusiness(business);
+
+            if(aFile !=null){
+                fileStorageService.saveFile(aFile, businessId);
+            }
+            return ResponseEntity.ok(tokenMap);
+        } catch (BadCredentialsException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
 }

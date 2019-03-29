@@ -159,7 +159,7 @@ export class BusinessRegisterComponent implements OnInit {
             }
 
             this.googleAnalytics.trackValues('formSubmit', 'register');
-            this.businessService.createBusiness(payload_business,payload_service,payload, businessHoursDTO,this.selectedFile,).subscribe(
+            this.businessService.createBusiness(payload_business,payload_service,payload, businessHoursDTO,this.selectedFile).subscribe(
             res => {
                this.router.navigate(['login']);
             },
