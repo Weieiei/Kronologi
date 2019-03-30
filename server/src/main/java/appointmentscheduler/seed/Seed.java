@@ -4,6 +4,7 @@ import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentFactory;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.EmployeeService;
+import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
@@ -60,6 +61,8 @@ public class Seed {
     Business business;
 
     Business business2;
+
+    UserFile userFile;
 
     @EventListener
     public void seed(ContextRefreshedEvent event) throws NoSuchAlgorithmException {
@@ -274,4 +277,5 @@ public class Seed {
                 LocalTime.of(22, 0)));
         return shifts;
     }
+
 }

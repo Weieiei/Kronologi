@@ -8,14 +8,19 @@ import { PhoneNumberDTO } from '../../../interfaces/phonenumber/phone-number-dto
 import * as countryData from 'country-telephone-data';
 import { SnackBar } from '../../../snackbar';
 import { ThemeService } from 'src/app/core/theme/theme.service';
-
+import { TdFileUploadComponent } from '@covalent/core/file';
+//npm i -save @covalent/core to  install
 @Component({
     selector: 'app-account-settings',
     templateUrl: './account-settings.component.html',
     styleUrls: ['./account-settings.component.scss']
 })
 export class AccountSettingsComponent implements OnInit {
-
+    // Fields to upload a profiel picture
+    selectedFile: File = null;
+    fileSelectMsg: string = 'No file selected yet.';
+    fileUploadMsg: string = 'No file uploaded yet.';
+    disabled: boolean = false;
     // Fields to update email
     password: string;
     newEmail: string;
@@ -212,4 +217,18 @@ export class AccountSettingsComponent implements OnInit {
     hidePhoneNumberForm() {
         this.showForm = false;
     }
+
+    selectEvent(file: File): void {
+        this.selectedFile = file;
+        this.fileSelectMsg = file.name;
+      }
+
+       uploadEvent(file: File): void {
+        this.fileUploadMsg = file.name;
+      }
+
+       cancelEvent(): void {
+        this.fileSelectMsg = 'No file selected yet.';
+        this.fileUploadMsg = 'No file uploaded yet.';
+      }
 }
