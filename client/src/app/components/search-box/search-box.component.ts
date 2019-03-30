@@ -15,7 +15,6 @@ export class SearchInputComponent implements AfterViewInit, OnDestroy {
     searchTerm = '';
 
     ngAfterViewInit(): void {
-        console.log(this.inputWrapper);
         this.inputSubscription = observableFromEvent(this.inputWrapper.nativeElement, 'keyup').pipe(
             map((event: any) => {
                 this.searchTerm = event.target.value;

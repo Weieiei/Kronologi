@@ -19,12 +19,30 @@ export class AdminUsersComponent implements OnInit {
     users: UserToDisplay[];
     services: Service[];
 
+    componentState: {
+        users: Array<UserToDisplay>,
+        // currentSort: IDataTableSort,
+        currentPage: number,
+        itemsPerPage: number,
+        search: string,
+        totalItems: number,
+    };
+
     constructor(private userService: UserService,
                 private serviceService: ServiceService,
                 public dialog: MatDialog) {
     }
 
     ngOnInit() {
+        this.componentState = {
+            users: [],
+                // currentSort: IDataTableSort,
+            currentPage: 1,
+            itemsPerPage: 10,
+            search: '',
+            totalItems: 0,
+        };
+
         this.getAllUsers();
         this.getAllServices();
     }
@@ -40,7 +58,11 @@ export class AdminUsersComponent implements OnInit {
                 });
             })
     ).subscribe(
-            res => this.users = res,
+            res => {
+                this.users = res;
+                this.componentState.users = res;
+                this.updateServices(this.users);
+            },
             err => console.log(err)
         );
     }
@@ -124,7 +146,29 @@ export class AdminUsersComponent implements OnInit {
         );
     }
 
+    filterItems(items: Array<UserToDisplay>, search: string): Array<UserToDisplay> {
+        if (search.length < 1) {
+            return items;
+        }
+
+        const searchCriteria = search.toLowerCase();
+        return items.filter((item) => item.firstName.toLowerCase().includes(searchCriteria)
+            || item.lastName.toLowerCase().includes(searchCriteria) );
+    }
+
+    updateServices(allItems: Array<UserToDisplay>): void {
+        if (allItems) {
+            const filteredItems = this.filterItems(allItems, this.componentState.search);
+            const totalItems = filteredItems.length;
+            this.componentState.users = filteredItems;
+            this.componentState.totalItems = totalItems;
+        }
+    }
+
+
     onSearch(searchTerm: string) {
-        console.log(searchTerm);
+        this.componentState.currentPage = 1;
+        this.componentState.search = searchTerm;
+        this.updateServices(this.users);
     }
 }

@@ -1,11 +1,11 @@
 <div *ngIf="users?.length">
 
-    <p>The system has {{ users?.length }} user(s):</p>
+    <p>The system has {{ componentState.users?.length }} user(s):</p>
     <app-search-input
         [placeholderText]="'Search'"
         (changed)="onSearch($event)">
     </app-search-input>
-    <table mat-table [dataSource]="users" class="mat-elevation-z8">
+    <table mat-table [dataSource]="componentState.users" class="mat-elevation-z8">
 
         <!-- ID Column -->
         <ng-container matColumnDef="id">
