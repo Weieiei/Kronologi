@@ -105,19 +105,6 @@ public class AppointmentServiceTest {
         appointmentService.add(mockAppointmentDTO, 1, 1);
     }
 
-    @Test(expected = EmployeeDoesNotOfferServiceException.class)
-    public void addShouldFailBecauseEmployeeDoesNotOfferService() {
-        AppointmentDTO mockAppointment = mock(AppointmentDTO.class, RETURNS_DEEP_STUBS);
-        final Service mockService = mock(Service.class);
-        final Business mockBusiness = mock(Business.class);
-        final Employee employee = mock(Employee.class);
-        final User client = mock(User.class);
-
-
-        mockGetAppointment(client, employee, mockService, mockBusiness);
-
-        appointmentService.add(mockAppointment, 1, 1);
-    }
 
     @Test(expected = EmployeeNotWorkingException.class)
     public void addShouldFailBecauseEmployeeDoesNotHaveShiftSpecified() {

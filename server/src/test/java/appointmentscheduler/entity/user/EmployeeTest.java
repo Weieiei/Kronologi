@@ -1,16 +1,21 @@
 package appointmentscheduler.entity.user;
 
+import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.exception.EmployeeDoesNotOfferServiceException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -152,5 +157,25 @@ public class EmployeeTest {
 //        shifts.add(ShiftFactory.createShift(date3, startTime3, endTime3));
 
         return shifts;
+    }
+
+    @Test(expected = EmployeeDoesNotOfferServiceException.class)
+    public void addShouldFailBecauseEmployeeDoesNotOfferService() {
+        final Appointment mockAppointment = mock(Appointment.class);
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        User client = new User();
+
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        when(mockService.getName()).thenReturn("skill");
+        employee.setEmployeeServices(Arrays.asList(mockService));
+        when(mockRetrievedService.getName()).thenReturn("skill2");
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        employee.validateAppointment(mockAppointment);
     }
 }

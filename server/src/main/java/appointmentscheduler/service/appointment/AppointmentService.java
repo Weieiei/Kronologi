@@ -312,24 +312,7 @@ public class AppointmentService {
             checkCalendarSync(googleCredentialRepository.findByKey(String.valueOf(employee.getId())).get().getAccessToken(), googleSyncService.findById(employee.getId()).getSyncToken(), employee);
         }
 
-        // Make sure the client and employee are not the same
-        if (appointment.getClient().equals(employee)) {
-            throw new ModelValidationException("You cannot book an appointment with yourself.");
-        }
-
-        // Make sure the employee can perform the service requested
-        boolean employeeCanDoService = false;
-        for (EmployeeService service : appointment.getService().getEmployees()) {
-            if(service.getEmployee().getId() == employee.getId()){
-                employeeCanDoService = true;
-                break;
-            }
-        }
-
-
-        if (!employeeCanDoService) {
-            throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");
-        }
+        employee.validateAppointment(appointment);
 
         // Check if the employee is working on the date specified
         boolean employeeIsAvailable = employee.isAvailable(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());

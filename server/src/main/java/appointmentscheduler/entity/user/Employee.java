@@ -1,9 +1,12 @@
 package appointmentscheduler.entity.user;
 
+import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.exception.EmployeeDoesNotOfferServiceException;
+import appointmentscheduler.exception.ModelValidationException;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -51,6 +54,26 @@ public class Employee extends User {
 
     public void setShifts(Set<Shift> shifts) {
         this.shifts = shifts;
+    }
+
+    public void validateAppointment(Appointment appointment) {
+        // Make sure the client and employee are not the same
+        if (appointment.getClient().equals(this)) {
+            throw new ModelValidationException("You cannot book an appointment with yourself.");
+        }
+
+        // Make sure the employee can perform the service requested
+        boolean employeeCanDoService = false;
+        for (EmployeeService service : this.getServices()) {
+            if(service.getService().getName().equals(appointment.getService().getName())){
+                employeeCanDoService = true;
+                break;
+            }
+        }
+
+        if (!employeeCanDoService) {
+            throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");
+        }
     }
 
     public boolean isAvailable(LocalDate date, LocalTime startTime, LocalTime endTime) {
