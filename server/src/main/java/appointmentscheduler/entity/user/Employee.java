@@ -75,8 +75,8 @@ public class Employee extends User {
 
         // Make sure the employee can perform the service requested
         boolean employeeCanDoService = false;
-        for (EmployeeService service : this.getServices()) {
-            if(service.getService().getId() == appointment.getService().getId()){
+        for (Service service : this.getEmployeeServices()) {
+            if(service.getId() == appointment.getService().getId()){
                 employeeCanDoService = true;
                 break;
             }
