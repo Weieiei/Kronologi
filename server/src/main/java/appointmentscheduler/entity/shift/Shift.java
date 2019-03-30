@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -47,6 +48,7 @@ public class Shift extends AuditableEntity implements AppEvent {
     private Business business;
 
     public Shift() {
+        appointments = new HashSet<>();
     }
 
     public Shift(Employee employee, LocalDate date, LocalTime startTime, LocalTime endTime) {
@@ -54,6 +56,7 @@ public class Shift extends AuditableEntity implements AppEvent {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        appointments = new HashSet<>();
     }
 
     public Shift(Business business, Employee employee, LocalDate date, LocalTime startTime, LocalTime endTime) {
@@ -62,6 +65,7 @@ public class Shift extends AuditableEntity implements AppEvent {
         this.startTime = startTime;
         this.endTime = endTime;
         this.business = business;
+        appointments = new HashSet<>();
     }
 
     public long getId() {

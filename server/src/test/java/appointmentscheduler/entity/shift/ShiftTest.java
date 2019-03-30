@@ -1,5 +1,6 @@
 package appointmentscheduler.entity.shift;
 
+import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.event.AppEventTest;
 import org.junit.Test;
@@ -106,5 +107,54 @@ public class ShiftTest {
         shift.setEndTime(endTime);
 
         assertFalse(shift.isWithin(appEvent));
+    }
+
+    @Test
+    public void addAppointmentValid() {
+        LocalDate date = LocalDate.now();
+        LocalTime startTime = LocalTime.of(1,1,1);
+        LocalTime endTime = LocalTime.of(2,2,2);
+
+        Shift shift = new Shift();
+
+        Appointment appointment = new Appointment();
+        appointment.setDate(date);
+        appointment.setStartTime(startTime);
+        appointment.setEndTime(endTime);
+
+
+        shift.setDate(date);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+
+        assertTrue(shift.addAppointment(appointment));
+
+    }
+
+    @Test
+    public void addAppointmentInvalid() {
+        LocalDate date = LocalDate.now();
+        LocalTime startTime = LocalTime.of(1,1,1);
+        LocalTime endTime = LocalTime.of(2,2,2);
+
+        Shift shift = new Shift();
+
+        Appointment appointment = new Appointment();
+        appointment.setDate(date);
+        appointment.setStartTime(startTime);
+        appointment.setEndTime(endTime);
+
+        Appointment appointmentConflict = new Appointment();
+        appointmentConflict.setDate(date);
+        appointmentConflict.setStartTime(startTime);
+        appointmentConflict.setEndTime(endTime);
+
+        shift.setDate(date);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+
+        shift.addAppointment(appointment);
+
+        assertFalse(shift.addAppointment(appointmentConflict));
     }
 }

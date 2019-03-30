@@ -101,7 +101,6 @@ public class Employee extends User {
 
     //Get shift for appointment
     public Shift isAvailable(AppEvent appEvent) {
-        final Set<Shift> shifts = getShifts();
 
         for (final Shift shift : shifts) {
             //get shift that encapsulates appointment
