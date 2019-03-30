@@ -180,7 +180,7 @@ public class AppointmentServiceTest {
         mockGetAppointment(client, mockEmployee, mockService, mockBusiness);
 
         //Add appointment for employee that conflicts with new appointment
-        employeeAppointments.add(new Appointment(client, mockEmployee, mockService, LocalDate.now(),LocalTime.now(), "mock"));
+        employeeAppointments.add(new Appointment(client, mockEmployee, mockService, LocalDate.now(),LocalTime.now(), "mock", mockBusiness));
 
         when(appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(any(), anyLong(), anyLong(), any())).thenReturn(employeeAppointments);
 
@@ -220,42 +220,12 @@ public class AppointmentServiceTest {
         when(appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(any(), anyLong(), anyLong(), any())).thenReturn(Collections.emptyList());
 
         //Add appointment for client that conflicts with new appointment
-        clientAppointments.add(new Appointment(client, mockEmployee, mockService, LocalDate.now(),LocalTime.now(), "mock"));
+        clientAppointments.add(new Appointment(client, mockEmployee, mockService, LocalDate.now(),LocalTime.now(), "mock", mockBusiness));
         when(appointmentRepository.findByDateAndClientIdAndBusinessIdAndStatus(any(), anyLong(), anyLong(), any())).thenReturn(clientAppointments);
 
         appointmentService.add(mockAppointmentDTO, 1, 1);
     }
-//
-//    @Test(expected = NoRoomAvailableException.class)
-//    public void addShouldFailBecauseThereAreNoAvailableRooms() {
-//        final Appointment mockAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
-//        final Employee mockEmployee = mock(Employee.class);
-//
-//        when(mockAppointment.getEmployee()).thenReturn(mockEmployee);
-//        when(mockAppointment.getService().getEmployees().contains(any(Employee.class))).thenReturn(true);
-//        when(mockEmployee.isWorking(any(), any(), any())).thenReturn(true);
-//
-//        final List<Appointment> nonConflictingEmployeeAppointments = Collections.singletonList(createMockedNonConflictingAppointment());
-//        when(appointmentRepository.findByDateAndEmployeeIdAndStatus(any(), anyLong(), any())).thenReturn(nonConflictingEmployeeAppointments);
-//
-//        final List<Appointment> nonConflictingClientAppointments = Collections.singletonList(createMockedNonConflictingAppointment());
-//        when(appointmentRepository.findByDateAndClientIdAndStatus(any(), anyLong(), any())).thenReturn(nonConflictingClientAppointments);
-//
-//        final Appointment conflictingAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
-//        when(conflictingAppointment.isConflicting(any(Appointment.class))).thenReturn(true);
-//        when(appointmentRepository.findByDateAndStatus(any(), any())).thenReturn(Collections.singletonList(conflictingAppointment));
-//
-//        final Room room1 = mock(Room.class);
-//        final Room room2 = mock(Room.class);
-//        final Set<Room> roomSet = Sets.newHashSet(room1, room2);
-//        final Set<Room> otherRoomSet = Sets.newHashSet(room1, room2);
-//
-//        when(mockAppointment.getService().getRooms()).thenReturn(roomSet);
-//        when(conflictingAppointment.getService().getRooms()).thenReturn(otherRoomSet);
-//
-//        appointmentService.add(mockAppointment);
-//    }
-//
+
     @Test
     public void addPassesWithNoConflictingAppointments() {
         AppointmentDTO mockAppointmentDTO = new AppointmentDTO();

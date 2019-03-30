@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.shift;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.Employee;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "employee_shifts")
@@ -33,6 +35,10 @@ public class Shift extends AuditableEntity implements AppEvent {
 
     @Column(name = "end_time")
     private LocalTime endTime;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "appointment_id")
+    private Set<Appointment> appointments;
 
     @ManyToOne
     @JoinColumn(name = "business_id")
@@ -102,6 +108,14 @@ public class Shift extends AuditableEntity implements AppEvent {
 
     public void setBusiness(Business business) {
         this.business = business;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 
     @PrePersist
