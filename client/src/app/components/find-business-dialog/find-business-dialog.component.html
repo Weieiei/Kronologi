@@ -1,0 +1,13 @@
+<div>
+  <h2 mat-dialog-title>MY DIALOG</h2>
+  <hr>
+  <mat-dialog-content>
+      <mat-form-field>
+        <input matInput placeholder="Enter Business Name" [(ngModel)]="data.businessName">
+      </mat-form-field>
+  </mat-dialog-content>
+  <hr>
+  <mat-dialog-actions>
+    <button mat-raised-button (click)="searchBusiness(data.businessName)">Search</button>&nbsp;
+  </mat-dialog-actions>
+</div>

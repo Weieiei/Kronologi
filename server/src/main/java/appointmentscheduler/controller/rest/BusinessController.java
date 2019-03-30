@@ -29,11 +29,13 @@ import appointmentscheduler.service.file.FileStorageService;
 import appointmentscheduler.service.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +43,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -51,6 +55,11 @@ import java.util.*;
 @RestController
 @RequestMapping("${rest.api.path}/businesses")
 public class BusinessController extends AbstractController {
+
+    @Value("${google.key}")
+    private String googleApiKey;
+
+    private final String inDepthPlacesAPIurl = "https://maps.googleapis.com/maps/api/place/details/json";
 
     private final BusinessRepository businessRepository;
     private final ObjectMapperFactory objectMapperFactory;
@@ -135,19 +144,72 @@ public class BusinessController extends AbstractController {
         return ResponseEntity.ok(message);
     }
     */
+
+  @LogREST
+  @GetMapping("/findWithGoogle")
+  public ResponseEntity<String> findWithGoogle(@RequestParam String nameOfBusiness) throws JSONException
+    {
+      RestTemplate restTemplate = new RestTemplate();
+      HttpHeaders headers = new HttpHeaders();
+
+      UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
+              .queryParam("key", googleApiKey)
+              .queryParam("input", nameOfBusiness.replaceAll(" ",""))
+              .queryParam("inputtype", "textquery")
+              .queryParam("fields","place_id");
+
+      HttpEntity<?> entity = new HttpEntity<>(headers);
+
+
+      HttpEntity<String> response = restTemplate.exchange(
+              builder.toUriString(),
+              HttpMethod.GET,
+              entity,
+              String.class);
+
+      JSONObject googlePlaceId = new JSONObject(response.getBody());
+      JSONArray candidates = googlePlaceId.getJSONArray("candidates");
+      List<String> candidatesIdList = new ArrayList<>();
+      for(int i = 0; i < candidates.length(); i++){
+          candidatesIdList.add(candidates.getJSONObject(i).getString("place_id"));
+      }
+
+      //means we found only 1 business and we'll fetch on that
+      if(candidatesIdList.size() == 1){
+          UriComponentsBuilder build = UriComponentsBuilder.fromHttpUrl(inDepthPlacesAPIurl)
+                  .queryParam("key", googleApiKey)
+                  .queryParam("placeid", candidatesIdList.get(0))
+                  .queryParam("fields","opening_hours,geometry");
+
+           entity = new HttpEntity<>(headers);
+
+           response = restTemplate.exchange(
+                   build.toUriString(),
+                  HttpMethod.GET,
+                  entity,
+                  String.class);
+
+           JSONObject responseJson = new JSONObject(response.getBody());
+           JSONArray periodsArray = responseJson.getJSONObject("result").getJSONArray("periods");
+
+      }
+
+
+
+      return ResponseEntity.status(HttpStatus.OK).build();
+  }
   @LogREST
   @PostMapping("/businessWithLogo")
   public ResponseEntity<Map<String, Object>> createBusinessWithLogo(@RequestPart("file") MultipartFile aFile, @RequestPart("business") BusinessDTO businessDTO,
                                                      @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
-                return createBusiness(aFile,businessDTO,businessHoursDTO,service,userRegisterDTO);
+      return createBusiness(aFile,businessDTO,businessHoursDTO,service,userRegisterDTO);
   }
 
-    @LogREST
-    @PostMapping("/businessNoLogo")
-    public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO,
-                                                    @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
-        return createBusiness(null,businessDTO,businessHoursDTO,service,userRegisterDTO);
-    }
+  @LogREST
+  @PostMapping("/businessNoLogo")
+  public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO, @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+      return createBusiness(null,businessDTO,businessHoursDTO,service,userRegisterDTO);
+  }
 
     private ResponseEntity<Map<String, Object>> createBusiness(MultipartFile aFile, BusinessDTO businessDTO, BusinessHoursDTO businessHoursDTO[], ServiceCreateDTO service, UserRegisterDTO userRegisterDTO)throws IOException, MessagingException, NoSuchAlgorithmException {
         try {

@@ -13,6 +13,8 @@ import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
 import { BusinessHoursDTO } from '../../../interfaces/business/businessHours-dto'
+import { FindBusinessDialogComponent } from '../../../components/find-business-dialog/find-business-dialog.component';
+import { MatDialogConfig, MatDialog } from '@angular/material';
 import { map } from 'rxjs/operators';
 export interface Domain {
     value: string;
@@ -77,6 +79,7 @@ export class BusinessRegisterComponent implements OnInit {
     businessId: number;
 
     constructor(
+        private dialog: MatDialog,
         private http: HttpClient,
         private router: Router,
         private _formBuilder: FormBuilder,
@@ -232,6 +235,19 @@ export class BusinessRegisterComponent implements OnInit {
   isEmptyObject(obj: any): boolean {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   }
+
+  openDialog(){
+    const dialogConfig = new MatDialogConfig();
+    let data: {businessName:""};
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+      data
+    };
+    this.dialog.open(FindBusinessDialogComponent, dialogConfig);
+}
 }
 
 /*

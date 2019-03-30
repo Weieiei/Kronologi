@@ -61,6 +61,7 @@ import { BusinessRegisterComponent } from './pages/register/business-register/bu
 
 import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
+import { FindBusinessDialogComponent } from './components/find-business-dialog/find-business-dialog.component';
 
 
 @NgModule({
@@ -113,7 +114,8 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
         CardsUiComponent,
         BusinessRegisterComponent,
         ServicesComponent,
-        SyncCalendarsComponent
+        SyncCalendarsComponent,
+        FindBusinessDialogComponent
     ],
     imports: [
         CovalentFileModule,
@@ -127,6 +129,7 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
         ReactiveFormsModule
     ],
     entryComponents: [
+        FindBusinessDialogComponent,
         TimePickerDialogComponent,
         CancelDialogComponent,
         ReasonDialogComponent,

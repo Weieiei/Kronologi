@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BusinessDTO } from '../../interfaces/business/business-dto';
 import { Business } from '../../interfaces/business/business';
@@ -8,6 +7,7 @@ import { BusinessRegisterDTO } from '../../interfaces/business/business-register
 import { ServiceCreateDto } from 'src/app/interfaces/service/service-create-dto';
 import { BusinessUserRegisterDTO } from 'src/app/interfaces/user/business-user-register-dto';
 import { BusinessHoursDTO } from 'src/app/interfaces/business/businessHours-dto';
+import { HttpParams, HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -51,6 +51,12 @@ export class BusinessService {
 
     public getAllBusinesses():Observable<BusinessDTO[]>{
         return this.http.get<BusinessDTO[]>(['api', 'businesses',''].join('/'));
+    }
+
+    public findBusinessThroughGoogle(businessName : string):Observable<BusinessDTO>{
+        let params = new HttpParams();
+        params = params.append('nameOfBusiness', businessName);
+        return this.http.get<BusinessDTO>(['api','businesses','findWithGoogle'].join('/'),{params: params} );
     }
 
 }
