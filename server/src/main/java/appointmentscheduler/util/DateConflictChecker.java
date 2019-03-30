@@ -5,6 +5,7 @@ import appointmentscheduler.entity.event.EventComparer;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public final class DateConflictChecker {
     public static boolean hasConflictList(List<? extends AppEvent> events, AppEvent newAppEvent) {
@@ -17,6 +18,19 @@ public final class DateConflictChecker {
 
         for(int i = 0; i < events.size();i++) {
             currentAppEvent = events.get(i);
+            //if events equal then there is a conflict with the events
+            //if modification then can reset to same time
+            if(eventComparer.compare(currentAppEvent, newAppEvent) == 0 && !(modify && currentAppEvent.getId() == newAppEvent.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasConflictSet(Set<? extends AppEvent> events, AppEvent newAppEvent, boolean modify) {
+        EventComparer eventComparer = new EventComparer();
+
+        for(AppEvent currentAppEvent: events) {
             //if events equal then there is a conflict with the events
             //if modification then can reset to same time
             if(eventComparer.compare(currentAppEvent, newAppEvent) == 0 && !(modify && currentAppEvent.getId() == newAppEvent.getId())) {

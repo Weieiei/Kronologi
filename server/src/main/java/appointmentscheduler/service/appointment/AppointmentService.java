@@ -302,9 +302,8 @@ public class AppointmentService {
      * @throws EmployeeNotWorkingException          If the employee does not have a shift on the date specified.
      * @throws EmployeeAppointmentConflictException If the employee is already booked on the date and time specified.
      * @throws ClientAppointmentConflictException   If the client is already booked on the date and time specified.
-     * @throws NoRoomAvailableException             If there are no rooms available to perform the service specified.
      */
-    private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
+    private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException{
         final Employee employee = appointment.getEmployee();
 
 
@@ -312,26 +311,14 @@ public class AppointmentService {
             checkCalendarSync(googleCredentialRepository.findByKey(String.valueOf(employee.getId())).get().getAccessToken(), googleSyncService.findById(employee.getId()).getSyncToken(), employee);
         }
 
-        employee.validateAppointment(appointment);
-
-        // Check if the employee is working on the date specified
-        boolean employeeIsAvailable = employee.isAvailable(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
-
-        if (!employeeIsAvailable) {
-            throw new EmployeeNotWorkingException("The employee does not have a shift.");
-        }
-
-        // Check if the employee does not have an appointment scheduled already in that time slot
-        List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(appointment.getDate(), employee.getId(), appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
-        if (DateConflictChecker.hasConflictList(employeeAppointments, appointment, modifying)) {
-            throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee.");
-        }
-
         // Check if the client does not have an appointment scheduled already
         List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndBusinessIdAndStatus(appointment.getDate(), appointment.getClient().getId(),appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
         if(DateConflictChecker.hasConflictList(clientAppointments, appointment, modifying)) {
             throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
         }
+
+        employee.validateAndAddAppointment(appointment);
+
     }
 
     public Appointment findMyAppointmentById(long userId, long appointmentId) {

@@ -3,10 +3,10 @@ package appointmentscheduler.entity.user;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.EmployeeService;
+import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
-import appointmentscheduler.exception.EmployeeDoesNotOfferServiceException;
-import appointmentscheduler.exception.ModelValidationException;
+import appointmentscheduler.exception.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -56,7 +56,18 @@ public class Employee extends User {
         this.shifts = shifts;
     }
 
-    public void validateAppointment(Appointment appointment) {
+    /**
+     * Checks to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
+     *
+     * @param appointment The appointment to validate.
+     * @throws ModelValidationException             If the client and employee are the same person.
+     * @throws EmployeeDoesNotOfferServiceException If the employee is not assigned to the service specified.
+     * @throws EmployeeNotWorkingException          If the employee does not have a shift on the date specified.
+     * @throws EmployeeAppointmentConflictException If the employee is already booked on the date and time specified.
+     */
+    public void validateAndAddAppointment(Appointment appointment) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException{
+        Shift availableShift;
+
         // Make sure the client and employee are not the same
         if (appointment.getClient().equals(this)) {
             throw new ModelValidationException("You cannot book an appointment with yourself.");
@@ -65,7 +76,7 @@ public class Employee extends User {
         // Make sure the employee can perform the service requested
         boolean employeeCanDoService = false;
         for (EmployeeService service : this.getServices()) {
-            if(service.getService().getName().equals(appointment.getService().getName())){
+            if(service.getService().getId() == appointment.getService().getId()){
                 employeeCanDoService = true;
                 break;
             }
@@ -74,23 +85,31 @@ public class Employee extends User {
         if (!employeeCanDoService) {
             throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");
         }
+
+        // Check if the employee is working on the date specified
+        availableShift = isAvailable(appointment);
+        if (availableShift == null) {
+            throw new EmployeeNotWorkingException("The employee does not have a shift.");
+        }
+
+        //Try adding appointment to shift, if false then existing appointment conflicting due to pas check
+        if (!availableShift.addAppointment(appointment)){
+            throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee.");
+        }
+
     }
 
-    public boolean isAvailable(LocalDate date, LocalTime startTime, LocalTime endTime) {
+    //Get shift for appointment
+    public Shift isAvailable(AppEvent appEvent) {
         final Set<Shift> shifts = getShifts();
-        //TODO fix to use conflict checker util
-        for (final Shift shift : shifts) {
-            final LocalTime shiftStartTime = shift.getStartTime();
-            final LocalTime shiftEndTime = shift.getEndTime();
 
-            if (shift.getDate().equals(date) && // check if same date
-                    (shiftStartTime.isBefore(startTime) || shiftStartTime.equals(startTime)) && // check if shift start time <= start time
-                    (shiftEndTime.isAfter(endTime) || shiftEndTime.equals(endTime)) // check if shift end time >= end time
-            ) {
-                return true;
+        for (final Shift shift : shifts) {
+            //get shift that encapsulates appointment
+            if (shift.isWithin(appEvent)) {
+                return shift;
             }
         }
 
-        return false;
+        return null;
     }
 }

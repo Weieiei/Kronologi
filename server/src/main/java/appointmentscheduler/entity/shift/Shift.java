@@ -4,8 +4,10 @@ import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.event.EventComparer;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ModelValidationException;
+import appointmentscheduler.util.DateConflictChecker;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -116,6 +118,30 @@ public class Shift extends AuditableEntity implements AppEvent {
 
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public boolean isWithin(AppEvent appEvent) {
+        LocalDate appDate = appEvent.getDate();
+        LocalTime appStartTime = appEvent.getStartTime();
+        LocalTime appEndTime = appEvent.getEndTime();
+
+        if (date.equals(appDate) && // check if same date
+                (startTime.isBefore(appStartTime) || startTime.equals(appStartTime)) && // check if shift start time <= app start time
+                (endTime.isAfter(appEndTime) || endTime.equals(appEndTime)) // check if shift end time >= app end time
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAppointment(Appointment appointment){
+        //check if appointment is within shift and doesn't conflict with past appointments in shift
+        if(isWithin(appointment) && !DateConflictChecker.hasConflictSet(this.appointments, appointment, false)){
+            appointments.add(appointment);
+            return true;
+        }
+
+        return false;
     }
 
     @PrePersist
