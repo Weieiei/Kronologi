@@ -28,6 +28,7 @@
     "country-telephone-data": "^0.6.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
+    "pica": "^5.0.0",
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.4.0",
     "symbol-observable": "^1.2.0",
