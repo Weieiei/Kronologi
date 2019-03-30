@@ -12,6 +12,7 @@ import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
+import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.verification.GoogleCred;
@@ -44,7 +45,9 @@ import java.util.List;
 import java.util.Map;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.service.business.BusinessService;
+import appointmentscheduler.service.file.UserFileStorageService;
 import appointmentscheduler.repository.BusinessRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("${rest.api.path}/user")
@@ -55,7 +58,7 @@ public class UserController extends AbstractController {
     private final VerificationService verificationService;
     private final BusinessRepository businessRepository;
     private final BusinessService businessService;
-
+    private final UserFileStorageService userFileStorageService;
 
     GoogleCredentialRepository repo;
 
@@ -66,7 +69,7 @@ public class UserController extends AbstractController {
 
     @Autowired
     public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory,
-                          GoogleCredentialRepository repo, BusinessRepository businessRepository) {
+                          GoogleCredentialRepository repo, BusinessRepository businessRepository,UserFileStorageService userFileStorageService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.emailService = emailService;
@@ -74,6 +77,7 @@ public class UserController extends AbstractController {
         this.objectMapperFactory = objectMapperFactory;
         this.businessRepository = businessRepository;
         this.businessService = new BusinessService(businessRepository);
+        this.userFileStorageService = userFileStorageService;
         this.repo = repo;
     }
 
@@ -146,6 +150,12 @@ public class UserController extends AbstractController {
     public ResponseEntity<Map<String, String>> updateSettings(@RequestBody UpdateSettingsDTO updateSettingsDTO) {
         return ResponseEntity.ok(userService.updateSettings(getUserId(), updateSettingsDTO));
     }
+
+    @PostMapping("/profile")
+    public ResponseEntity<Map<String, String>> updateProfile(@RequestPart("file") MultipartFile userFile) {
+        return ResponseEntity.ok(userFileStorageService.saveUserFile(userFile, getUserId()));
+    }
+
     @GetMapping("/phone")
     public PhoneNumber getPhoneNumber(@RequestAttribute long userId) {
         return userService.getPhoneNumber(userId);

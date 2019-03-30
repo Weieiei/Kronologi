@@ -149,4 +149,8 @@ export class UserService {
     changeUserToEmployee(id: number): Observable<any> {
         return this.http.post<any[]>(['api', 'business','admin','1', 'user', 'employee', id].join('/'), "");
     }
+    uploadUserPicture(userFile: File): Observable<any> {
+        return this.http.post(['api', 'user', 'profile'].join('/'), userFile);
+    }
+
 }

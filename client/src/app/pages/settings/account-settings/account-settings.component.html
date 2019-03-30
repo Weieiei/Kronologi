@@ -194,7 +194,7 @@
             <form (submit)="updateProfilePicture()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
              <p>Selected Picture: {{fileSelectMsg}}</p>
-            <td-file-upload #singleFileUpload [(ngModel)]="files" (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
+            <td-file-upload #singleFileUpload  (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
                 accept=".jpeg,.jpg,.png,.svg">
               <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
               <ng-template td-file-input-label>

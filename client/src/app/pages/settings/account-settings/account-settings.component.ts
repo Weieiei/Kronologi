@@ -20,6 +20,7 @@ export class AccountSettingsComponent implements OnInit {
     selectedFile: File = null;
     fileSelectMsg: string = 'No file selected yet.';
     fileUploadMsg: string = 'No file uploaded yet.';
+
     disabled: boolean = false;
     // Fields to update email
     password: string;
@@ -231,4 +232,21 @@ export class AccountSettingsComponent implements OnInit {
         this.fileSelectMsg = 'No file selected yet.';
         this.fileUploadMsg = 'No file uploaded yet.';
       }
+
+      updateProfilePicture(): void {
+          console.log(this.selectedFile);
+        if (this.selectedFile != null) {
+            this.userService.uploadUserPicture(this.selectedFile).subscribe(
+                res => {
+                    this.fileUploadMsg = 'File seccessfully uploaded. ';
+                },
+                err => {
+                    if (err instanceof HttpErrorResponse) {
+                        err => console.log(err)
+                    }
+                }
+            );
+        }
+    }
+
 }

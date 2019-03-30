@@ -202,6 +202,7 @@ public class UserService {
 
     }
 
+
     public Map<String, String> updatePassword(long id, UpdatePasswordDTO updatePasswordDTO) {
 
         User user = userRepository.findById(id)
