@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "${rest.api.path}/business/admin", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +69,7 @@ public class AdminController extends AbstractController {
     @LogREST
     @GetMapping("/{businessId}/employees")
     public ResponseEntity<String> getEmployees(@PathVariable long businessId) {
-        List<Employee> employees = employeeShiftService.getEmployeesForBusiness(businessId);
+        Set<Employee> employees = employeeShiftService.getEmployeesForBusiness(businessId);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
         return getJson(mapper, employees);
     }
