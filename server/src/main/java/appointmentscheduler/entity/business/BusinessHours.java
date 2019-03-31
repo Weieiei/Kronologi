@@ -24,6 +24,7 @@ public class BusinessHours {
     @Column(name = "end_time")
     private LocalTime endTime;
 
+
     public long getId() {
         return id;
     }

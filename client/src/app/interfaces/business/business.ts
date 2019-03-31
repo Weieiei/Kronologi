@@ -3,6 +3,8 @@ export interface Business {
     name: string;
     domain: string;
     description: string;
+
+    formattedAddress: string;
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }

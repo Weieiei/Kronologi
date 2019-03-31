@@ -1,13 +1,49 @@
 <div>
-  <h2 mat-dialog-title>MY DIALOG</h2>
-  <hr>
-  <mat-dialog-content>
-      <mat-form-field>
-        <input matInput placeholder="Enter Business Name" [(ngModel)]="data.businessName">
-      </mat-form-field>
-  </mat-dialog-content>
-  <hr>
-  <mat-dialog-actions>
-    <button mat-raised-button (click)="searchBusiness(data.businessName)">Search</button>&nbsp;
-  </mat-dialog-actions>
+    <div [@slideInOut]="animationState">
+      <h2 mat-dialog-title *ngIf="!businessWasFetched">Let's look for your business!</h2>
+      <h2 mat-dialog-title *ngIf="businessWasFetched">Here's what we found!</h2>
+      <hr>
+      <div *ngIf="!businessWasFetched">
+        <mat-dialog-content>
+            <mat-form-field>
+              <input matInput placeholder="Enter Business Name" [(ngModel)]="data.businessName">
+            </mat-form-field>
+        </mat-dialog-content>
+        <hr>
+        <mat-dialog-actions>
+          <button mat-raised-button (click)="searchBusiness(data.businessName)">Search</button>&nbsp;
+        </mat-dialog-actions>
+      </div>
+
+      <div *ngIf="businessWasFetched">
+        <mat-accordion>
+          <mat-expansion-panel  *ngFor="let business of businessArray"  >
+              <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{ business.name }}
+                  </mat-panel-title>
+                  <mat-panel-description>
+                     {{ business.address }}
+                  </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <agm-map [latitude]='business.lat' [longitude]='business.lng' 
+              [mapTypeId]='mapType'>
+              <agm-marker [latitude]="business.lat" [longitude]="business.lng"></agm-marker>
+              </agm-map>  
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+  </div>
+  
+  <div [@slideInOut]="!animationState">
+      <h2 mat-dialog-title>We're looking for your business, hang tight!</h2>
+      <hr>
+      <mat-dialog-content>
+      <ngx-spinner bdColor = "rgba(0, 0, 0, 0)"   size = "medium"   color = "#800080" type = "ball-scale-ripple-multiple" fullScreen = "false" >
+            <p style="color: purple" > Loading... </p>
+      </ngx-spinner>
+
+    </mat-dialog-content>
+  </div>
 </div>

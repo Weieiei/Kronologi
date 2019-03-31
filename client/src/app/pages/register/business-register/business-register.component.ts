@@ -56,6 +56,7 @@ export class BusinessRegisterComponent implements OnInit {
         {value: 'Other'}
       ];
     description: string;
+    address: string;
 // new service object
     service: string;
     service_duration: number;
@@ -133,7 +134,8 @@ export class BusinessRegisterComponent implements OnInit {
         const payload_business: BusinessRegisterDTO = {
             name: this.businessName,
             domain: this.businessDomain,
-            description: this.description
+            description: this.description,
+            formatted_address: this.address
         };
 
         const payload_service: ServiceCreateDto = {
@@ -242,6 +244,8 @@ export class BusinessRegisterComponent implements OnInit {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.width = '400px'
+    dialogConfig.height='400px'
 
     dialogConfig.data = {
       data

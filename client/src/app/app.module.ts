@@ -58,11 +58,12 @@ import { BusinessViewComponent } from './pages/business-view/business-view.compo
 import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
 
 import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 import { FindBusinessDialogComponent } from './components/find-business-dialog/find-business-dialog.component';
-
+import { ExpendableCardComponent } from './components/expendable-card/expendable-card.component';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
     declarations: [
@@ -115,9 +116,11 @@ import { FindBusinessDialogComponent } from './components/find-business-dialog/f
         BusinessRegisterComponent,
         ServicesComponent,
         SyncCalendarsComponent,
-        FindBusinessDialogComponent
+        FindBusinessDialogComponent,
+        ExpendableCardComponent
     ],
     imports: [
+        NgxSpinnerModule,
         CovalentFileModule,
         BrowserModule,
         AppRoutingModule,
@@ -126,7 +129,11 @@ import { FindBusinessDialogComponent } from './components/find-business-dialog/f
         MaterialModule,
         FlexLayoutModule,
         HttpClientModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        AgmCoreModule.forRoot({
+            apiKey: "AIzaSyBstSo5jhmmQQ5u2ZjEXOLbMIzXJIdV_48"
+          })
+        
     ],
     entryComponents: [
         FindBusinessDialogComponent,

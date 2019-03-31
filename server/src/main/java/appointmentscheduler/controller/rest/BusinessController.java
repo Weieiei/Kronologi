@@ -50,6 +50,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -147,8 +149,10 @@ public class BusinessController extends AbstractController {
 
   @LogREST
   @GetMapping("/findWithGoogle")
-  public ResponseEntity<String> findWithGoogle(@RequestParam String nameOfBusiness) throws JSONException
-    {
+  public ResponseEntity<String> findWithGoogle(@RequestParam String nameOfBusiness) throws JSONException {
+
+      List<Business> googleBusinesses = new ArrayList<>();
+      final ObjectMapper mapper = objectMapperFactory.createMapper(Business.class, new BusinessSerializer());
       RestTemplate restTemplate = new RestTemplate();
       HttpHeaders headers = new HttpHeaders();
 
@@ -179,7 +183,7 @@ public class BusinessController extends AbstractController {
           UriComponentsBuilder build = UriComponentsBuilder.fromHttpUrl(inDepthPlacesAPIurl)
                   .queryParam("key", googleApiKey)
                   .queryParam("placeid", candidatesIdList.get(0))
-                  .queryParam("fields","opening_hours,geometry");
+                  .queryParam("fields","opening_hours,formatted_address,name");
 
            entity = new HttpEntity<>(headers);
 
@@ -190,11 +194,32 @@ public class BusinessController extends AbstractController {
                   String.class);
 
            JSONObject responseJson = new JSONObject(response.getBody());
-           JSONArray periodsArray = responseJson.getJSONObject("result").getJSONArray("periods");
+           JSONArray periodsArray = responseJson.getJSONObject("result").getJSONObject("opening_hours").getJSONArray("periods");
 
+           Set<BusinessHours> businessHoursList = new HashSet<>();
+
+           for(int i = 0 ; i < periodsArray.length(); i++){
+               BusinessHours temp = new BusinessHours();
+               temp.setDayOfWeek(periodsArray.getJSONObject(i).getJSONObject("open").getInt("day"));
+
+               String startTimeString = periodsArray.getJSONObject(i).getJSONObject("open").getString("time");
+               String endTimeString = periodsArray.getJSONObject(i).getJSONObject("close").getString("time");
+
+               temp.setStartTime(convertMilitaryStringToRegular(startTimeString));
+               temp.setEndTime(convertMilitaryStringToRegular(endTimeString));
+
+               businessHoursList.add(temp);
+
+           }
+
+           Business business = new Business();
+           business.setOwner(null);
+           business.setBusinessHours(businessHoursList);
+           business.setName(responseJson.getJSONObject("result").getString("name"));
+           business.setAddress(responseJson.getJSONObject("result").getString("formatted_address"));
+           googleBusinesses.add(business);
+          return getJson(mapper, googleBusinesses);
       }
-
-
 
       return ResponseEntity.status(HttpStatus.OK).build();
   }
@@ -213,6 +238,7 @@ public class BusinessController extends AbstractController {
 
     private ResponseEntity<Map<String, Object>> createBusiness(MultipartFile aFile, BusinessDTO businessDTO, BusinessHoursDTO businessHoursDTO[], ServiceCreateDTO service, UserRegisterDTO userRegisterDTO)throws IOException, MessagingException, NoSuchAlgorithmException {
         try {
+
             Map<String, Object> tokenMap = userService.register(userRegisterDTO, RoleEnum.ADMIN);
             Verification verification = (Verification) tokenMap.get("verification");
             emailService.sendRegistrationEmail(userRegisterDTO.getEmail(), verification.getHash(), true);
@@ -245,4 +271,12 @@ public class BusinessController extends AbstractController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+
+  private LocalTime convertMilitaryStringToRegular(String timeString){
+      int time = Integer.parseInt(timeString);
+      String value = String.format("%04d", time);
+      LocalTime lt = LocalTime.parse(value, DateTimeFormatter.ofPattern("HHmm"));
+
+      return lt;
+  }
 }
