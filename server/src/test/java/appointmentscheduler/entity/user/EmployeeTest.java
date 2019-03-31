@@ -2,7 +2,7 @@ package appointmentscheduler.entity.user;
 
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.event.AppEvent;
-import appointmentscheduler.entity.event.AppEventTest;
+import appointmentscheduler.entity.event.AppEventBase;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.exception.EmployeeDoesNotOfferServiceException;
@@ -48,7 +48,7 @@ public class EmployeeTest {
         LocalDate date = LocalDate.of(2019, Month.FEBRUARY, 27);
         LocalTime startTime = LocalTime.of(12, 0);
         LocalTime endTime = LocalTime.of(13, 0);
-        AppEvent appEvent = new AppEventTest(startTime, endTime, date);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
         Shift result = mockEmployee.isAvailable(appEvent);
 
@@ -66,7 +66,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(12, 0);
         LocalTime endTime = LocalTime.of(13, 0);
 
-        AppEvent appEvent = new AppEventTest(startTime, endTime, date);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
         Shift result = mockEmployee.isAvailable(appEvent);
 
@@ -84,7 +84,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(16, 0, 1);
         LocalTime endTime = LocalTime.of(17, 0);
 
-        AppEvent appEvent = new AppEventTest(startTime, endTime, date);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
         Shift result = mockEmployee.isAvailable(appEvent);
 
@@ -102,7 +102,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(7, 0);
         LocalTime endTime = LocalTime.of(7, 59, 59);
 
-        AppEvent appEvent = new AppEventTest(startTime, endTime, date);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
         Shift result = mockEmployee.isAvailable(appEvent);
 
@@ -120,7 +120,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(15, 30);
         LocalTime endTime = LocalTime.of(16, 30);
 
-        AppEvent appEvent = new AppEventTest(startTime, endTime, date);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
         Shift result = mockEmployee.isAvailable(appEvent);
 
@@ -138,7 +138,7 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(7, 0);
         LocalTime endTime = LocalTime.of(8, 30);
 
-        AppEvent appEvent = new AppEventTest(startTime, endTime, date);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
         Shift result = mockEmployee.isAvailable(appEvent);
 

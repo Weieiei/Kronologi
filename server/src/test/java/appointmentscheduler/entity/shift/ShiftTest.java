@@ -2,7 +2,7 @@ package appointmentscheduler.entity.shift;
 
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.event.AppEvent;
-import appointmentscheduler.entity.event.AppEventTest;
+import appointmentscheduler.entity.event.AppEventBase;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public class ShiftTest {
         LocalTime endTime = LocalTime.of(2,2,2);
 
         Shift shift = new Shift();
-        AppEvent appEvent = new AppEventTest(startTime, endTime, date);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
         shift.setDate(date);
         shift.setStartTime(startTime);
@@ -35,7 +35,7 @@ public class ShiftTest {
         LocalTime endTime = LocalTime.of(8,2,2);
 
         Shift shift = new Shift();
-        AppEvent appEvent = new AppEventTest(startTime.plusHours(1), endTime.minusHours(1), date);
+        AppEvent appEvent = new AppEventBase(startTime.plusHours(1), endTime.minusHours(1), date);
 
         shift.setDate(date);
         shift.setStartTime(startTime);
@@ -51,7 +51,7 @@ public class ShiftTest {
         LocalTime endTime = LocalTime.of(2,2,2);
 
         Shift shift = new Shift();
-        AppEvent appEvent = new AppEventTest(startTime.minusHours(1), startTime, date);
+        AppEvent appEvent = new AppEventBase(startTime.minusHours(1), startTime, date);
 
         shift.setDate(date);
         shift.setStartTime(startTime);
@@ -67,7 +67,7 @@ public class ShiftTest {
         LocalTime endTime = LocalTime.of(2,2,2);
 
         Shift shift = new Shift();
-        AppEvent appEvent = new AppEventTest(startTime.minusHours(1), endTime, date);
+        AppEvent appEvent = new AppEventBase(startTime.minusHours(1), endTime, date);
 
         shift.setDate(date);
         shift.setStartTime(startTime);
@@ -87,7 +87,7 @@ public class ShiftTest {
         shift.setStartTime(startTime);
         shift.setEndTime(endTime);
 
-        AppEvent appEvent = new AppEventTest(endTime, endTime.plusHours(2), date);
+        AppEvent appEvent = new AppEventBase(endTime, endTime.plusHours(2), date);
 
 
         assertFalse(shift.isWithin(appEvent));
@@ -100,7 +100,7 @@ public class ShiftTest {
         LocalTime endTime = LocalTime.of(2,2,2);
 
         Shift shift = new Shift();
-        AppEvent appEvent = new AppEventTest(startTime, endTime.plusHours(2), date);
+        AppEvent appEvent = new AppEventBase(startTime, endTime.plusHours(2), date);
 
         shift.setDate(date);
         shift.setStartTime(startTime);

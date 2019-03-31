@@ -4,6 +4,7 @@ import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.event.AppEventBase;
 import appointmentscheduler.entity.event.EventComparer;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.exception.ModelValidationException;
@@ -14,8 +15,8 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
+import static java.time.temporal.ChronoUnit.MINUTES;
+import java.util.*;
 
 @Entity
 @Table(name = "employee_shifts")
@@ -46,6 +47,7 @@ public class Shift extends AuditableEntity implements AppEvent {
     @ManyToOne
     @JoinColumn(name = "business_id")
     private Business business;
+
 
     public Shift() {
         appointments = new HashSet<>();
@@ -146,6 +148,53 @@ public class Shift extends AuditableEntity implements AppEvent {
         }
 
         return false;
+    }
+
+    public Set<AppEventBase> getAvailabilities(long duration) {
+        long diffMinute;
+        Set<AppEventBase> availabilities = new HashSet<>();
+        AppEventBase availability;
+        Appointment appointment;
+        Appointment nextAppointment;
+
+        //sort appointments by precedence
+        EventComparer eventComparer = new EventComparer();
+        List<Appointment> sortedAppointments = new ArrayList<>(appointments);
+        Collections.sort(sortedAppointments, eventComparer);
+
+        //shifts can only be on one day
+        LocalDate date = this.date;
+
+        for(int i = 0; i < sortedAppointments.size(); i++){
+            appointment = sortedAppointments.get(i);
+            //availability between start and first appointment
+            if(i == 0 && appointment.getStartTime().isAfter(this.startTime)) {
+                diffMinute = MINUTES.between(this.startTime, appointment.getStartTime());
+                if(diffMinute >= duration) {
+                    availability = new AppEventBase(startTime, startTime.plusMinutes(diffMinute), date);
+                    availabilities.add(availability);
+                }
+            }
+            //availability between last appointment and shift end
+            else if(i == sortedAppointments.size() - 1 && appointment.getEndTime().isBefore(this.endTime)){
+                diffMinute = MINUTES.between(appointment.getEndTime(), this.endTime);
+                if(diffMinute >= duration) {
+                    availability = new AppEventBase(appointment.getEndTime(), appointment.getEndTime().plusMinutes(diffMinute), date);
+                    availabilities.add(availability);
+                }
+            }
+            //availability between appointments
+            else if (i != sortedAppointments.size() - 1) {
+                nextAppointment = sortedAppointments.get(i+1);
+                diffMinute = MINUTES.between(appointment.getEndTime(), nextAppointment.getStartTime());
+                if(diffMinute >= duration) {
+                    availability = new AppEventBase(appointment.getEndTime(), appointment.getEndTime().plusMinutes(diffMinute), date);
+                    availabilities.add(availability);
+                }
+            }
+        }
+
+        return availabilities;
     }
 
     @PrePersist
