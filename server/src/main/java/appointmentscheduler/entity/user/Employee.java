@@ -4,6 +4,7 @@ import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.event.AppEvent;
+import appointmentscheduler.entity.event.AppEventBase;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.exception.*;
@@ -111,5 +112,17 @@ public class Employee extends User {
         }
 
         return null;
+    }
+
+    public Set<AppEventBase> getEmployeeAvailabilities(long duration) {
+        Set<AppEventBase> employeeAvailabilities = new HashSet<>();
+        Set<Shift> shifts = getShifts();
+
+        //get availabilities from each shift
+        for (final Shift shift : shifts) {
+            employeeAvailabilities.addAll(shift.getAvailabilities(duration));
+        }
+
+        return employeeAvailabilities;
     }
 }
