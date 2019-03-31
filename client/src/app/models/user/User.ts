@@ -26,4 +26,18 @@ export class User {
         this.updatedAt = updatedAt;
     }
 
+    // for guest users (userType is forced to be guest and there is no password, username)
+    public constructor(
+        id: number, firstName: string, lastName: string,
+        email: string, createdAt: Date, updatedAt: Date
+    ) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.userType = 'guest';
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
 }
