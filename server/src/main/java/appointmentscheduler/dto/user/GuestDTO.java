@@ -2,25 +2,35 @@ package appointmentscheduler.dto.user;
 
 public class GuestDTO {
 
-    private String name;
+    private String firstName;
+    private String lastName;
     private int phoneNumber;
     private String email;
 
     public GuestDTO() {
     }
 
-    public GuestDTO(String name, String email, int phoneNumber) {
+    public GuestDTO(String firstName, String lastName, String email, int phoneNumber) {
         this.email = email;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.phoneNumber = phoneNumber;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName(){
+        return lastName;
+    }
+
+    public void setLastName(String lastName){
+        this.lastName = lastName;
     }
 
     public int getPhoneNumber() {
