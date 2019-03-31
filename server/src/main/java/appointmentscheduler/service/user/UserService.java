@@ -356,7 +356,16 @@ public Map<String, Object> business_register_test(UserRepository userRepository,
         return buildTokenRegisterMap( token, verification);
     }
 
-//    public Map<String, Object> addGuest (GuestDTO guestDTO, User guest){
-//
-//    }
+    public Map<String, String> createGuest (GuestDTO guestDTO){
+        if (userRepository.findByEmailIgnoreCase(guestDTO.getEmail()).orElse(null) != null) {
+            throw new UserAlreadyExistsException(String.format("A guest with the email %s already exists.", guestDTO.getEmail()));
+        }
+
+        User guest = UserFactory.createGuest(User.class, guestDTO.getFirstName(), guestDTO.getLastName(), guestDTO.getEmail());
+
+        guest.setRole(RoleEnum.GUEST.toString());
+        User savedUser = userRepository.save(guest);
+        String token = generateToken(savedUser, guestDTO.getEmail()); //check how token is created to see if this is ok
+        return buildTokenMap(token);
+    }
 }

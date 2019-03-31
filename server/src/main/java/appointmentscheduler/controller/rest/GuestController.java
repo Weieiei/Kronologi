@@ -1,6 +1,8 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.user.GuestDTO;
+import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.email.EmailService;
@@ -30,11 +32,11 @@ public class GuestController extends AbstractController{
         this.appointmentService = appointmentService;
     }
 
-//    @PostMapping("/add")
-//    public ResponseEntity<Map<String, Object>> addGuest (@RequestBody GuestDTO guestDTO){
-//        Map<String, Object> tokenMap = userService.createGuest(guestDTO);
-//        return ResponseEntity.ok(tokenMap);
-//
-//    }
+    @PostMapping("/add")
+    public ResponseEntity<Map<String, String>> addGuest (@RequestBody GuestDTO guestDTO, User guest, UserRegisterDTO userRegisterDTO){
+        Map<String, String> tokenMap = userService.createGuest(guestDTO);
+        return ResponseEntity.ok(tokenMap);
+
+    }
 
 }

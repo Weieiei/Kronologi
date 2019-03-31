@@ -66,5 +66,15 @@ public class UserFactory {
             return user;
 
     }
+
+    public static User createGuest(Class<? extends User> clazz, String firstName, String lastName, String email) {
+        final User user = createFromType(clazz);
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+
+        return user;
+    }
 }
 
