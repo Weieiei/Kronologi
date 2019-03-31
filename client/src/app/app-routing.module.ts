@@ -28,6 +28,7 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
+import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 
 const routes: Routes = [
     // Login
@@ -38,6 +39,9 @@ const routes: Routes = [
     { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
 
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
+
+    // Guest
+    { path: 'guest_appointment', component: GuestAppointmentComponent, canActivate: [AnonymousGuard] },
 
     // Dashboard
     {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UserService} from "../../services/user/user.service";
 
 @Component({
   selector: 'app-guest-appointment',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GuestAppointmentComponent implements OnInit {
 
-  constructor() { }
+    firstName: string;
+    lastName: string;
+    email: string;
+
+  constructor(
+      private userService: UserService
+  ) { }
 
   ngOnInit() {
   }
