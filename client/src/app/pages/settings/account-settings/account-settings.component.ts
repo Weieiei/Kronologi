@@ -238,7 +238,12 @@ export class AccountSettingsComponent implements OnInit {
         if (this.selectedFile != null) {
             this.userService.uploadUserPicture(this.selectedFile).subscribe(
                 res => {
-                    this.fileUploadMsg = 'File seccessfully uploaded. ';
+                    console.log('File seccessfully uploaded. ');
+                    //this.fileUploadMsg = 'File seccessfully uploaded. ';
+                    //get picture and show it in the profile  or update the page
+                    this.router.navigate(['business']);
+
+
                 },
                 err => {
                     if (err instanceof HttpErrorResponse) {
