@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.util.List;
 import java.util.Set;
 
 public class BusinessSerializer extends StdSerializer<Business> {
@@ -38,12 +39,13 @@ public class BusinessSerializer extends StdSerializer<Business> {
 
     }
 
-    private void serializeAllHours(Set<BusinessHours> hours, JsonGenerator gen) throws IOException {
+    private void serializeAllHours(List<BusinessHours> hours, JsonGenerator gen) throws IOException {
         gen.writeArrayFieldStart("business_hours");
 
         for (BusinessHours businessHours : hours) {
             gen.writeStartObject();
-            String dayOfWeek = DayOfWeek.of(businessHours.getDayOfWeek()).toString();
+            String dayOfWeek = DayOfWeek.of(businessHours.getDayOfWeek()).toString().toLowerCase();
+            dayOfWeek = dayOfWeek.substring(0,1).toUpperCase() + dayOfWeek.substring(1).toLowerCase();
             gen.writeObjectField("day", dayOfWeek);
             gen.writeObjectField("openHour", businessHours.getStartTime().toString());
             gen.writeObjectField("closeHour", businessHours.getEndTime().toString());

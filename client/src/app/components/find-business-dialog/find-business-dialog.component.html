@@ -23,14 +23,24 @@
                     {{ business.name }}
                   </mat-panel-title>
                   <mat-panel-description>
-                     {{ business.address }}
+                     {{ business.formattedAddress }}
                   </mat-panel-description>
               </mat-expansion-panel-header>
+              
+              <div fxLayout="row">
+                  <div fxFlex="17">
+                    <agm-map [latitude]='business.lat' [longitude]='business.lng' 
+                    [mapTypeId]='mapType'>
+                    <agm-marker [latitude]="business.lat" [longitude]="business.lng"></agm-marker>
+                    </agm-map>  
+                  </div>
 
-              <agm-map [latitude]='business.lat' [longitude]='business.lng' 
-              [mapTypeId]='mapType'>
-              <agm-marker [latitude]="business.lat" [longitude]="business.lng"></agm-marker>
-              </agm-map>  
+                  <div fxFlex = "30">
+                        <div *ngFor="let dayInfo of business.business_hours">
+                            {{ dayInfo.day }} :  {{ dayInfo.openHour}}   -    {{ dayInfo.closeHour }}
+                        </div>
+                  </div>
+              </div>
           </mat-expansion-panel>
         </mat-accordion>
       </div>

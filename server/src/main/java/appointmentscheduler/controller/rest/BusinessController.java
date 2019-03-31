@@ -196,7 +196,7 @@ public class BusinessController extends AbstractController {
            JSONObject responseJson = new JSONObject(response.getBody());
            JSONArray periodsArray = responseJson.getJSONObject("result").getJSONObject("opening_hours").getJSONArray("periods");
 
-           Set<BusinessHours> businessHoursList = new HashSet<>();
+           List<BusinessHours> businessHoursList = new ArrayList<>();
 
            for(int i = 0 ; i < periodsArray.length(); i++){
                BusinessHours temp = new BusinessHours();
@@ -212,13 +212,14 @@ public class BusinessController extends AbstractController {
 
            }
 
+           Collections.sort(businessHoursList, Comparator.comparingInt(BusinessHours::getDayOfWeek));
            Business business = new Business();
            business.setOwner(null);
            business.setBusinessHours(businessHoursList);
            business.setName(responseJson.getJSONObject("result").getString("name"));
            business.setAddress(responseJson.getJSONObject("result").getString("formatted_address"));
            googleBusinesses.add(business);
-          return getJson(mapper, googleBusinesses);
+           return getJson(mapper, googleBusinesses);
       }
 
       return ResponseEntity.status(HttpStatus.OK).build();

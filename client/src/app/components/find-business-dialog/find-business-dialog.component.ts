@@ -2,7 +2,8 @@ import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { BusinessService } from '../../services/business/business.service'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import { BusinessDTO } from "../../interfaces/business/business-dto"
+import { BusinessDTO } from "../../interfaces/business/business-dto";
+import { BusinessHoursDTO } from "../../interfaces/business/businessHours-dto";
 import { trigger, state, style, transition, animate, group, query, stagger, keyframes } from '@angular/animations';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GeocodingApiService } from '../../services/google/geocode.service'
@@ -48,7 +49,8 @@ import { GeocodingApiService } from '../../services/google/geocode.service'
   ],
   styles: [`
   agm-map {
-    height: 300px;
+    height: 200px;
+    width:  200px;
   }
 `]
 })
@@ -60,7 +62,7 @@ export class FindBusinessDialogComponent implements OnInit {
   businessWasFetched: boolean = false;
   BusinessName : string
   businessArray : BusinessDTO[];
-  arr : number[] = [1,2,3,4,5,6,7,8,9,10,11,12]
+  daysOfWeek : string[] = ["Monday","Tuesday","Wednesday","Thursday", "Friday", "Saturday", "Sunday"];
   constructor(private geoCodeService : GeocodingApiService, private dialogRef: MatDialogRef<FindBusinessDialogComponent>, private spinner: NgxSpinnerService,private fb : FormBuilder,private businessService : BusinessService,  @Inject(MAT_DIALOG_DATA)public data:any) {
     this.businessArray = [];
   }
@@ -77,8 +79,30 @@ export class FindBusinessDialogComponent implements OnInit {
         res => {
             console.log(res)
             for(const business of res){
-              console.log(business)
               this.updateLatLngFromAddress(business);
+              if(business.business_hours.length < 7){
+                for(const [index, value] of business.business_hours.entries()){
+                  console.log(index);
+                  console.log(value);
+                  if(business.business_hours[index].day !== this.daysOfWeek[index]){
+                    let businessHourTemp: BusinessHoursDTO = {
+                        day : this.daysOfWeek[index],
+                        openHour: "Close",
+                        closeHour: "Close"
+                    }
+                    console.log(businessHourTemp);
+                    business.business_hours.splice(index, 0, businessHourTemp);
+                  }
+                }
+              }
+              if(business.business_hours.length < 7){
+                let businessHourTemp: BusinessHoursDTO = {
+                  day : "Sunday",
+                  openHour: "Close",
+                  closeHour: "Close"
+              }
+                business.business_hours.push(businessHourTemp);
+              }
               this.businessArray.push(business);
             }
             this.businessWasFetched = true;
