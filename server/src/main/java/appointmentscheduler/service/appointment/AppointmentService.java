@@ -7,10 +7,12 @@ import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.appointment.GeneralAppointment;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.EmployeeService;
+import appointmentscheduler.entity.event.AppEventBase;
 import appointmentscheduler.entity.googleEntity.SyncEntity;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.EmployeeAvailability;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.exception.*;
@@ -395,6 +397,26 @@ public class AppointmentService {
 
     public CancelledAppointment findByCancelledIdAndBusinessId(long id, long businessId) {
         return cancelledRepository.findByIdAndBusinessId(id, businessId);
+    }
+
+    public Set<EmployeeAvailability> getEmployeeAvailabilitiesForService(long businessId, long serviceId){
+        Service service = serviceRepository.findByIdAndBusinessId(serviceId, businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Service not found under user with ID %d for business %d.", serviceId , businessId)));
+        long duration = (long) service.getDuration();
+        Set<Employee> employees = employeeRepository.findByBusinessId(businessId);
+        Set<AppEventBase> currentAvailability;
+        Set<EmployeeAvailability> allAvailabilities = new HashSet<>();
+        EmployeeAvailability current;
+
+        for(Employee employee: employees){
+            currentAvailability = employee.getEmployeeAvailabilities(duration);
+            if(currentAvailability.size() > 0) {
+                current = new EmployeeAvailability(employee, employee.getEmployeeAvailabilities(duration));
+                allAvailabilities.add(current);
+            }
+        }
+
+        return allAvailabilities;
     }
 
 
