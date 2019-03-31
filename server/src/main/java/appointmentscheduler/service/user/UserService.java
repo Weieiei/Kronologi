@@ -2,10 +2,7 @@ package appointmentscheduler.service.user;
 
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.settings.UpdateSettingsDTO;
-import appointmentscheduler.dto.user.UpdateEmailDTO;
-import appointmentscheduler.dto.user.UpdatePasswordDTO;
-import appointmentscheduler.dto.user.UserLoginDTO;
-import appointmentscheduler.dto.user.UserRegisterDTO;
+import appointmentscheduler.dto.user.*;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
@@ -358,4 +355,8 @@ public Map<String, Object> business_register_test(UserRepository userRepository,
 
         return buildTokenRegisterMap( token, verification);
     }
+
+//    public Map<String, Object> addGuest (GuestDTO guestDTO, User guest){
+//
+//    }
 }
