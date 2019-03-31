@@ -167,6 +167,8 @@ public class EmployeeTest {
         shifts.add(new Shift(mockEmployee,date2, startTime2, endTime2));
         shifts.add(new Shift(mockEmployee,date3, startTime3, endTime3));
 
+        mockEmployee.setShifts(shifts);
+
         return shifts;
     }
 
