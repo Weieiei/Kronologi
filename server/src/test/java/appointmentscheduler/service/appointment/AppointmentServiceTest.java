@@ -8,22 +8,17 @@ import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
-import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.*;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.googleService.GoogleSyncService;
-import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.Answers;
-import org.mockito.junit.MockitoRule;
-import org.mockito.quality.Strictness;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
