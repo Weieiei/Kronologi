@@ -1,7 +1,8 @@
 package appointmentscheduler.entity.appointment;
 
-import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.event.EventComparer;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-public class Appointment extends GeneralAppointment {
+public class Appointment extends GeneralAppointment implements AppEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -170,7 +171,7 @@ public class Appointment extends GeneralAppointment {
     }
 
     public boolean isConflicting(Appointment appointment) {
-        return appointment.getDate().equals(this.getDate()) &&
-                !(appointment.getEndTime().isBefore(this.getStartTime()) || appointment.getEndTime().equals(this.getStartTime()) || appointment.getStartTime().isAfter(this.getEndTime()) || appointment.getStartTime().equals(this.getEndTime()));
+        EventComparer eventComparer = new EventComparer();
+        return eventComparer.compare(this, appointment) == 0;
     }
 }

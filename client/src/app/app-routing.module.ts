@@ -20,7 +20,9 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
-
+import { BusinessViewComponent } from './pages/business-view/business-view.component';
+import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
+import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
@@ -34,6 +36,7 @@ const routes: Routes = [
 
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
+    { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
 
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
 
@@ -65,7 +68,6 @@ const routes: Routes = [
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
-
             { path: 'reserve', component: ReserveComponent },
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },

@@ -20,15 +20,18 @@ public class BusinessService {
         this.businessRepository = businessRepository;
     }
 
-    public Map<String, String> add(Business business) {
+
+    public long add(Business business) {
         try{
-            businessRepository.save(business);
-            return message ("Successfully added business");
+            business = businessRepository.save(business);
+            long id = business.getId();
+            return id;
         }
         catch (Exception e) {
-            return message(e.getMessage());
+            return e.hashCode();
         }
     }
+
 
     private Map<String, String> message(String message) {
         Map<String, String> map = new HashMap<>();

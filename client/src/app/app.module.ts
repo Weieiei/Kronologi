@@ -56,6 +56,9 @@ import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/ad
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
+
+import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
+
 import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
@@ -65,6 +68,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/service-selection-grid-list/service-selection-grid-list.component';
 import { SearchInputComponent } from './components/search-box/search-box.component';
+
 
 @NgModule({
     declarations: [
@@ -114,6 +118,7 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
         ReasonDialogComponent,
         BusinessViewComponent,
         CardsUiComponent,
+        BusinessRegisterComponent,
         ServicesComponent,
         SyncCalendarsComponent,
         DarnCarouselComponent,

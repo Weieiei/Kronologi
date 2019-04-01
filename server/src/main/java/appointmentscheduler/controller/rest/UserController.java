@@ -14,28 +14,37 @@ import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.ResourceNotFoundException;
+import appointmentscheduler.repository.GoogleCredentialRepository;
+import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.email.EmailService;
+import appointmentscheduler.service.service.ServiceService;
 import appointmentscheduler.service.user.UserService;
 import appointmentscheduler.service.verification.VerificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
+import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.service.business.BusinessService;
+import appointmentscheduler.repository.BusinessRepository;
 
 @RestController
 @RequestMapping("${rest.api.path}/user")
@@ -44,6 +53,11 @@ public class UserController extends AbstractController {
     private final UserService userService;
     private final EmailService emailService;
     private final VerificationService verificationService;
+    private final BusinessRepository businessRepository;
+    private final BusinessService businessService;
+
+
+    GoogleCredentialRepository repo;
 
     @Autowired
     VerificationRepository verificationRepository;
@@ -51,12 +65,16 @@ public class UserController extends AbstractController {
     private final ObjectMapperFactory objectMapperFactory;
 
     @Autowired
-    public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory) {
+    public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory,
+                          GoogleCredentialRepository repo, BusinessRepository businessRepository) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.emailService = emailService;
         this.verificationService = verificationService;
         this.objectMapperFactory = objectMapperFactory;
+        this.businessRepository = businessRepository;
+        this.businessService = new BusinessService(businessRepository);
+        this.repo = repo;
     }
 
     @Autowired
@@ -84,7 +102,20 @@ public class UserController extends AbstractController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+    @PostMapping("/{businessId}/business_register")
+    public ResponseEntity<Map<String, Object>> business_register(@PathVariable long businessId, @RequestBody UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+        try {
+            Business business = businessService.findById(businessId);
 
+            Map<String, Object> tokenMap = userService.business_register(userRegisterDTO,business);
+            Verification verification = (Verification) tokenMap.get("verification");
+            emailService.sendRegistrationEmail(userRegisterDTO.getEmail(),verification.getHash(), true);
+            return ResponseEntity.ok(tokenMap);
+        } catch (BadCredentialsException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
     @LogREST(LoggingLevel.WARN)
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO userLoginDTO) {
@@ -115,7 +146,6 @@ public class UserController extends AbstractController {
     public ResponseEntity<Map<String, String>> updateSettings(@RequestBody UpdateSettingsDTO updateSettingsDTO) {
         return ResponseEntity.ok(userService.updateSettings(getUserId(), updateSettingsDTO));
     }
-
     @GetMapping("/phone")
     public PhoneNumber getPhoneNumber(@RequestAttribute long userId) {
         return userService.getPhoneNumber(userId);
@@ -158,5 +188,30 @@ public class UserController extends AbstractController {
         cancel.setCancelReason(cancel.getCancelReason());
         CancelledAppointment cancelled = cancelledAppointmentConverted.convert(cancel);
         return ResponseEntity.ok(appointmentService.cancel(cancelled));
+    }
+
+    @LogREST
+    @GetMapping(value = "/unlinkAccount")
+    public ResponseEntity unlinkGoogleAccount(HttpServletResponse request) throws Exception{
+
+        GoogleCred cred = repo.findByKey(String.valueOf(getUserId())).get();
+
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://accounts.google.com/o/oauth2/revoke")
+                .queryParam("token", cred.getAccessToken());
+
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
+        HttpEntity<String> response = restTemplate.exchange(
+                builder.toUriString(),
+                HttpMethod.GET,
+                entity,
+                String.class);
+
+        repo.delete(cred);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
