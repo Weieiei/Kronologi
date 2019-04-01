@@ -15,7 +15,8 @@ import {
     MatSidenavModule,
     MatSnackBarModule,
     MatTableModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatRadioModule
 } from '@angular/material';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,6 +28,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     imports: [
+        MatRadioModule,
         MatExpansionModule,
         MatButtonModule,
         MatCheckboxModule,
@@ -51,6 +53,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatRippleModule
     ],
     exports: [
+        MatRadioModule,
         MatExpansionModule,
         MatButtonModule,
         MatCheckboxModule,

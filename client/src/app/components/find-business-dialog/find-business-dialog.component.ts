@@ -55,7 +55,7 @@ import { GeocodingApiService } from '../../services/google/geocode.service'
 `]
 })
 export class FindBusinessDialogComponent implements OnInit {
-  
+  chosenBusiness : BusinessDTO;
   mapType = 'roadmap';
   form: FormGroup;
   animationState : boolean = true;
@@ -63,7 +63,7 @@ export class FindBusinessDialogComponent implements OnInit {
   BusinessName : string
   businessArray : BusinessDTO[];
   daysOfWeek : string[] = ["Monday","Tuesday","Wednesday","Thursday", "Friday", "Saturday", "Sunday"];
-  constructor(private geoCodeService : GeocodingApiService, private dialogRef: MatDialogRef<FindBusinessDialogComponent>, private spinner: NgxSpinnerService,private fb : FormBuilder,private businessService : BusinessService,  @Inject(MAT_DIALOG_DATA)public data:any) {
+  constructor(private geoCodeService : GeocodingApiService, private dialogRef: MatDialogRef<FindBusinessDialogComponent>, private spinner: NgxSpinnerService,private fb : FormBuilder,private businessService : BusinessService,  @Inject(MAT_DIALOG_DATA)public data:BusinessDTO) {
     this.businessArray = [];
   }
    
@@ -132,6 +132,14 @@ export class FindBusinessDialogComponent implements OnInit {
                 console.log('geocodingAPIService', 'Other error', response.status);
             }
         });
-}
+  }
 
+  onSelectionChange(business: BusinessDTO) : void{
+    this.chosenBusiness = business;
+    this.data = business;
+  }
+
+  closeDialog() : void {
+    this.dialogRef.close();
+  }
 }

@@ -83,10 +83,11 @@
             </div>
 
 
-      <div>
-       <button mat-button matStepperNext>Next</button>
-
-      </div>
+       <div>
+            <div style="margin-top:2rem; margin-left:45rem">
+                <button mat-raised-button class="button-color" matStepperNext>Next</button>
+            </div>
+        </div>
     </form>
 
   </mat-step>
@@ -96,7 +97,7 @@
 
       <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
             <p>Find my business through Google!</p>
-            <button mat-raised-button  (click)=openDialog() >Let's Sync Up!</button>
+            <button mat-raised-button  (click)=openFindBusinessDialog() >Let's Sync Up!</button>
     
       </div>
       <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
@@ -111,8 +112,27 @@
                         </mat-form-field>
 
              </div>
-
-
+             
+             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px" style="margin-bottom:1rem">
+                        <div class="div-file-selector-text">
+                                Selected Business Logo: 
+                        </div>    
+                        <div class="file-selector-div">
+                            <td-file-upload #singleFileUpload [(ngModel)]="files" (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
+                            accept=".jpeg,.jpg,.png,.svg">
+                        <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
+                                <ng-template td-file-input-label>
+                                    <mat-icon>attach_file</mat-icon>
+                                    <span>
+                                    Choose a file...
+                                    </span>
+                                    <span [hidden]="!singleFileUpload?.required">*</span>
+                                </ng-template>
+                                </td-file-upload>
+                        </div>
+                
+            </div>
+            
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Business Name</mat-label>
@@ -129,12 +149,59 @@
             </div>
 
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                <div class = "div-text-box-size">
+                    <div class="div-indicator-text">
+                            Address: 
+                    </div>    
                     <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Address</mat-label>
+                        <mat-label>Ex: 2044 Main St.</mat-label>
                         <input matInput [(ngModel)]="address" [ngModelOptions]="{standalone: true}" type="text" name="address" required appAutofocus>
                     </mat-form-field>
+                </div>
 
+                <div style="padding-left:8rem" >
+                        <div class="div-indicator-text">
+                                City: 
+                        </div>    
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Ex: Toronto</mat-label>
+                            <input matInput [(ngModel)]="city" [ngModelOptions]="{standalone: true}" type="text" name="city" required appAutofocus>
+                        </mat-form-field>
+                    </div>
+
+                 
+                    <div style="padding-left:.5rem" >
+                            <div class="div-indicator-text">
+                                    Province: 
+                            </div>    
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Ex: Quebec</mat-label>
+                                <input matInput [(ngModel)]="province" [ngModelOptions]="{standalone: true}" type="text" name="city" required appAutofocus>
+                            </mat-form-field>
+                    </div>   
              </div>
+
+             
+             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                    <div style="padding-left:7rem" >
+                            <div class="div-indicator-text">
+                                    Country: 
+                            </div>    
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Ex: Canada</mat-label>
+                                <input matInput [(ngModel)]="country" [ngModelOptions]="{standalone: true}" type="text" name="city" required appAutofocus>
+                            </mat-form-field>
+                    </div>   
+                    <div style="padding-left:.5rem" >
+                            <div class="div-indicator-text">
+                                    Postal Code: 
+                            </div>    
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Ex: H1A 1A1</mat-label>
+                                <input matInput [(ngModel)]="postalCode" [ngModelOptions]="{standalone: true}" type="text" name="city" required appAutofocus>
+                            </mat-form-field>
+                    </div>
+                 </div>
         
             
             <div>
@@ -174,23 +241,11 @@
                
 
 
-            <p>Selected Picture: {{fileSelectMsg}}</p>
-            <td-file-upload #singleFileUpload [(ngModel)]="files" (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
-                accept=".jpeg,.jpg,.png,.svg">
-              <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
-              <ng-template td-file-input-label>
-                <mat-icon>attach_file</mat-icon>
-                <span>
-                  Choose a file...
-                </span>
-                  <span [hidden]="!singleFileUpload?.required">*</span>
-              </ng-template>
-            </td-file-upload>
-
-
-            <div>
-            <button mat-button matStepperPrevious>Back</button>
-             <button mat-button matStepperNext>Next</button>
+        <div>
+            <div style="margin-top:2rem; margin-left:35rem">
+                <button mat-raised-button class="button-color" matStepperPrevious style="margin-right:1rem">Back</button> 
+                <button mat-raised-button class="button-color" matStepperNext>Next</button>
+            </div>
         </div>
 
 
@@ -218,12 +273,12 @@
 
 
             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
-            <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
-            <button mat-raised-button color="primary" type="submit" (click)="business_register()">Register</button>
+            <button mat-raised-button class="button-color-sign-in" color="primary" type="button" routerLink="/login">Sign in instead</button>
+            <button mat-raised-button class="button-color" matStepperPrevious style="margin-left:30.75rem">Back</button>
+            <button mat-raised-button class="button-color" type="submit" (click)="business_register()">Next</button>
         </div>
-
+        
         <div>
-      <button mat-button matStepperPrevious>Back</button>
     </div>
 
     </form>
@@ -233,4 +288,15 @@
 
 
     </div>
+</div>
+
+<div [@slideInOut]="!animationState" >
+        <ngx-spinner  bdColor = "rgba(109,109,109,0.7)"   size = "medium"   color = "#673ab7" type = "ball-scale-ripple-multiple" fullScreen = "false" >
+              <p style="color: #673ab7" > Hold on tight,  we're trying to save your info. </p>
+            <div class="div-center-button">
+                    <button mat-raised-button color="primary" (click)=stopRegistering()>Stop Registering my business</button>
+            </div>
+            
+        </ngx-spinner>
+  
 </div>

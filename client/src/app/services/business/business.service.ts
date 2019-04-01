@@ -40,7 +40,7 @@ export class BusinessService {
                 type: "application/json",
             }));
         if(avatar != null){
-            return this.http.post<boolean>(['api', 'businesses', 'businessWithAvatar'].join('/'), formData);
+            return this.http.post<boolean>(['api', 'businesses', 'businessWithLogo'].join('/'), formData);
         }else{
             return this.http.post<boolean>(['api', 'businesses', 'businessNoLogo'].join('/'), formData);
         }

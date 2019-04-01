@@ -15,6 +15,8 @@ import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto
 import { BusinessHoursDTO } from '../../../interfaces/business/businessHours-dto'
 import { FindBusinessDialogComponent } from '../../../components/find-business-dialog/find-business-dialog.component';
 import { MatDialogConfig, MatDialog } from '@angular/material';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { trigger, state, style, transition, animate, group } from '@angular/animations';
 import { map } from 'rxjs/operators';
 export interface Domain {
     value: string;
@@ -27,7 +29,41 @@ export interface Domain {
 @Component ({
   selector: 'app-business-register',
   templateUrl: './business-register.component.html',
-  styleUrls: ['./business-register.component.scss']
+  styleUrls: ['./business-register.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('true', style({  
+          'max-height': '500px', 'opacity': '1', 'visibility': 'visible'
+      })),
+      state('false', style({
+          'max-height': '0px', 'opacity': '0', 'visibility': 'hidden'
+      })),
+      transition('true => false', [group([
+          animate('1ms ease-in-out', style({
+              'opacity': '0'
+          })),
+          animate('1ms ease-in-out', style({
+              'max-height': '0px'
+          })),
+          animate('1ms ease-in-out', style({
+              'visibility': 'hidden'
+          }))
+      ]
+      )]),
+      transition('false => true', [group([
+          animate('1ms ease-in-out', style({
+              'visibility': 'visible'
+          })),
+          animate('1ms ease-in-out', style({
+              'max-height': '500px'
+          })),
+          animate('1ms ease-in-out', style({
+              'opacity': '1'
+          }))
+      ]
+      )])
+    ])
+  ]
 })
 export class BusinessRegisterComponent implements OnInit {
 
@@ -35,8 +71,9 @@ export class BusinessRegisterComponent implements OnInit {
    possibleBusinessHours : string[] = ["00:00", "01:00", "02:00", "03:00", "04:00","05:00","06:00", "07:00",
                                         "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15,00",
                                         "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "24:00"]
-
+    selectedBusiness: BusinessDTO;
     businessHourMap = new Map();
+    animationState : boolean = true;
     fileSelectMsg: string = 'No file selected yet.';
     fileUploadMsg: string = 'No file uploaded yet.';
     disabled: boolean = false;
@@ -57,6 +94,10 @@ export class BusinessRegisterComponent implements OnInit {
       ];
     description: string;
     address: string;
+    city:  string;
+    province: string;
+    country: string;
+    postalCode : string;
 // new service object
     service: string;
     service_duration: number;
@@ -80,12 +121,11 @@ export class BusinessRegisterComponent implements OnInit {
     businessId: number;
 
     constructor(
+        private spinner: NgxSpinnerService,
         private dialog: MatDialog,
         private http: HttpClient,
         private router: Router,
         private _formBuilder: FormBuilder,
-        private userService: UserService,
-        private serviceService: ServiceService,
         private googleAnalytics: GoogleAnalyticsService,
         private businessService: BusinessService
          ) { }
@@ -114,7 +154,8 @@ export class BusinessRegisterComponent implements OnInit {
     }
 
     business_register() {
-
+        this.spinner.show();
+        this.animationState = false;
         let businessHoursDTO : BusinessHoursDTO[] = [];
         if(!this.isEmptyObject(this.businessHourMap)){
           console.log("hello")
@@ -128,8 +169,9 @@ export class BusinessRegisterComponent implements OnInit {
              businessHoursDTO.push(businessHourDTOtemp);
           });
         }
-
-        console.log(this.businessHourMap)
+        
+        let finalizedAddress : string = this.address + "," + this.city + "," + this.province + " " + this.postalCode;
+        console.log(finalizedAddress)
         console.log(businessHoursDTO);
         const payload_business: BusinessRegisterDTO = {
             name: this.businessName,
@@ -168,7 +210,10 @@ export class BusinessRegisterComponent implements OnInit {
             res => {
                this.router.navigate(['login']);
             },
-            err => console.log(err)
+            err => {
+
+              console.log(err)
+            }
         );
 
     }
@@ -238,9 +283,8 @@ export class BusinessRegisterComponent implements OnInit {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   }
 
-  openDialog(){
+  openFindBusinessDialog(){
     const dialogConfig = new MatDialogConfig();
-    let data: {businessName:""};
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -248,10 +292,19 @@ export class BusinessRegisterComponent implements OnInit {
     dialogConfig.height='400px'
 
     dialogConfig.data = {
-      data
+      business: this.selectedBusiness
     };
-    this.dialog.open(FindBusinessDialogComponent, dialogConfig);
-}
+    let dialogRef =this.dialog.open(FindBusinessDialogComponent, dialogConfig);
+    
+    dialogRef.afterClosed().subscribe(business =>{
+      
+    });
+  }
+  
+  stopRegistering(){
+    this.animationState=true;
+    this.spinner.hide();
+  }
 }
 
 /*

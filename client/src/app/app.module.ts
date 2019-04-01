@@ -62,8 +62,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 import { FindBusinessDialogComponent } from './components/find-business-dialog/find-business-dialog.component';
-import { ExpendableCardComponent } from './components/expendable-card/expendable-card.component';
 import { AgmCoreModule } from '@agm/core';
+import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 
 @NgModule({
     declarations: [
@@ -117,7 +117,8 @@ import { AgmCoreModule } from '@agm/core';
         ServicesComponent,
         SyncCalendarsComponent,
         FindBusinessDialogComponent,
-        ExpendableCardComponent
+        ErrorDialogComponent,
+        ErrorDialogComponent
     ],
     imports: [
         NgxSpinnerModule,
@@ -136,6 +137,7 @@ import { AgmCoreModule } from '@agm/core';
         
     ],
     entryComponents: [
+        ErrorDialogComponent,
         FindBusinessDialogComponent,
         TimePickerDialogComponent,
         CancelDialogComponent,
