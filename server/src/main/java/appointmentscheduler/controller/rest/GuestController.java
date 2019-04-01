@@ -33,8 +33,8 @@ public class GuestController extends AbstractController{
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Map<String, String>> addGuest (@RequestBody GuestDTO guestDTO, User guest, UserRegisterDTO userRegisterDTO){
-        Map<String, String> tokenMap = userService.createGuest(guestDTO);
+    public ResponseEntity<Map<String, Object>> addGuest (@RequestBody UserRegisterDTO userRegisterDTO){
+        Map<String, Object> tokenMap = userService.createGuest(userRegisterDTO);
         return ResponseEntity.ok(tokenMap);
     }
 

@@ -22,6 +22,10 @@ export class UserService {
     constructor(private http: HttpClient) {
     }
 
+    register_guest(payload: UserRegisterDTO): Observable<any> {
+        return this.http.post<any>(['api', 'guest', 'add'].join('/'),payload);
+    }
+
     register(payload: UserRegisterDTO): Observable<any> {
         return this.http.post<any>(['api', 'user', 'register'].join('/'), payload);
     }
@@ -47,6 +51,7 @@ export class UserService {
     }
 
     setToken(token: string): void {
+        debugger;
         localStorage.setItem(UserService.TOKEN_KEY, token);
     }
 
