@@ -185,7 +185,7 @@ public class EmployeeTest {
         when(mockAppointment.getClient()).thenReturn(client);
 
         when(mockService.getId()).thenReturn((long)1);
-        employee.setEmployeeServices(Arrays.asList(mockService));
+        employee.addService(mockService);
         when(mockRetrievedService.getId()).thenReturn((long)2);
         when(mockAppointment.getService()).thenReturn(mockRetrievedService);
 
