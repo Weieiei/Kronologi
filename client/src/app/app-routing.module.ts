@@ -29,6 +29,8 @@ import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 
+import { ClientGuard } from './guards/client/client.guard';
+
 const routes: Routes = [
     // Login
     { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
@@ -58,7 +60,7 @@ const routes: Routes = [
             // Reserving and modifying reservation
             {
                 path: 'reserve', children: [
-                    { path: '', component: ReserveComponent, data: { edit: false } },
+                    { path: '', component: ReserveComponent, data: { edit: false }, canActivate: [ClientGuard] },
                     { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
                 ]
             },
@@ -68,7 +70,7 @@ const routes: Routes = [
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
 
-            { path: 'reserve', component: ReserveComponent },
+            { path: 'reserve', component: ReserveComponent, canActivate: [ClientGuard] },
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
