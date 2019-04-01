@@ -27,19 +27,17 @@
                   </mat-panel-description>
               </mat-expansion-panel-header>
               
-              <div fxLayout="row">
-                  <div fxFlex="17">
+              <div  [ngClass] = "main">
                     <agm-map [latitude]='business.lat' [longitude]='business.lng' 
                     [mapTypeId]='mapType'>
                     <agm-marker [latitude]="business.lat" [longitude]="business.lng"></agm-marker>
-                    </agm-map>  
-                  </div>
+                    </agm-map> 
 
-                  <div fxFlex = "30">
+                    <mat-card>
                         <div *ngFor="let dayInfo of business.business_hours">
                             {{ dayInfo.day }} :  {{ dayInfo.openHour}}   -    {{ dayInfo.closeHour }}
                         </div>
-                  </div>
+                    </mat-card>
               </div>
           </mat-expansion-panel>
         </mat-accordion>
