@@ -7,10 +7,12 @@ import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.appointment.GeneralAppointment;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.EmployeeService;
+import appointmentscheduler.entity.event.AppEventBase;
 import appointmentscheduler.entity.googleEntity.SyncEntity;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.EmployeeAvailability;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.exception.*;
@@ -239,7 +241,7 @@ public class AppointmentService {
     }
 
     public Appointment cancel(long appointmentId, long businessId, long clientId) {
-
+        Employee employee;
         Appointment appointment = appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, businessId , clientId)
                 .orElseThrow(() -> new NotYourAppointmentException("This appointment either belongs to another user or doesn't exist."));
 
@@ -248,7 +250,9 @@ public class AppointmentService {
         }
 
         appointment.setStatus(AppointmentStatus.CANCELLED);
-
+        //remove appointment from employees shift
+        employee = appointment.getEmployee();
+        employee.removeAppointment(appointment);
         try {
             sendCancellationMessage(appointment);
         } catch (MessagingException e) {
@@ -302,9 +306,8 @@ public class AppointmentService {
      * @throws EmployeeNotWorkingException          If the employee does not have a shift on the date specified.
      * @throws EmployeeAppointmentConflictException If the employee is already booked on the date and time specified.
      * @throws ClientAppointmentConflictException   If the client is already booked on the date and time specified.
-     * @throws NoRoomAvailableException             If there are no rooms available to perform the service specified.
      */
-    private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
+    private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException{
         final Employee employee = appointment.getEmployee();
 
 
@@ -312,43 +315,14 @@ public class AppointmentService {
             checkCalendarSync(googleCredentialRepository.findByKey(String.valueOf(employee.getId())).get().getAccessToken(), googleSyncService.findById(employee.getId()).getSyncToken(), employee);
         }
 
-        // Make sure the client and employee are not the same
-        if (appointment.getClient().equals(employee)) {
-            throw new ModelValidationException("You cannot book an appointment with yourself.");
-        }
-
-        // Make sure the employee can perform the service requested
-        boolean employeeCanDoService = false;
-        for (EmployeeService service : appointment.getService().getEmployees()) {
-            if(service.getEmployee().getId() == employee.getId()){
-                employeeCanDoService = true;
-                break;
-            }
-        }
-
-
-        if (!employeeCanDoService) {
-            throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");
-        }
-
-        // Check if the employee is working on the date specified
-        boolean employeeIsAvailable = employee.isAvailable(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
-
-        if (!employeeIsAvailable) {
-            throw new EmployeeNotWorkingException("The employee does not have a shift.");
-        }
-
-        // Check if the employee does not have an appointment scheduled already in that time slot
-        List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(appointment.getDate(), employee.getId(), appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
-        if (DateConflictChecker.hasConflictList(employeeAppointments, appointment, modifying)) {
-            throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee.");
-        }
-
         // Check if the client does not have an appointment scheduled already
         List<Appointment> clientAppointments = appointmentRepository.findByDateAndClientIdAndBusinessIdAndStatus(appointment.getDate(), appointment.getClient().getId(),appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
         if(DateConflictChecker.hasConflictList(clientAppointments, appointment, modifying)) {
             throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
         }
+
+        employee.validateAndAddAppointment(appointment);
+
     }
 
     public Appointment findMyAppointmentById(long userId, long appointmentId) {
@@ -425,6 +399,26 @@ public class AppointmentService {
 
     public CancelledAppointment findByCancelledIdAndBusinessId(long id, long businessId) {
         return cancelledRepository.findByIdAndBusinessId(id, businessId);
+    }
+
+    public Set<EmployeeAvailability> getEmployeeAvailabilitiesForService(long businessId, long serviceId){
+        Service service = serviceRepository.findByIdAndBusinessId(serviceId, businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Service not found under user with ID %d for business %d.", serviceId , businessId)));
+        long duration = (long) service.getDuration();
+        Set<Employee> employees = employeeRepository.findByBusinessId(businessId);
+        Set<AppEventBase> currentAvailability;
+        Set<EmployeeAvailability> allAvailabilities = new HashSet<>();
+        EmployeeAvailability current;
+
+        for(Employee employee: employees){
+            currentAvailability = employee.getEmployeeAvailabilities(duration);
+            if(currentAvailability.size() > 0) {
+                current = new EmployeeAvailability(employee, employee.getEmployeeAvailabilities(duration));
+                allAvailabilities.add(current);
+            }
+        }
+
+        return allAvailabilities;
     }
 
 

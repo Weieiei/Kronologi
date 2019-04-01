@@ -3,21 +3,21 @@ package appointmentscheduler.entity.event;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class AppEventTest implements AppEvent {
+public class AppEventBase implements AppEvent {
     //CLass created to test event conflict functionality
     long id;
     LocalTime startTime;
     LocalTime endTime;
     LocalDate date;
 
-    public AppEventTest(long id, LocalTime startTime, LocalTime endTime, LocalDate date) {
+    public AppEventBase(long id, LocalTime startTime, LocalTime endTime, LocalDate date) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
     }
 
-    public AppEventTest(LocalTime startTime, LocalTime endTime, LocalDate date) {
+    public AppEventBase(LocalTime startTime, LocalTime endTime, LocalDate date) {
         this.id = 0;
         this.startTime = startTime;
         this.endTime = endTime;

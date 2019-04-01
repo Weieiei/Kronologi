@@ -1,16 +1,22 @@
 package appointmentscheduler.entity.user;
 
+import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.event.AppEvent;
+import appointmentscheduler.entity.event.AppEventBase;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
+import appointmentscheduler.exception.EmployeeDoesNotOfferServiceException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,26 +38,27 @@ public class EmployeeTest {
         shifts = createMockShifts();
     }
 
-   // @Test
+   @Test
     public void isWorkingSuccess() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 12:00 - 13:00
         LocalDate date = LocalDate.of(2019, Month.FEBRUARY, 27);
         LocalTime startTime = LocalTime.of(12, 0);
         LocalTime endTime = LocalTime.of(13, 0);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
+        Shift result = mockEmployee.isAvailable(appEvent);
 
-        assertTrue(result);
+        assertNotNull(result);
     }
 
     @Test
     public void isWorkingWrongDate() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 28, 12:00 - 13:00
@@ -59,15 +66,17 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(12, 0);
         LocalTime endTime = LocalTime.of(13, 0);
 
-        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     @Test
     public void isWorkingWrongTimeAfterNoOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 16:00:01 - 17:00
@@ -75,15 +84,17 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(16, 0, 1);
         LocalTime endTime = LocalTime.of(17, 0);
 
-        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     @Test
     public void isWorkingWrongTimeBeforeNoOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 7:00 - 7:59:59
@@ -91,15 +102,17 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(7, 0);
         LocalTime endTime = LocalTime.of(7, 59, 59);
 
-        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     @Test
     public void isWorkingWrongTimeAfterWithOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 15:30 - 16:30
@@ -107,15 +120,17 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(15, 30);
         LocalTime endTime = LocalTime.of(16, 30);
 
-        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     @Test
     public void isWorkingWrongTimeBeforeWithOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isAvailable(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 7:00 - 8:30 (1.5 hours)
@@ -123,9 +138,11 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(7, 0);
         LocalTime endTime = LocalTime.of(8, 30);
 
-        boolean result = mockEmployee.isAvailable(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     private Set<Shift> createMockShifts() {
@@ -146,10 +163,32 @@ public class EmployeeTest {
         LocalTime startTime3 = LocalTime.of(12, 30);
         LocalTime endTime3 = LocalTime.of(20, 30);
 
-//        shifts.add( new Shift((date1, startTime1, endTime1));
-//        shifts.add(ShiftFactory.createShift(date2, startTime2, endTime2));
-//        shifts.add(ShiftFactory.createShift(date3, startTime3, endTime3));
+        shifts.add( new Shift(mockEmployee, date1, startTime1, endTime1));
+        shifts.add(new Shift(mockEmployee,date2, startTime2, endTime2));
+        shifts.add(new Shift(mockEmployee,date3, startTime3, endTime3));
+
+        mockEmployee.setShifts(shifts);
 
         return shifts;
+    }
+
+    @Test(expected = EmployeeDoesNotOfferServiceException.class)
+    public void addShouldFailBecauseEmployeeDoesNotOfferService() {
+        final Appointment mockAppointment = mock(Appointment.class);
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        User client = new User();
+
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        when(mockService.getId()).thenReturn((long)1);
+        employee.setEmployeeServices(Arrays.asList(mockService));
+        when(mockRetrievedService.getId()).thenReturn((long)2);
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        employee.validateAndAddAppointment(mockAppointment);
     }
 }

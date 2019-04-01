@@ -7,6 +7,7 @@ import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.EmployeeAvailability;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.EmployeeRepository;
@@ -108,6 +109,13 @@ public class AppointmentController extends AbstractController {
     public ResponseEntity<String> findId(@PathVariable long id, @PathVariable long businessId){
         ObjectMapper mapper = objectMapperFactory.createMapper(CancelledAppointment.class, new CancelledAppointmentSerializer());
         return getJson(mapper, appointmentService.findByCancelledIdAndBusinessId(id,  businessId));
+    }
+
+    @LogREST
+    @GetMapping("/{businessId}/availabilities/{serviceId}")
+    public ResponseEntity<String> getAvailabilitiesForService(@PathVariable long businessId, @PathVariable long serviceId) {
+        ObjectMapper mapper = objectMapperFactory.createMapper(EmployeeAvailability.class, new EmployeAvailabilitySerializer());
+        return getJson(mapper, appointmentService.getEmployeeAvailabilitiesForService(businessId, serviceId));
     }
 
 
