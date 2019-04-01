@@ -3,12 +3,16 @@ package appointmentscheduler.entity.shift;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.event.AppEventBase;
+import appointmentscheduler.entity.event.EventComparer;
 import appointmentscheduler.entity.user.Employee;
 import org.junit.Test;
 import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -283,7 +287,6 @@ public class ShiftTest {
         LocalTime startTime = LocalTime.of(1,0);
         LocalTime endTime = LocalTime.of(3,0);
         Appointment appointment = new Appointment();
-        int index;
 
         Shift shift = new Shift();
         Set<AppEventBase> avail;
@@ -301,20 +304,18 @@ public class ShiftTest {
 
         avail = shift.getAvailabilities(30);
 
-        index = 0;
-        //availability at start of appointment
         assertEquals(2, avail.size());
-        for (AppEventBase appEventBase : avail) {
-            if(index == 0) {
-                assertEquals(startTime, appEventBase.getStartTime());
-                assertEquals(startTime.plusMinutes(30), appEventBase.getEndTime());
-            }
-            else if(index == 1) {
-                assertEquals(startTime.plusMinutes(45), appEventBase.getStartTime());
-                assertEquals(endTime, appEventBase.getEndTime());
-            }
-            index++;
-        }
+
+        EventComparer eventComparer = new EventComparer();
+        List<AppEventBase> sortedAvail = new ArrayList<>(avail);
+        Collections.sort(sortedAvail, eventComparer);
+
+        assertEquals(startTime, sortedAvail.get(0).getStartTime());
+        assertEquals(startTime.plusMinutes(30), sortedAvail.get(0).getEndTime());
+
+        assertEquals(startTime.plusMinutes(45), sortedAvail.get(1).getStartTime());
+        assertEquals(endTime, sortedAvail.get(1).getEndTime());
+
     }
 
 }
