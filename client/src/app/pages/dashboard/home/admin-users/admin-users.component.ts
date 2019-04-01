@@ -36,7 +36,7 @@ export class AdminUsersComponent implements OnInit {
     ngOnInit() {
         this.componentState = {
             users: [],
-                // currentSort: IDataTableSort,
+            // currentSort: IDataTableSort,
             currentPage: 1,
             itemsPerPage: 10,
             search: '',
@@ -73,7 +73,7 @@ export class AdminUsersComponent implements OnInit {
             servicesDetailed.forEach((service) => {
                 outputString += service.id + ', ';
             });
-            outputString = outputString.substring(0, outputString.length - 2)
+            outputString = outputString.substring(0, outputString.length - 2);
         }
         return outputString;
     }
