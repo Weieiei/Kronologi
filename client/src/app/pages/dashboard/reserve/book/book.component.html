@@ -1,0 +1,39 @@
+<button mat-raised-button (click)="isOptional = !isOptional">
+    {{!isOptional ? 'Enable optional steps' : 'Disable optional steps'}}
+</button>
+
+<mat-horizontal-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Select a service</ng-template>
+                <app-service-selection-grid-list (serviceChange)="setService($event)"></app-service-selection-grid-list>
+
+            <div *ngIf="serviceIsSelected()">
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" [optional]="isOptional">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Select a date and time</ng-template>
+                <app-pick-day (dateChange)="setDate($event)"></app-pick-day>
+
+            <div *ngIf="dateIsSelected()">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+
+            <div *ngIf="dateIsSelected() == false">
+                <button mat-button matStepperPrevious>Back</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        You are now done.
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>

@@ -67,6 +67,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/service-selection-grid-list/service-selection-grid-list.component';
+import { BookComponent } from './pages/dashboard/reserve/book/book.component';
+import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.component';
 
 
 @NgModule({
@@ -122,6 +124,8 @@ import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/ser
         SyncCalendarsComponent,
 	DarnCarouselComponent,
 	ServiceSelectionGridListComponent,
+	BookComponent,
+	PickDayComponent,
     ],
     imports: [
         BrowserModule,

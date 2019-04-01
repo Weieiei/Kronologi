@@ -29,6 +29,7 @@ import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
+import {BookComponent} from "./pages/dashboard/reserve/book/book.component";
 
 const routes: Routes = [
     // Login
@@ -78,6 +79,7 @@ const routes: Routes = [
             { path: 'admin/services/create', component: CreateServiceComponent },
             { path: 'admin/users', component: AdminUsersComponent },
             { path: 'darn-carousel', component: DarnCarouselComponent },
+            { path: 'book', component: BookComponent },
 
             // User settings
             {
