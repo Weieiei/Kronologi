@@ -170,7 +170,7 @@ public class AdminController extends AbstractController {
         Employee employee = employeeShiftService.getEmployeeByBusinessId(employeeId, businessId);
         Service service = serviceService.findByIdAndBusinessId(serviceId, businessId);
         Business business = businessService.findById(businessId);
-        employee.addEmployeeService(service);
+        employee.addService(service);
         EmployeeService employee_service = new EmployeeService(business, employee, service);
         employeeServiceRepository.save(employee_service);
         return ResponseEntity.ok(message("service assigned"));
