@@ -59,7 +59,9 @@ public class User extends AuditableEntity {
     )
     private Settings settings;
 
-    @OneToMany
+    @OneToMany(
+            fetch = FetchType.EAGER
+    )
     private List<Service> employeeServices;
 
 

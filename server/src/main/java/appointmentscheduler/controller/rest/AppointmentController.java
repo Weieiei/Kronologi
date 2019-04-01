@@ -111,6 +111,7 @@ public class AppointmentController extends AbstractController {
         return getJson(mapper, appointmentService.findByCancelledIdAndBusinessId(id,  businessId));
     }
 
+    //TODO fix
     @LogREST
     @GetMapping("/{businessId}/availabilities/{serviceId}")
     public ResponseEntity<String> getAvailabilitiesForService(@PathVariable long businessId, @PathVariable long serviceId) {
