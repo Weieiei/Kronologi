@@ -35,9 +35,6 @@ export class ServiceSelectionGridListComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
         this.getServices();
-        this.serviceSubscription = this.serviceEvent.subscribe((res) => {
-            this.serviceId = res;
-        });
     }
 
     ngOnDestroy() {
@@ -46,6 +43,8 @@ export class ServiceSelectionGridListComponent implements OnInit, OnDestroy{
 
     selectService(service: ServiceDTO) {
         this.serviceChange.emit(service);
+        this.serviceId = service.id;
+        console.log(this.serviceId);
     }
 
     getServices() {

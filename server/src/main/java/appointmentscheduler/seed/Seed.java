@@ -154,7 +154,7 @@ public class Seed {
                 "@employee.com", hash("employee123"));
        // employee.setServices(set);
         employee.setVerified(true);
-        employee.setShifts(generateShifts(employee));
+        employee.setShifts(generateShifts(employee, employee.getBusiness()));
 //        employee.setRoles(Sets.newHashSet(employeeRole));
         employee.setRole(RoleEnum.EMPLOYEE.toString());
         employee.setPhoneNumber(new PhoneNumber("1", "514", "5554567", employee));
@@ -163,7 +163,7 @@ public class Seed {
                 "employee2@employee.com", hash("employee123"));
       //  employee2.setServices(set);
         employee2.setVerified(true);
-        employee2.setShifts(generateShifts(employee2));
+        employee2.setShifts(generateShifts(employee2, employee.getBusiness()));
 //        employee2.setRoles(Sets.newHashSet(employeeRole));
         employee2.setRole(RoleEnum.EMPLOYEE.toString());
 
@@ -171,14 +171,14 @@ public class Seed {
                 "employee3@employee.com", hash("employee123"));
         //employee3.setServices(set);
         employee3.setVerified(true);
-        employee3.setShifts(generateShifts(employee3));
+        employee3.setShifts(generateShifts(employee3, employee.getBusiness()));
 //        employee3.setRoles(Sets.newHashSet(employeeRole));
         employee3.setRole(RoleEnum.EMPLOYEE.toString());
         Employee employee4 = (Employee) UserFactory.createUser(business2, Employee.class, "Employee4", "User",
                 "employe4e@employee.com", hash("employee123"));
      //   employee4.setServices(set);
         employee4.setVerified(true);
-        employee4.setShifts(generateShifts(employee4));
+        employee4.setShifts(generateShifts(employee4, employee.getBusiness()));
 //        employee4.setRoles(Sets.newHashSet(employeeRole));
         employee4.setRole(RoleEnum.EMPLOYEE.toString());
 
@@ -263,7 +263,7 @@ public class Seed {
         return bCryptPasswordEncoder.encode(password);
     }
 
-    private Set<Shift> generateShifts(Employee employee) {
+    private Set<Shift> generateShifts(Employee employee, Business business) {
         // Create shifts for employee
         Set<Shift> shifts = new HashSet<>();
         shifts.add(new Shift(business, employee, LocalDate.of(2019, Month.FEBRUARY, 27), LocalTime.of(12,
