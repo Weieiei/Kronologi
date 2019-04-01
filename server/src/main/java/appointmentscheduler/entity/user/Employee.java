@@ -57,6 +57,15 @@ public class Employee extends User {
         this.shifts = shifts;
     }
 
+    public boolean hasService(Service desiredService) {
+        for (Service service : this.getEmployeeServices()) {
+            if(service.getId() == desiredService.getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Checks to see if an appointment can be added. Any of the exceptions can be thrown if validation fails.
      *
@@ -75,13 +84,8 @@ public class Employee extends User {
         }
 
         // Make sure the employee can perform the service requested
-        boolean employeeCanDoService = false;
-        for (Service service : this.getEmployeeServices()) {
-            if(service.getId() == appointment.getService().getId()){
-                employeeCanDoService = true;
-                break;
-            }
-        }
+        boolean employeeCanDoService = hasService(appointment.getService());
+
 
         if (!employeeCanDoService) {
             throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");

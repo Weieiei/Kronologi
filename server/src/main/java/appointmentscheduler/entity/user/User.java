@@ -9,6 +9,7 @@ import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -137,6 +138,9 @@ public class User extends AuditableEntity {
     }
 */
 
+    public void initEmployeeServices() {
+        employeeServices = new ArrayList<>();
+    }
     public List<Service> getEmployeeServices() {
         return employeeServices;
     }

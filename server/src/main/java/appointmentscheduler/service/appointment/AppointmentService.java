@@ -411,10 +411,12 @@ public class AppointmentService {
         EmployeeAvailability current;
 
         for(Employee employee: employees){
-            currentAvailability = employee.getEmployeeAvailabilities(duration);
-            if(currentAvailability.size() > 0) {
-                current = new EmployeeAvailability(employee, employee.getEmployeeAvailabilities(duration));
-                allAvailabilities.add(current);
+            if(employee.hasService(service)) {
+                currentAvailability = employee.getEmployeeAvailabilities(duration);
+                if (currentAvailability.size() > 0) {
+                    current = new EmployeeAvailability(employee, employee.getEmployeeAvailabilities(duration));
+                    allAvailabilities.add(current);
+                }
             }
         }
 
