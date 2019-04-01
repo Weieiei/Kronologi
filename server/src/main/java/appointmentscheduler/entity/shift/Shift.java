@@ -150,6 +150,10 @@ public class Shift extends AuditableEntity implements AppEvent {
         return false;
     }
 
+    public boolean rempveAppointment(Appointment appointment) {
+        return appointments.remove(appointment);
+    }
+
     public Set<AppEventBase> getAvailabilities(long duration) {
         long diffMinute;
         Set<AppEventBase> availabilities = new HashSet<>();

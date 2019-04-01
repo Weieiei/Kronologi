@@ -241,7 +241,7 @@ public class AppointmentService {
     }
 
     public Appointment cancel(long appointmentId, long businessId, long clientId) {
-
+        Employee employee;
         Appointment appointment = appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, businessId , clientId)
                 .orElseThrow(() -> new NotYourAppointmentException("This appointment either belongs to another user or doesn't exist."));
 
@@ -250,7 +250,9 @@ public class AppointmentService {
         }
 
         appointment.setStatus(AppointmentStatus.CANCELLED);
-
+        //remove appointment from employees shift
+        employee = appointment.getEmployee();
+        employee.removeAppointment(appointment);
         try {
             sendCancellationMessage(appointment);
         } catch (MessagingException e) {

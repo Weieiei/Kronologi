@@ -125,4 +125,16 @@ public class Employee extends User {
 
         return employeeAvailabilities;
     }
+
+    public boolean removeAppointment(Appointment appointment) {
+        Set<Shift> shifts = getShifts();
+
+        for (final Shift shift : shifts) {
+            //get shift that encapsulates appointment
+            if (shift.isWithin(appointment)) {
+                return shift.rempveAppointment(appointment);
+            }
+        }
+        return false;
+    }
 }
