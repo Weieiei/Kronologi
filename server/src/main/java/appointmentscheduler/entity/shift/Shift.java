@@ -176,7 +176,7 @@ public class Shift extends AuditableEntity implements AppEvent {
                 }
             }
             //availability between last appointment and shift end
-            else if(i == sortedAppointments.size() - 1 && appointment.getEndTime().isBefore(this.endTime)){
+            if(i == sortedAppointments.size() - 1 && appointment.getEndTime().isBefore(this.endTime)){
                 diffMinute = MINUTES.between(appointment.getEndTime(), this.endTime);
                 if(diffMinute >= duration) {
                     availability = new AppEventBase(appointment.getEndTime(), appointment.getEndTime().plusMinutes(diffMinute), date);
@@ -184,7 +184,7 @@ public class Shift extends AuditableEntity implements AppEvent {
                 }
             }
             //availability between appointments
-            else if (i != sortedAppointments.size() - 1) {
+            if (i != sortedAppointments.size() - 1 && 1 != 0) {
                 nextAppointment = sortedAppointments.get(i+1);
                 diffMinute = MINUTES.between(appointment.getEndTime(), nextAppointment.getStartTime());
                 if(diffMinute >= duration) {

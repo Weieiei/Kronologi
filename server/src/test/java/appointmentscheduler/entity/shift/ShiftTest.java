@@ -3,10 +3,13 @@ package appointmentscheduler.entity.shift;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.event.AppEventBase;
+import appointmentscheduler.entity.user.Employee;
 import org.junit.Test;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -157,4 +160,161 @@ public class ShiftTest {
 
         assertFalse(shift.addAppointment(appointmentConflict));
     }
+
+    @Test
+    public void availabilityAppointmentCoverShift(){
+        LocalDate date = LocalDate.now();
+        LocalTime startTime = LocalTime.of(1,1,1);
+        LocalTime endTime = LocalTime.of(2,2,2);
+        Appointment appointment = new Appointment();
+        Shift shift = new Shift();
+        Set<AppEventBase> avail;
+
+        appointment.setDate(date);
+        appointment.setStartTime(startTime);
+        appointment.setEndTime(endTime);
+
+        shift.setDate(date);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+        shift.addAppointment(appointment);
+
+        avail = shift.getAvailabilities(30);
+
+        //no availabilitities since appointment covers full shift
+        assertTrue(0 == avail.size());
+    }
+
+    @Test
+    public void availabilityAppointmentStart(){
+        LocalDate date = LocalDate.now();
+        LocalTime startTime = LocalTime.of(1,1,1);
+        LocalTime endTime = LocalTime.of(2,2,2);
+        Appointment appointment = new Appointment();
+        Shift shift = new Shift();
+        Set<AppEventBase> avail;
+
+        appointment.setDate(date);
+        appointment.setStartTime(startTime.plusMinutes(30));
+        appointment.setEndTime(endTime);
+
+        shift.setDate(date);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+        shift.addAppointment(appointment);
+
+        avail = shift.getAvailabilities(30);
+
+        //availability at start of appointment
+        assertTrue(1 == avail.size());
+        for (AppEventBase appEventBase : avail) {
+            assertEquals(startTime, appEventBase.getStartTime());
+            assertEquals(startTime.plusMinutes(30), appEventBase.getEndTime());
+        }
+    }
+
+    @Test
+    public void availabilityAppointmentEnd(){
+        LocalDate date = LocalDate.now();
+        LocalTime startTime = LocalTime.of(1,1,1);
+        LocalTime endTime = LocalTime.of(2,2,2);
+        Appointment appointment = new Appointment();
+        Shift shift = new Shift();
+        Set<AppEventBase> avail;
+
+        appointment.setDate(date);
+        appointment.setStartTime(startTime);
+        appointment.setEndTime(endTime.minusMinutes(30));
+
+        shift.setDate(date);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+        shift.addAppointment(appointment);
+
+        avail = shift.getAvailabilities(30);
+
+        //availability at start of appointment
+        assertEquals(1, avail.size());
+        for (AppEventBase appEventBase : avail) {
+            assertEquals(endTime.minusMinutes(30), appEventBase.getStartTime());
+            assertEquals(endTime, appEventBase.getEndTime());
+        }
+    }
+
+    @Test
+    public void availabilityAppointmentMiddle(){
+        LocalDate date = LocalDate.now();
+        LocalTime startTime = LocalTime.of(1,1);
+        LocalTime endTime = LocalTime.of(2,2);
+        Appointment appointment = new Appointment();
+        Appointment appointment2 = new Appointment();
+        Shift shift = new Shift();
+        Set<AppEventBase> avail;
+
+        appointment.setDate(date);
+        appointment.setStartTime(startTime);
+        appointment.setEndTime(startTime.plusMinutes(15));
+
+        appointment2.setDate(date);
+        appointment2.setStartTime(endTime.minusMinutes(15));
+        appointment2.setEndTime(endTime);
+
+
+        shift.setDate(date);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+
+        shift.addAppointment(appointment);
+        shift.addAppointment(appointment2);
+
+        avail = shift.getAvailabilities(30);
+
+        //availability at start of appointment
+        assertEquals(1, avail.size());
+        for (AppEventBase appEventBase : avail) {
+            assertEquals(startTime.plusMinutes(15), appEventBase.getStartTime());
+            assertEquals(endTime.minusMinutes(15), appEventBase.getEndTime());
+        }
+    }
+
+    @Test
+    public void availabilityAppointmentTwo(){
+        LocalDate date = LocalDate.now();
+        LocalTime startTime = LocalTime.of(1,0);
+        LocalTime endTime = LocalTime.of(3,0);
+        Appointment appointment = new Appointment();
+        int index;
+
+        Shift shift = new Shift();
+        Set<AppEventBase> avail;
+
+        appointment.setDate(date);
+        appointment.setStartTime(startTime.plusMinutes(30));
+        appointment.setEndTime(startTime.plusMinutes(45));
+
+        shift.setDate(date);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+
+        shift.addAppointment(appointment);
+
+
+        avail = shift.getAvailabilities(30);
+
+        index = 0;
+        //availability at start of appointment
+        assertEquals(2, avail.size());
+        for (AppEventBase appEventBase : avail) {
+            if(index == 0) {
+                assertEquals(startTime, appEventBase.getStartTime());
+                assertEquals(startTime.plusMinutes(30), appEventBase.getEndTime());
+            }
+            else if(index == 1) {
+                assertEquals(startTime.plusMinutes(45), appEventBase.getStartTime());
+                assertEquals(endTime, appEventBase.getEndTime());
+            }
+            index++;
+        }
+    }
+
 }
