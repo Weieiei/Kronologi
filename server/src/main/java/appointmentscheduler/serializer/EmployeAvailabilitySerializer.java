@@ -24,7 +24,8 @@ public class EmployeAvailabilitySerializer extends StdSerializer<EmployeeAvailab
     public void serialize(EmployeeAvailability employeeAvailability, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
 
-        gen.writeObjectField("employee", employeeAvailability.getEmployee());
+        gen.writeObjectField("employee", employeeAvailability.getEmployee().getFirstName());
+        gen.writeObjectField("employee_id", employeeAvailability.getEmployee().getId());
         gen.writeObjectField("availabilities", employeeAvailability.getAvailabilities());
 
         gen.writeEndObject();

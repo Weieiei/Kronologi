@@ -127,7 +127,7 @@ public class Seed {
         services.add(ServiceFactory.createService(business,"Mec Extra", 200));
         services.add(ServiceFactory.createService(business,"Get Back on Track", 170));
         services.add(ServiceFactory.createService(business,"Slender Quest", 200));
-        services.add(ServiceFactory.createService(business,"Serenity", 140));
+        services.add(ServiceFactory.createService(business,"Serenity", 10));
         services.add(ServiceFactory.createService(business,"Ultimate Escape", 160));
         services.add(ServiceFactory.createService(business,"Divine Relaxation", 150));
         services.add(ServiceFactory.createService(business,"1/2 Day Passport", 165));
@@ -212,7 +212,9 @@ public class Seed {
         totalSet.addAll(service2);
         totalSet.addAll(service3);
         totalSet.addAll(service4);
+
         employeeServiceRepository.saveAll(totalSet);
+        employeeRepository.saveAll(Arrays.asList(employee, employee2, employee3, employee4));
 
     }
 
@@ -225,20 +227,30 @@ public class Seed {
 
         List<Appointment> appointments = new ArrayList<>();
         List<EmployeeService> employeeServices;
+        Appointment appointment;
+        Appointment appointment2;
 
         employee = shift.getEmployee();
-        service1 = employee.getEmployeeServices().get(0);
-        service2 = employee.getEmployeeServices().get(1);
+        employeeServices = new ArrayList<>(employee.getServices());
 
-        appointments.add(AppointmentFactory.createAppointment(
+        service1 = employeeServices.get(0).getService();
+        service2 = employeeServices.get(1).getService();
+
+        appointment = AppointmentFactory.createAppointment(
                 business, clients.get(0), employee, service1,
                 shift.getDate(), shift.getStartTime(), "Some note"
-        ));
+        );
 
-     /*   appointments.add(AppointmentFactory.createAppointment(
+        shift.addAppointment(appointment);
+        appointments.add(appointment);
+
+        appointment2 = AppointmentFactory.createAppointment(
                 business, clients.get(1), employee, service2,
                 shift.getDate(), shift.getEndTime().minusMinutes(service2.getDuration()), "Some note"
-        ));*/
+        );
+
+        shift.addAppointment(appointment2);
+        appointments.add(appointment2);
 
         appointmentRepository.saveAll(appointments);
 
@@ -271,13 +283,15 @@ public class Seed {
         seedAppointments(shift2);
         seedAppointments(shift3);
 
+        shiftRepository.saveAll(shifts);
+
         return shifts;
     }
 
     //adding services to employees, only allow if the business matches the one the employee has
     public void addServiceToEmployee(Employee employee, Service service){
         if (employee.getBusiness().getId() == service.getBusiness().getId())
-            employee.addEmployeeService(service);
+            employee.addService(service);
     }
 
     public void createServiceForEmployee(Employee employee, Service service){

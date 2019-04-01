@@ -59,10 +59,6 @@ public class User extends AuditableEntity {
     )
     private Settings settings;
 
-    @OneToMany(
-            fetch = FetchType.EAGER
-    )
-    private List<Service> employeeServices;
 
 
     @Override
@@ -139,21 +135,6 @@ public class User extends AuditableEntity {
         this.roles.add(role);
     }
 */
-
-    public void initEmployeeServices() {
-        employeeServices = new ArrayList<>();
-    }
-    public List<Service> getEmployeeServices() {
-        return employeeServices;
-    }
-
-    public void setEmployeeServices(List<Service> employeeServices) {
-        this.employeeServices = employeeServices;
-    }
-
-    public void addEmployeeService(Service service){
-        this.employeeServices.add(service);
-    }
 
     public PhoneNumber getPhoneNumber() {
         return phoneNumber;

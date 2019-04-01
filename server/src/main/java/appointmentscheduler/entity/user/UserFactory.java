@@ -21,7 +21,6 @@ public class UserFactory {
                                   ) {
         if(clazz == Employee.class){
             final Employee employee = (Employee) createFromType(clazz);
-            employee.initEmployeeServices();
             employee.setFirstName(firstName);
             employee.setLastName(lastName);
             employee.setEmail(email);

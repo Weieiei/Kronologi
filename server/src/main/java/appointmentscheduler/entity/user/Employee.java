@@ -36,6 +36,12 @@ public class Employee extends User {
         return services;
     }
 
+    public void addService(Service service) {
+        EmployeeService employeeService = new EmployeeService();
+        employeeService.setService(service);
+        services.add(employeeService);
+    }
+
     public void createService(Service service, Business business) {
         EmployeeService temp = new EmployeeService(business, this, service);
         this.services.add(temp);
@@ -58,8 +64,8 @@ public class Employee extends User {
     }
 
     public boolean hasService(Service desiredService) {
-        for (Service service : this.getEmployeeServices()) {
-            if(service.getId() == desiredService.getId()){
+        for (EmployeeService employeeService : getServices()) {
+            if(employeeService.getService().getId() == desiredService.getId()){
                 return true;
             }
         }
