@@ -1,0 +1,11 @@
+mat-form-field {
+    ::ng-deep {
+        .mat-form-field-infix {
+            display: inline-flex;
+        }
+    }
+}
+
+.input-action {
+    display: inline-flex;
+}

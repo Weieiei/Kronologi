@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import {MAT_DIALOG_DATA} from "@angular/material";
 
 @Component({
     selector: 'app-scheduler',
@@ -19,6 +20,7 @@ export class SchedulerComponent implements OnInit, OnDestroy {
     appointmentDay: number;
 
     @Output() dateChange = new EventEmitter();
+
 
     constructor() {
         const currentDate = new Date();

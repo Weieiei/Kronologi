@@ -61,6 +61,13 @@ import { BusinessRegisterComponent } from './pages/register/business-register/bu
 
 import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
+import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
+import { SwiperModule } from 'angular2-useful-swiper';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/service-selection-grid-list/service-selection-grid-list.component';
+import { SearchInputComponent } from './components/search-box/search-box.component';
 
 
 @NgModule({
@@ -113,7 +120,10 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
         CardsUiComponent,
         BusinessRegisterComponent,
         ServicesComponent,
-        SyncCalendarsComponent
+        SyncCalendarsComponent,
+        DarnCarouselComponent,
+        ServiceSelectionGridListComponent,
+        SearchInputComponent
     ],
     imports: [
         BrowserModule,
@@ -123,7 +133,12 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
         MaterialModule,
         FlexLayoutModule,
         HttpClientModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SwiperModule,
+        SlickCarouselModule,
+        MatTabsModule,
+        MatDatepickerModule
+
     ],
     entryComponents: [
         TimePickerDialogComponent,
