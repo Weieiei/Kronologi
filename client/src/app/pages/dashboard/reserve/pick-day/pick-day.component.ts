@@ -1,18 +1,23 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MatDatepickerInputEvent} from "@angular/material";
 import {ServiceService} from "../../../../services/service/service.service";
+import {ServiceDTO} from "../../../../interfaces/service/service-dto";
+import {AppointmentService} from "../../../../services/appointment/appointment.service";
 
 @Component({
   selector: 'app-pick-day',
   templateUrl: './pick-day.component.html',
   styleUrls: ['./pick-day.component.scss']
 })
-export class PickDayComponent implements OnInit {
+export class PickDayComponent implements OnInit, OnChanges {
 
 
     dateEvents: string[] = [];
     @Output() dateChange = new EventEmitter();
+    @Input() childService: ServiceDTO;
     startTimes: string[] = ["10:00", "11:00", "12:00"];
+    appointmentService: AppointmentService;
+    startTimesMap: Map<string, string> = new Map<string, string>();
 
     componentState: {
         totalItems: number,
@@ -51,12 +56,21 @@ export class PickDayComponent implements OnInit {
         this.dateChange.emit(this.dateEvents[this.dateEvents.length-1]);
     }
 
-    getStartTImes(){
+    getStartTimes(){
 
     }
 
-    selectStartTime(){
+    selectStartTime(service : ServiceDTO){
+        this.appointmentService.getAvailabilitiesForService(service).subscribe(
+            res => {
+                this.startTimesMap.set
+            }
+        )
+    }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.childService!=null)
+            console.log(this.childService.id);
     }
 
 

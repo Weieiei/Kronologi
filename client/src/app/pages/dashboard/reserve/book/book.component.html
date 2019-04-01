@@ -16,8 +16,7 @@
     <mat-step [stepControl]="secondFormGroup" [optional]="isOptional">
         <form [formGroup]="secondFormGroup">
             <ng-template matStepLabel>Select a date and time</ng-template>
-                <app-pick-day (dateChange)="setDate($event)"></app-pick-day>
-
+                <app-pick-day (dateChange)="setDate($event)" [childService]="service"></app-pick-day>
             <div *ngIf="dateIsSelected()">
                 <button mat-button matStepperPrevious>Back</button>
                 <button mat-button matStepperNext>Next</button>
