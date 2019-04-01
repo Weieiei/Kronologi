@@ -1,0 +1,15 @@
+<form autocomplete="off">
+    <mat-form-field appearance="outline">
+        <input matInput #inputWrapper name="searchTerm" class="search-input-field"
+               placeholder="{{placeholderText}}"
+               [(ngModel)]="searchTerm">
+        <div class="input-action">
+            <a href="#" class="clear" *ngIf="searchTerm" (click)="clearFilter($event)">
+                <mat-icon>cancel</mat-icon>
+            </a>
+            <a href="#" class="search" (click)="search($event)">
+                <mat-icon>search</mat-icon>
+            </a>
+        </div>
+    </mat-form-field>
+</form>

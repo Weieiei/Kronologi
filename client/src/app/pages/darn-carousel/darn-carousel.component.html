@@ -1,0 +1,23 @@
+<!--
+<mat-tab-group mat-stretch-tabs #tabGroup (focusChange)="tabChanged($event)" [selectedIndex]="1">
+    <mat-tab>
+        <ng-template mat-tab-label>Tab 1</ng-template>
+        Tab Content
+    </mat-tab>
+    <mat-tab    >
+        <ng-template mat-tab-label >Tab 2</ng-template>
+        Tab Content
+    </mat-tab>
+</mat-tab-group>
+-->
+
+<mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Tab 1">Tab 1 Content</mat-tab>
+    <mat-tab disabled>
+        <ng-template mat-tab-label>
+            <mat-icon (click)="openReasonDialog()">calendar_today</mat-icon>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Tab 2">Tab 2 Content</mat-tab>
+
+</mat-tab-group>

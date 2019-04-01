@@ -29,7 +29,7 @@ import appointmentscheduler.dto.service.ServiceCreateDTO;
 import java.util.Map;
 @RestController
 @RequestMapping("${rest.api.path}/business/services")
-// @PreAuthorize("hasAuthority('CLIENT')")
+
 public class ServiceController {
 
     private final ServiceRepository serviceRepository;
