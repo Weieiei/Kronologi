@@ -1,4 +1,8 @@
-<table class="employee-table mat-elevation-z4" mat-table [dataSource]="employees">
+<app-search-input
+    [placeholderText]="'Search'"
+    (changed)="onSearch($event)">
+</app-search-input>
+<table class="employee-table mat-elevation-z4" mat-table [dataSource]="componentState.employees">
 
     <ng-container matColumnDef="firstName">
         <th mat-header-cell *matHeaderCellDef>First Name</th>

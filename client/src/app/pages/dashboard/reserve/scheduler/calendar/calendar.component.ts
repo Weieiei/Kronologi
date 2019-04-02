@@ -17,13 +17,6 @@ export class CalendarComponent implements OnInit, OnChanges {
     @Output() dayChange = new EventEmitter();
 
     daysOfWeek = [
-        // 'Sunday',
-        // 'Monday',
-        // 'Tuesday',
-        // 'Wednesday',
-        // 'Thursday',
-        // 'Friday',
-        // 'Saturday'
         'Sun',
         'Mon',
         'Tue',

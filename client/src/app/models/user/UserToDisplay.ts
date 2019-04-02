@@ -1,5 +1,3 @@
-import { Service } from "../service/Service";
-
 export class UserToDisplay {
 
     public readonly id: number;
