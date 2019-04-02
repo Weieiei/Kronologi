@@ -38,7 +38,9 @@
     </h6>
 
     <button mat-raised-button color="primary" (click)="showShiftform = true">Add Shift</button>
+    <button mat-raised-button color="primary" (click)="showEditShiftform = true">Add Recurring Shift</button>
 
     <app-add-shift-form *ngIf="showShiftform" (shiftChange)="addShift($event)"></app-add-shift-form>
+    <app-add-recurring-shift-form *ngIf="showEditShiftform" (shiftChange)="addShift($event)"></app-add-recurring-shift-form>
 
 </div>

@@ -21,6 +21,7 @@ export class ShiftComponent implements OnInit {
     shifts: AdminEmployeeShiftDTO[];
 
     showShiftform = false;
+    showEditShiftform = false;
 
     constructor(
         private adminService: AdminService,

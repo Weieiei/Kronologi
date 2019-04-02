@@ -10,6 +10,7 @@ import {
     MatMenuModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    MatRadioModule,
     MatRippleModule,
     MatSelectModule,
     MatSidenavModule,
@@ -69,7 +70,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSidenavModule,
         MatCardModule,
         MatSnackBarModule,
-        MatRippleModule
+        MatRippleModule,
+        MatRadioModule,
     ]
 })
 export class MaterialModule {

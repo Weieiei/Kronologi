@@ -6,7 +6,7 @@ import { AdminEmployeeShiftDTO } from '../../interfaces/shift/admin-employee-shi
 import { NewShiftDTO } from '../../interfaces/shift/new-shift-dto';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AdminService {
 
@@ -18,18 +18,21 @@ export class AdminService {
     }
 
     getEmployee(employeeId: number): Observable<AdminEmployeeDTO> {
-        return this.http.get<AdminEmployeeDTO>(['api', 'admin', 'employee', employeeId].join('/'));
+        return this.http.get<AdminEmployeeDTO>(['api', 'business','admin', '1','employee', employeeId].join('/'));
     }
 
     getEmployeeShifts(employeeId: number): Observable<AdminEmployeeShiftDTO[]> {
-        return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'admin', 'employee', employeeId, 'shift'].join('/'));
+        return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'business','admin', '1','employee', employeeId, 'shift'].join('/'));
     }
 
     addShift(employeeId: number, payload: NewShiftDTO): Observable<AdminEmployeeShiftDTO> {
-        return this.http.post<AdminEmployeeShiftDTO>(['api', 'admin', 'employee', employeeId, 'shift'].join('/'), payload);
+        return this.http.post<AdminEmployeeShiftDTO>(['api', 'business','admin', '1','employee', employeeId, 'shift'].join('/'), payload);
+    }
+    addShiftList(employeeId: number, payload: NewShiftDTO[]): Observable<AdminEmployeeShiftDTO[]> {
+        return this.http.post<AdminEmployeeShiftDTO[]>(['api', 'business','admin', '1', 'employee', employeeId, 'shift-list'].join('/'), payload);
     }
 
     deleteShift(shiftId: number): Observable<any> {
-        return this.http.delete<any>(['api', 'admin', 'employee', 'shift', shiftId].join('/'));
+        return this.http.delete<any>(['api', 'business','admin', '1', 'employee', 'shift', shiftId].join('/'));
     }
 }

@@ -61,6 +61,7 @@ import { BusinessRegisterComponent } from './pages/register/business-register/bu
 
 import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
+import { AddRecurringShiftFormComponent } from './pages/dashboard/home/shift/add-recurring-shift-form/add-recurring-shift-form.component';
 
 
 @NgModule({
@@ -113,7 +114,8 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
         CardsUiComponent,
         BusinessRegisterComponent,
         ServicesComponent,
-        SyncCalendarsComponent
+        SyncCalendarsComponent,
+        AddRecurringShiftFormComponent
     ],
     imports: [
         BrowserModule,
