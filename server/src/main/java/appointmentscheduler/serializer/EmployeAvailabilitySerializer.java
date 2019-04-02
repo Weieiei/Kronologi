@@ -3,6 +3,7 @@ package appointmentscheduler.serializer;
 import appointmentscheduler.entity.event.AppEventBase;
 import appointmentscheduler.entity.user.EmployeeAvailability;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
@@ -26,7 +27,15 @@ public class EmployeAvailabilitySerializer extends StdSerializer<EmployeeAvailab
 
         gen.writeObjectField("employee", employeeAvailability.getEmployee().getFirstName());
         gen.writeObjectField("employee_id", employeeAvailability.getEmployee().getId());
-        gen.writeObjectField("availabilities", employeeAvailability.getAvailabilities());
+        gen.writeArrayFieldStart("Availabilities");
+        for(AppEventBase appEventBase: employeeAvailability.getAvailabilities()) {
+            gen.writeStartObject();
+            gen.writeObjectField("date", appEventBase.getDate());
+            gen.writeStringField("startTime", appEventBase.getStartTime().toString());
+            gen.writeStringField("endTime", appEventBase.getEndTime().toString());
+            gen.writeEndObject();
+        }
+        gen.writeEndArray();
 
         gen.writeEndObject();
     }
