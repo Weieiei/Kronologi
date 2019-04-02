@@ -69,7 +69,8 @@ public class EmployeeShiftService {
         throw new ShiftConflictException("This shift conflicts with another one that the employee has.");
     }
 
-    public List<EmployeeShiftDTO> addShiftList(long employeeId, long businessId, List<EmployeeShiftDTO> employeeShiftDTOS) {
+    public List<Shift> addShiftList(long employeeId, long businessId, List<EmployeeShiftDTO> employeeShiftDTOS) {
+        List<Shift> addedShifts = new ArrayList<>();
         Employee employee = employeeRepository.findByIdAndBusinessId(employeeId, businessId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d not found.",
                         employeeId)));
@@ -80,13 +81,14 @@ public class EmployeeShiftService {
 
         if(!shiftConflict(employeeId, businessId, employeeShiftDTOS)){
             for(int i = 0;i < employeeShiftDTOS.size(); i++) {
-                shiftRepository.save(employeeShiftDTOS.get(i).convertToShift(employee, business));
+                addedShifts.add(employeeShiftDTOS.get(i).convertToShift(employee, business));
+                shiftRepository.save(addedShifts.get(i));
             }
         } else {
             throw new AppEventTimeConflict("Conflict between new shifts and existing shifts");
         }
 
-        return  employeeShiftDTOS;
+        return  addedShifts;
     }
 
     private boolean shiftConflict(long employeeId, long businessId, AppEvent shift) {

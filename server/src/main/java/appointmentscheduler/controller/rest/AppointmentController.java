@@ -29,140 +29,80 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
-@RequestMapping(value = "/${rest.api.path}/business/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/${rest.api.path}/business", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentController extends AbstractController {
 
    
     private final AppointmentService appointmentService;
-    private final UserRepository userRepository;
-    private final EmployeeRepository employeeRepository;
-    private final ServiceRepository serviceRepository;
-    private final ModelMapper modelMapper;
     private final ObjectMapperFactory objectMapperFactory;
-    private final EmailService emailService;
-    private final BusinessService businessService;
+
 
     @Autowired
     public AppointmentController(
-            AppointmentService appointmentService, UserRepository userRepository, ServiceRepository serviceRepository,
-            ModelMapper modelMapper, EmployeeRepository employeeRepository, ObjectMapperFactory objectMapperFactory,
-            EmailService emailService, BusinessService businessService
+            AppointmentService appointmentService,  ObjectMapperFactory objectMapperFactory
     ) {
         this.appointmentService = appointmentService;
-        this.userRepository = userRepository;
-        this.serviceRepository = serviceRepository;
-        this.modelMapper = modelMapper;
-        this.employeeRepository = employeeRepository;
-        this.modelMapper.addMappings(new PropertyMap<AppointmentDTO, Appointment>() {
-            protected void configure() {
-                skip().setId(0);
-            }
-        });
         this.objectMapperFactory = objectMapperFactory;
-        this.emailService = emailService;
-        this.businessService = businessService;
     }
 
-    private Appointment mapAppointmentDTOToAppointment(AppointmentDTO appointmentDTO) {
-        Appointment appointment = modelMapper.map(appointmentDTO, Appointment.class);
-
-        User client = userRepository.findById(getUserId()).orElseThrow(ResourceNotFoundException::new);
-        appointment.setClient(client);
-
-        Employee employee = employeeRepository.findById(appointmentDTO.getEmployeeId()).orElseThrow(ResourceNotFoundException::new);
-        appointment.setEmployee(employee);
-
-        Service service = serviceRepository.findById(appointmentDTO.getServiceId()).orElseThrow(ResourceNotFoundException::new);
-        appointment.setService(service);
-
-        return appointment;
-    }
 
     @PostMapping("/{businessId}/appointments")
-    public ResponseEntity<String> addAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO, @PathVariable long businessId) throws MessagingException {
-        appointmentDTO.setBusinessId(businessId);
-        Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
+    public ResponseEntity<String> addAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO, @PathVariable long businessId){
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        Appointment savedAppointment = appointmentService.add(appointment);
-        sendConfirmationMessage(savedAppointment, false);
+        Appointment savedAppointment = appointmentService.add(appointmentDTO, getUserId(), businessId);
+
         return getJson(mapper, savedAppointment);
     }
 
-    @PutMapping("/{businessId}")
-    public ResponseEntity<String> update(@PathVariable long businessId, @RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
-        Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
+    @PostMapping("/{businessId}/appointments-list")
+    public ResponseEntity<String> addAppointmentToBusiness(@RequestBody List<AppointmentDTO> appointmentDTOS, @PathVariable long businessId){
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-        Appointment modifiedAppointment = appointmentService.update(businessId, getUserId(), appointment);
-        sendConfirmationMessage(modifiedAppointment, true);
+        List<Appointment> savedAppointment = appointmentService.addList(appointmentDTOS, getUserId(), businessId);
+
+        return getJson(mapper, savedAppointment);
+    }
+
+    @PutMapping("/{businessId}/appointments/{id}")
+    public ResponseEntity<String> update(@PathVariable long businessId, @PathVariable long appointmentId, @RequestBody AppointmentDTO appointmentDTO) {
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
+        Appointment modifiedAppointment = appointmentService.update(appointmentDTO, getUserId(), businessId, appointmentId);
+
         return getJson(mapper, modifiedAppointment);
     }
 
-    @DeleteMapping("{businessId}/{id}")
-    public ResponseEntity delete(@PathVariable long id, @PathVariable long businessId) throws MessagingException {
+    //Not delete mapping because method changes appointment status to cancelled, therefore doesn't delete the appointment
+    @PutMapping("{businessId}/appointments/cancel/{id}")
+    public ResponseEntity cancelAppointment(@PathVariable long id, @PathVariable long businessId){
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment cancelledAppointment = appointmentService.cancel(id,businessId, getUserId());
-        sendCancellationMessage(cancelledAppointment);
+
         return getJson(mapper, cancelledAppointment);
     }
 
     @LogREST
     @GetMapping("/{businessId}/employee/{serviceId}")
     public ResponseEntity<String> getAvailableEmployeesByServiceAndByDate(@PathVariable long serviceId, @RequestParam String date) {
-        LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new EmployeeSerializer());
-        return getJson(mapper, appointmentService.getAvailableEmployeesByServiceAndByDate(serviceId, pickedDate));
+        return getJson(mapper, appointmentService.getAvailableEmployeesByServiceAndByDate(serviceId, date));
     }
 
     @LogREST
     @GetMapping("{businessId}/employee/shifts")
     public ResponseEntity<String> getEmployeesShift(@RequestParam String date, @PathVariable long businessId) {
-        LocalDate pickedDate = parseDate(date);
         ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new ShiftSerializer());
-        return getJson(mapper, appointmentService.getEmployeeShiftsByDateAndBusinessId(pickedDate, businessId));
+        return getJson(mapper, appointmentService.getEmployeeShiftsByDateAndBusinessId(date, businessId));
     }
 
     @LogREST
     @GetMapping("{businessId}/employee/appointments")
     public ResponseEntity<String> getEmployeesConfirmedAppointments(@RequestParam String date, @PathVariable long businessId) {
-        LocalDate pickedDate = parseDate(date);
         ObjectMapper objectMapper = objectMapperFactory.createMapper(Appointment.class, new EmployeeAppointmentSerializer());
-        return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDateAndBusinessId(pickedDate,businessId));
+        return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDateAndBusinessId(date,businessId));
     }
 
-    private LocalDate parseDate(String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
-    }
-
-    private void sendConfirmationMessage(Appointment appointment, boolean modifying) throws MessagingException {
-
-        String message = String.format(
-                "Hello %1$s,<br><br>" +
-                        "Your reservation at Sylvia Pizzi Spa has been " + (modifying ? "modified" : "confirmed") + ".<br><br>" +
-                        "%2$s with %3$s<br>" +
-                        "%4$s at %5$s<br><br>" +
-                        "We look forward to seeing you!",
-                appointment.getClient().getFirstName(),
-                appointment.getService().getName(), appointment.getEmployee().getFullName(),
-                appointment.getDate().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")), appointment.getStartTime().toString()
-        );
-
-        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
-
-    }
-
-    private void sendCancellationMessage(Appointment appointment) throws MessagingException {
-
-        String message = String.format(
-                "Hello %1$s,<br><br>" +
-                        "Your reservation at Sylvia Pizzi Spa has been cancelled.<br>",
-                appointment.getClient().getFirstName()
-        );
-
-        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
-
-    }
 
     @GetMapping("{businessId}/cancel/{id}")
     public ResponseEntity<String> findId(@PathVariable long id, @PathVariable long businessId){
