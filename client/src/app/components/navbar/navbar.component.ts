@@ -15,7 +15,7 @@ import {OverlayContainer} from "@angular/cdk/overlay";
 export class NavbarComponent implements OnInit {
 
     @Input() sidenav: MatSidenav;
-    
+
     userEmail = "";
     userName = "";
     route = "";
@@ -23,7 +23,8 @@ export class NavbarComponent implements OnInit {
     darkModeActive: boolean;
     user;
     theme :string = 'dark-theme';
-
+    imagePath :string = "";
+    defualtFile: File;
     constructor(
         private userService: UserService,
         private authService: AuthService,
@@ -37,6 +38,7 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
+
         // this.user = this.userService.getUser();
         this.authService.checkAdmin();
         this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
@@ -45,6 +47,26 @@ export class NavbarComponent implements OnInit {
             this.darkModeActive = value;
         });
         this.overlayContainer.getContainerElement().classList.add(this.theme);
+
+       console.log(this.userService.getUserProfile());
+        this.userService.getUserProfile().subscribe(
+            res => {
+                console.log(res);
+                if (res) {
+                    var objectURL = URL.createObjectURL(res);
+                    console.log(objectURL);
+
+                    this.imagePath = objectURL;
+                } else {
+                    this.imagePath = 'assets/images/user_default.png';
+                    console.log(this.imagePath);
+                }
+
+
+            },
+                 err => console.log(err)
+        );
+
 
     }
 

@@ -156,6 +156,17 @@ public class UserController extends AbstractController {
         return ResponseEntity.ok(userFileStorageService.saveUserFile(userFile, getUserId()));
     }
 
+    @GetMapping("/profile")
+    public UserFile getProfile(@RequestAttribute long userId) {
+        //return userService.getProfile(userId);
+        if (userFileStorageService.getUserFile(userId) != null){
+            return userFileStorageService.getUserFile(userId);
+        }
+        else{
+            return null;
+        }
+    }
+
     @GetMapping("/phone")
     public PhoneNumber getPhoneNumber(@RequestAttribute long userId) {
         return userService.getPhoneNumber(userId);

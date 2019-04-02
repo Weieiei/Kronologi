@@ -60,6 +60,11 @@ public class UserFileStorageService {
         return userFileRepository.findByIdAndUserId(fileId, userId)
                 .orElseThrow(() -> new FileStorageException("File not found with id " + fileId));
     }
+    @Transactional
+    public UserFile getUserFile(long userId) {
+        return userFileRepository.findByUserId(userId);
+              //  .orElseThrow(() -> new FileStorageException("File not found"));
+    }
 
     private Map<String, String> message(String message) {
         Map<String, String> map = new HashMap<>();

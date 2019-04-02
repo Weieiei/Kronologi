@@ -4,7 +4,8 @@
           <section class="menu-header" [ngClass] = "{'menu-header-dark': darkModeActive}">
             <span class="greeting__text">Welcome Back</span>
             <div class="profile-image__container">
-              <img  alt="profile-image"
+              <img  [src]="imagePath"
+              alt="profile-image"
                    class="profile__image">
             </div>
             <div class="account-details">
@@ -20,19 +21,19 @@
                 <li class="menu-link" routerLink="/employee/appts" routerLinkActive="link-active" *ngIf="userService.isEmployee()" (click)="goToEmployeeAppointments()">Appointments</li>
                 <li class="menu-link" routerLink="/syncCalendars" routerLinkActive="link-active" *ngIf="userService.isEmployee()" (click)="goToSyncCalendars()">Sync External Calendar</li>
                 <li class="menu-link " routerLink="/admin/appts" routerLinkActive="link-active" (click)="goToAdminAppointmens()" *ngIf="authService.isAdmin()">Appointments Management</li>
-                <li class="menu-link " routerLink="/admin/services" routerLinkActive="link-active" (click)="goToAdminServices()" *ngIf="authService.isAdmin()">Services</li> 
+                <li class="menu-link " routerLink="/admin/services" routerLinkActive="link-active" (click)="goToAdminServices()" *ngIf="authService.isAdmin()">Services</li>
                 <li class="menu-link" routerLink="/admin/users" routerLinkActive="link-active" (click)="goToAdminUsers()" *ngIf="authService.isAdmin()">User Management</li>
                 <li class="menu-link"  routerLinkActive="link-active" (click)="logout()">Logout</li>
               </ul>
           </section>
           <section class="menu-footer" [ngClass]="{'main__header-dark': darkModeActive}">
-      
+
           </section>
         </nav>
       </aside>
-      
+
         <header [ngClass]="{'main__header-dark': darkModeActive}" class="main__header">
-      
+
           <div class="left__section bg-container">
             <svg (click)="toggleMenu()" class="hamburger__icon" id="Menu_Burger_Icon" data-name="Menu Burger Icon"
                  viewBox="31.5 30 49.9 32">
@@ -51,23 +52,23 @@
                     class="hamburger__icon__fill" data-name="Rectangle 11" rx="2"
                     transform="translate(31.5 30)"/>
             </svg>
-      
-      
+
+
           </div>
-      
+
           <div class="nav-title" (click)="goToHome()"><img src="assets/images/asapp_logo.png" width="128"  /></div>
-      
-      
+
+
           <div class="mode-toggle__container">
             <span class="mode-toggle__text">Light</span>
-      
+
             <label class="toggle-button__container">
               <input (click)="modeToggleSwitch()" type="checkbox" class="mode-toggle__input"/>
               <span [ngClass]="{'mode-toggle__bg-checked': darkModeActive}" class="mode-toggle__bg"></span>
               <span [ngClass]="{'mode-toggle__circle-checked': darkModeActive}" class="mode-toggle__circle"></span>
             </label>
-      
-      
+
+
             <span class="mode-toggle__text">Dark</span>
           </div>
 
