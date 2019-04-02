@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { ServiceService } from '../../../services/service/service.service';
 import { BusinessService } from '../../../services/business/business.service';
 import { BusinessUserRegisterDTO } from '../../../interfaces/user/business-user-register-dto';
 import { BusinessRegisterDTO } from '../../../interfaces/business/business-register-dto';
 import { BusinessDTO } from '../../../interfaces/business/business-dto';
-import { UserService } from '../../../services/user/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
@@ -17,22 +14,23 @@ import { FindBusinessDialogComponent } from '../../../components/find-business-d
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { trigger, state, style, transition, animate, group } from '@angular/animations';
-import { map } from 'rxjs/operators';
+
 export interface Domain {
     value: string;
-  }
+}
 
-  export interface BusinessHours {
+export interface BusinessHours {
     start: string;
     end: string;
-  }
+}
+
 @Component ({
   selector: 'app-business-register',
   templateUrl: './business-register.component.html',
   styleUrls: ['./business-register.component.scss'],
   animations: [
     trigger('slideInOut', [
-      state('true', style({  
+      state('true', style({
           'max-height': '500px', 'opacity': '1', 'visibility': 'visible'
       })),
       state('false', style({
@@ -67,21 +65,20 @@ export interface Domain {
 })
 export class BusinessRegisterComponent implements OnInit {
 
-   daysOfWeek : string[] = ["Monday","Tuesday","Wednesday", "Thursday", "Friday","Saturday","Sunday"]
-   possibleBusinessHours : string[] = ["00:00", "01:00", "02:00", "03:00", "04:00","05:00","06:00", "07:00",
-                                        "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15,00",
-                                        "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "24:00"]
+    daysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    possibleBusinessHours: string[] = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00',
+       '11:00', '12:00', '13:00', '14:00', '15,00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'];
     selectedBusiness: BusinessDTO;
     businessHourMap = new Map();
-    animationState : boolean = true;
-    fileSelectMsg: string = 'No file selected yet.';
-    fileUploadMsg: string = 'No file uploaded yet.';
-    disabled: boolean = false;
+    animationState = true;
+    fileSelectMsg = 'No file selected yet.';
+    fileUploadMsg = 'No file uploaded yet.';
+    disabled = false;
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
     thirdFormGroup: FormGroup;
     selectedFile: File = null;
-// new business object
+    // new business object
     business: BusinessDTO;
     businessName: string;
     businessDomain: string;
@@ -97,11 +94,11 @@ export class BusinessRegisterComponent implements OnInit {
     city:  string;
     province: string;
     country: string;
-    postalCode : string;
-// new service object
+    postalCode: string;
+    // new service object
     service: string;
     service_duration: number;
-//new user object
+    // new user object
     firstName: string;
     lastName: string;
     email: string;
@@ -142,8 +139,6 @@ export class BusinessRegisterComponent implements OnInit {
           });
       }
 
-    
-
     getBusinessById(businessId: Number): BusinessDTO {
         this.businessService.getBusinessById(this.businessId).subscribe(
             res => {
@@ -156,22 +151,22 @@ export class BusinessRegisterComponent implements OnInit {
     business_register() {
         this.spinner.show();
         this.animationState = false;
-        let businessHoursDTO : BusinessHoursDTO[] = [];
-        if(!this.isEmptyObject(this.businessHourMap)){
-          console.log("hello")
-          this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) => {
-             console.log(day)
-             let businessHourDTOtemp : BusinessHoursDTO = {
+        const businessHoursDTO: BusinessHoursDTO[] = [];
+        if (!this.isEmptyObject(this.businessHourMap)) {
+            console.log('hello');
+            this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) => {
+                console.log(day);
+                const businessHourDTOTemp: BusinessHoursDTO = {
                     day: day,
                     openHour : openAndClose.start,
                     closeHour : openAndClose.end
-             }
-             businessHoursDTO.push(businessHourDTOtemp);
-          });
+                };
+                businessHoursDTO.push(businessHourDTOTemp);
+            });
         }
-        
-        let finalizedAddress : string = this.address + "," + this.city + "," + this.province + " " + this.postalCode;
-        console.log(finalizedAddress)
+
+        const finalizedAddress: string = this.address + ',' + this.city + ',' + this.province + ' ' + this.postalCode;
+        console.log(finalizedAddress);
         console.log(businessHoursDTO);
         const payload_business: BusinessRegisterDTO = {
             name: this.businessName,
@@ -181,130 +176,125 @@ export class BusinessRegisterComponent implements OnInit {
         };
 
         const payload_service: ServiceCreateDto = {
+            name: this.service,
+            duration: this.service_duration,
+        };
 
-          name: this.service,
-          duration: this.service_duration,
-           };
-        
         let payload: BusinessUserRegisterDTO = null;
         if (this.password === this.confirmPassword ) {
-           payload = {
-              firstName: this.firstName,
-              lastName: this.lastName,
-              email: this.email,
-              password: this.password,
-              phoneNumber: null
+        payload = {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            password: this.password,
+            phoneNumber: null
+        };
+        if ( this.registerPhone) {
+            payload.phoneNumber = {
+               countryCode: this.selectedCountry['dialCode'],
+               areaCode: this.areaCode,
+               number: this.number
             };
+        }
 
-            if ( this.registerPhone) {
-                payload.phoneNumber = {
-                   countryCode: this.selectedCountry['dialCode'],
-                   areaCode: this.areaCode,
-                   number: this.number
-
-                };
-            }
-
-            this.googleAnalytics.trackValues('formSubmit', 'register');
-            this.businessService.createBusiness(payload_business,payload_service,payload, businessHoursDTO,this.selectedFile).subscribe(
-            res => {
-               this.router.navigate(['login']);
+        this.googleAnalytics.trackValues('formSubmit', 'register');
+        this.businessService.createBusiness(payload_business, payload_service, payload, businessHoursDTO, this.selectedFile).subscribe(
+        res => {
+                this.router.navigate(['login']);
             },
-            err => {
-
-              console.log(err)
+        err => {
+            console.log(err);
             }
-        );
-
+            );
+        }
     }
-  }
-  togglePasswordVisibility() {
+
+    togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;
     }
 
-  selectCountry(country: Object) {
+    selectCountry(country: Object) {
         this.selectedCountry = country;
-  }
-
-
-  selectEvent(file: File): void {
-    this.selectedFile = file;
-    this.fileSelectMsg = file.name;
-  }
-
-  uploadEvent(file: File): void {
-    this.fileUploadMsg = file.name;
-  }
-
-  cancelEvent(): void {
-    this.fileSelectMsg = 'No file selected yet.';
-    this.fileUploadMsg = 'No file uploaded yet.';
-  }
-
-  toggleDisabled(): void {
-    this.disabled = !this.disabled;
-  }
-  saveStartTime(day: string, time:string):void{
-    if(this.businessHourMap.has(day)){
-      let businessHours : BusinessHours = this.businessHourMap.get(day);
-      businessHours.start = time;
-    }else{
-      let businessHours : BusinessHours = {start: time, end: ""};
-      this.businessHourMap.set(day,businessHours);
     }
-  }
 
-  saveEndTime(day: string, time:string):void{
-    if(this.businessHourMap.has(day)){
-      let businessHours : BusinessHours = this.businessHourMap.get(day);
-      businessHours.end = time;
-    }else{
-      let businessHours : BusinessHours = {start: "", end: time};
-      this.businessHourMap.set(day,businessHours);
+    selectEvent(file: File): void {
+        this.selectedFile = file;
+        this.fileSelectMsg = file.name;
     }
-  }
-  isTimeLower(day:string, end: string): boolean{
-    if(this.businessHourMap.has(day)){
-      
-      let startString : string[] = this.businessHourMap.get(day).start.split(':');
-      let startTime : number = (+startString[0]) * 60 * 60 + (+startString[1]) * 60;
 
-      let endString : string[] = end.split(':');
-      let endTime : number = (+endString[0]) * 60 * 60 + (+endString[1]) * 60;
-
-      if(endTime <= startTime){
-        return true;
-      }
+    uploadEvent(file: File): void {
+        this.fileUploadMsg = file.name;
     }
-    return false;
-  }
 
-  isEmptyObject(obj: any): boolean {
-    return Object.keys(obj).length === 0 && obj.constructor === Object;
-  }
+    cancelEvent(): void {
+        this.fileSelectMsg = 'No file selected yet.';
+        this.fileUploadMsg = 'No file uploaded yet.';
+    }
 
-  openFindBusinessDialog(){
-    const dialogConfig = new MatDialogConfig();
+    toggleDisabled(): void {
+        this.disabled = !this.disabled;
+    }
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '400px'
-    dialogConfig.height='400px'
+    saveStartTime(day: string, time: string): void {
+        if  (this.businessHourMap.has(day)) {
+            const businessHours: BusinessHours = this.businessHourMap.get(day);
+        businessHours.start = time;
+        } else {
+            const businessHours: BusinessHours = {start: time, end: ''};
+        this.businessHourMap.set(day, businessHours);
+        }
+    }
 
-    dialogConfig.data = {
-      business: this.selectedBusiness
-    };
-    let dialogRef =this.dialog.open(FindBusinessDialogComponent, dialogConfig);
-    
-    dialogRef.afterClosed().subscribe(business =>{
-      
-    });
-  }
-  
-  stopRegistering(){
-    this.animationState=true;
-    this.spinner.hide();
-  }
+    saveEndTime(day: string, time: string): void {
+        if (this.businessHourMap.has(day)) {
+            const businessHours: BusinessHours = this.businessHourMap.get(day);
+            businessHours.end = time;
+        } else {
+            const businessHours: BusinessHours = {start: '', end: time};
+            this.businessHourMap.set(day, businessHours);
+        }
+    }
+
+    isTimeLower(day: string, end: string): boolean {
+        if (this.businessHourMap.has(day)) {
+            const startString: string[] = this.businessHourMap.get(day).start.split(':');
+            const startTime: number = (+startString[0]) * 60 * 60 + (+startString[1]) * 60;
+
+            const endString: string[] = end.split(':');
+            const endTime: number = (+endString[0]) * 60 * 60 + (+endString[1]) * 60;
+
+            if (endTime <= startTime) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isEmptyObject(obj: any): boolean {
+        return Object.keys(obj).length === 0 && obj.constructor === Object;
+    }
+
+    openFindBusinessDialog() {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = '400px';
+        dialogConfig.height = '400px';
+
+        dialogConfig.data = {
+            business: this.selectedBusiness
+        };
+        const dialogRef = this.dialog.open(FindBusinessDialogComponent, dialogConfig);
+
+        dialogRef.afterClosed().subscribe(business => {
+        });
+    }
+
+    stopRegistering() {
+        this.animationState = true;
+        this.spinner.hide();
+    }
 }
 
 /*
