@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MatDatepickerInputEvent} from "@angular/material";
 import {ServiceService} from "../../../../services/service/service.service";
 import {ServiceDTO} from "../../../../interfaces/service/service-dto";
@@ -9,7 +9,7 @@ import {AppointmentService} from "../../../../services/appointment/appointment.s
   templateUrl: './pick-day.component.html',
   styleUrls: ['./pick-day.component.scss']
 })
-export class PickDayComponent implements OnInit, OnChanges {
+export class PickDayComponent implements OnInit, OnChanges, AfterViewInit{
 
 
     dateEvents: string[] = [];
@@ -31,14 +31,18 @@ export class PickDayComponent implements OnInit, OnChanges {
             currentPageSize: 8,
             currentPage: 1,
         };
+
     }
 
     ngOnInit() {
+
   }
     dateFilter = (d: Date): boolean => {
         const day = d.getDay();
         //const currentMonth = new Date().getMonth();
         console.log(d.getMonth());
+
+
         //for current month day 1 to last day
         //pass the interval of time to the backend
         //backend returns the time slots free
@@ -60,17 +64,22 @@ export class PickDayComponent implements OnInit, OnChanges {
 
     }
 
-    selectStartTime(service : ServiceDTO){
-        this.appointmentService.getAvailabilitiesForService(service).subscribe(
-            res => {
-                this.startTimesMap.set
-            }
-        )
-    }
+    // selectStartTime(service : ServiceDTO){
+    //     this.appointmentService.getAvailabilitiesForService(service).subscribe(
+    //         res => {
+    //             console.log(res);
+    //         }
+    //     )
+    // }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.childService!=null)
             console.log(this.childService.id);
+    }
+
+    ngAfterViewInit(): void {
+
+
     }
 
 

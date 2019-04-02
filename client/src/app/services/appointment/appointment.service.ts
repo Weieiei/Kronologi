@@ -53,7 +53,7 @@ export class AppointmentService {
         return this.http.get(['api', 'business','1','appointments','cancel',id].join('/'));
     }
 
-    public getAvailabilitiesForService(serviceId:number ): Observable<any>{
+    public getAvailabilitiesForService(serviceId: any ): Observable<any>{
         return this.http.get(['api', 'business','1','availabilities',serviceId].join('/'));
     }
 

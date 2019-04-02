@@ -9,7 +9,7 @@
                 <app-service-selection-grid-list (serviceChange)="setService($event)"></app-service-selection-grid-list>
 
             <div *ngIf="serviceIsSelected()">
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button matStepperNext (click)="getAllAvailabilitiesForService(service)">Next</button>
             </div>
         </form>
     </mat-step>
