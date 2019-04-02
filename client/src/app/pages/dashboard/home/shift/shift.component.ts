@@ -101,6 +101,24 @@ export class ShiftComponent implements OnInit {
         );
     }
 
+    addRecurringShift(shifts: Set<NewShiftDTO>) {
+        console.log(shifts);
+        // this.adminService.addShift(this.employeeId, shift).subscribe(
+        //     res => {
+        //         this.snackBar.openSnackBarSuccess('Successfully added shift.');
+        //         this.shifts.push(res);
+        //         this.shifts = this.shifts.map(s => Object.assign({}, s));
+        //         this.sortShifts(this.shifts);
+        //     },
+        //     err => {
+        //         console.log(err);
+        //         if (err instanceof HttpErrorResponse) {
+        //             this.snackBar.openSnackBarError(err.error.message);
+        //         }
+        //     }
+        // );
+    }
+
     sortShifts(shifts: AdminEmployeeShiftDTO[]): void {
         console.log(shifts.length);
         shifts.sort((a, b) => {
