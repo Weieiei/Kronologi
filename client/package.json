@@ -25,6 +25,7 @@
     "@angular/router": "^7.2.7",
     "@covalent/core": "^2.0.1",
     "@types/jwt-decode": "^2.2.1",
+    "angular-base64": "^2.0.5",
     "core-js": "^2.6.5",
     "country-telephone-data": "^0.6.0",
     "jwt-decode": "^2.2.0",

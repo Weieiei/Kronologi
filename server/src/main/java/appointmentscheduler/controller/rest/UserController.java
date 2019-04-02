@@ -12,6 +12,7 @@ import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
+import appointmentscheduler.entity.file.File;
 import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
@@ -30,7 +31,11 @@ import appointmentscheduler.service.user.UserService;
 import appointmentscheduler.service.verification.VerificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +46,8 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import appointmentscheduler.entity.business.Business;
@@ -157,14 +164,22 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping("/profile")
-    public UserFile getProfile(@RequestAttribute long userId) {
-        //return userService.getProfile(userId);
-        if (userFileStorageService.getUserFile(userId) != null){
-            return userFileStorageService.getUserFile(userId);
+    public  ResponseEntity<Map<String,String>> getProfile(@RequestAttribute long userId) throws JSONException {
+        UserFile userFile = userFileStorageService.getUserFile(userId);
+
+        if ( userFile == null) {
+           // return null;
+           return ResponseEntity.ok(null);
         }
-        else{
-            return null;
-        }
+
+        byte[] imageData = userFile.getData();
+        String imageDataBase64Encoded = Base64.getEncoder().encodeToString(imageData);
+
+        Map<String,String> map = new HashMap<>();
+        map.put("image_encoded", imageDataBase64Encoded);
+
+            return ResponseEntity.ok(map);
+            
     }
 
     @GetMapping("/phone")

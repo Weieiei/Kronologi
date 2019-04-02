@@ -4,7 +4,7 @@
           <section class="menu-header" [ngClass] = "{'menu-header-dark': darkModeActive}">
             <span class="greeting__text">Welcome Back</span>
             <div class="profile-image__container">
-              <img  [src]="imagePath"
+              <img  [src]="sanitizedImageData"
               alt="profile-image"
                    class="profile__image">
             </div>

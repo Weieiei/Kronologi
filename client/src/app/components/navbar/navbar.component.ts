@@ -6,6 +6,7 @@ import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics
 import { AuthService } from '../../services/auth/auth.service';
 import { ThemeService } from "../../core/theme/theme.service";
 import {OverlayContainer} from "@angular/cdk/overlay";
+import { DomSanitizer} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-navbar',
@@ -16,6 +17,7 @@ export class NavbarComponent implements OnInit {
 
     @Input() sidenav: MatSidenav;
 
+    sanitizedImageData: any;
     userEmail = "";
     userName = "";
     route = "";
@@ -24,8 +26,12 @@ export class NavbarComponent implements OnInit {
     user;
     theme :string = 'dark-theme';
     imagePath :string = "";
-    defualtFile: File;
+    //objectURL:string ="";
+//try
+    imageToShow: any;
+    isImageLoading: any;
     constructor(
+        private sanitizer: DomSanitizer,
         private userService: UserService,
         private authService: AuthService,
         private router: Router,
@@ -39,7 +45,6 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit() {
 
-        // this.user = this.userService.getUser();
         this.authService.checkAdmin();
         this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
         this.userEmail = this.userService.getEmailFromToken();
@@ -48,27 +53,64 @@ export class NavbarComponent implements OnInit {
         });
         this.overlayContainer.getContainerElement().classList.add(this.theme);
 
-       console.log(this.userService.getUserProfile());
         this.userService.getUserProfile().subscribe(
-            res => {
-                console.log(res);
-                if (res) {
-                    var objectURL = URL.createObjectURL(res);
-                    console.log(objectURL);
-
-                    this.imagePath = objectURL;
-                } else {
-                    this.imagePath = 'assets/images/user_default.png';
-                    console.log(this.imagePath);
-                }
+          data => {
+              if ( data ) {
+                this.imagePath = 'data:image/png;base64,' + data["image_encoded"];
+                console.log(this.imagePath);
+                this.sanitizedImageData = this.sanitizer.bypassSecurityTrustUrl(this.imagePath);
+              } else {
+                        this.sanitizedImageData = 'assets/images/user_default.png';
+                        console.log(this.sanitizedImageData);
+                    }
 
 
-            },
+          },
+
+            // res => {
+            //     console.log(res);
+            //     if (res) {
+            //         this.imagePath = res;
+            //         //  this.objectURL = URL.createObjectURL(res);
+            //         // console.log(this.objectURL);
+
+            //         // this.imagePath = this.objectURL;
+            //         // var blob = new Blob([res], {type: 'image/jpeg'});
+            //         // this.imagePath  = URL.createObjectURL(blob );
+            //     } else {
+            //         this.imagePath = 'assets/images/user_default.png';
+            //         console.log(this.imagePath);
+            //     }
+
+
+            // },
                  err => console.log(err)
         );
-
+       // this.getImageFromService();
 
     }
+//     getImageFromService() {
+//         this.isImageLoading = true;
+//         this.userService.getUserProfile().subscribe(data => {
+//             console.log(data);
+//           this.createImageFromBlob(data);
+//           this.isImageLoading = false;
+//         }, error => {
+//           this.isImageLoading = false;
+//           console.log(error);
+//         });
+//   }
+
+//   createImageFromBlob(image: Blob) {
+//     let reader = new FileReader();
+//     reader.addEventListener("load", () => {
+//        this.imageToShow = reader.result;
+//     }, false);
+
+//     if (image) {
+//        reader.readAsDataURL(image);
+//     }
+//  }
 
     onThemeChange(theme:string) {
         this.theme = theme;
