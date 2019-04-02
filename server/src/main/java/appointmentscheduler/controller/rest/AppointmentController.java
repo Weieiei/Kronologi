@@ -148,7 +148,7 @@ public class AppointmentController extends AbstractController {
                 appointment.getDate().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")), appointment.getStartTime().toString()
         );
 
-        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
+        emailService.sendEmail(appointment.getClient().getEmail(), "Kronologi Appointment Confirmation", message, true);
 
     }
 
@@ -160,7 +160,7 @@ public class AppointmentController extends AbstractController {
                 appointment.getClient().getFirstName()
         );
 
-        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
+        emailService.sendEmail(appointment.getClient().getEmail(), "Kronologi Appointment Confirmation", message, true);
 
     }
 
