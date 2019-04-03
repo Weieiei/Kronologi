@@ -9,6 +9,7 @@ import {TimeDTO} from "../../../../interfaces/date-and-time/TimeDTO";
 import * as moment from 'moment'
 import {EmployeeTimes} from "../../../../interfaces/employee/employee-times";
 import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appointment-dto';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-book',
@@ -28,7 +29,7 @@ export class BookComponent implements OnInit {
     daysMap: Map <number, Array<EmployeeFreeTime>>;
     employeeId: number;
     appointment: BookAppointmentDTO;
-    constructor(private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
+    constructor(private router: Router, private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
     }
 
     ngOnInit() {
@@ -174,6 +175,10 @@ export class BookComponent implements OnInit {
             this.employeeId = key;
             this.time = value;
         });
+    }
+
+    goBack() {
+        this.router.navigate(['/home']);
     }
 }
 
