@@ -50,7 +50,6 @@ export class AddRecurringShiftFormComponent implements OnInit {
           for (let i = 0; i <   this.daysSelect.size; i++) {
               // calculate difference between today and recurrence date
               currRel = relativeTodayArray[i] + j * 7;
-              console.log(this.relativeToday);
               // Date not in past
               if (currRel > 0) {
                   curr.setDate(todayDate.getDate() + currRel);
@@ -59,12 +58,9 @@ export class AddRecurringShiftFormComponent implements OnInit {
                   day = curr.getDay();
                   const shift: NewShiftDTO = {
                       date: `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`,
-                      startTime: `${this.startHour}:
-                      ${this.startMinute < 10 ? '0' + this.startMinute : this.startMinute}`,
-                      endTime: `${this.endHour}:
-                      ${this.endMinute < 10 ? '0' + this.endMinute : this.endMinute}`
+                      startTime: `${this.startHour < 10 ? '0' + this.startHour : this.startHour}:${this.startMinute < 10 ? '0' + this.startMinute : this.startMinute}`,
+                      endTime: `${this.endHour < 10 ? '0' + this.endHour : this.endHour}:${this.endMinute < 10 ? '0' + this.endMinute : this.endMinute}`
                   };
-                  console.log(shift);
                   shifts.push(shift);
               }
           }

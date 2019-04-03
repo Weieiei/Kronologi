@@ -106,8 +106,7 @@ export class ShiftComponent implements OnInit {
         this.adminService.addShiftList(this.employeeId, shifts).subscribe(
             res => {
                 this.snackBar.openSnackBarSuccess('Successfully added shift.');
-                // @ts-ignore
-                this.shifts.push(res);
+                this.shifts.concat(res);
                 this.shifts = this.shifts.map(s => Object.assign({}, s));
                 this.sortShifts(this.shifts);
             },
