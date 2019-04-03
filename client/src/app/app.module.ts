@@ -56,7 +56,7 @@ import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/ad
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
-
+import { CovalentFileModule  } from '@covalent/core/file';
 import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 
 import { ServicesComponent } from './pages/services/services.component';
@@ -68,7 +68,9 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/service-selection-grid-list/service-selection-grid-list.component';
-import { SearchInputComponent } from './components/search-box/search-box.component';
+import {BookComponent} from "./pages/dashboard/reserve/book/book.component";
+import {PickDayComponent} from "./pages/dashboard/reserve/pick-day/pick-day.component";
+import {SearchInputComponent} from "./components/search-box/search-box.component";
 
 
 @NgModule({
@@ -125,9 +127,14 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
         AddRecurringShiftFormComponent,
         DarnCarouselComponent,
         ServiceSelectionGridListComponent,
-        SearchInputComponent
+        SearchInputComponent,
+	    ServiceSelectionGridListComponent,
+	    BookComponent,
+	    PickDayComponent,
+	    SearchInputComponent
     ],
     imports: [
+        CovalentFileModule,
         BrowserModule,
         AppRoutingModule,
         FormsModule,
@@ -140,7 +147,6 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
         SlickCarouselModule,
         MatTabsModule,
         MatDatepickerModule
-
     ],
     entryComponents: [
         TimePickerDialogComponent,

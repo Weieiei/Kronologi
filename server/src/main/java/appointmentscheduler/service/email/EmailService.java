@@ -24,8 +24,8 @@ public class EmailService {
     private String password;
     private EmailServiceProperties emailServiceProperties;
 
-    private String registerSubject = "ASApp Registration Confirmation";
-    private String logoPath = "images/asapp_logo.png";
+    private String registerSubject = "Kronologi Registration Confirmation";
+    private String logoPath = "images/kronologi-logo-1.png";
 
     @Autowired
     public EmailService(EmailServiceProperties emailServiceProperties) {
@@ -70,9 +70,9 @@ public class EmailService {
                 StandardCharsets.UTF_8.name()
         );
 
-        helper.addAttachment("asapp_logo.png", new ClassPathResource(logoPath));
-        String inlineImage = "<img src=\"cid:asapp_logo.png\" width=\"10%\" height=\"10%\"></img><br/>";
-        helper.setText(bodyContent + "<p><br /><br />All the best, <br /> ASApp Team <br /></p>" + inlineImage, true);
+        helper.addAttachment("kronologi-logo-1.png", new ClassPathResource(logoPath));
+        String inlineImage = "<img src=\"cid:kronologi-logo-1.png\" width=\"10%\" height=\"10%\"></img><br/>";
+        helper.setText(bodyContent + "<p><br /><br />All the best, <br /> Kronologi Team <br /></p>" + inlineImage, true);
     }
 
     public boolean sendRegistrationEmail(String receiver, String hash, boolean attachLogo) throws MessagingException {

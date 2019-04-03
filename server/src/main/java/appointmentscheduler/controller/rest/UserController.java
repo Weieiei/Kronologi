@@ -12,10 +12,13 @@ import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
+import appointmentscheduler.entity.file.File;
+import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.entity.verification.Verification;
+import appointmentscheduler.exception.FileStorageException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.GoogleCredentialRepository;
 import appointmentscheduler.repository.BusinessRepository;
@@ -29,7 +32,11 @@ import appointmentscheduler.service.user.UserService;
 import appointmentscheduler.service.verification.VerificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
@@ -40,11 +47,15 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.service.business.BusinessService;
+import appointmentscheduler.service.file.UserFileStorageService;
 import appointmentscheduler.repository.BusinessRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("${rest.api.path}/user")
@@ -55,7 +66,7 @@ public class UserController extends AbstractController {
     private final VerificationService verificationService;
     private final BusinessRepository businessRepository;
     private final BusinessService businessService;
-
+    private final UserFileStorageService userFileStorageService;
 
     GoogleCredentialRepository repo;
 
@@ -66,7 +77,7 @@ public class UserController extends AbstractController {
 
     @Autowired
     public UserController(UserService userService, EmailService emailService, VerificationService verificationService, AppointmentService appointmentService, ObjectMapperFactory objectMapperFactory,
-                          GoogleCredentialRepository repo, BusinessRepository businessRepository) {
+                          GoogleCredentialRepository repo, BusinessRepository businessRepository,UserFileStorageService userFileStorageService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.emailService = emailService;
@@ -74,6 +85,7 @@ public class UserController extends AbstractController {
         this.objectMapperFactory = objectMapperFactory;
         this.businessRepository = businessRepository;
         this.businessService = new BusinessService(businessRepository);
+        this.userFileStorageService = userFileStorageService;
         this.repo = repo;
     }
 
@@ -146,6 +158,35 @@ public class UserController extends AbstractController {
     public ResponseEntity<Map<String, String>> updateSettings(@RequestBody UpdateSettingsDTO updateSettingsDTO) {
         return ResponseEntity.ok(userService.updateSettings(getUserId(), updateSettingsDTO));
     }
+
+    @PostMapping("/profile")
+    public ResponseEntity<Map<String, String>> updateProfile(@RequestPart("file") MultipartFile userFile) {
+        return ResponseEntity.ok(userFileStorageService.saveUserFile(userFile, getUserId()));
+    }
+
+    @GetMapping("/profile")
+    public  ResponseEntity<Map<String,String>> getProfile(@RequestAttribute long userId) throws JSONException {
+        UserFile userFile;
+       try {
+           userFile = userFileStorageService.getUserFile(userId);
+       }catch(FileStorageException e){
+
+               // return null;
+               return ResponseEntity.ok(null);
+
+       }
+
+
+        byte[] imageData = userFile.getData();
+        String imageDataBase64Encoded = Base64.getEncoder().encodeToString(imageData);
+
+        Map<String,String> map = new HashMap<>();
+        map.put("image_encoded", imageDataBase64Encoded);
+
+            return ResponseEntity.ok(map);
+
+    }
+
     @GetMapping("/phone")
     public PhoneNumber getPhoneNumber(@RequestAttribute long userId) {
         return userService.getPhoneNumber(userId);
