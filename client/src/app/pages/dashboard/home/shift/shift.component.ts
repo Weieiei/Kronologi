@@ -103,6 +103,7 @@ export class ShiftComponent implements OnInit {
                 this.shifts.push(res);
                 this.shifts = this.shifts.map(s => Object.assign({}, s));
                 ShiftComponent.sortShifts(this.shifts);
+                this.showShiftform = false;
             },
             err => {
                 console.log(err);
@@ -118,9 +119,10 @@ export class ShiftComponent implements OnInit {
         this.adminService.addShiftList(this.employeeId, newShifts).subscribe(
             res => {
                 this.snackBar.openSnackBarSuccess('Successfully added recurrent shift.');
+                this.shifts = this.shifts.concat(res);
                 this.shifts = this.shifts.map(s => Object.assign({}, s));
-                this.shifts.concat(res);
                 ShiftComponent.sortShifts(this.shifts);
+                this.showEditShiftform = false;
             },
             err => {
                 console.log(err);
