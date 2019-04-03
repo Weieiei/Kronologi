@@ -14,6 +14,7 @@ import { FindBusinessDialogComponent } from '../../../components/find-business-d
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { trigger, state, style, transition, animate, group } from '@angular/animations';
+import { PasswordMismatchStateMatcher } from '../../../../shared/password-mismatch-state-matcher';
 
 export interface Domain {
     value: string;
@@ -74,9 +75,10 @@ export class BusinessRegisterComponent implements OnInit {
     fileSelectMsg = 'No file selected yet.';
     fileUploadMsg = 'No file uploaded yet.';
     disabled = false;
-    firstFormGroup: FormGroup;
-    secondFormGroup: FormGroup;
-    thirdFormGroup: FormGroup;
+    personalInfoForm: FormGroup;
+    phoneNumberForm: FormGroup;
+    businessInfoForm: FormGroup;
+    serviceInfoForm: FormGroup;
     selectedFile: File = null;
     // new business object
     business: BusinessDTO;
@@ -113,9 +115,8 @@ export class BusinessRegisterComponent implements OnInit {
     confirmPassword: string;
     isPasswordVisible = false;
 
-    registerPhone = false;
-
     businessId: number;
+    matcher: PasswordMismatchStateMatcher;
 
     constructor(
         private spinner: NgxSpinnerService,
@@ -125,19 +126,38 @@ export class BusinessRegisterComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private googleAnalytics: GoogleAnalyticsService,
         private businessService: BusinessService
-         ) { }
+         ) {
+        this.matcher = new PasswordMismatchStateMatcher();
+    }
 
     ngOnInit() {
-        this.firstFormGroup = this._formBuilder.group({
-          firstCtrl: ['', Validators.required]
-        });
-        this.secondFormGroup = this._formBuilder.group({
+        this.personalInfoForm = this._formBuilder.group({
+            firstName: [this.firstName || '',  [Validators.required] ],
+            lastName: [this.lastName || '',  [Validators.required] ],
+            email: [this.email || '',  [Validators.required, Validators.email] ],
+            password: [this.password || '',  [Validators.required, Validators.pattern('^(?=.*\\d)(?=.*[a-zA-Z]).{6,30}$')] ],
+            confirmPassword: [this.confirmPassword || '',  [Validators.required] ],
+            areaCode: [this.areaCode || '',  [] ],
+            number: [this.number || '',  [] ],
+        }, {validator: this.checkPasswords});
+        this.businessInfoForm = this._formBuilder.group({
           secondCtrl: ['', Validators.required]
         });
-        this.thirdFormGroup = this._formBuilder.group({
+        this.serviceInfoForm = this._formBuilder.group({
             thirdCtrl: ['', Validators.required]
           });
-      }
+    }
+
+    checkPasswords(inputFormGroup: FormGroup) {
+        const password = inputFormGroup.controls.password.value;
+        const confirmPassword = inputFormGroup.controls.confirmPassword.value;
+        console.log('Password is ' + password);
+        console.log('Repeat is ' + confirmPassword);
+        console.log(inputFormGroup.errors);
+
+        return password === confirmPassword ? null : { mismatched: true };
+    }
+
 
     getBusinessById(businessId: Number): BusinessDTO {
         this.businessService.getBusinessById(this.businessId).subscribe(
@@ -187,15 +207,12 @@ export class BusinessRegisterComponent implements OnInit {
             lastName: this.lastName,
             email: this.email,
             password: this.password,
-            phoneNumber: null
+            phoneNumber: {
+                countryCode: this.selectedCountry['dialCode'],
+                areaCode: this.areaCode,
+                number: this.number
+            }
         };
-        if ( this.registerPhone) {
-            payload.phoneNumber = {
-               countryCode: this.selectedCountry['dialCode'],
-               areaCode: this.areaCode,
-               number: this.number
-            };
-        }
 
         this.googleAnalytics.trackValues('formSubmit', 'register');
         this.businessService.createBusiness(payload_business, payload_service, payload, businessHoursDTO, this.selectedFile).subscribe(
