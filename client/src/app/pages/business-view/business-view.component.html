@@ -4,9 +4,9 @@
 
  <div fxFlex="row" fxLayoutAlign="center">
     <div gdColumns="repeat(auto-fill, 344px)" gdGap="16px" gdAlignRows="space-evenly" fxFlex.gt-sm="90" fxFlex.lt-md="100">
-      <app-cards-ui *ngFor="let business of businesses" [businessDTO] = "business" class="cards-ui" [ngClass]="{'cards-ui-dark': darkModeActive}"  buttonName1="My Appointments" buttonName2="Book Appointment" 
-      
+      <app-cards-ui *ngFor="let business of businesses" [businessDTO] = "business" class="cards-ui" [ngClass]="{'cards-ui-dark': darkModeActive}"  buttonName1="My Appointments" buttonName2="Book Appointment"
+
       (button1FunctionMapping)="getAllAppointmentsForUserForBusiness(1)"  (button2FunctionMapping)="openModalForService(1)">  </app-cards-ui>
-    </div>  
+    </div>
   </div>
 </div>

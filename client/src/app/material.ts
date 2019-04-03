@@ -10,10 +10,13 @@ import {
     MatMenuModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    MatRadioModule,
     MatRippleModule,
     MatSelectModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule
     MatTableModule,
     MatExpansionModule,
     MatRadioModule
@@ -50,7 +53,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSidenavModule,
         MatCardModule,
         MatSnackBarModule,
-        MatRippleModule
+        MatRippleModule,
+        MatPaginatorModule,
     ],
     exports: [
         MatRadioModule,
@@ -75,7 +79,9 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSidenavModule,
         MatCardModule,
         MatSnackBarModule,
-        MatRippleModule
+        MatRippleModule,
+        MatRadioModule,
+        MatPaginatorModule,
     ]
 })
 export class MaterialModule {

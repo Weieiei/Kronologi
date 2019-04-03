@@ -1,0 +1,30 @@
+<p>
+    <mat-form-field>
+        <input matInput [matDatepicker]="dp3" placeholder="Pick a date" [matDatepickerFilter]="dateFilter"
+        (dateInput)="addEvent($event)" (dateChange)="addEvent($event)">
+        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+    </mat-form-field>
+</p>
+
+<mat-grid-list cols="4" rowHeight="2:1">
+    <mat-grid-tile *ngFor="let startSlot of startSlots">
+        <mat-card class="service-card">
+            <mat-card-header>
+                <mat-card-title>{{startSlot.startTime}}</mat-card-title>
+                with {{startSlot.employeeName}}
+            </mat-card-header>
+            <mat-card-actions>
+                <button mat-button (click)="selectStartTimeAndEmployeeId(startSlot.startTime, startSlot.employeeId)">SELECT</button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+<!--
+<mat-paginator [length]=componentState.totalItems
+               [pageSize]=componentState.currentPageSize
+               [pageSizeOptions]=itemsPerPageOptions
+               (page)="printPageEvent($event)">
+</mat-paginator>
+-->
+

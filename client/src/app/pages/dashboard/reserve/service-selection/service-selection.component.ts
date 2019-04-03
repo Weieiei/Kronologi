@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { ServiceService } from '../../../../services/service/service.service';
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { Observable, Subscription } from 'rxjs';
+//require('materialize-css/sass/materialize.scss');
 
 @Component({
     selector: 'app-service-selection',
@@ -11,13 +12,14 @@ import { Observable, Subscription } from 'rxjs';
 export class ServiceSelectionComponent implements OnInit, OnDestroy {
 
     services: ServiceDTO[] = [];
+    items: Array<any> = [];
 
     serviceId: number;
     serviceSubscription: Subscription;
     @Input() serviceEvent: Observable<number>;
 
     @Output() serviceChange = new EventEmitter();
-
+    slideConfig = {"slidesToShow": 2, "slidesToScroll": 1};
     constructor(private serviceService: ServiceService) {
     }
 

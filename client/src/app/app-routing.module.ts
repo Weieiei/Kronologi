@@ -20,19 +20,20 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
-
-import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
-
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
+import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
+import { BusinessViewComponent } from './pages/business-view/business-view.component';
+import {BookComponent} from "./pages/dashboard/reserve/book/book.component";
+import { ClientGuard } from './guards/client/client.guard';
 import { DetailsComponent } from './pages/details/details.component';
 
 const routes: Routes = [
     // Login
-    { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
+    { path: 'login', component: LoginComponent },
 
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
@@ -47,7 +48,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
 
-            //Appointments for business
+            // Appointments for business
             { path: 'business', component: BusinessViewComponent },
 
             //Home
@@ -59,18 +60,17 @@ const routes: Routes = [
             // Reserving and modifying reservation
             {
                 path: 'reserve', children: [
-                    { path: '', component: ReserveComponent, data: { edit: false } },
+                    { path: '', component: ReserveComponent, data: { edit: false }, canActivate: [ClientGuard] },
                     { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
                 ]
             },
-            
+
             {path : 'details/:businessId', component: DetailsComponent},
             {path : 'syncCalendars', component: SyncCalendarsComponent, canActivate: [EmployeeGuard]},
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
-
-            { path: 'reserve', component: ReserveComponent },
+            { path: 'reserve', component: ReserveComponent, canActivate: [ClientGuard] },
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
@@ -78,6 +78,8 @@ const routes: Routes = [
             { path: 'admin/services', component: AdminServicesComponent },
             { path: 'admin/services/create', component: CreateServiceComponent },
             { path: 'admin/users', component: AdminUsersComponent },
+            { path: 'darn-carousel', component: DarnCarouselComponent },
+            { path: 'book', component: BookComponent },
 
             // User settings
             {

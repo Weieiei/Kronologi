@@ -1,18 +1,24 @@
 package appointmentscheduler.service.appointment;
 
+import appointmentscheduler.dto.appointment.AppointmentDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.AppointmentStatus;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
 import appointmentscheduler.entity.appointment.GeneralAppointment;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.EmployeeService;
+import appointmentscheduler.entity.event.AppEventBase;
 import appointmentscheduler.entity.googleEntity.SyncEntity;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.EmployeeAvailability;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.*;
+import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.googleService.GoogleSyncService;
 import appointmentscheduler.service.googleService.JPADataStoreFactory;
 import appointmentscheduler.service.googleService.JPADataStoreService;
@@ -38,9 +44,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
+import javax.mail.MessagingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -72,9 +80,14 @@ public class AppointmentService {
 
 
     private GoogleSyncService googleSyncService;
+    private EmailService emailService;
+
     private CancelledRepository cancelledRepository;
     private AppointmentRepository appointmentRepository;
     private EmployeeRepository employeeRepository;
+    private UserRepository userRepository;
+    private ServiceRepository serviceRepository;
+    private BusinessRepository businessRepository;
     private ShiftRepository shiftRepository;
     private GeneralAppointmentRepository generalAppointmentRepository;
     private GoogleCredentialRepository googleCredentialRepository;
@@ -100,6 +113,7 @@ public class AppointmentService {
     @Autowired
     public AppointmentService(
             AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository,
+            UserRepository userRepository, ServiceRepository serviceRepository, BusinessRepository businessRepository, EmailService emailService,
             GeneralAppointmentRepository generalAppointmentRepository, GoogleCredentialRepository googleCredentialRepository, GoogleSyncService googleSyncService
     ) {
         this.googleCredentialRepository = googleCredentialRepository;
@@ -107,9 +121,14 @@ public class AppointmentService {
         this.appointmentRepository = appointmentRepository;
         this.employeeRepository = employeeRepository;
         this.shiftRepository = shiftRepository;
+        this.userRepository = userRepository;
+        this.serviceRepository = serviceRepository;
+        this.businessRepository = businessRepository;
         this.generalAppointmentRepository = generalAppointmentRepository;
         this.googleCredentialRepository = googleCredentialRepository;
+
         this.googleSyncService = googleSyncService;
+        this.emailService = emailService;
     }
 
     public List<Appointment> findByClientIdAndBusinessId(long clientId, long businessId){
@@ -126,16 +145,27 @@ public class AppointmentService {
         return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with employee id %d not found.", id)));
     }
 */
-    public Appointment add(Appointment appointment) {
-        // todo should this return a boolean instead ?
-        // Right now this is void return type because it will throw exceptions if it doesn't work.
-        // It will never reach the return statement if it fails any of the checks.
-        // If this returns a boolean, then what do I return if the boolean is false?
 
-        // Throwing exception is nice because then you can display the http error message to the user, indicating where
-        // the validation went wrong
+    private Appointment getAppointment(AppointmentDTO appointmentDTO, long userId, long businessId){
+        Appointment appointment;
+
+        User client = userRepository.findById(userId).orElseThrow(ResourceNotFoundException::new);
+
+        Employee employee = employeeRepository.findByIdAndBusinessId(appointmentDTO.getEmployeeId(), businessId).orElseThrow(ResourceNotFoundException::new);
+
+        Service service = serviceRepository.findByIdAndBusinessId(appointmentDTO.getServiceId(), businessId).orElseThrow(ResourceNotFoundException::new);
+
+        Business business = businessRepository.findById(businessId).orElseThrow(ResourceNotFoundException::new);
+
+        appointment = appointmentDTO.convertToAppointment(client,employee,service,business);
+
+        return appointment;
+    }
+
+    public Appointment add(AppointmentDTO appointmentDTO, long userId, long businessId) {
+        Appointment appointment = getAppointment(appointmentDTO, userId, businessId);
+
         validate(appointment, false);
-
 
         //Save to google calendar of employee and / or client if they have their credentials in our db
         if(googleCredentialRepository.findByKey(String.valueOf(appointment.getEmployee().getId())).isPresent()) {
@@ -145,10 +175,46 @@ public class AppointmentService {
             saveEventToGoogleCalendar(appointment, appointment.getClient());
         }
 
+        try {
+            sendConfirmationMessage(appointment, false);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
         return appointmentRepository.save(appointment);
     }
 
-    public Appointment update(long appointmentId, long clientId, Appointment appointment) {
+    //All entries in list need to be valid in order for the method to save the list into the DB
+    public List<Appointment> addList(List<AppointmentDTO> appointmentDTOS, long userId, long businessId){
+        List<Appointment> storedAppointments = new ArrayList<>();
+        Appointment appointment;
+        //validate all appointments before inserting into DB
+        for(int i = 0; i < appointmentDTOS.size(); i++) {
+            appointment = getAppointment(appointmentDTOS.get(i), userId, businessId);
+            validate(appointment, false);
+            //appointment valid
+            storedAppointments.add(appointment);
+        }
+
+        for(int j = 0; j < storedAppointments.size(); j++) {
+
+            appointment = storedAppointments.get(j);
+
+            if(googleCredentialRepository.findByKey(String.valueOf(appointment.getEmployee().getId())).isPresent()) {
+                saveEventToGoogleCalendar(appointment, appointment.getEmployee());
+            }
+            if(googleCredentialRepository.findByKey(String.valueOf(appointment.getClient().getId())).isPresent()) {
+                saveEventToGoogleCalendar(appointment, appointment.getClient());
+            }
+
+            appointmentRepository.save(appointment);
+        }
+        return storedAppointments;
+    }
+
+    public Appointment update(AppointmentDTO appointmentDTO, long clientId, long businessId, long appointmentId) {
+
+        Appointment appointment = getAppointment(appointmentDTO, clientId, businessId);
 
         return appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, appointment.getBusiness().getId(), clientId).map(a -> {
 
@@ -162,6 +228,12 @@ public class AppointmentService {
 
             validate(a, true);
 
+            try {
+                sendConfirmationMessage(a, true);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+
             return appointmentRepository.save(a);
 
         }).orElseThrow(() -> new ResourceNotFoundException("This appointment either belongs to another user or doesn't exist."));
@@ -169,7 +241,7 @@ public class AppointmentService {
     }
 
     public Appointment cancel(long appointmentId, long businessId, long clientId) {
-
+        Employee employee;
         Appointment appointment = appointmentRepository.findByIdAndBusinessIdAndClientId(appointmentId, businessId , clientId)
                 .orElseThrow(() -> new NotYourAppointmentException("This appointment either belongs to another user or doesn't exist."));
 
@@ -178,6 +250,14 @@ public class AppointmentService {
         }
 
         appointment.setStatus(AppointmentStatus.CANCELLED);
+        //remove appointment from employees shift
+        employee = appointment.getEmployee();
+        employee.removeAppointment(appointment);
+        try {
+            sendCancellationMessage(appointment);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
 
         return appointmentRepository.save(appointment);
 
@@ -226,47 +306,13 @@ public class AppointmentService {
      * @throws EmployeeNotWorkingException          If the employee does not have a shift on the date specified.
      * @throws EmployeeAppointmentConflictException If the employee is already booked on the date and time specified.
      * @throws ClientAppointmentConflictException   If the client is already booked on the date and time specified.
-     * @throws NoRoomAvailableException             If there are no rooms available to perform the service specified.
      */
-    private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
+    private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException{
         final Employee employee = appointment.getEmployee();
 
-        GoogleCred employeeCred =  googleCredentialRepository.findByKey(String.valueOf(employee.getId())).get();
 
         if(googleCredentialRepository.findByKey(String.valueOf(employee.getId())).isPresent() && googleSyncService.findById(employee.getId()) != null){
             checkCalendarSync(googleCredentialRepository.findByKey(String.valueOf(employee.getId())).get().getAccessToken(), googleSyncService.findById(employee.getId()).getSyncToken(), employee);
-        }
-
-        // Make sure the client and employee are not the same
-        if (appointment.getClient().equals(employee)) {
-            throw new ModelValidationException("You cannot book an appointment with yourself.");
-        }
-
-        // Make sure the employee can perform the service requested
-        boolean employeeCanDoService = false;
-        for (EmployeeService service : appointment.getService().getEmployees()) {
-            if(service.getEmployee().getId() == employee.getId()){
-                employeeCanDoService = true;
-                break;
-            }
-        }
-
-
-        if (!employeeCanDoService) {
-            throw new EmployeeDoesNotOfferServiceException("The employee does not perform that service.");
-        }
-
-        // Check if the employee is working on the date specified
-        boolean employeeIsWorking = employee.isWorking(appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
-
-        if (!employeeIsWorking) {
-            throw new EmployeeNotWorkingException("The employee does not have a shift.");
-        }
-
-        // Check if the employee does not have an appointment scheduled already in that time slot
-        List<Appointment> employeeAppointments = appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(appointment.getDate(), employee.getId(), appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
-        if (DateConflictChecker.hasConflictList(employeeAppointments, appointment, modifying)) {
-            throw new EmployeeAppointmentConflictException("There is a conflicting appointment already booked with that employee.");
         }
 
         // Check if the client does not have an appointment scheduled already
@@ -274,6 +320,9 @@ public class AppointmentService {
         if(DateConflictChecker.hasConflictList(clientAppointments, appointment, modifying)) {
             throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
         }
+
+        employee.validateAndAddAppointment(appointment);
+
     }
 
     public Appointment findMyAppointmentById(long userId, long appointmentId) {
@@ -297,16 +346,19 @@ public class AppointmentService {
     }
 
 
-    public List<Employee> getAvailableEmployeesByServiceAndByDate(long serviceId, LocalDate date) {
-        return employeeRepository.findByServices_IdAndShifts_Date(serviceId, date);
+    public List<Employee> getAvailableEmployeesByServiceAndByDate(long serviceId, String date) {
+        LocalDate pickedDate = parseDate(date);
+        return employeeRepository.findByServices_IdAndShifts_Date(serviceId, pickedDate);
     }
 
-    public List<Shift> getEmployeeShiftsByDateAndBusinessId(LocalDate date, long businessId) {
-        return shiftRepository.findByDateAndBusinessId(date, businessId);
+    public List<Shift> getEmployeeShiftsByDateAndBusinessId(String date, long businessId) {
+        LocalDate pickedDate = parseDate(date);
+        return shiftRepository.findByDateAndBusinessId(pickedDate, businessId);
     }
 
-    public List<Appointment> getConfirmedAppointmentsByDateAndBusinessId(LocalDate date, long businessId) {
-        return appointmentRepository.findByDateAndStatusAndBusinessId(date, AppointmentStatus.CONFIRMED, businessId);
+    public List<Appointment> getConfirmedAppointmentsByDateAndBusinessId(String date, long businessId) {
+        LocalDate pickedDate = parseDate(date);
+        return appointmentRepository.findByDateAndStatusAndBusinessId(pickedDate, AppointmentStatus.CONFIRMED, businessId);
     }
 
     public Map<String, String> cancel(CancelledAppointment cancel) {
@@ -347,6 +399,28 @@ public class AppointmentService {
 
     public CancelledAppointment findByCancelledIdAndBusinessId(long id, long businessId) {
         return cancelledRepository.findByIdAndBusinessId(id, businessId);
+    }
+
+    public Set<EmployeeAvailability> getEmployeeAvailabilitiesForService(long businessId, long serviceId){
+        Service service = serviceRepository.findByIdAndBusinessId(serviceId, businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Service not found under user with ID %d for business %d.", serviceId , businessId)));
+        long duration = (long) service.getDuration();
+        Set<Employee> employees = employeeRepository.findByBusinessId(businessId);
+        Set<AppEventBase> currentAvailability;
+        Set<EmployeeAvailability> allAvailabilities = new HashSet<>();
+        EmployeeAvailability current;
+
+        for(Employee employee: employees){
+            if(employee.hasService(service)) {
+                currentAvailability = employee.getEmployeeAvailabilities(duration);
+                if (currentAvailability.size() > 0) {
+                    current = new EmployeeAvailability(employee, employee.getEmployeeAvailabilities(duration));
+                    allAvailabilities.add(current);
+                }
+            }
+        }
+
+        return allAvailabilities;
     }
 
 
@@ -421,5 +495,38 @@ public class AppointmentService {
        }
 
    }
+
+    private void sendConfirmationMessage(Appointment appointment, boolean modifying) throws MessagingException {
+
+        String message = String.format(
+                "Hello %1$s,<br><br>" +
+                        "Your reservation at Sylvia Pizzi Spa has been " + (modifying ? "modified" : "confirmed") + ".<br><br>" +
+                        "%2$s with %3$s<br>" +
+                        "%4$s at %5$s<br><br>" +
+                        "We look forward to seeing you!",
+                appointment.getClient().getFirstName(),
+                appointment.getService().getName(), appointment.getEmployee().getFullName(),
+                appointment.getDate().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")), appointment.getStartTime().toString()
+        );
+
+        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
+
+    }
+
+    private void sendCancellationMessage(Appointment appointment) throws MessagingException {
+
+        String message = String.format(
+                "Hello %1$s,<br><br>" +
+                        "Your reservation at Sylvia Pizzi Spa has been cancelled.<br>",
+                appointment.getClient().getFirstName()
+        );
+
+        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
+
+    }
+
+    private LocalDate parseDate(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
+    }
 
 }

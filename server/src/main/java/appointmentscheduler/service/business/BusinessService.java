@@ -28,16 +28,7 @@ public class BusinessService {
         this.businessRepository = businessRepository;
     }
 
-    /* public Map<String, String> add(Business business) {
-        try{
-             business = businessRepository.save(business);
-            return message ("Successfully added business");
-        }
-        catch (Exception e) {
-            return message(e.getMessage());
-        }
-    }
-    */
+
     public long add(Business business) {
 
         if(businessRepository.findByName(business.getName()).orElse(null) != null){

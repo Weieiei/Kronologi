@@ -1,6 +1,6 @@
 <app-custom-stepper [titles]="titles" #stepper>
     <cdk-step>
-        <app-service-selection (serviceChange)="setService($event)" [serviceEvent]="serviceSubject.asObservable()"></app-service-selection>
+        <app-service-selection-grid-list (serviceChange)="setService($event)" [serviceEvent]="serviceSubject.asObservable()"></app-service-selection-grid-list>
     </cdk-step>
     <cdk-step>
         <app-scheduler (dateChange)="setDate($event)" [dateEvent]="dateSubject.asObservable()"></app-scheduler>

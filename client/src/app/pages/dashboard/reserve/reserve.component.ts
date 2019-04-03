@@ -195,6 +195,7 @@ export class ReserveComponent implements OnInit {
         );
     }
 
+    //find availabilities for for all possible employees
     findAvailabilities() {
 
         this.employeesWithAvailabilities = [];

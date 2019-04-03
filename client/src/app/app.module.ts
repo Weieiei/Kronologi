@@ -56,7 +56,6 @@ import { ChangeClientToEmployeeDialogComponent } from "./pages/dashboard/home/ad
 import { ReasonDialogComponent } from './components/reason-dialog/reason-dialog.component';
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
-
 import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ServicesComponent } from './pages/services/services.component';
@@ -66,6 +65,17 @@ import { AgmCoreModule } from '@agm/core';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { DetailsComponent } from './pages/details/details.component';
 import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
+import { AddRecurringShiftFormComponent } from './pages/dashboard/home/shift/add-recurring-shift-form/add-recurring-shift-form.component';
+import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
+import { SwiperModule } from 'angular2-useful-swiper';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/service-selection-grid-list/service-selection-grid-list.component';
+import {BookComponent} from "./pages/dashboard/reserve/book/book.component";
+import {PickDayComponent} from "./pages/dashboard/reserve/pick-day/pick-day.component";
+import {SearchInputComponent} from "./components/search-box/search-box.component";
+
 
 @NgModule({
     declarations: [
@@ -118,6 +128,15 @@ import { GoogleMapsComponent } from './components/google-maps/google-maps.compon
         BusinessRegisterComponent,
         ServicesComponent,
         SyncCalendarsComponent,
+        AddRecurringShiftFormComponent,
+        DarnCarouselComponent,
+        ServiceSelectionGridListComponent,
+        SearchInputComponent,
+	    ServiceSelectionGridListComponent,
+	    BookComponent,
+	    PickDayComponent,
+	    SearchInputComponent,
+        SyncCalendarsComponent,
         FindBusinessDialogComponent,
         ErrorDialogComponent,
         ErrorDialogComponent,
@@ -125,6 +144,7 @@ import { GoogleMapsComponent } from './components/google-maps/google-maps.compon
         GoogleMapsComponent
     ],
     imports: [
+        CovalentFileModule,
         NgxSpinnerModule,
         CovalentFileModule,
         BrowserModule,
@@ -135,10 +155,15 @@ import { GoogleMapsComponent } from './components/google-maps/google-maps.compon
         FlexLayoutModule,
         HttpClientModule,
         ReactiveFormsModule,
+        SwiperModule,
+        SlickCarouselModule,
+        MatTabsModule,
+        MatDatepickerModule,
+        ReactiveFormsModule,
         AgmCoreModule.forRoot({
             apiKey: "AIzaSyBstSo5jhmmQQ5u2ZjEXOLbMIzXJIdV_48"
           })
-        
+
     ],
     entryComponents: [
         ErrorDialogComponent,
@@ -160,7 +185,7 @@ import { GoogleMapsComponent } from './components/google-maps/google-maps.compon
             multi: true
         }
     ],
-    
+
     bootstrap: [AppComponent]
 })
 export class AppModule {

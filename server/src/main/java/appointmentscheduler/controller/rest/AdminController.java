@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "${rest.api.path}/business/admin", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +69,7 @@ public class AdminController extends AbstractController {
     @LogREST
     @GetMapping("/{businessId}/employees")
     public ResponseEntity<String> getEmployees(@PathVariable long businessId) {
-        List<Employee> employees = employeeShiftService.getEmployeesForBusiness(businessId);
+        Set<Employee> employees = employeeShiftService.getEmployeesForBusiness(businessId);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Employee.class, new AdminEmployeeSerializer());
         return getJson(mapper, employees);
     }
@@ -96,6 +97,15 @@ public class AdminController extends AbstractController {
     public ResponseEntity<String> createShift(@PathVariable long employeeId, @PathVariable long businessId,
                                               @RequestBody EmployeeShiftDTO employeeShiftDTO) {
         Shift shift = employeeShiftService.createShiftForBusiness(employeeId, businessId, employeeShiftDTO);
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
+        return getJson(mapper, shift);
+    }
+
+    @LogREST
+    @PostMapping("/{businessId}/employee/{employeeId}/shift-list")
+    public ResponseEntity<String> createListShift(@PathVariable long employeeId, @PathVariable long businessId,
+                                              @RequestBody List<EmployeeShiftDTO> employeeShiftDTO) {
+        List<Shift> shift = employeeShiftService.addShiftList(employeeId, businessId, employeeShiftDTO);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Shift.class, new AdminEmployeeShiftSerializer());
         return getJson(mapper, shift);
     }
@@ -160,7 +170,7 @@ public class AdminController extends AbstractController {
         Employee employee = employeeShiftService.getEmployeeByBusinessId(employeeId, businessId);
         Service service = serviceService.findByIdAndBusinessId(serviceId, businessId);
         Business business = businessService.findById(businessId);
-        employee.addEmployeeService(service);
+        employee.addService(service);
         EmployeeService employee_service = new EmployeeService(business, employee, service);
         employeeServiceRepository.save(employee_service);
         return ResponseEntity.ok(message("service assigned"));

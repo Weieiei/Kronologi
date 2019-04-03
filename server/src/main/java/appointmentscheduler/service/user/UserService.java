@@ -7,6 +7,7 @@ import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
@@ -16,8 +17,10 @@ import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.*;
+import appointmentscheduler.service.file.UserFileStorageService;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,13 +52,14 @@ public class UserService {
     private final SettingsRepository settingsRepository;
     private final PhoneNumberRepository phoneNumberRepository;
     private final BusinessRepository businessRepository;
-
+    //private final UserFileRepository userFileRepository;
+   // private final UserFileStorageService userFileStorageService;
     @Autowired
     public UserService(
             EmployeeRepository employeeRepository, BusinessRepository businessRepository, UserRepository userRepository,
             JwtProvider jwtProvider,
             VerificationRepository verificationRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
-            AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
+            @Qualifier("authenticationManagerBean") AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
     ) {
         this.employeeRepository = employeeRepository;
         this.businessRepository = businessRepository;
@@ -207,6 +211,7 @@ public class UserService {
 
     }
 
+
     public Map<String, String> updatePassword(long id, UpdatePasswordDTO updatePasswordDTO) {
 
         User user = userRepository.findById(id)
@@ -321,7 +326,7 @@ public class UserService {
          user.setRole(RoleEnum.ADMIN.toString());
         User savedUser = userRepository.save(user);
 
-        Verification verification = new Verification(savedUser,business);
+        Verification verification = new Verification(savedUser);
 
         verificationRepository.save(verification);
 
@@ -330,9 +335,9 @@ public class UserService {
         return buildTokenRegisterMap( token, verification);
     }
 
-public Map<String, Object> business_register_test(UserRepository userRepository,UserRegisterDTO userRegisterDTO, Business business, User user, Verification verification,User savedUser, Verification savedVerification) throws IOException, MessagingException, NoSuchAlgorithmException {
-//works the same as the business_register, just put the class this method depends as
-//parameters, so it is easy to mock
+    public Map<String, Object> business_register_test(UserRepository userRepository,UserRegisterDTO userRegisterDTO, Business business, User user, Verification verification,User savedUser, Verification savedVerification) throws IOException, MessagingException, NoSuchAlgorithmException {
+    //works the same as the business_register, just put the class this method depends as
+    //parameters, so it is easy to mock
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
         }
@@ -355,7 +360,7 @@ public Map<String, Object> business_register_test(UserRepository userRepository,
          user.setRole(RoleEnum.ADMIN.toString());
          savedUser = userRepository.save(user);
 
-         verification = new Verification(savedUser,business);
+         verification = new Verification(savedUser);
 
         savedVerification = verificationRepository.save(verification);
 
@@ -363,4 +368,5 @@ public Map<String, Object> business_register_test(UserRepository userRepository,
 
         return buildTokenRegisterMap( token, verification);
     }
+
 }

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ServiceService } from '../../../services/service/service.service';
 import { BusinessService } from '../../../services/business/business.service';
 import { BusinessUserRegisterDTO } from '../../../interfaces/user/business-user-register-dto';
 import { BusinessRegisterDTO } from '../../../interfaces/business/business-register-dto';
 import { BusinessDTO } from '../../../interfaces/business/business-dto';
+import { UserService } from '../../../services/user/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
@@ -79,7 +81,7 @@ export class BusinessRegisterComponent implements OnInit {
     businessInfoForm: FormGroup;
     serviceInfoForm: FormGroup;
     selectedFile: File = null;
-    // new business object
+// new business object
     business: BusinessDTO;
     businessName: string;
     businessDomain: string;
@@ -114,15 +116,20 @@ export class BusinessRegisterComponent implements OnInit {
     confirmPassword: string;
     isPasswordVisible = false;
 
+    registerPhone = false;
+
     businessId: number;
     matcher: PasswordMismatchStateMatcher;
 
+    index: number = 0;
     constructor(
         private spinner: NgxSpinnerService,
         private dialog: MatDialog,
         private http: HttpClient,
         private router: Router,
         private _formBuilder: FormBuilder,
+        private userService: UserService,
+        private serviceService: ServiceService,
         private googleAnalytics: GoogleAnalyticsService,
         private businessService: BusinessService
          ) {
@@ -145,7 +152,7 @@ export class BusinessRegisterComponent implements OnInit {
         this.serviceInfoForm = this._formBuilder.group({
             thirdCtrl: ['', Validators.required]
           });
-    }
+      }
 
     checkPasswords(inputFormGroup: FormGroup) {
         const password = inputFormGroup.controls.password.value;
@@ -156,7 +163,15 @@ export class BusinessRegisterComponent implements OnInit {
 
         return password === confirmPassword ? null : { mismatched: true };
     }
-
+    onUpload()  {
+        const  fd = new FormData();
+        fd.append('image', this.selectedFile, this.selectedFile.name );
+        this.http.post('https://url', fd )
+                .subscribe(
+                    response => {
+                    console.log(response);
+                });
+    }
 
     getBusinessById(businessId: Number): BusinessDTO {
         this.businessService.getBusinessById(this.businessId).subscribe(
