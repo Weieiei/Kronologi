@@ -1,10 +1,20 @@
-.service-container {
-    padding: 1rem 0;
+//img {
+//    width: 800px;
+//    height: 800px;
+//    object-fit: contain;
+//}
 
-    .service {
-        background-color: #fff;
-        cursor: pointer;
-        padding: 2rem 0;
-    }
+.service-card {
+    max-width: 800px;
+    //border-style:hidden;
+    padding: 0 45px 50px 45px;
+}
 
+.example-header-image {
+    //background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    //background-size: auto;
+}
+
+.mat-icon {
+    vertical-align: middle
 }

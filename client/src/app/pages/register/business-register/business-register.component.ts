@@ -41,7 +41,7 @@ export class BusinessRegisterComponent implements OnInit {
     description: string;
 // new service object
     service: string;
-    service_duration: number;
+    serviceDuration: number;
 
 //new user object
     firstName: string;
@@ -79,14 +79,10 @@ export class BusinessRegisterComponent implements OnInit {
         this.secondFormGroup = this._formBuilder.group({
           secondCtrl: ['', Validators.required]
         });
-        // this.thirdFormGroup = this._formBuilder.group({
-        //     thirdCtrl: ['', Validators.required]
-        //   });
+
         this.thirdFormGroup = this._formBuilder.group({
-           // service: '',
-           // service_duration: '',
            thirdCtrl: ['', Validators.required],
-            new_services: this._formBuilder.array([])
+            newServices: this._formBuilder.array([])
           });
       }
 
@@ -112,33 +108,33 @@ export class BusinessRegisterComponent implements OnInit {
         return this.business;
     }
 
-    business_register(): void {
+    businessRegister(): void {
         // register business
 
         if (this.password === this.confirmPassword ) {
         console.log(this.newServiceForms.length);
         console.log(this.newServiceForms);
-        console.log(this.service_duration);
-        console.log(this.service_duration +'service duration');
+        console.log(this.serviceDuration);
+        console.log(this.serviceDuration + 'service duration');
         console.log('service duration');
-        const payload_business: BusinessRegisterDTO = {
+        const payloadBusiness: BusinessRegisterDTO = {
             name: this.businessName,
             domain: this.businessDomain,
             description: this.description
         };
 
-        this.businessService.createBusiness(payload_business).subscribe(
+        this.businessService.createBusiness(payloadBusiness).subscribe(
             res => {
                 console.log(res);
                 this.businessId = res;
-                const payload_service: ServiceCreateDto = {
+                const payloadService: ServiceCreateDto = {
                     name: this.service,
-                    duration: this.service_duration
+                    duration: this.serviceDuration
                 };
-                console.log(payload_service);
+                console.log(payloadService);
 
                 console.log(this.businessId);
-                this.serviceService.registerService(this.businessId, payload_service).subscribe(
+                this.serviceService.registerService(this.businessId, payloadService).subscribe(
                      res => {
                         console.log(res);
                      },
@@ -147,15 +143,15 @@ export class BusinessRegisterComponent implements OnInit {
 
             console.log(this.newServiceForms.length + 'length');
             for( var _i = 0; _i < this.newServiceForms.length; _i++) {
-                console.log(this.newServiceForms.at(_i).value.new_service_name);
+                console.log(this.newServiceForms.at(_i).value.newServiceName);
 
                 console.log(this.newServiceForms.at(_i).value);
-                const payload_new_service: ServiceCreateDto = {
+                const payloadNewService: ServiceCreateDto = {
 
-                    name: this.newServiceForms.at(_i).value.new_service_name,
-                    duration: this.newServiceForms.at(_i).value.new_service_duration
+                    name: this.newServiceForms.at(_i).value.newServiceName,
+                    duration: this.newServiceForms.at(_i).value.newServiceDuration
                 };
-                this.serviceService.registerService(this.businessId, payload_new_service).subscribe(
+                this.serviceService.registerService(this.businessId, payloadNewService).subscribe(
                     res => {
                      console.log(res);
                  },
@@ -165,7 +161,7 @@ export class BusinessRegisterComponent implements OnInit {
 
             }
 
-            
+
                      const payload: BusinessUserRegisterDTO = {
 
                         firstName: this.firstName,
@@ -211,16 +207,16 @@ export class BusinessRegisterComponent implements OnInit {
     }
 
     get newServiceForms() {
-        return this.thirdFormGroup.get('new_services') as FormArray;
+        return this.thirdFormGroup.get('newServices') as FormArray;
       }
 
     addService() {
 
-        const new_service = this._formBuilder.group({
-          new_service_name: [],
-          new_service_duration: [],
+        const newService = this._formBuilder.group({
+          newServiceName: [],
+          newServiceDuration: [],
     });
-    this.newServiceForms.push(new_service);
+    this.newServiceForms.push(newService);
 }
 deleteService(i) {
     this.newServiceForms.removeAt(i);

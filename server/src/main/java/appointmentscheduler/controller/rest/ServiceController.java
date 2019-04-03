@@ -29,8 +29,7 @@ import appointmentscheduler.dto.service.ServiceCreateDTO;
 import java.util.Map;
 @RestController
 @RequestMapping("${rest.api.path}/business/services")
-// @PreAuthorize("hasAuthority('CLIENT')")
-//comment out becuase we need to able to register a service when someone registers a business account
+
 public class ServiceController {
 
     private final ServiceRepository serviceRepository;

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { ServiceService } from '../../../../services/service/service.service';
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { Observable, Subscription } from 'rxjs';
+//require('materialize-css/sass/materialize.scss');
 
 @Component({
     selector: 'app-service-selection',
@@ -11,14 +12,21 @@ import { Observable, Subscription } from 'rxjs';
 export class ServiceSelectionComponent implements OnInit, OnDestroy {
 
     services: ServiceDTO[] = [];
+    items: Array<any> = [];
 
     serviceId: number;
     serviceSubscription: Subscription;
     @Input() serviceEvent: Observable<number>;
 
     @Output() serviceChange = new EventEmitter();
-
+    slideConfig = {"slidesToShow": 2, "slidesToScroll": 1};
     constructor(private serviceService: ServiceService) {
+        this.items=[
+            {name : 'assets/images/alex-bertha-215867-unsplash.jpg'},
+            {name : 'assets/images/anshu-a-1147827-unsplash.jpg'},
+        ];
+
+
     }
 
     ngOnInit() {
@@ -47,4 +55,43 @@ export class ServiceSelectionComponent implements OnInit, OnDestroy {
             });
         });
     }
+
+
+    slickInit(e) {
+        console.log('slick initialized');
+    }
+
+    breakpoint(e) {
+        console.log('breakpoint');
+    }
+
+    afterChange(e) {
+        console.log('afterChange');
+    }
+
+    beforeChange(e) {
+        console.log('beforeChange');
+    }
 }
+/*
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-service-selection',
+    templateUrl: './service-selection.component.html',
+    styleUrls: ['./service-selection.component.scss']
+})
+export class ServiceSelectionComponent {
+    items: Array<any> = [];
+
+constructor(){
+    this.items = [
+        {name : 'assets/images/alex-bertha-215867-unsplash.jpg'},
+        {name : 'client/src/assets/images/anshu-a-1147827-unsplash.jpg'},
+        {name : 'client/src/assets/images/deniz-altindas-38128-unsplash.jpg'},
+        {name : 'assets/images/alex-bertha-215867-unsplash.jpg'},
+        {name : 'client/src/assets/images/toa-heftiba-578093-unsplash.jpg'},
+    ];
+}
+}
+*/
