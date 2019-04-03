@@ -104,38 +104,6 @@ public class AppointmentController extends AbstractController {
         return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDateAndBusinessId(date,businessId));
     }
 
-    private LocalDate parseDate(String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("M/d/yyyy"));
-    }
-
-    private void sendConfirmationMessage(Appointment appointment, boolean modifying) throws MessagingException {
-
-        String message = String.format(
-                "Hello %1$s,<br><br>" +
-                        "Your reservation at Sylvia Pizzi Spa has been " + (modifying ? "modified" : "confirmed") + ".<br><br>" +
-                        "%2$s with %3$s<br>" +
-                        "%4$s at %5$s<br><br>" +
-                        "We look forward to seeing you!",
-                appointment.getClient().getFirstName(),
-                appointment.getService().getName(), appointment.getEmployee().getFullName(),
-                appointment.getDate().format(DateTimeFormatter.ofPattern("MMMM dd yyyy")), appointment.getStartTime().toString()
-        );
-
-        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
-
-    }
-
-    private void sendCancellationMessage(Appointment appointment) throws MessagingException {
-
-        String message = String.format(
-                "Hello %1$s,<br><br>" +
-                        "Your reservation at Sylvia Pizzi Spa has been cancelled.<br>",
-                appointment.getClient().getFirstName()
-        );
-
-        emailService.sendEmail(appointment.getClient().getEmail(), "ASApp Appointment Confirmation", message, true);
-
-    }
 
     @GetMapping("{businessId}/cancel/{id}")
     public ResponseEntity<String> findId(@PathVariable long id, @PathVariable long businessId){
