@@ -46,8 +46,10 @@
                             <mat-form-field appearance="outline" class="no-mat-padding" fxFlex>
                                 <mat-label>Password</mat-label>
                                 <input matInput formControlName="password"
-                                       [type]="isPasswordVisible ? 'text' : 'password'" name="password"
-                                       pattern="^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$" required>
+                                       [type]="isPasswordVisible ? 'text' : 'password'" name="password">
+                                <mat-hint>
+                                    Between 6-30 characters, at least 1 number and  1 digit
+                                </mat-hint>
                                 <mat-error *ngIf="personalInfoForm.get('password').touched &&
                                 personalInfoForm.get('password').errors
                          && personalInfoForm.get('password').errors.required">
@@ -63,10 +65,10 @@
                                 <mat-label>Confirm</mat-label>
                                 <input matInput formControlName="confirmPassword"
                                        [type]="isPasswordVisible ? 'text' : 'password'" name="confirmPassword"
-                                       [errorStateMatcher]="matcher" required>
+                                       [errorStateMatcher]="matcher">
                                 <mat-error *ngIf="personalInfoForm.get('confirmPassword').touched &&
                                 personalInfoForm.get('confirmPassword').errors
-                         && personalInfoForm.get('confirmPassword').errors.required">
+                                && personalInfoForm.get('confirmPassword').errors.required">
                                     Password confirmation is <strong>required</strong>
                                 </mat-error>
                                 <mat-error *ngIf="personalInfoForm.get('confirmPassword').touched &&
@@ -79,17 +81,12 @@
                                 <mat-icon>{{ isPasswordVisible ? 'visibility_on' : 'visibility_off'}}</mat-icon>
                             </button>
                         </div>
-                        <span class="hint">
-                            Between 6 and 30 characters
-                            <br>
-                            Contains 1 letter and 1 digit
-                        </span>
                     </div>
                     <div class="phone-container" fxLayout="column" fxLayoutGap="20px">
                         <div fxLayout="column" fxLayoutGap="20px">
                             <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25">
                                 <mat-label>Country</mat-label>
-                                <mat-select [required]="true" (selectionChange)="selectCountry($event.value)">
+                                <mat-select (selectionChange)="selectCountry($event.value)">
                                     <mat-select-trigger *ngIf="selectedCountry">{{ selectedCountry.name }}
                                         <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>
                                     </mat-select-trigger>
@@ -118,8 +115,8 @@
                     </div>
                     <div>
                         <div style="margin-top:2rem; margin-left:45rem">
-                            <button mat-raised-button class="button-color" matStepperNext [
-                                    disabled]="personalInfoForm.invalid">Next</button>
+                            <button mat-raised-button class="button-color" matStepperNext
+                                    [disabled]="personalInfoForm.invalid">Next</button>
                         </div>
                     </div>
                 </form>

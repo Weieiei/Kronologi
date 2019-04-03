@@ -76,7 +76,6 @@ export class BusinessRegisterComponent implements OnInit {
     fileUploadMsg = 'No file uploaded yet.';
     disabled = false;
     personalInfoForm: FormGroup;
-    phoneNumberForm: FormGroup;
     businessInfoForm: FormGroup;
     serviceInfoForm: FormGroup;
     selectedFile: File = null;
