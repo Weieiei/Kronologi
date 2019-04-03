@@ -68,8 +68,6 @@ public class UserService {
         this.authenticationManager = authenticationManager;
         this.settingsRepository = settingsRepository;
         this.phoneNumberRepository = phoneNumberRepository;
-       // this.userFileRepository = userFileRepository;
-      //  this.userFileStorageService = userFileStorageService;
     }
 
     public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
@@ -262,10 +260,6 @@ public class UserService {
         return phoneNumberRepository.findByUserId(userId).orElse(null);
     }
 
-//    public UserFile getProfile(long userId) {
-//        return userFileRepository.findByUserId(userId).orElse(null);
-//
-//    }
     public Map<String, String> saveOrUpdatePhoneNumber(long userId, PhoneNumberDTO phoneNumberDTO) {
         PhoneNumber phoneNumber = phoneNumberRepository.findByUserId(userId).orElse(null);
         String message;
