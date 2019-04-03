@@ -317,7 +317,7 @@ public class UserService {
          user.setRole(RoleEnum.ADMIN.toString());
         User savedUser = userRepository.save(user);
 
-        Verification verification = new Verification(savedUser,business);
+        Verification verification = new Verification(savedUser);
 
         verificationRepository.save(verification);
 
@@ -351,7 +351,7 @@ public class UserService {
          user.setRole(RoleEnum.ADMIN.toString());
          savedUser = userRepository.save(user);
 
-         verification = new Verification(savedUser,business);
+         verification = new Verification(savedUser);
 
         savedVerification = verificationRepository.save(verification);
 

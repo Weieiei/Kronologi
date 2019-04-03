@@ -20,16 +20,21 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
+<<<<<<<<< Temporary merge branch 1
 
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
+=========
+>>>>>>>>> Temporary merge branch 2
 
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
 import {BookComponent} from "./pages/dashboard/reserve/book/book.component";
+
+import { ClientGuard } from './guards/client/client.guard';
 
 const routes: Routes = [
     // Login
@@ -60,7 +65,7 @@ const routes: Routes = [
             // Reserving and modifying reservation
             {
                 path: 'reserve', children: [
-                    { path: '', component: ReserveComponent, data: { edit: false } },
+                    { path: '', component: ReserveComponent, data: { edit: false }, canActivate: [ClientGuard] },
                     { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
                 ]
             },
@@ -69,8 +74,7 @@ const routes: Routes = [
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
-
-            { path: 'reserve', component: ReserveComponent },
+            { path: 'reserve', component: ReserveComponent, canActivate: [ClientGuard] },
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
