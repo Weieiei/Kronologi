@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface UserFileRepository extends JpaRepository<UserFile, Long> {
     Optional<UserFile> findByIdAndUserId(long fileId, long userId);
-    UserFile findByUserId(long userId);
+    //UserFile findByUserId(long userId);
+    Optional<UserFile>  findByUserId(long userId);
 
 }

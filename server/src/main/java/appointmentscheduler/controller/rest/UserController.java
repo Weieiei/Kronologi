@@ -18,6 +18,7 @@ import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.entity.verification.Verification;
+import appointmentscheduler.exception.FileStorageException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.GoogleCredentialRepository;
 import appointmentscheduler.repository.BusinessRepository;
@@ -165,12 +166,16 @@ public class UserController extends AbstractController {
 
     @GetMapping("/profile")
     public  ResponseEntity<Map<String,String>> getProfile(@RequestAttribute long userId) throws JSONException {
-        UserFile userFile = userFileStorageService.getUserFile(userId);
+        UserFile userFile;
+       try {
+           userFile = userFileStorageService.getUserFile(userId);
+       }catch(FileStorageException e){
 
-        if ( userFile == null) {
-           // return null;
-           return ResponseEntity.ok(null);
-        }
+               // return null;
+               return ResponseEntity.ok(null);
+
+       }
+
 
         byte[] imageData = userFile.getData();
         String imageDataBase64Encoded = Base64.getEncoder().encodeToString(imageData);
@@ -179,7 +184,7 @@ public class UserController extends AbstractController {
         map.put("image_encoded", imageDataBase64Encoded);
 
             return ResponseEntity.ok(map);
-            
+
     }
 
     @GetMapping("/phone")

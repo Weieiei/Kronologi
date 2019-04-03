@@ -156,14 +156,9 @@ export class UserService {
         return this.http.post(['api', 'user', 'profile'].join('/'), formData);
         }
 
-        // getUserProfile(): Observable<File> {
-        // return this.http.get<File>(['api', 'user', 'profile'].join('/'));
-        // }
-        // getUserProfile(): Observable<Blob> {
-        //     return this.http.get(['api', 'user', 'profile'].join('/'), { responseType: 'blob' });
-        //     }
-        getUserProfile(): Observable<any> {
-            return this.http.get<any>(['api', 'user', 'profile'].join('/'));
-        }
+    getUserProfile(): Observable<any> {
+       return this.http.get<any>(['api', 'user', 'profile'].join('/'));
+    }
+
 
     }

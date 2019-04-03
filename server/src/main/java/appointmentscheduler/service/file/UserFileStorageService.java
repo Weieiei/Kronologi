@@ -36,6 +36,7 @@ public class UserFileStorageService {
         return pattern.matcher(fileName).matches();
     }
 
+    @Transactional
     public Map<String, String> saveUserFile(MultipartFile file, long userId) {
         // clean file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -46,9 +47,18 @@ public class UserFileStorageService {
             if(!verifyNaming(fileName)) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
-            String message;
+
             UserFile newFile = new UserFile(fileName, file.getContentType(), file.getBytes(),user);
-            userFileRepository.save(newFile);
+
+            if (userFileRepository.findByUserId(userId).isPresent()) {
+                long id = userFileRepository.findByUserId(userId).get().getId();
+                userFileRepository.deleteById(id);
+
+            }
+
+                userFileRepository.save(newFile);
+
+
             return message("You've successfully updated your profile.");
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
@@ -60,10 +70,11 @@ public class UserFileStorageService {
         return userFileRepository.findByIdAndUserId(fileId, userId)
                 .orElseThrow(() -> new FileStorageException("File not found with id " + fileId));
     }
+
     @Transactional
     public UserFile getUserFile(long userId) {
-        return userFileRepository.findByUserId(userId);
-              //  .orElseThrow(() -> new FileStorageException("File not found"));
+        return userFileRepository.findByUserId(userId)
+                .orElseThrow(() -> new FileStorageException("File not found"));
     }
 
     private Map<String, String> message(String message) {

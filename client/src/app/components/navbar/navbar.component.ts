@@ -26,8 +26,7 @@ export class NavbarComponent implements OnInit {
     user;
     theme :string = 'dark-theme';
     imagePath :string = "";
-    //objectURL:string ="";
-//try
+
     imageToShow: any;
     isImageLoading: any;
     constructor(
@@ -57,60 +56,22 @@ export class NavbarComponent implements OnInit {
           data => {
               if ( data ) {
                 this.imagePath = 'data:image/png;base64,' + data["image_encoded"];
-                console.log(this.imagePath);
+                 // show data base64:
+                 // console.log(this.imagePath);
                 this.sanitizedImageData = this.sanitizer.bypassSecurityTrustUrl(this.imagePath);
               } else {
                         this.sanitizedImageData = 'assets/images/user_default.png';
                         console.log(this.sanitizedImageData);
                     }
 
-
           },
 
-            // res => {
-            //     console.log(res);
-            //     if (res) {
-            //         this.imagePath = res;
-            //         //  this.objectURL = URL.createObjectURL(res);
-            //         // console.log(this.objectURL);
 
-            //         // this.imagePath = this.objectURL;
-            //         // var blob = new Blob([res], {type: 'image/jpeg'});
-            //         // this.imagePath  = URL.createObjectURL(blob );
-            //     } else {
-            //         this.imagePath = 'assets/images/user_default.png';
-            //         console.log(this.imagePath);
-            //     }
-
-
-            // },
                  err => console.log(err)
         );
-       // this.getImageFromService();
 
     }
-//     getImageFromService() {
-//         this.isImageLoading = true;
-//         this.userService.getUserProfile().subscribe(data => {
-//             console.log(data);
-//           this.createImageFromBlob(data);
-//           this.isImageLoading = false;
-//         }, error => {
-//           this.isImageLoading = false;
-//           console.log(error);
-//         });
-//   }
 
-//   createImageFromBlob(image: Blob) {
-//     let reader = new FileReader();
-//     reader.addEventListener("load", () => {
-//        this.imageToShow = reader.result;
-//     }, false);
-
-//     if (image) {
-//        reader.readAsDataURL(image);
-//     }
-//  }
 
     onThemeChange(theme:string) {
         this.theme = theme;

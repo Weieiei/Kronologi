@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "userFiles")
+@Table(name = "user_files")
 public class UserFile {
 
     @Id
@@ -18,12 +18,12 @@ public class UserFile {
     @Column(name = "type")
     private String fileType;
 
-    @Column(name = "fileOrigin")
+    @Column(name = "file_origin")
     private FileOrigin fileOrigin;
 
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = true)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     private long size;
@@ -72,6 +72,7 @@ public class UserFile {
     public long getSize() {
         return  size;
     }
+    
 
     public FileOrigin getFileOrigin() {
         return fileOrigin;
@@ -88,5 +89,7 @@ public class UserFile {
     public void setUser(User user) {
         this.user = user;
     }
+
+
 
 }
