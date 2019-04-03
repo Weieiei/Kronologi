@@ -3,18 +3,28 @@ import {MatDatepickerInputEvent} from "@angular/material";
 import {ServiceService} from "../../../../services/service/service.service";
 import {ServiceDTO} from "../../../../interfaces/service/service-dto";
 import {AppointmentService} from "../../../../services/appointment/appointment.service";
+import {EmployeeFreeTime} from "../../../../interfaces/employee/employee-free-time";
 
 @Component({
   selector: 'app-pick-day',
   templateUrl: './pick-day.component.html',
   styleUrls: ['./pick-day.component.scss']
 })
+
+export interface Slot {
+    startTime: string;
+    employeeId: number;
+    employeeName: string;
+}
+
 export class PickDayComponent implements OnInit, OnChanges, AfterViewInit{
 
 
     dateEvents: string[] = [];
     @Output() dateChange = new EventEmitter();
     @Input() childService: ServiceDTO;
+    @Input() childMonthsMap: Map <number, number[]>;
+    @Input() childDaysMap: Map <number, Array<EmployeeFreeTime>>;x
     startTimes: string[] = ["10:00", "11:00", "12:00"];
     appointmentService: AppointmentService;
     startTimesMap: Map<string, string> = new Map<string, string>();
@@ -35,24 +45,17 @@ export class PickDayComponent implements OnInit, OnChanges, AfterViewInit{
     }
 
     ngOnInit() {
+    }
 
-  }
     dateFilter = (d: Date): boolean => {
-        const day = d.getDay();
-        //const currentMonth = new Date().getMonth();
-        console.log(d.getMonth());
+        const day = d.getDate();
+        const month = d.getMonth() + 1;
 
-
-        //for current month day 1 to last day
-        //pass the interval of time to the backend
-        //backend returns the time slots free
-
-        if (d.getMonth()==1 || d.getMonth()==2)
-
-        //returns days not greyd out
-        return day !== 0 && day !== 6;
-        else
-            return true;
+        if (this.childMonthsMap.get(month)) {
+            return this.childMonthsMap.get(month).includes(day);
+        } else {
+            return false;
+        }
     };
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -60,8 +63,19 @@ export class PickDayComponent implements OnInit, OnChanges, AfterViewInit{
         this.dateChange.emit(this.dateEvents[this.dateEvents.length-1]);
     }
 
-    getStartTimes(){
-
+    slotGenerator (employeeFreeTime: EmployeeFreeTime, serviceDuration): Array<Slot> {
+        const numberOfSlots: number = Math.floor((employeeFreeTime.endTime - serviceDuration - employeeFreeTime) / 10);
+        const generatedSlots: Array<Slot> = [];
+        for (let i=0; i < numberOfSlots; i++) {
+            const startTime = (employeeFreeTime + i*10).toString;
+            const slot: Slot = {
+                startTime: startTime,
+                employeeId: employeeFreeTime.employee_id,
+                employeeName: employeeFreeTime.employee_name
+            };
+            generatedSlots.push(slot);
+        }
+        return generatedSlots;
     }
 
     // selectStartTime(service : ServiceDTO){
@@ -78,9 +92,5 @@ export class PickDayComponent implements OnInit, OnChanges, AfterViewInit{
     }
 
     ngAfterViewInit(): void {
-
-
     }
-
-
 }

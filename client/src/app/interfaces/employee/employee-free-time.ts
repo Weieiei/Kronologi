@@ -1,7 +1,9 @@
+import {DateDTO} from "../date-and-time/DateDTO";
+import {TimeDTO} from "../date-and-time/TimeDTO";
+
 export interface EmployeeFreeTime {
-    date: Date;
-    startHour: number;
-    startMinute: number;
-    endHour: number;
-    endMinute: number;
+    employee_name:string;
+    employee_id:number;
+    startTime:any;
+    endTime:any;
 }
