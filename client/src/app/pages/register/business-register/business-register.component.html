@@ -2,301 +2,316 @@
     <div fxLayout="column" fxFlex.gt-sm="1000px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
         <img src="assets/images/asapp_logo.png" width="128"/>
         <span class="title">Register a business account</span>
-
-<mat-horizontal-stepper [linear]="isLinear" #stepper class = "stepper">
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
-    <ng-template matStepLabel>Personal Information</ng-template>
-                <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>First Name</mat-label>
-                    <input matInput [(ngModel)]="firstName" [ngModelOptions]="{standalone: true}" type="text" name="firstname" pattern=".{1,}" required appAutofocus>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Last Name</mat-label>
-                    <input matInput [(ngModel)]="lastName" [ngModelOptions]="{standalone: true}" type="text" name="lastname" pattern=".{1,}" required>
-                </mat-form-field>
-            </div>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Email</mat-label>
-                <input matInput [(ngModel)]="email" [ngModelOptions]="{standalone: true}" type="email" name="email" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$" required>
-                <mat-hint>E.g.: johndoe@gmail.com</mat-hint>
-            </mat-form-field>
-
-            <div fxLayout="column" class="passwords-container">
-                <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">
-                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex>
-                        <mat-label>Password</mat-label>
-                        <input matInput [(ngModel)]="password" [ngModelOptions]="{standalone: true}" [type]="isPasswordVisible ? 'text' : 'password'" name="password" pattern="^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$" required>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex>
-                        <mat-label>Confirm</mat-label>
-                        <input matInput [(ngModel)]="confirmPassword" [ngModelOptions]="{standalone: true}" [type]="isPasswordVisible ? 'text' : 'password'" name="confirmPassword" required>
-                    </mat-form-field>
-
-                    <button mat-icon-button type="button" ngClass.gt-sm="visibility-icon" (click)="togglePasswordVisibility()">
-                        <mat-icon>{{ isPasswordVisible ? 'visibility_on' : 'visibility_off'}}</mat-icon>
-                    </button>
-                </div>
-                <span class="hint">
-                    Between 6 and 30 characters
-                    <br>
-                    Contains 1 letter and 1 digit
-                </span>
-            </div>
-
-
-            <div class="phone-container" fxLayout="column" fxLayoutGap="20px">
-
-                <mat-checkbox class="phone-checkbox" color="primary" [(ngModel)]="registerPhone" [ngModelOptions]="{standalone: true}"  name="registerPhone">Add phone number?</mat-checkbox>
-
-                <div fxLayout="column" fxLayoutGap="20px" *ngIf="registerPhone">
-                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25">
-                        <mat-label>Country</mat-label>
-                        <mat-select [required]="true" (selectionChange)="selectCountry($event.value)">
-                            <mat-select-trigger *ngIf="selectedCountry">
-                                {{ selectedCountry.name }} <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>
-                            </mat-select-trigger>
-                            <mat-option *ngFor="let country of countries" [value]="country">
-                                <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;
-                                <span> {{ country.name }} | <span class="country-code">+{{ country.dialCode }}</span></span>
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">
-                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="30">
-                            <mat-label>Area Code</mat-label>
-                            <input matInput [(ngModel)]="areaCode" [ngModelOptions]="{standalone: true}" name="areaCode" pattern="\d{3}" minlength="3" maxlength="3" required>
+        <mat-horizontal-stepper #stepper class = "stepper">
+            <mat-step [stepControl]="personalInfoForm">
+                <form [formGroup]="personalInfoForm">
+                    <ng-template matStepLabel>Personal Information</ng-template>
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="firstName"
+                                   name="firstname" pattern=".{1,}" required appAutofocus>
+                            <mat-error *ngIf="personalInfoForm.get('firstName').touched &&
+                            personalInfoForm.get('firstName').errors
+                         && personalInfoForm.get('firstName').errors.required">
+                                First name is <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
-
-                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="70">
-                            <mat-label>Phone Number</mat-label>
-                            <input matInput [(ngModel)]="number" [ngModelOptions]="{standalone: true}" name="number" pattern="\d{7}" minlength="7" maxlength="7" required>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="lastName" type="text"
+                                   name="lastname" pattern=".{1,}" required>
+                            <mat-error *ngIf="personalInfoForm.get('lastName').touched &&
+                            personalInfoForm.get('lastName').errors
+                         && personalInfoForm.get('lastName').errors.required">
+                                Last name is <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
-                </div>
-
-            </div>
-
-
-       <div>
-            <div style="margin-top:2rem; margin-left:45rem">
-                <button mat-raised-button class="button-color" matStepperNext>Next</button>
-            </div>
-        </div>
-    </form>
-
-  </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-  <ng-template matStepLabel>Business Information</ng-template>
-    <form [formGroup]="secondFormGroup">
-
-      <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-            <p>Find my business through Google!</p>
-            <button mat-raised-button  (click)=openFindBusinessDialog() >Let's Sync Up!</button>
-    
-      </div>
-      <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-                    <p>Select the sector your business services</p>
-                    <mat-form-field>
-                        <mat-select placeholder="Sector" [(ngModel)]="businessDomain" [ngModelOptions]="{standalone: true}">
-                        <mat-option *ngFor="let domain of domains" [value]="domain.value">
-      {{domain.value}}
-    </mat-option>
-
-                        </mat-select>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" name="email">
+                        <mat-hint>E.g.: johndoe@gmail.com</mat-hint>
+                        <mat-error *ngIf="personalInfoForm.get('email').touched && personalInfoForm.get('email').errors
+                         && personalInfoForm.get('email').errors.email">
+                            Please enter a valid email address
+                        </mat-error>
+                        <mat-error *ngIf="personalInfoForm.get('email').touched && personalInfoForm.get('email').errors
+                         && personalInfoForm.get('email').errors.required">
+                            Email is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <div fxLayout="column" class="passwords-container">
+                        <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                            <mat-form-field appearance="outline" class="no-mat-padding" fxFlex>
+                                <mat-label>Password</mat-label>
+                                <input matInput formControlName="password"
+                                       [type]="isPasswordVisible ? 'text' : 'password'" name="password">
+                                <mat-hint>
+                                    Between 6-30 characters, at least 1 number and  1 digit
+                                </mat-hint>
+                                <mat-error *ngIf="personalInfoForm.get('password').touched &&
+                                personalInfoForm.get('password').errors
+                         && personalInfoForm.get('password').errors.required">
+                                    Password is <strong>required</strong>
+                                </mat-error>
+                                <mat-error *ngIf="personalInfoForm.get('password').touched &&
+                                personalInfoForm.get('password').errors
+                         && personalInfoForm.get('password').errors.pattern">
+                                    Password is <strong>not</strong> in correct format
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="no-mat-padding" fxFlex>
+                                <mat-label>Confirm</mat-label>
+                                <input matInput formControlName="confirmPassword"
+                                       [type]="isPasswordVisible ? 'text' : 'password'" name="confirmPassword"
+                                       [errorStateMatcher]="matcher">
+                                <mat-error *ngIf="personalInfoForm.get('confirmPassword').touched &&
+                                personalInfoForm.get('confirmPassword').errors
+                                && personalInfoForm.get('confirmPassword').errors.required">
+                                    Password confirmation is <strong>required</strong>
+                                </mat-error>
+                                <mat-error *ngIf="personalInfoForm.get('confirmPassword').touched &&
+                                personalInfoForm.get('password').touched && personalInfoForm.errors?.mismatched">
+                                    Passwords do not match
+                                </mat-error>
+                            </mat-form-field>
+                            <button mat-icon-button type="button" ngClass.gt-sm="visibility-icon"
+                                    (click)="togglePasswordVisibility()">
+                                <mat-icon>{{ isPasswordVisible ? 'visibility_on' : 'visibility_off'}}</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="phone-container" fxLayout="column" fxLayoutGap="20px">
+                        <div fxLayout="column" fxLayoutGap="20px">
+                            <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25">
+                                <mat-label>Country</mat-label>
+                                <mat-select (selectionChange)="selectCountry($event.value)">
+                                    <mat-select-trigger *ngIf="selectedCountry">{{ selectedCountry.name }}
+                                        <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>
+                                    </mat-select-trigger>
+                                    <mat-option *ngFor="let country of countries" [value]="country">
+                                        <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;
+                                        <span> {{ country.name }} |
+                                            <span class="country-code">+{{ country.dialCode }}</span>
+                                        </span>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                                <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="30">
+                                    <mat-label>Area Code</mat-label>
+                                    <input matInput formControlName="areaCode"
+                                           name="areaCode"
+                                           pattern="\d{3}" minlength="3" maxlength="3">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="70">
+                                    <mat-label>Phone Number</mat-label>
+                                    <input matInput formControlName="number"
+                                           name="number" pattern="\d{7}" minlength="7" maxlength="7">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="margin-top:2rem; margin-left:45rem">
+                            <button mat-raised-button class="button-color" matStepperNext
+                                    [disabled]="personalInfoForm.invalid">Next</button>
+                        </div>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="businessInfoForm">
+                <ng-template matStepLabel>Business Information</ng-template>
+                <form [formGroup]="businessInfoForm">
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                        <p>Find my business through Google!</p>
+                        <button mat-raised-button  (click)=openFindBusinessDialog() >Let's Sync Up!</button>
+                    </div>
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                        <p>Select the sector your business services</p>
+                        <mat-form-field>
+                            <mat-select placeholder="Sector" [(ngModel)]="businessDomain"
+                                        [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let domain of domains" [value]="domain.value">
+                                    {{domain.value}}
+                                </mat-option>
+                            </mat-select>
                         </mat-form-field>
+                    </div>
 
-             </div>
-             
-             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px" style="margin-bottom:1rem">
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px" style="margin-bottom:1rem">
                         <div class="div-file-selector-text">
-                                Selected Business Logo: 
-                        </div>    
+                                Selected Business Logo:
+                        </div>
                         <div class="file-selector-div">
-                            <td-file-upload #singleFileUpload [(ngModel)]="files" (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
-                            accept=".jpeg,.jpg,.png,.svg">
-                        <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
+                            <td-file-upload #singleFileUpload [(ngModel)]="files" (select)="selectEvent($event)"
+                                            (upload)="uploadEvent($event)" (cancel)="cancelEvent()"
+                                            [disabled]="disabled" required accept=".jpeg,.jpg,.png,.svg">
+                                <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
                                 <ng-template td-file-input-label>
                                     <mat-icon>attach_file</mat-icon>
                                     <span>
-                                    Choose a file...
+                                        Choose a file...
                                     </span>
                                     <span [hidden]="!singleFileUpload?.required">*</span>
                                 </ng-template>
-                                </td-file-upload>
+                            </td-file-upload>
                         </div>
-                
-            </div>
-            
-            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                    </div>
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Business Name</mat-label>
-                            <input matInput [(ngModel)]="businessName" [ngModelOptions]="{standalone: true}" type="text" name="businessName" required appAutofocus>
+                            <input matInput [(ngModel)]="businessName" [ngModelOptions]="{standalone: true}" type="text"
+                                   name="businessName" required appAutofocus>
                         </mat-form-field>
-            </div>
-
-            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                    </div>
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Description</mat-label>
-                            <input matInput [(ngModel)]="description" [ngModelOptions]="{standalone: true}" type="text" name="description" required appAutofocus>
-                        </mat-form-field>
-
-            </div>
-
-            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-                <div class = "div-text-box-size">
-                    <div class="div-indicator-text">
-                            Address: 
-                    </div>    
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Ex: 2044 Main St.</mat-label>
-                        <input matInput [(ngModel)]="address" [ngModelOptions]="{standalone: true}" type="text" name="address" required appAutofocus>
-                    </mat-form-field>
-                </div>
-
-                <div style="padding-left:8rem" >
-                        <div class="div-indicator-text">
-                                City: 
-                        </div>    
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Ex: Toronto</mat-label>
-                            <input matInput [(ngModel)]="city" [ngModelOptions]="{standalone: true}" type="text" name="city" required appAutofocus>
+                            <input matInput [(ngModel)]="description" [ngModelOptions]="{standalone: true}" type="text"
+                                   name="description" required appAutofocus>
                         </mat-form-field>
                     </div>
-
-                 
-                    <div style="padding-left:.5rem" >
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                        <div class = "div-text-box-size">
                             <div class="div-indicator-text">
-                                    Province: 
-                            </div>    
+                                Address:
+                            </div>
                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Ex: Quebec</mat-label>
-                                <input matInput [(ngModel)]="province" [ngModelOptions]="{standalone: true}" type="text" name="city" required appAutofocus>
+                                <mat-label>Ex: 2044 Main St.</mat-label>
+                                <input matInput [(ngModel)]="address" [ngModelOptions]="{standalone: true}" type="text"
+                                       name="address" required appAutofocus>
                             </mat-form-field>
-                    </div>   
-             </div>
-
-             
-             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-                    <div style="padding-left:7rem" >
+                        </div>
+                        <div style="padding-left:8rem" >
+                                <div class="div-indicator-text">
+                                        City:
+                                </div>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Ex: Toronto</mat-label>
+                                    <input matInput [(ngModel)]="city" [ngModelOptions]="{standalone: true}" type="text"
+                                           name="city" required appAutofocus>
+                                </mat-form-field>
+                            </div>
+                            <div style="padding-left:.5rem" >
+                                <div class="div-indicator-text">
+                                        Province:
+                                </div>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Ex: Quebec</mat-label>
+                                    <input matInput [(ngModel)]="province" [ngModelOptions]="{standalone: true}"
+                                           type="text" name="city" required appAutofocus>
+                                </mat-form-field>
+                            </div>
+                    </div>
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                        <div style="padding-left:7rem" >
                             <div class="div-indicator-text">
-                                    Country: 
-                            </div>    
+                                Country:
+                            </div>
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Ex: Canada</mat-label>
-                                <input matInput [(ngModel)]="country" [ngModelOptions]="{standalone: true}" type="text" name="city" required appAutofocus>
+                                <input matInput [(ngModel)]="country" [ngModelOptions]="{standalone: true}" type="text"
+                                       name="city" required appAutofocus>
                             </mat-form-field>
-                    </div>   
-                    <div style="padding-left:.5rem" >
+                        </div>
+                        <div style="padding-left:.5rem" >
                             <div class="div-indicator-text">
-                                    Postal Code: 
-                            </div>    
+                                    Postal Code:
+                            </div>
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Ex: H1A 1A1</mat-label>
-                                <input matInput [(ngModel)]="postalCode" [ngModelOptions]="{standalone: true}" type="text" name="city" required appAutofocus>
+                                <input matInput [(ngModel)]="postalCode" [ngModelOptions]="{standalone: true}"
+                                       type="text" name="city" required appAutofocus>
                             </mat-form-field>
+                        </div>
                     </div>
-                 </div>
-        
-            
-            <div>
-                    <p>Select the hours which your business operates:</p>
-            </div>
-            <div fxLayout="row">
-                    <div fxFlex="17">
+                    <div>
+                        <p>Select the hours which your business operates:</p>
+                    </div>
+                    <div fxLayout="row">
+                        <div fxFlex="17">
                             <div style="padding: 1.4rem" *ngFor="let day of daysOfWeek">
-                                   {{ day }} :
+                                {{ day }} :
                             </div>
                         </div>
-                    <div fxFlex="30">
-                        <div *ngFor="let day of daysOfWeek">
+                        <div fxFlex="30">
+                            <div *ngFor="let day of daysOfWeek">
                                 <mat-form-field>
-                                        <mat-label>Start</mat-label>
-                                        <mat-select [(ngModel)]="selectedValue"  name="food" >
-                                        <mat-option *ngFor="let time of possibleBusinessHours"  (onSelectionChange)="saveStartTime(day,time)" [value]="time">
+                                    <mat-label>Start</mat-label>
+                                    <mat-select [(ngModel)]="selectedValue"  name="food" >
+                                    <mat-option *ngFor="let time of possibleBusinessHours"
+                                                (onSelectionChange)="saveStartTime(day,time)" [value]="time">
+                                        {{time}}
+                                    </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxFlex="30">
+                            <div *ngFor="let day of daysOfWeek">
+                                <mat-form-field>
+                                    <mat-label>End</mat-label>
+                                    <mat-select [(ngModel)]="selectedValue" name="food">
+                                        <mat-option *ngFor="let time of possibleBusinessHours"
+                                                    (onSelectionChange)="saveEndTime(day,time)"
+                                                    [disabled]="isTimeLower(day,time)" [value]="time">
                                             {{time}}
                                         </mat-option>
-                                        </mat-select>
+                                    </mat-select>
                                 </mat-form-field>
+                            </div>
                         </div>
                     </div>
-                    <div fxFlex="30">
-                        <div *ngFor="let day of daysOfWeek">
-                                <mat-form-field>
-                                        <mat-label>End</mat-label>
-                                        <mat-select [(ngModel)]="selectedValue" name="food">
-                                        <mat-option *ngFor="let time of possibleBusinessHours" (onSelectionChange)="saveEndTime(day,time)" [disabled]="isTimeLower(day,time)" [value]="time">
-                                            {{time}}
-                                        </mat-option>
-                                        </mat-select>
-                                </mat-form-field>
+                    <div>
+                        <div style="margin-top:2rem; margin-left:35rem">
+                            <button mat-raised-button class="button-color" matStepperPrevious style="margin-right:1rem">Back</button>
+                            <button mat-raised-button class="button-color" matStepperNext>Next</button>
                         </div>
                     </div>
-                </div>
-               
-
-
-        <div>
-            <div style="margin-top:2rem; margin-left:35rem">
-                <button mat-raised-button class="button-color" matStepperPrevious style="margin-right:1rem">Back</button> 
-                <button mat-raised-button class="button-color" matStepperNext>Next</button>
-            </div>
-        </div>
-
-
-    </form>
-  </mat-step>
-
-<mat-step [stepControl]="thirdFormGroup">
-<ng-template matStepLabel>Service Information</ng-template>
-    <form [formGroup]="thirdFormGroup">
-
-            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-                <mat-form-field appearance="outline" fxFlex>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="serviceInfoForm">
+            <ng-template matStepLabel>Service Information</ng-template>
+                <form [formGroup]="serviceInfoForm">
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                        <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Add a service that your business offers</mat-label>
-                            <input matInput [(ngModel)]="service" [ngModelOptions]="{standalone: true}" type="text" name="service"  required appAutofocus>
+                            <input matInput [(ngModel)]="service" [ngModelOptions]="{standalone: true}" type="text"
+                                   name="service"  required appAutofocus>
                         </mat-form-field>
-
-
-                <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Add the service duration(in minutes)</mat-label>
-                            <input matInput [(ngModel)]="service_duration" [ngModelOptions]="{standalone: true}"  type="text" name="service_duration" pattern=".{1,}" required appAutofocus>
-                        </mat-form-field>
-
-            </div>
-
-
-
-            <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
-            <button mat-raised-button class="button-color-sign-in" color="primary" type="button" routerLink="/login">Sign in instead</button>
-            <button mat-raised-button class="button-color" matStepperPrevious style="margin-left:30.75rem">Back</button>
-            <button mat-raised-button class="button-color" type="submit" (click)="business_register()">Next</button>
-        </div>
-        
-        <div>
-    </div>
-
-    </form>
-  </mat-step>
-
-</mat-horizontal-stepper>
-
-
+                        <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Add the service duration(in minutes)</mat-label>
+                                    <input matInput [(ngModel)]="service_duration" [ngModelOptions]="{standalone: true}"
+                                           type="text" name="service_duration" pattern=".{1,}" required appAutofocus>
+                                </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
+                        <button mat-raised-button class="button-color-sign-in" color="primary" type="button"
+                                routerLink="/login">
+                            Sign in instead
+                        </button>
+                        <button mat-raised-button class="button-color" matStepperPrevious style="margin-left:30.75rem">
+                            Back
+                        </button>
+                        <button mat-raised-button class="button-color" type="submit" (click)="business_register()">
+                            Next
+                        </button>
+                    </div>
+                    <div>
+                </div>
+                </form>
+            </mat-step>
+        </mat-horizontal-stepper>
     </div>
 </div>
-
-<div [@slideInOut]="!animationState" >
-        <ngx-spinner  bdColor = "rgba(109,109,109,0.7)"   size = "medium"   color = "#673ab7" type = "ball-scale-ripple-multiple" fullScreen = "false" >
-              <p style="color: #673ab7" > Hold on tight,  we're trying to save your info. </p>
-            <div class="div-center-button">
-                    <button mat-raised-button color="primary" (click)=stopRegistering()>Stop Registering my business</button>
-            </div>
-            
-        </ngx-spinner>
-  
+<div [@slideInOut]="!animationState">
+    <ngx-spinner bdColor = "rgba(109,109,109,0.7)"   size = "medium"   color = "#673ab7"
+                 type = "ball-scale-ripple-multiple" fullScreen = "false">
+        <p style="color: #673ab7">Hold on tight,  we're trying to save your info.</p>
+        <div class="div-center-button">
+            <button mat-raised-button color="primary" (click)=stopRegistering()>Stop Registering my business</button>
+        </div>
+    </ngx-spinner>
 </div>
