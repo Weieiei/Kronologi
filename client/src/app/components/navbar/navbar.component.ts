@@ -6,6 +6,7 @@ import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics
 import { AuthService } from '../../services/auth/auth.service';
 import { ThemeService } from "../../core/theme/theme.service";
 import {OverlayContainer} from "@angular/cdk/overlay";
+import { DomSanitizer} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-navbar',
@@ -15,7 +16,8 @@ import {OverlayContainer} from "@angular/cdk/overlay";
 export class NavbarComponent implements OnInit {
 
     @Input() sidenav: MatSidenav;
-    
+
+    sanitizedImageData: any;
     userEmail = "";
     userName = "";
     route = "";
@@ -23,8 +25,12 @@ export class NavbarComponent implements OnInit {
     darkModeActive: boolean;
     user;
     theme :string = 'dark-theme';
+    imagePath :string = "";
 
+    imageToShow: any;
+    isImageLoading: any;
     constructor(
+        private sanitizer: DomSanitizer,
         private userService: UserService,
         private authService: AuthService,
         private router: Router,
@@ -37,7 +43,7 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.user = this.userService.getUser();
+
         this.authService.checkAdmin();
         this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
         this.userEmail = this.userService.getEmailFromToken();
@@ -46,7 +52,26 @@ export class NavbarComponent implements OnInit {
         });
         this.overlayContainer.getContainerElement().classList.add(this.theme);
 
+        this.userService.getUserProfile().subscribe(
+          data => {
+              if ( data ) {
+                this.imagePath = 'data:image/png;base64,' + data["image_encoded"];
+                 // show data base64:
+                 // console.log(this.imagePath);
+                this.sanitizedImageData = this.sanitizer.bypassSecurityTrustUrl(this.imagePath);
+              } else {
+                        this.sanitizedImageData = 'assets/images/user_default.png';
+                        console.log(this.sanitizedImageData);
+                    }
+
+          },
+
+
+                 err => console.log(err)
+        );
+
     }
+
 
     onThemeChange(theme:string) {
         this.theme = theme;
