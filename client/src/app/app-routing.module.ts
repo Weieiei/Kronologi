@@ -20,20 +20,14 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
-<<<<<<<<< Temporary merge branch 1
-
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
-=========
->>>>>>>>> Temporary merge branch 2
-
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
 import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
 import {BookComponent} from "./pages/dashboard/reserve/book/book.component";
-
 import { ClientGuard } from './guards/client/client.guard';
 
 const routes: Routes = [
