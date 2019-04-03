@@ -168,19 +168,6 @@ export class BookComponent implements OnInit {
             res => console.log(res)
         );
     }
-    // isLeapYear(year: number): boolean {
-    //     if((year & 3) != 0) return false;
-    //     return ((year % 100) != 0 || (year % 400) == 0);
-    // }
-
-// Get Day of Year
-//     getDayOfYear (dayOfMonth: number, monthOfYear: number, year: number ): number {
-//         var dayCount = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
-//         var dayOfYear = dayCount[monthOfYear] + dayOfMonth;
-//         if(monthOfYear > 1 && this.isLeapYear(year)) dayOfYear++;
-//         return dayOfYear;
-//     };
-//
 
     setTimeAndEmployeeId(map: Map<number, string>) {
         map.forEach((value: string, key: number) => {

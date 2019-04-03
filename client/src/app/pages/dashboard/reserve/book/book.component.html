@@ -1,7 +1,3 @@
-<button mat-raised-button (click)="isOptional = !isOptional">
-    {{!isOptional ? 'Enable optional steps' : 'Disable optional steps'}}
-</button>
-
 <mat-horizontal-stepper linear #stepper>
     <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup">
@@ -32,9 +28,5 @@
     <mat-step>
         <ng-template matStepLabel>Done</ng-template>
         You are now done.
-        <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
-        </div>
-    </mat-step>
+  </mat-step>
 </mat-horizontal-stepper>

@@ -141,20 +141,28 @@ export class PickDayComponent implements OnInit, OnChanges, AfterViewInit{
     ngAfterViewInit(): void {
     }
 
-    // printPageEvent($event) {
-    //     if ($event.pageSize !== this.componentState.currentPageSize) {
-    //         this.componentState.currentPage = 1;
-    //         this.componentState.currentPageSize = $event.pageSize;
-    //         this.getServices();
-    //     } else if ($event.pageIndex !== this.componentState.currentPage + 1) {
-    //         this.componentState.currentPage = $event.pageIndex + 1;
-    //         this.getServices();
-    //     }
-    // }
+    printPageEvent($event) {
+        if ($event.pageSize !== this.componentState.currentPageSize) {
+            this.componentState.currentPage = 1;
+            this.componentState.currentPageSize = $event.pageSize;
+            this.getServices();
+        } else if ($event.pageIndex !== this.componentState.currentPage + 1) {
+            this.componentState.currentPage = $event.pageIndex + 1;
+            this.getServices();
+        }
+    }
     selectStartTimeAndEmployeeId(startTime: string, employeeId: number) {
         const myMap: Map<number, string > = new Map<number, string>();
         myMap.set(employeeId, startTime);
         this.timeChangeAndEmployeeChange.emit(myMap);
     }
 
+    getServices() {
+            this.componentState.totalItems = this.startSlots.length;
+            this.startSlots = this.startSlots.slice(this.getCurrentPageStartIndex(), this.getCurrentPageStartIndex()
+                + this.componentState.currentPageSize);
+    }
+    getCurrentPageStartIndex(): number {
+        return (this.componentState.currentPage - 1) * this.componentState.currentPageSize;
+    }
 }
