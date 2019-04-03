@@ -1,8 +1,13 @@
 <div class="appointments-container" *ngIf="appointments?.length" [ngClass]="{'appointments-container-dark': darkModeActive}">
 
-    <p>The system has {{ appointments?.length }} appointment(s):</p>
+    <p>The system has {{ componentState.appointments?.length }} appointment(s):</p>
+    <app-search-input
+        [placeholderText]="'Search'"
+        (changed)="onSearch($event)">
+    </app-search-input>
 
-    <table mat-table [dataSource]="appointments" class="mat-elevation-z8n appointments-container" [ngClass]="{'appointments-container-dark': darkModeActive}">
+
+    <table mat-table [dataSource]="componentState.appointments" class="mat-elevation-z8n appointments-container" [ngClass]="{'appointments-container-dark': darkModeActive}">
 
         <!-- Service Column -->
         <ng-container matColumnDef="service">

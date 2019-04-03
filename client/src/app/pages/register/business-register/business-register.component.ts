@@ -8,7 +8,7 @@ import { BusinessUserRegisterDTO } from '../../../interfaces/user/business-user-
 import { BusinessRegisterDTO } from '../../../interfaces/business/business-register-dto';
 import { BusinessDTO } from '../../../interfaces/business/business-dto';
 import { UserService } from '../../../services/user/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
@@ -41,7 +41,8 @@ export class BusinessRegisterComponent implements OnInit {
     description: string;
 // new service object
     service: string;
-    service_duration: number;
+    serviceDuration: number;
+
 //new user object
     firstName: string;
     lastName: string;
@@ -60,7 +61,7 @@ export class BusinessRegisterComponent implements OnInit {
     registerPhone = false;
 
     businessId: number;
-
+    index: number = 0;
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -78,8 +79,10 @@ export class BusinessRegisterComponent implements OnInit {
         this.secondFormGroup = this._formBuilder.group({
           secondCtrl: ['', Validators.required]
         });
+
         this.thirdFormGroup = this._formBuilder.group({
-            thirdCtrl: ['', Validators.required]
+           thirdCtrl: ['', Validators.required],
+            newServices: this._formBuilder.array([])
           });
       }
 
@@ -105,36 +108,60 @@ export class BusinessRegisterComponent implements OnInit {
         return this.business;
     }
 
-    business_register() {
+    businessRegister(): void {
         // register business
-        console.log(this.businessName);
-        console.log(this.businessDomain);
-        console.log(this.description);
-        const payload_business: BusinessRegisterDTO = {
+
+        if (this.password === this.confirmPassword ) {
+        console.log(this.newServiceForms.length);
+        console.log(this.newServiceForms);
+        console.log(this.serviceDuration);
+        console.log(this.serviceDuration + 'service duration');
+        console.log('service duration');
+        const payloadBusiness: BusinessRegisterDTO = {
             name: this.businessName,
             domain: this.businessDomain,
             description: this.description
         };
-        this.businessService.createBusiness(payload_business).subscribe(
+
+        this.businessService.createBusiness(payloadBusiness).subscribe(
             res => {
                 console.log(res);
                 this.businessId = res;
-
-                const payload_service: ServiceCreateDto = {
-
+                const payloadService: ServiceCreateDto = {
                     name: this.service,
-                    duration: this.service_duration,
-                   // businessId: this.businessId
-                     };
-                 this.serviceService.registerService(this.businessId, payload_service).subscribe(
+                    duration: this.serviceDuration
+                };
+                console.log(payloadService);
+
+                console.log(this.businessId);
+                this.serviceService.registerService(this.businessId, payloadService).subscribe(
                      res => {
                         console.log(res);
                      },
                      err => console.log(err)
                  );
-         // TODO: when register user, we need to add business id, also need to link service to the user
-                 if (this.password === this.confirmPassword ) {
-         console.log(this.firstName);
+
+            console.log(this.newServiceForms.length + 'length');
+            for( var _i = 0; _i < this.newServiceForms.length; _i++) {
+                console.log(this.newServiceForms.at(_i).value.newServiceName);
+
+                console.log(this.newServiceForms.at(_i).value);
+                const payloadNewService: ServiceCreateDto = {
+
+                    name: this.newServiceForms.at(_i).value.newServiceName,
+                    duration: this.newServiceForms.at(_i).value.newServiceDuration
+                };
+                this.serviceService.registerService(this.businessId, payloadNewService).subscribe(
+                    res => {
+                     console.log(res);
+                 },
+                    err => console.log(err)
+                );
+
+
+            }
+
+
                      const payload: BusinessUserRegisterDTO = {
 
                         firstName: this.firstName,
@@ -142,7 +169,6 @@ export class BusinessRegisterComponent implements OnInit {
                         email: this.email,
                         password: this.password,
                         phoneNumber: null
-                      //  businessId: this.businessId
                      };
 
                      if ( this.registerPhone) {
@@ -163,12 +189,13 @@ export class BusinessRegisterComponent implements OnInit {
                          },
                          err => console.log(err)
                      );
-                    } else {
-                        alert('The passwords don\'t match.');
-                    }
+
             },
             err => console.log(err)
         );
+     } else {
+         alert('The passwords don\'t match.');
+     }
 
     }
     togglePasswordVisibility() {
@@ -179,6 +206,21 @@ export class BusinessRegisterComponent implements OnInit {
         this.selectedCountry = country;
     }
 
+    get newServiceForms() {
+        return this.thirdFormGroup.get('newServices') as FormArray;
+      }
+
+    addService() {
+
+        const newService = this._formBuilder.group({
+          newServiceName: [],
+          newServiceDuration: [],
+    });
+    this.newServiceForms.push(newService);
+}
+deleteService(i) {
+    this.newServiceForms.removeAt(i);
+  }
 }
 
 /*

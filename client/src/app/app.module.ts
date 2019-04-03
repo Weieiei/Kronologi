@@ -62,6 +62,13 @@ import { BusinessRegisterComponent } from './pages/register/business-register/bu
 import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 import { AddRecurringShiftFormComponent } from './pages/dashboard/home/shift/add-recurring-shift-form/add-recurring-shift-form.component';
+import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
+import { SwiperModule } from 'angular2-useful-swiper';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/service-selection-grid-list/service-selection-grid-list.component';
+import { SearchInputComponent } from './components/search-box/search-box.component';
 
 
 @NgModule({
@@ -115,7 +122,10 @@ import { AddRecurringShiftFormComponent } from './pages/dashboard/home/shift/add
         BusinessRegisterComponent,
         ServicesComponent,
         SyncCalendarsComponent,
-        AddRecurringShiftFormComponent
+        AddRecurringShiftFormComponent,
+        DarnCarouselComponent,
+        ServiceSelectionGridListComponent,
+        SearchInputComponent
     ],
     imports: [
         BrowserModule,
@@ -125,7 +135,12 @@ import { AddRecurringShiftFormComponent } from './pages/dashboard/home/shift/add
         MaterialModule,
         FlexLayoutModule,
         HttpClientModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SwiperModule,
+        SlickCarouselModule,
+        MatTabsModule,
+        MatDatepickerModule
+
     ],
     entryComponents: [
         TimePickerDialogComponent,

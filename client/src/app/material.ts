@@ -15,7 +15,8 @@ import {
     MatSelectModule,
     MatSidenavModule,
     MatSnackBarModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule
 } from '@angular/material';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -47,7 +48,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSidenavModule,
         MatCardModule,
         MatSnackBarModule,
-        MatRippleModule
+        MatRippleModule,
+        MatPaginatorModule,
     ],
     exports: [
         MatButtonModule,
@@ -72,6 +74,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSnackBarModule,
         MatRippleModule,
         MatRadioModule,
+        MatPaginatorModule,
     ]
 })
 export class MaterialModule {
