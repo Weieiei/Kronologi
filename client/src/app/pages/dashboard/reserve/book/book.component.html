@@ -17,14 +17,14 @@
         <form [formGroup]="secondFormGroup">
             <ng-template matStepLabel>Select a date and time</ng-template>
                 <app-pick-day (dateChange)="setDate($event)" [childService]="service" [childMonthsMap]="monthsMap"
-                              [childDaysMap]="daysMap"
-                ></app-pick-day>
-            <div *ngIf="dateIsSelected()">
+                              [childDaysMap]="daysMap" (timeChangeAndEmployeeChange)="setTimeAndEmployeeId($event)">
+                </app-pick-day>
+            <div *ngIf="timeIsSelected()">
                 <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button matStepperNext (click)="bookAppointment()">Next</button>
             </div>
 
-            <div *ngIf="dateIsSelected() == false">
+            <div *ngIf="timeIsSelected() == false">
                 <button mat-button matStepperPrevious>Back</button>
             </div>
         </form>

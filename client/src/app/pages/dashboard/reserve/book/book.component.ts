@@ -8,6 +8,7 @@ import {DateDTO} from "../../../../interfaces/date-and-time/DateDTO";
 import {TimeDTO} from "../../../../interfaces/date-and-time/TimeDTO";
 import * as moment from 'moment'
 import {EmployeeTimes} from "../../../../interfaces/employee/employee-times";
+import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appointment-dto';
 
 @Component({
   selector: 'app-book',
@@ -20,10 +21,13 @@ export class BookComponent implements OnInit {
     isOptional = false;
     service: ServiceDTO;
     date: any;
+    time: any;
     monthMax = 11;
     dayMax = 365;
     monthsMap: Map <number, number[]>;
     daysMap: Map <number, Array<EmployeeFreeTime>>;
+    employeeId: number;
+    appointment: BookAppointmentDTO;
     constructor(private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
     }
 
@@ -41,17 +45,27 @@ export class BookComponent implements OnInit {
       //  this.getAllAvailabilitiesForService(this.service);
     }
 
-    serviceIsSelected():boolean{
+    serviceIsSelected(): boolean {
         return !!this.service;
     }
 
-    setDate(date: any){
+    setDate(date: any) {
         this.date = date;
     }
 
-    dateIsSelected():boolean{
+    dateIsSelected(): boolean{
         return !!this.date;
     }
+
+    setTime(time: String) {
+        this.time = time;
+    }
+
+    timeIsSelected(): boolean {
+        return !!this.time;
+    }
+
+
 
     selectStartTime(startTime :  TimeDTO){
 
@@ -143,6 +157,17 @@ export class BookComponent implements OnInit {
         });
     }
 
+    bookAppointment() {
+        this.appointment = {
+            employeeId: this.employeeId,
+            serviceId: this.service.id,
+            date: this.date,
+            startTime: this.time
+        };
+        this.appointmentService.bookAppointment(this.appointment).subscribe(
+            res => console.log(res)
+        );
+    }
     // isLeapYear(year: number): boolean {
     //     if((year & 3) != 0) return false;
     //     return ((year % 100) != 0 || (year % 400) == 0);
@@ -156,5 +181,12 @@ export class BookComponent implements OnInit {
 //         return dayOfYear;
 //     };
 //
+
+    setTimeAndEmployeeId(map: Map<number, string>) {
+        map.forEach((value: string, key: number) => {
+            this.employeeId = key;
+            this.time = value;
+        });
+    }
 }
 

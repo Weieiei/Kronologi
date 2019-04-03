@@ -30,7 +30,7 @@ export class AppointmentService {
     }
 
     public bookAppointment(payload: BookAppointmentDTO): Observable<any> {
-        return this.http.post<any>(['api', 'business','1','appointments','appointments'].join('/'), payload);
+        return this.http.post<any>(['api', 'business', '1', 'appointments'].join('/'), payload);
     }
 
     public updateAppointment(id: number, payload: BookAppointmentDTO): Observable<any> {
@@ -45,19 +45,19 @@ export class AppointmentService {
         return this.http.get<Appointment[]>(['api', 'business','1','employee','appointments'].join('/'));
     }
 
-    public cancelAppointmentsEmployee(appointment:CancelAppointmentDTO): Observable<any>{        
+    public cancelAppointmentsEmployee(appointment:CancelAppointmentDTO): Observable<any> {
         return this.http.post<CancelAppointmentDTO>(['api','business','1','employee','appointments','cancel'].join('/'),  appointment);
     }
 
-    public cancelAppointmentReason(id:any): Observable<any>{
+    public cancelAppointmentReason(id:any): Observable<any> {
         return this.http.get(['api', 'business','1','appointments','cancel',id].join('/'));
     }
 
-    public getAvailabilitiesForService(serviceId: any ): Observable<any>{
+    public getAvailabilitiesForService(serviceId: any ): Observable<any> {
         return this.http.get(['api', 'business','1','availabilities',serviceId].join('/'));
     }
 
-    public googleLogin(): Observable<any>{
+    public googleLogin(): Observable<any> {
         return this.http.get(['external', 'google','login','google'].join('/'));
     }
 
