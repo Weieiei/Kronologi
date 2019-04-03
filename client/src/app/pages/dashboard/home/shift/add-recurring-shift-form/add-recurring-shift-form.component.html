@@ -1,0 +1,43 @@
+<div>
+    <form fxLayout="column" fxLayoutGap="1rem">
+    <label id="example-radio-group-label">Pick recurrence days</label>
+        <span>
+            <mat-checkbox  *ngFor="let day of days" (change)="onChange(day)" >
+                <div style="margin-right:1rem">
+
+                {{day}}
+                </div>
+            </mat-checkbox>
+        </span>
+        <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="1%">
+            <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="20">
+                <mat-label>Start Hour</mat-label>
+                <input matInput [(ngModel)]="startHour" name="startHour" type="number" min="0" max="24" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="39">
+                <mat-label>Start Minute</mat-label>
+                <input matInput [(ngModel)]="startMinute" name="startMinute" type="number" min="0" max="59" required>
+            </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="20">
+            <mat-label>End Hour</mat-label>
+            <input matInput [(ngModel)]="endHour" name="endHour" type="number" min="0" max="24" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="39">
+            <mat-label>End Minute</mat-label>
+            <input matInput [(ngModel)]="endMinute" name="endMinute" type="number" min="0" max="59" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="20">
+            <mat-label>Occurences</mat-label>
+            <input matInput  name="occurences" type="number" min="1" max="52" required [(ngModel)]="occurences">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md (click)="createRecurringDate()">Create Appointments</button>
+    </form>
+</div>
+
+
+<!-- Copyright 2019 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

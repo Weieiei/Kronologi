@@ -28,7 +28,8 @@ export class AdminService {
     addShift(employeeId: number, payload: NewShiftDTO): Observable<AdminEmployeeShiftDTO> {
         return this.http.post<AdminEmployeeShiftDTO>(['api', 'business','admin', '1','employee', employeeId, 'shift'].join('/'), payload);
     }
-    addShiftList(employeeId: number, payload: NewShiftDTO[]): Observable<AdminEmployeeShiftDTO[]> {
+
+    addShiftList(employeeId: number, payload: Array<NewShiftDTO>): Observable<AdminEmployeeShiftDTO[]> {
         return this.http.post<AdminEmployeeShiftDTO[]>(['api', 'business','admin', '1', 'employee', employeeId, 'shift-list'].join('/'), payload);
     }
 
