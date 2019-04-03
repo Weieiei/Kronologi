@@ -158,6 +158,23 @@
                         </mat-form-field>
 
             </div>
+            
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                    <p>Selected Picture: {{fileSelectMsg}}</p>
+                    <td-file-upload #singleFileUpload  (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
+                               accept=".jpeg,.jpg,.png,.svg">
+                         <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
+                        <ng-template td-file-input-label>
+                          <mat-icon>attach_file</mat-icon>
+                             <span>
+                          Choose a file...
+                            </span>
+                          <span [hidden]="!singleFileUpload?.required">*</span>
+                    </ng-template>
+                    </td-file-upload>
+
+            </div>
+
 
             <div formArrayName="newServices">
                 <div *ngFor="let newService of newServiceForms.controls; let i=index" [formGroupName]="i">
@@ -174,6 +191,40 @@
                             <input matInput   type="text" formControlName="newServiceDuration" required appAutofocus>
                         </mat-form-field>
                     </div>
+
+
+
+
+                <div class="change-profile-container" fxLayout="column" fxLayoutGap="10px" >
+
+                         <div fxLayout="row">
+                         <mat-hint fxFlex="60" fxFlex.lt-md [ngClass]="{'text-color-dark' : darkModeActive}">Please upload a picture</mat-hint>
+                </div>
+
+                 <form (submit)="updateProfilePicture()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
+
+                            <p>Selected Picture: {{fileSelectMsg}}</p>
+                    <td-file-upload #singleFileUpload  (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
+                               accept=".jpeg,.jpg,.png,.svg">
+                         <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
+                        <ng-template td-file-input-label>
+                          <mat-icon>attach_file</mat-icon>
+                             <span>
+                          Choose a file...
+                            </span>
+                          <span [hidden]="!singleFileUpload?.required">*</span>
+                    </ng-template>
+                    </td-file-upload>
+
+
+                <div fxLayout="row" class="submit-button-container">
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md >Upload</button>
+                </div>
+
+            </form>
+
+        </div>
+
 
 
                          <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">

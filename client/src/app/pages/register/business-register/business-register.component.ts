@@ -12,6 +12,9 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
+import { HttpErrorResponse } from '@angular/common/http';
+import { TdFileUploadComponent } from '@covalent/core/file';
+//npm i -save @covalent/core to  install
 
 export interface Domain {
     value: string;
@@ -22,11 +25,16 @@ export interface Domain {
   styleUrls: ['./business-register.component.scss']
 })
 export class BusinessRegisterComponent implements OnInit {
-
+ // Fields to upload a profiel picture
+ selectedFile: File = null;
+ fileSelectMsg: string = 'No file selected yet.';
+ fileUploadMsg: string = 'No file uploaded yet.';
+ disabled: boolean = false;
+ //formGroup
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
     thirdFormGroup: FormGroup;
-    selectedFile: File = null;
+
 // new business object
     business: BusinessDTO;
     businessName: string;
@@ -86,19 +94,6 @@ export class BusinessRegisterComponent implements OnInit {
           });
       }
 
-    onFileSelected(event) {
-        this.selectedFile = <File> event.target.files[0];
-    }
-    onUpload()  {
-        const  fd = new FormData();
-        fd.append('image', this.selectedFile, this.selectedFile.name );
-        this.http.post('https://url', fd )
-                .subscribe(
-                    response => {
-                    console.log(response);
-                });
-    }
-
     getBusinessById(businessId: Number): BusinessDTO {
         this.businessService.getBusinessById(this.businessId).subscribe(
             res => {
@@ -134,7 +129,7 @@ export class BusinessRegisterComponent implements OnInit {
                 console.log(payloadService);
 
                 console.log(this.businessId);
-                this.serviceService.registerService(this.businessId, payloadService).subscribe(
+                this.serviceService.registerService(this.businessId, payloadService, this.selectedFile ).subscribe(
                      res => {
                         console.log(res);
                      },
@@ -151,7 +146,7 @@ export class BusinessRegisterComponent implements OnInit {
                     name: this.newServiceForms.at(_i).value.newServiceName,
                     duration: this.newServiceForms.at(_i).value.newServiceDuration
                 };
-                this.serviceService.registerService(this.businessId, payloadNewService).subscribe(
+                this.serviceService.registerService(this.businessId, payloadNewService, this.selectedFile).subscribe(
                     res => {
                      console.log(res);
                  },
@@ -221,15 +216,40 @@ export class BusinessRegisterComponent implements OnInit {
 deleteService(i) {
     this.newServiceForms.removeAt(i);
   }
+
+  selectEvent(file: File): void {
+    this.selectedFile = file;
+    console.log(this.selectedFile);
+    this.fileSelectMsg = file.name;
+  }
+
+   uploadEvent(file: File): void {
+    this.fileUploadMsg = file.name;
+  }
+
+   cancelEvent(): void {
+    this.fileSelectMsg = 'No file selected yet.';
+    this.fileUploadMsg = 'No file uploaded yet.';
+  }
+
+  addServicePicture(): void {
+    console.log(this.selectedFile);
+  if (this.selectedFile != null) {
+      this.userService.uploadUserPicture(this.selectedFile).subscribe(
+          res => {
+
+              console.log('File seccessfully uploaded. ');
+
+          },
+          err => {
+              if (err instanceof HttpErrorResponse) {
+                  err => console.log(err);
+              }
+          }
+      );
+  }
 }
 
-/*
-frontend for uploading
- <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-            <p> Upload your business logo </p>
-            <input type="file" (change) = "onFileSelected($event)" placeholder="Upload file" accept=".jpeg,.png">
-            <button mat-button color="primary" type="button" (click)="onUpload()">Upload</button>
+}
 
-            </div>
 
-            */

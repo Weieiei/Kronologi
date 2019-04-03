@@ -24,10 +24,22 @@ export class ServiceService {
     public createService(businessId: number, service: ServiceCreateDto): Observable<any> {
         return this.http.post<Service>(['api', 'business', 'admin', businessId.toString(), 'service'].join('/'), service);
     }
-    public registerService(businessId: number, service: ServiceCreateDto): Observable<any> {
-        return this.http.post<Service>(['api', 'business', 'services', businessId.toString(), 'service'].join('/'), service);
+    public registerService(businessId: number, service: ServiceCreateDto, img: File): Observable<any> {
+        let formData = new FormData();
+        formData.append('file', img);
+        formData.append('service', new Blob([JSON.stringify(service)],
+        {
+            type: "application/json",
+        }));
+        if (img != null) {
+            return this.http.post<boolean>(['api', 'businesses', 'services',  businessId.toString(), 'serviceWithLogo'].join('/'), formData);
+        } else {
+            return this.http.post<boolean>(['api', 'businesses', 'services',  businessId.toString(), 'serviceNoLogo'].join('/'), formData);
+        }
+
+       // return this.http.post<Service>(['api', 'business', 'services', businessId.toString(), 'service'].join('/'), service);
     }
-    
+
 //TODO: need to add the businessID instead of s=using '1'
     public addServiceToUser(employeedId: number, serviceId: number):Observable<any> {
         return this.http.post<any>(['api', 'business', 'admin','1', 'service', employeedId, serviceId].join('/'), "");
