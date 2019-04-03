@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, EventEmitter, Output  } from '@angular/core';
 import {ThemeService} from "../../core/theme/theme.service";
 import { BusinessDTO } from 'src/app/interfaces/business/business-dto';
-
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user/user.service';
+import { AppointmentService } from 'src/app/services/appointment/appointment.service';
 @Component({
   selector: 'app-cards-ui',
   templateUrl: './cards-ui.component.html',
@@ -21,7 +23,7 @@ export class CardsUiComponent implements OnInit {
   @Output() public button2FunctionMapping : EventEmitter<any> = new EventEmitter<any>();
 
 
-  constructor(public themeService: ThemeService) { 
+  constructor(public themeService: ThemeService, private router: Router, private appointmentService  : AppointmentService) { 
   }
     darkModeActive: boolean;
   ngOnInit() {
@@ -38,11 +40,18 @@ export class CardsUiComponent implements OnInit {
   }
 
   button1Function(){
-    this.button1FunctionMapping.emit();
+    this.router.navigate(['/home/' + this.businessDTO.id] , { state: { businessId: this.businessDTO.id}});
   }
 
   button2Function(){
-    this.button2FunctionMapping.emit();
+    ;
+  }
+
+  moreInfo(){
+    this.router.navigate(['/details/' + this.businessDTO.id] , { state: { businessId: this.businessDTO.id}});
+  }
+  check(){
+    console.log("hello");
   }
 
 }

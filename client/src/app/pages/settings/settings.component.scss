@@ -66,19 +66,21 @@
                 &:first-child {
                     font-weight: bold;
                     background-color: darkgray;
-                    color:white;
+                    color:green;
                 }
             }
 
             .active {
                 font-weight: bold;
-                color: white;
+                color: green;
                 border-left: 3px solid $primary-color;
             }
         }
     }
 }
-
+.bg-container{
+    background: linear-gradient(to bottom, rgb(144, 141, 150), rgb(19, 19, 20))
+  }
 .bg-container-dark {
 
     opacity: 1;

@@ -28,6 +28,7 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
+import { DetailsComponent } from './pages/details/details.component';
 
 const routes: Routes = [
     // Login
@@ -50,7 +51,7 @@ const routes: Routes = [
             { path: 'business', component: BusinessViewComponent },
 
             //Home
-            { path: 'home', component: HomeComponent },
+            { path: 'home/:businessId', component: HomeComponent },
 
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
@@ -62,7 +63,8 @@ const routes: Routes = [
                     { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
                 ]
             },
-
+            
+            {path : 'details/:businessId', component: DetailsComponent},
             {path : 'syncCalendars', component: SyncCalendarsComponent, canActivate: [EmployeeGuard]},
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },

@@ -64,6 +64,8 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
 import { FindBusinessDialogComponent } from './components/find-business-dialog/find-business-dialog.component';
 import { AgmCoreModule } from '@agm/core';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
+import { DetailsComponent } from './pages/details/details.component';
+import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
 
 @NgModule({
     declarations: [
@@ -118,7 +120,9 @@ import { ErrorDialogComponent } from './components/error-dialog/error-dialog.com
         SyncCalendarsComponent,
         FindBusinessDialogComponent,
         ErrorDialogComponent,
-        ErrorDialogComponent
+        ErrorDialogComponent,
+        DetailsComponent,
+        GoogleMapsComponent
     ],
     imports: [
         NgxSpinnerModule,

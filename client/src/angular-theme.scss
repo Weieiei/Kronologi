@@ -6,12 +6,21 @@
 @include mat-core();
 .dark-theme {
     // Dark theme
-    $app-dark-primary: mat-palette($mat-pink, 700);
+    $app-dark-primary: mat-palette($mat-green, 700);
     $app-dark-accent: mat-palette($mat-blue-grey);
     $app-dark-theme: mat-dark-theme($app-dark-primary, $app-dark-accent);
 
 
     @include angular-material-theme($app-dark-theme);
+}
+
+.light-theme {
+    $app-light-primary: mat-palette($mat-pink, 700);
+    $app-light-accent: mat-palette($mat-blue-grey);
+    $app-light-theme: mat-dark-theme($app-light-primary, $app-light-accent);
+
+
+    @include angular-material-theme($app-light-theme);
 }
 
 

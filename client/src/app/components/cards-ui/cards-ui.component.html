@@ -1,13 +1,208 @@
-<section class="cards-ui"  [ngClass]="{'weather__card-dark': darkModeActive}">
-  <div class="body__container" class = 'image-cropper'>
-    <img [src] = "url"/>
-  </div>
-    <span class="city-name__text">{{ businessName }}</span>
-  <div>
+<section class="cards-ui card-image"  [ngClass]="{'weather__card-dark': darkModeActive}" >
+  <!-- <div class="body__container" class = 'image-cropper'>
+    <img [src] = "url" style="border-radius:1.5rem"/>
+  </div> -->
+    <!-- <span class="city-name__text">{{ businessName }}</span>
+  
+    <div>
         {{ businessDescription }}
   </div>
   <div>
-      <button mat-button  class="button__card" (click)="button1Function()"> {{ buttonName1 }}</button>
-      <button mat-button class="button__card" (click)="button2Function()"> {{ buttonName2 }}</button>
-  </div>  
+    
+    <button mat-raised-button (click)="moreInfo()">
+        <mat-icon>info</mat-icon>
+        More information: 
+    </button>
+  </div> -->
+
+  <div class="main">
+        <div class="quarter quarter3" (click)="button1Function()">
+                          <style type='text/css'>
+                                 #warped {position: relative; display: block; width:588px; height:471px;}
+            
+                                 #warped>span[class^=w]:nth-of-type(n+0){display:block; position:absolute;
+                                 -moz-transform-origin:50% 100%; -webkit-transform-origin:50% 100%; -o-transform-origin:50%
+                                 100%; -ms-transform-origin:50% 100%; transform-origin:50% 100%; }
+            
+                                 #warped span{font-family:'ABeeZee';font-size:22px;font-weight:regular;font-style:normal;
+                                 line-height:0.65; white-space:pre; overflow:visible; padding:0px;}
+            
+                                 #warped .w0 {-moz-transform: rotate(7.08rad);-webkit-transform: rotate(7.08rad);-o-transform:
+                                 rotate(7.08rad);-ms-transform: rotate(7.08rad); transform: rotate(7.08rad);
+                                 width: 15px; height: 14px; left: 160.86px; top: 326.38px;}
+            
+                                 #warped .w1 {-moz-transform: rotate(6.98rad);-webkit-transform: rotate(6.98rad);-o-transform:
+                                 rotate(6.98rad);-ms-transform: rotate(6.98rad); transform: rotate(6.98rad);
+                                 width: 11px; height: 14px; left: 175.96px; top: 338.71px;}
+            
+                                 #warped .w2 {-moz-transform: rotate(6.89rad);-webkit-transform: rotate(6.89rad);-o-transform:
+                                 rotate(6.89rad);-ms-transform: rotate(6.89rad); transform: rotate(6.89rad);
+                                 width: 11px; height: 14px; left: 188.63px; top: 348.48px;}
+            
+                                 #warped .w3 {-moz-transform: rotate(6.8rad);-webkit-transform: rotate(6.8rad);-o-transform:
+                                 rotate(6.8rad);-ms-transform: rotate(6.8rad); transform: rotate(6.8rad);
+                                 width: 11px; height: 14px; left: 202.13px; top: 357.05px;}
+            
+                                 #warped .w4 {-moz-transform: rotate(6.72rad);-webkit-transform: rotate(6.72rad);-o-transform:
+                                 rotate(6.72rad);-ms-transform: rotate(6.72rad); transform: rotate(6.72rad);
+                                 width: 6px; height: 14px; left: 216.6px; top: 363.29px;}
+            
+                                 #warped .w5 {-moz-transform: rotate(6.64rad);-webkit-transform: rotate(6.64rad);-o-transform:
+                                 rotate(6.64rad);-ms-transform: rotate(6.64rad); transform: rotate(6.64rad);
+                                 width: 11px; height: 14px; left: 226.52px; top: 368.58px;}
+            
+                                 #warped .w6 {-moz-transform: rotate(6.55rad);-webkit-transform: rotate(6.55rad);-o-transform:
+                                 rotate(6.55rad);-ms-transform: rotate(6.55rad); transform: rotate(6.55rad);
+                                 width: 11px; height: 14px; left: 241.71px; top: 373.59px;}
+            
+                                 #warped .w7 {-moz-transform: rotate(6.46rad);-webkit-transform: rotate(6.46rad);-o-transform:
+                                 rotate(6.46rad);-ms-transform: rotate(6.46rad); transform: rotate(6.46rad);
+                                 width: 9px; height: 14px; left: 257.31px; top: 376.99px;}
+            
+                                 #warped .w8 {-moz-transform: rotate(5.49rad);-webkit-transform: rotate(5.49rad);-o-transform:
+                                 rotate(5.49rad);-ms-transform: rotate(5.49rad); transform: rotate(5.49rad);
+                                 width: 7px; height: 14px; left: 414.13px; top: 328.43px;}
+            
+                                 #warped .w9 {-moz-transform: rotate(-0.66rad);-webkit-transform: rotate(-0.66rad);-o-transform:
+                                 rotate(-0.66rad);-ms-transform: rotate(-0.66rad); transform: rotate(-0.66rad);
+                                 width: 6px; height: 14px; left: 179.03px; top: 59.98px;}
+            
+                                 #warped .w10 {-moz-transform: rotate(-0.57rad);-webkit-transform: rotate(-0.57rad);-o-transform:
+                                 rotate(-0.57rad);-ms-transform: rotate(-0.57rad); transform: rotate(-0.57rad);
+                                 width: 17px; height: 14px; left: 187.06px; top: 50.54px;}
+            
+                                 #warped .w11 {-moz-transform: rotate(-0.47rad);-webkit-transform: rotate(-0.47rad);-o-transform:
+                                 rotate(-0.47rad);-ms-transform: rotate(-0.47rad); transform: rotate(-0.47rad);
+                                 width: 10px; height: 14px; left: 206.66px; top: 41.44px;}
+            
+                                 #warped .w12 {-moz-transform: rotate(-0.38rad);-webkit-transform: rotate(-0.38rad);-o-transform:
+                                 rotate(-0.38rad);-ms-transform: rotate(-0.38rad); transform: rotate(-0.38rad);
+                                 width: 11px; height: 14px; left: 220.3px; top: 35.1px;}
+            
+                                 #warped .w13 {-moz-transform: rotate(-0.31rad);-webkit-transform: rotate(-0.31rad);-o-transform:
+                                 rotate(-0.31rad);-ms-transform: rotate(-0.31rad); transform: rotate(-0.31rad);
+                                 width: 6px; height: 14px; left: 235.51px; top: 30.56px;}
+            
+                                 #warped .w14 {-moz-transform: rotate(-0.24rad);-webkit-transform: rotate(-0.24rad);-o-transform:
+                                 rotate(-0.24rad);-ms-transform: rotate(-0.24rad); transform: rotate(-0.24rad);
+                                 width: 9px; height: 14px; left: 246.05px; top: 27.2px;}
+            
+                                 #warped .w15 {-moz-transform: rotate(-0.17rad);-webkit-transform: rotate(-0.17rad);-o-transform:
+                                 rotate(-0.17rad);-ms-transform: rotate(-0.17rad); transform: rotate(-0.17rad);
+                                 width: 7px; height: 14px; left: 259.78px; top: 24.58px;}
+            
+                          </style>
+                          <div id='warped' style="
+                          padding-left: 5rem;
+                          top: -114%;
+                          left: -65%;
+                          transform: rotate(-2deg);
+                          width: 0px;
+                          height: 0px;">
+                                 <span class='w0'>B</span><span class='w1'>o</span><span class='w2'>o</span><span class='w3'>k</span><span class='w4'>i</span><span class='w5'>n</span><span class='w6'>g</span><span class='w7'>s</span>
+                          </div>
+        </div>
+        <div class="quarter quarter4">
+                          <style type='text/css'>
+                                 #warped_book {position: relative; display: block; width:588px; height:471px;}
+            
+                                 #warped_book>span[class^=w]:nth-of-type(n+0){display:block; position:absolute;
+                                 -moz-transform-origin:50% 100%; -webkit-transform-origin:50% 100%; -o-transform-origin:50%
+                                 100%; -ms-transform-origin:50% 100%; transform-origin:50% 100%; }
+            
+                                 #warped_book span{font-family:'ABeeZee';font-size:22px;font-weight:regular;font-style:normal;
+                                 line-height:0.65; white-space:pre; overflow:visible; padding:0px;}
+            
+                                 #warped_book .w0 {-moz-transform: rotate(6.25rad);-webkit-transform: rotate(6.25rad);-o-transform:
+                                 rotate(6.25rad);-ms-transform: rotate(6.25rad); transform: rotate(6.25rad);
+                                 width: 15px; height: 14px; left: 291px; top: 379.94px;}
+            
+                                 #warped_book .w1 {-moz-transform: rotate(6.15rad);-webkit-transform: rotate(6.15rad);-o-transform:
+                                 rotate(6.15rad);-ms-transform: rotate(6.15rad); transform: rotate(6.15rad);
+                                 width: 11px; height: 14px; left: 310.94px; top: 378.54px;}
+            
+                                 #warped_book .w2 {-moz-transform: rotate(6.06rad);-webkit-transform: rotate(6.06rad);-o-transform:
+                                 rotate(6.06rad);-ms-transform: rotate(6.06rad); transform: rotate(6.06rad);
+                                 width: 11px; height: 14px; left: 326.69px; top: 375.75px;}
+            
+                                 #warped_book .w3 {-moz-transform: rotate(5.96rad);-webkit-transform: rotate(5.96rad);-o-transform:
+                                 rotate(5.96rad);-ms-transform: rotate(5.96rad); transform: rotate(5.96rad);
+                                 width: 11px; height: 14px; left: 342.12px; top: 371.53px;}
+            
+                                 #warped_book .w4 {-moz-transform: rotate(5.89rad);-webkit-transform: rotate(5.89rad);-o-transform:
+                                 rotate(5.89rad);-ms-transform: rotate(5.89rad); transform: rotate(5.89rad);
+                                 width: 6px; height: 14px; left: 357.29px; top: 366.87px;}
+            
+                                 #warped_book .w5 {-moz-transform: rotate(5.8rad);-webkit-transform: rotate(5.8rad);-o-transform:
+                                 rotate(5.8rad);-ms-transform: rotate(5.8rad); transform: rotate(5.8rad);
+                                 width: 16px; height: 14px; left: 366.78px; top: 360.11px;}
+            
+                                 #warped_book .w6 {-moz-transform: rotate(5.69rad);-webkit-transform: rotate(5.69rad);-o-transform:
+                                 rotate(5.69rad);-ms-transform: rotate(5.69rad); transform: rotate(5.69rad);
+                                 width: 11px; height: 14px; left: 385.18px; top: 350.66px;}
+            
+                                 #warped_book .w7 {-moz-transform: rotate(5.58rad);-webkit-transform: rotate(5.58rad);-o-transform:
+                                 rotate(5.58rad);-ms-transform: rotate(5.58rad); transform: rotate(5.58rad);
+                                 width: 16px; height: 14px; left: 397.48px; top: 339.59px;}
+            
+                                 #warped_book .w8 {-moz-transform: rotate(5.49rad);-webkit-transform: rotate(5.49rad);-o-transform:
+                                 rotate(5.49rad);-ms-transform: rotate(5.49rad); transform: rotate(5.49rad);
+                                 width: 7px; height: 14px; left: 414.13px; top: 328.43px;}
+            
+                                 #warped_book .w9 {-moz-transform: rotate(-0.66rad);-webkit-transform: rotate(-0.66rad);-o-transform:
+                                 rotate(-0.66rad);-ms-transform: rotate(-0.66rad); transform: rotate(-0.66rad);
+                                 width: 6px; height: 14px; left: 179.03px; top: 59.98px;}
+            
+                                 #warped_book .w10 {-moz-transform: rotate(-0.57rad);-webkit-transform: rotate(-0.57rad);-o-transform:
+                                 rotate(-0.57rad);-ms-transform: rotate(-0.57rad); transform: rotate(-0.57rad);
+                                 width: 17px; height: 14px; left: 187.06px; top: 50.54px;}
+            
+                                 #warped_book .w11 {-moz-transform: rotate(-0.47rad);-webkit-transform: rotate(-0.47rad);-o-transform:
+                                 rotate(-0.47rad);-ms-transform: rotate(-0.47rad); transform: rotate(-0.47rad);
+                                 width: 10px; height: 14px; left: 206.66px; top: 41.44px;}
+            
+                                 #warped_book .w12 {-moz-transform: rotate(-0.38rad);-webkit-transform: rotate(-0.38rad);-o-transform:
+                                 rotate(-0.38rad);-ms-transform: rotate(-0.38rad); transform: rotate(-0.38rad);
+                                 width: 11px; height: 14px; left: 220.3px; top: 35.1px;}
+            
+                                 #warped_book .w13 {-moz-transform: rotate(-0.31rad);-webkit-transform: rotate(-0.31rad);-o-transform:
+                                 rotate(-0.31rad);-ms-transform: rotate(-0.31rad); transform: rotate(-0.31rad);
+                                 width: 6px; height: 14px; left: 235.51px; top: 30.56px;}
+            
+                                 #warped_book .w14 {-moz-transform: rotate(-0.24rad);-webkit-transform: rotate(-0.24rad);-o-transform:
+                                 rotate(-0.24rad);-ms-transform: rotate(-0.24rad); transform: rotate(-0.24rad);
+                                 width: 9px; height: 14px; left: 246.05px; top: 27.2px;}
+            
+                                 #warped_book .w15 {-moz-transform: rotate(-0.17rad);-webkit-transform: rotate(-0.17rad);-o-transform:
+                                 rotate(-0.17rad);-ms-transform: rotate(-0.17rad); transform: rotate(-0.17rad);
+                                 width: 7px; height: 14px; left: 259.78px; top: 24.58px;}
+            
+                          </style>
+                          <div id='warped_book' style="
+                                margin-left: .4rem;
+                                top: -125%;
+                                right: 155%;
+                                width: 0px;
+                                height: 0px;
+                                transform: rotate(-1deg);">
+                                 <span class='w0' style="padding-top:1.1rem">B</span><span class='w1' style="padding-top:.9rem">o</span><span class='w2' style="padding-top:.8rem">o</span><span class='w3' style="padding-top:.65rem">k</span><span class='w4'> </span><span class='w5' style="padding-top:.60rem">N</span><span class='w6' style="padding-top:.5rem">o</span><span class='w7' style="padding-top:.35rem">w</span><span class='w8'>!</span>
+                          </div>
+        </div>
+        <div class="bottom">
+          <h3 style="text-align:center; padding-top:.5rem">{{businessName}}</h3>
+          <div style="text-align:center; padding-top:.5rem" >
+              <button mat-raised-button (click)="moreInfo()">
+                  <mat-icon>info</mat-icon>
+                  More information: 
+              </button>
+          </div>
+        </div>
+    </div>
+  <!-- <div>
+      <button mat-raised-button  class="button__card" (click)="button1Function()" style="margin-right:1rem"> {{ buttonName1 }}</button>
+      <button mat-raised-button class="button__card" (click)="button2Function()"> {{ buttonName2 }}</button>
+  </div>   -->
 </section>
+             
+
+

@@ -4,28 +4,56 @@ Card Styling
 ====================
 */
 .cards-ui{
-  background-color: #ffffff;
-  box-shadow: 0 0 2rem rgba(0, 0, 255, 0.1);
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  padding: 2rem;
-  margin: 2rem;
-  width: 20rem;
-  height: 30rem;
+  background-color:rgb(232, 232, 233);
+  box-shadow: 1rem  1rem .5rem rgba(83, 83, 83, 0.486);
+  width: 23rem;
+  height: 23rem;
   justify-items: center;
   cursor: pointer;
-  border-radius: 1.75rem;
   animation: fadein 1.25s ease-in-out 0ms 1;
   color: #443282;
+  border-radius:23rem;
 }
+
+.card-image{
+
+  background-image: url("../../../assets/images/business.jpg");
+  background-size:100% 50%;
+  background-repeat:no-repeat;
+}
+.vertical-line{
+  width: 1px; /* Line width */
+  background-color: black; /* Line color */
+  height: 100%; /* Override in-line if you want specific height. */
+  float: left; /* Causes the line to float to left of content. 
+    You can instead use position:absolute or display:inline-block
+    if this fits better with your design */
+}
+
 
 .cards-ui-dark {
     background: linear-gradient(to bottom, #711B86, #00057A);
     color: white;
 }
 
+.my-appointment-button{
+    width: 50%;
+    background: white;
+    align-items: center;
+    text-align: center;
+    padding-top: .70rem;
+    
 
+    border:1px solid black;
+}
+
+.book-appointment-button{
+    width: 50%;
+    text-align: center;
+    padding-top: .70rem;
+    background-color: white;
+    border:1px solid black;
+}
   
   .weather__card-dark {
     background: linear-gradient(to bottom, #711B86, #00057A);
@@ -33,6 +61,7 @@ Card Styling
   }
   
   .city-name__text {
+    margin-top:13rem;
     text-transform: uppercase;
     font-size: 1.4rem;
     letter-spacing: 0.1rem;
@@ -74,10 +103,71 @@ Card Styling
     width: 20rem;
     overflow: hidden;
   }
-
+  
   .button__card{
+    background-color:#800020;
+    color:white;
+    padding: 0 8px;
     overflow-wrap: break-word;
   }
+  
+  /**
+* Quarter Circles
+*/
+
+/**
+* Quarter Circles
+*/
+
+.main {
+	position:relative;
+	width:23rem;
+	height:23rem;
+	
+}
+
+.quarter {
+	position:absolute;
+	width:50%;
+	height:50%;
+	transition:background-color 0.2s ease-in-out;
+}
+.quarter:hover {
+	background-color:rgb(204, 204, 204);
+}
+
+.quarter3 {
+	bottom:0;
+	left:0;
+	background-color:rgb(228, 226, 226);
+  border-radius:0 0 0 100%;
+  border: 1px solid black;
+}
+.quarter4 {
+	bottom:0;
+  right:0;
+  border-color:black;
+  border-bottom-width: 1px;
+	background-color:rgb(231, 230, 230);
+  border-radius:0 0 100% 0 ;
+  border: 1px solid black;
+}
+
+.bottom {
+  height: 9rem;
+  width: 9rem * 2;
+  background-color: rgb(238, 236, 236);
+  position: absolute;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  top: 50%;
+  left: 11%;
+}
+.bottom {
+  border-bottom-left-radius: 9rem * 2;
+  border-bottom-right-radius: 9rem * 2;
+}
 //   .image-cropper {
 //     width: 200px;
 //     height: 200px;

@@ -42,7 +42,7 @@ export class AppointmentCardComponent implements OnInit {
     }
 
     modifyAppointment() {
-        //this.router.navigate(['reserve', 'edit', this.appointment.id], { state: { appointment: this.appointment }});
+        this.router.navigate(['reserve', 'edit', this.appointment.id], { state: { appointment: this.appointment }});
     }
     openDialog() {
         const dialogConfig = new MatDialogConfig();

@@ -307,7 +307,10 @@
     left: 0;
     z-index: -2;
     opacity: 0;
-    background: white;
+    
+    background:linear-gradient(to bottom,
+      rgb(158, 158, 155) 0%,
+      rgb(158, 158, 157) 100%);
     transition: opacity 300ms linear;
   }
   

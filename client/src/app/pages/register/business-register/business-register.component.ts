@@ -158,7 +158,7 @@ export class BusinessRegisterComponent implements OnInit {
         this.animationState = false;
         let businessHoursDTO : BusinessHoursDTO[] = [];
         if(!this.isEmptyObject(this.businessHourMap)){
-          console.log("hello")
+          
           this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) => {
              console.log(day)
              let businessHourDTOtemp : BusinessHoursDTO = {

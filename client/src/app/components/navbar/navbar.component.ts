@@ -22,7 +22,9 @@ export class NavbarComponent implements OnInit {
     showMenu = false;
     darkModeActive: boolean;
     user;
-    theme :string = 'dark-theme';
+    dark_theme :string = 'dark-theme';
+    light_theme:string = 'light-theme';
+    theme:string = 'light-theme';
 
     constructor(
         private userService: UserService,
@@ -44,13 +46,13 @@ export class NavbarComponent implements OnInit {
         this.themeService.darkModeState.subscribe(value => {
             this.darkModeActive = value;
         });
-        this.overlayContainer.getContainerElement().classList.add(this.theme);
+        this.overlayContainer.getContainerElement().classList.add(this.dark_theme);
+        this.overlayContainer.getContainerElement().classList.add(this.light_theme);
 
     }
 
     onThemeChange(theme:string) {
         this.theme = theme;
-        //console.log(theme);
         const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;
         const themeClassesToRemove = Array.from(overlayContainerClasses).filter((item: string) => item.includes('-theme'));
         if (themeClassesToRemove.length) {
@@ -68,7 +70,7 @@ export class NavbarComponent implements OnInit {
     modeToggleSwitch() {
         this.darkModeActive = !this.darkModeActive;
         this.themeService.darkModeState.next(this.darkModeActive);
-        const currentTheme: string = this.darkModeActive ? 'dark-theme': '';
+        const currentTheme: string = this.darkModeActive ? 'light-theme': 'dark-theme';
         this.onThemeChange(currentTheme);
     }
 

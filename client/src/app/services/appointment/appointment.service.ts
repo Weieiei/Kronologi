@@ -21,8 +21,8 @@ export class AppointmentService {
         return this.http.get<AppointmentDetailed[]>(['api','business','admin', '1', 'appointments'].join('/'));
     }
 
-    public getMyAppointments(): Observable<UserAppointmentDTO[]> {
-        return this.http.get<UserAppointmentDTO[]>(['api', 'user', 'business', '1','appointments',].join('/'));
+    public getMyAppointments(businessId : number): Observable<UserAppointmentDTO[]> {
+        return this.http.get<UserAppointmentDTO[]>(['api', 'user', 'business', businessId.toString(),'appointments',].join('/'));
     }
 
     public getAppointmentById(id: number): Observable<UserAppointmentDTO> {
@@ -56,6 +56,5 @@ export class AppointmentService {
     public googleLogin(): Observable<any>{
         return this.http.get(['external', 'google','login','google'].join('/'));
     }
-
 
 }

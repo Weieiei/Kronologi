@@ -29,6 +29,9 @@ import appointmentscheduler.service.file.FileStorageService;
 import appointmentscheduler.service.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.maps.*;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +53,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -148,82 +153,127 @@ public class BusinessController extends AbstractController {
     */
 
   @LogREST
-  @GetMapping("/findWithGoogle")
-  public ResponseEntity<String> findWithGoogle(@RequestParam String nameOfBusiness) throws JSONException {
+  @GetMapping("/getMoreInfo")
+  public Map<String,List<String>> findWithGoogle(@RequestParam String addressOfBusiness) throws JSONException, InterruptedException, ApiException, IOException {
 
-      List<Business> googleBusinesses = new ArrayList<>();
-      final ObjectMapper mapper = objectMapperFactory.createMapper(Business.class, new BusinessSerializer());
-      RestTemplate restTemplate = new RestTemplate();
-      HttpHeaders headers = new HttpHeaders();
+      GeoApiContext context = new GeoApiContext.Builder()
+              .apiKey(googleApiKey)
+              .build();
 
-      UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
-              .queryParam("key", googleApiKey)
-              .queryParam("input", nameOfBusiness.replaceAll(" ",""))
-              .queryParam("inputtype", "textquery")
-              .queryParam("fields","place_id");
+        PlacesSearchResponse response = PlacesApi.textSearchQuery(context, addressOfBusiness).await();
 
-      HttpEntity<?> entity = new HttpEntity<>(headers);
+       FindPlaceFromText place = PlacesApi.findPlaceFromText(context, addressOfBusiness, FindPlaceFromTextRequest.InputType.TEXT_QUERY)
+                    .await();
 
 
-      HttpEntity<String> response = restTemplate.exchange(
-              builder.toUriString(),
-              HttpMethod.GET,
-              entity,
-              String.class);
 
-      JSONObject googlePlaceId = new JSONObject(response.getBody());
-      JSONArray candidates = googlePlaceId.getJSONArray("candidates");
-      List<String> candidatesIdList = new ArrayList<>();
-      for(int i = 0; i < candidates.length(); i++){
-          candidatesIdList.add(candidates.getJSONObject(i).getString("place_id"));
+       PlaceDetails placeDetails = PlacesApi.placeDetails(context, place.candidates[0].placeId).await();
+
+       Map<String,List<String>> returnMap = new HashMap<>();
+
+      List<ImageResult> allImages = new ArrayList<>();
+      for(Photo photo : placeDetails.photos){
+          ImageResult imageResult = PlacesApi.photo(context,photo.photoReference).await();
+          allImages.add(imageResult);
       }
 
-      //means we found only 1 business and we'll fetch on that
-      if(candidatesIdList.size() == 1){
-          UriComponentsBuilder build = UriComponentsBuilder.fromHttpUrl(inDepthPlacesAPIurl)
-                  .queryParam("key", googleApiKey)
-                  .queryParam("placeid", candidatesIdList.get(0))
-                  .queryParam("fields","opening_hours,formatted_address,name");
+     List<String> rating =  new ArrayList<>();
+     rating.add(String.valueOf(placeDetails.rating));
+     List<String> reviews = new ArrayList<>();
+     for(PlaceDetails.Review review : placeDetails.reviews){
+         reviews.add(review.text);
+     }
 
-           entity = new HttpEntity<>(headers);
+     List<String> pictures = new ArrayList<>();
+     for(ImageResult imgResult : allImages) {
+         pictures.add(Base64Utils.encodeToString(imgResult.imageData));
+     }
 
-           response = restTemplate.exchange(
-                   build.toUriString(),
-                  HttpMethod.GET,
-                  entity,
-                  String.class);
 
-           JSONObject responseJson = new JSONObject(response.getBody());
-           JSONArray periodsArray = responseJson.getJSONObject("result").getJSONObject("opening_hours").getJSONArray("periods");
-
-           List<BusinessHours> businessHoursList = new ArrayList<>();
-
-           for(int i = 0 ; i < periodsArray.length(); i++){
-               BusinessHours temp = new BusinessHours();
-               temp.setDayOfWeek(periodsArray.getJSONObject(i).getJSONObject("open").getInt("day"));
-
-               String startTimeString = periodsArray.getJSONObject(i).getJSONObject("open").getString("time");
-               String endTimeString = periodsArray.getJSONObject(i).getJSONObject("close").getString("time");
-
-               temp.setStartTime(convertMilitaryStringToRegular(startTimeString));
-               temp.setEndTime(convertMilitaryStringToRegular(endTimeString));
-
-               businessHoursList.add(temp);
-
-           }
-
-           Collections.sort(businessHoursList, Comparator.comparingInt(BusinessHours::getDayOfWeek));
-           Business business = new Business();
-           business.setOwner(null);
-           business.setBusinessHours(businessHoursList);
-           business.setName(responseJson.getJSONObject("result").getString("name"));
-           business.setAddress(responseJson.getJSONObject("result").getString("formatted_address"));
-           googleBusinesses.add(business);
-           return getJson(mapper, googleBusinesses);
-      }
-
-      return ResponseEntity.status(HttpStatus.OK).build();
+       returnMap.put("rating",  rating);
+       returnMap.put("review", reviews);
+       returnMap.put("pictures", pictures);
+      return returnMap;
   }
+
+    @LogREST
+    @GetMapping("/getInfoFromBusiness")
+    public ResponseEntity<String> getInfo(@RequestParam String nameOfBusiness) throws JSONException {
+
+        List<Business> googleBusinesses = new ArrayList<>();
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Business.class, new BusinessSerializer());
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
+                .queryParam("key", googleApiKey)
+                .queryParam("input", nameOfBusiness.replaceAll(" ",""))
+                .queryParam("inputtype", "textquery")
+                .queryParam("fields","place_id");
+
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
+
+        HttpEntity<String> response = restTemplate.exchange(
+                builder.toUriString(),
+                HttpMethod.GET,
+                entity,
+                String.class);
+
+        JSONObject googlePlaceId = new JSONObject(response.getBody());
+        JSONArray candidates = googlePlaceId.getJSONArray("candidates");
+        List<String> candidatesIdList = new ArrayList<>();
+        for(int i = 0; i < candidates.length(); i++){
+            candidatesIdList.add(candidates.getJSONObject(i).getString("place_id"));
+        }
+
+        //means we found only 1 business and we'll fetch on that
+        if(candidatesIdList.size() == 1){
+            UriComponentsBuilder build = UriComponentsBuilder.fromHttpUrl(inDepthPlacesAPIurl)
+                    .queryParam("key", googleApiKey)
+                    .queryParam("placeid", candidatesIdList.get(0))
+                    .queryParam("fields","opening_hours,formatted_address,name");
+
+            entity = new HttpEntity<>(headers);
+
+            response = restTemplate.exchange(
+                    build.toUriString(),
+                    HttpMethod.GET,
+                    entity,
+                    String.class);
+
+            JSONObject responseJson = new JSONObject(response.getBody());
+            JSONArray periodsArray = responseJson.getJSONObject("result").getJSONObject("opening_hours").getJSONArray("periods");
+
+            List<BusinessHours> businessHoursList = new ArrayList<>();
+
+            for(int i = 0 ; i < periodsArray.length(); i++){
+                BusinessHours temp = new BusinessHours();
+                temp.setDayOfWeek(periodsArray.getJSONObject(i).getJSONObject("open").getInt("day"));
+
+                String startTimeString = periodsArray.getJSONObject(i).getJSONObject("open").getString("time");
+                String endTimeString = periodsArray.getJSONObject(i).getJSONObject("close").getString("time");
+
+                temp.setStartTime(convertMilitaryStringToRegular(startTimeString));
+                temp.setEndTime(convertMilitaryStringToRegular(endTimeString));
+
+                businessHoursList.add(temp);
+
+            }
+
+            Collections.sort(businessHoursList, Comparator.comparingInt(BusinessHours::getDayOfWeek));
+            Business business = new Business();
+            business.setOwner(null);
+            business.setBusinessHours(businessHoursList);
+            business.setName(responseJson.getJSONObject("result").getString("name"));
+            business.setAddress(responseJson.getJSONObject("result").getString("formatted_address"));
+            googleBusinesses.add(business);
+            return getJson(mapper, googleBusinesses);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
   @LogREST
   @PostMapping("/businessWithLogo")
   public ResponseEntity<Map<String, Object>> createBusinessWithLogo(@RequestPart("file") MultipartFile aFile, @RequestPart("business") BusinessDTO businessDTO,
@@ -280,4 +330,35 @@ public class BusinessController extends AbstractController {
 
       return lt;
   }
+
+//  private Base64 getGooglePhotos(String photoReference, String maxHeight, String maxWidth){
+
+//      private RequestHandler requestHandler;
+//      RestTemplate restTemplate = new RestTemplate();
+//      HttpHeaders headers = new HttpHeaders();
+//      UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
+//              .queryParam("key", googleApiKey)
+//              .queryParam("photoreference",photoReference )
+//              .queryParam("maxheight", maxHeight)
+//              .queryParam("maxwidth",maxWidth);
+//
+//      HttpEntity<?> entity = new HttpEntity<>(headers);
+//
+//
+//      HttpEntity<String> response = restTemplate.exchange(
+//              builder.toUriString(),
+//              HttpMethod.GET,
+//              entity,
+//              String.class);
+//
+//      try {
+//          InputStream in =
+//          if (in == null)
+//              throw new GooglePlacesException("Could not attain input stream at " + uri);
+//          debug("Successfully attained InputStream at " + uri);
+//          return in;
+//      } catch (Exception e) {
+//          throw new GooglePlacesException(e);
+//      }
+  //}
 }

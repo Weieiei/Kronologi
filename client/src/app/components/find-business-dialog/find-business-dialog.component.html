@@ -38,7 +38,7 @@
                   </mat-expansion-panel-header>
                   
                   <div  [ngClass] = "main">
-                        <agm-map [latitude]='business.lat' [longitude]='business.lng' 
+                        <agm-map  [latitude]='business.lat' [longitude]='business.lng' 
                         [mapTypeId]='mapType'>
                         <agm-marker [latitude]="business.lat" [longitude]="business.lng"></agm-marker>
                         </agm-map> 
