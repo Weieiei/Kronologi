@@ -72,5 +72,6 @@ export class AddRecurringShiftFormComponent implements OnInit {
       this.startMinute = void 0;
       this.endHour = void 0;
       this.endMinute = void 0;
+      this.occurences = void 0;
   }
 }
