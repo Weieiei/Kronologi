@@ -107,7 +107,7 @@
                         <mat-select placeholder="Domain type" [(ngModel)]="businessDomain" [ngModelOptions]="{standalone: true}">
                         <mat-option *ngFor="let domain of domains" [value]="domain.value">
       {{domain.value}}
-    </mat-option>
+                         </mat-option>
 
                         </mat-select>
         <mat-horizontal-stepper #stepper class = "stepper">
@@ -438,17 +438,15 @@
     </div>
 
     </form>
-  </mat-step>
+</mat-step>
 
-</mat-horizontal-stepper>
-
-
+                    
                         <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Add the service duration(in minutes)</mat-label>
                                     <input matInput [(ngModel)]="service_duration" [ngModelOptions]="{standalone: true}"
                                            type="text" name="service_duration" pattern=".{1,}" required appAutofocus>
                                 </mat-form-field>
-                    </div>
+                 
                     <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
                         <button mat-raised-button class="button-color-sign-in" color="primary" type="button"
                                 routerLink="/login">
@@ -461,13 +459,11 @@
                             Next
                         </button>
                     </div>
-                    <div>
-                </div>
-                </form>
-            </mat-step>
+                   
+                
         </mat-horizontal-stepper>
-    </div>
-</div>
+
+
 <div [@slideInOut]="!animationState">
     <ngx-spinner bdColor = "rgba(109,109,109,0.7)"   size = "medium"   color = "#673ab7"
                  type = "ball-scale-ripple-multiple" fullScreen = "false">

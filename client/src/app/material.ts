@@ -15,11 +15,9 @@ import {
     MatSelectModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatPaginatorModule,
     MatTableModule,
-    MatPaginatorModule
-    MatTableModule,
-    MatExpansionModule,
-    MatRadioModule
+    MatExpansionModule
 } from '@angular/material';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
