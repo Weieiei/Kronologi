@@ -67,15 +67,17 @@ public class UserFactory {
 
     }
 
-    public static User createGuest(Class<? extends User> clazz, String firstName, String lastName, String email, String password) {
+
+    public static User createGuest(Class<? extends User> clazz, String firstName, String lastName, String email) {
         final User guest = createFromType(clazz);
 
         guest.setFirstName(firstName);
         guest.setLastName(lastName);
         guest.setEmail(email);
-        guest.setPassword(password);
+        //guest.setPassword(password);
 
         return guest;
     }
+
 }
 

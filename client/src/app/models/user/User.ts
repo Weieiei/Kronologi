@@ -27,7 +27,7 @@ export class User {
     }
 
     // for guest users (userType is forced to be guest and there is no password, username)
-    public constructor(
+    /*public constructor(
         id: number, firstName: string, lastName: string,
         email: string, createdAt: Date, updatedAt: Date
     ) {
@@ -38,6 +38,6 @@ export class User {
         this.userType = 'guest';
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
+    }*/
 
 }

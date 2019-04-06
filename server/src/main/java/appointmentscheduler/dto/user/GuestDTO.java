@@ -10,16 +10,17 @@ public class GuestDTO {
     public GuestDTO() {
     }
 
-    public GuestDTO(String firstName, String lastName, String email, int phoneNumber) {
+    public GuestDTO(String name, String email, int phoneNumber) {
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = name;
+
         this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
         return firstName;
     }
+
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -29,11 +30,11 @@ public class GuestDTO {
         return lastName;
     }
 
-    public void setLastName(String lastName){
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public int getPhoneNumber() {
+    public int getPhoneNumber(){
         return phoneNumber;
     }
 
