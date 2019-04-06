@@ -7,6 +7,7 @@ import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
@@ -16,6 +17,7 @@ import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.*;
+import appointmentscheduler.service.file.UserFileStorageService;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -48,7 +50,8 @@ public class UserService {
     private final SettingsRepository settingsRepository;
     private final PhoneNumberRepository phoneNumberRepository;
     private final BusinessRepository businessRepository;
-
+    //private final UserFileRepository userFileRepository;
+   // private final UserFileStorageService userFileStorageService;
     @Autowired
     public UserService(
             EmployeeRepository employeeRepository, BusinessRepository businessRepository, UserRepository userRepository,
@@ -201,6 +204,7 @@ public class UserService {
         return message(String.format("You've successfully updated your email to %s.", user.getEmail()));
 
     }
+
 
     public Map<String, String> updatePassword(long id, UpdatePasswordDTO updatePasswordDTO) {
 

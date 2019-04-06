@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit {
                 email: this.email,
                 password: this.password,
                 phoneNumber: null,
-               // businessId: null
+
             };
 
             if (this.registerPhone) {
