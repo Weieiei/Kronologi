@@ -24,6 +24,7 @@
             ],
             "styles": [
                 "src/styles.scss",
+                "./node_modules/ngx-lightbox/lightbox.css",
                 "node_modules/swiper/dist/css/swiper.css",
                 "node_modules/slick-carousel/slick/slick.scss",
                 "node_modules/slick-carousel/slick/slick-theme.scss"

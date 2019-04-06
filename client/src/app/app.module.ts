@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { LightboxModule } from 'ngx-lightbox';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CovalentFileModule  } from '@covalent/core';
@@ -144,6 +145,7 @@ import {SearchInputComponent} from "./components/search-box/search-box.component
         GoogleMapsComponent
     ],
     imports: [
+        LightboxModule,
         CovalentFileModule,
         NgxSpinnerModule,
         CovalentFileModule,

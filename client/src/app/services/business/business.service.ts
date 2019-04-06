@@ -49,10 +49,12 @@ export class BusinessService {
         return this.http.get<BusinessDTO>(['api', 'businesses', businessId.toString()].join('/'));
     }
 
-    public getMoreInfoBusiness(formatted_address: string): Observable<BusinessDTO> {
+    public getMoreInfoBusiness(formatted_address: string, nameOfBusiness:string): Observable<any> {
         let params = new HttpParams();
         params = params.append('addressOfBusiness', formatted_address);
-        return this.http.get<BusinessDTO>(['api', 'getMoreInfo', formatted_address.toString()].join('/'),{params: params} );
+        params = params.append('nameOfBusiness', nameOfBusiness)
+        console.log()
+        return this.http.get<any>(['api', 'businesses','getMoreInfo'].join('/'),{params: params} );
     }
 
     public getAllBusinesses():Observable<BusinessDTO[]>{

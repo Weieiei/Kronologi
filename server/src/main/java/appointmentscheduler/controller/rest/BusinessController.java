@@ -154,27 +154,26 @@ public class BusinessController extends AbstractController {
 
   @LogREST
   @GetMapping("/getMoreInfo")
-  public Map<String,List<String>> findWithGoogle(@RequestParam String addressOfBusiness) throws JSONException, InterruptedException, ApiException, IOException {
+  public Map<String,List<String>> findWithGoogle(@RequestParam String nameOfBusiness, @RequestParam String addressOfBusiness) throws JSONException, InterruptedException, ApiException, IOException {
 
       GeoApiContext context = new GeoApiContext.Builder()
               .apiKey(googleApiKey)
               .build();
 
-        PlacesSearchResponse response = PlacesApi.textSearchQuery(context, addressOfBusiness).await();
 
-       FindPlaceFromText place = PlacesApi.findPlaceFromText(context, addressOfBusiness, FindPlaceFromTextRequest.InputType.TEXT_QUERY)
-                    .await();
+      String  fullAddress = nameOfBusiness.concat(",").concat(addressOfBusiness);
+      GeocodingResult[] placesFoud = GeocodingApi.geocode(context,fullAddress).await();
+      GeocodingResult first = placesFoud[0];
 
+      PlaceDetails placeDetails = PlacesApi.placeDetails(context, first.placeId).await();
 
-
-       PlaceDetails placeDetails = PlacesApi.placeDetails(context, place.candidates[0].placeId).await();
-
-       Map<String,List<String>> returnMap = new HashMap<>();
+      Map<String,List<String>> returnMap = new HashMap<>();
 
       List<ImageResult> allImages = new ArrayList<>();
       for(Photo photo : placeDetails.photos){
-          ImageResult imageResult = PlacesApi.photo(context,photo.photoReference).await();
+          ImageResult imageResult = PlacesApi.photo(context,photo.photoReference).maxHeight(400).maxWidth(400).await();
           allImages.add(imageResult);
+
       }
 
      List<String> rating =  new ArrayList<>();

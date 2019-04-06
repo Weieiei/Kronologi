@@ -1,0 +1,308 @@
+.details-page__wrapper {
+    background: linear-gradient(to top, #86DBFF 0%, #e0c3fc 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 90vh;
+    padding: 2rem 0;
+    width: 100vw;
+  }
+  
+  .details-page__wrapper-dark {
+    background: linear-gradient(#FC7DB8, #495CFC);
+  }
+  
+  .background-gradient__circle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: 1;
+    height: 100rem;
+    width: 100rem;
+    border-radius: 50%;
+    background: linear-gradient(-225deg, #ffffff 0%, #FFE29F 10%, #FFA99F 48%, #ffd1ff 100%);
+    -webkit-animation: scaleup-circle 900ms ease-in-out forwards;
+            animation: scaleup-circle 900ms ease-in-out forwards;
+    transition: background 1s ease-in-out;
+  
+  }
+  
+  .background-gradient__circle-dark {
+    transition: background 1s ease-in-out;
+    background: linear-gradient(to bottom, #FF8B8B, #6676FF);
+  }
+  
+  .main-weather__card {
+    background-color: white;
+    height: 80%;
+    width: 65%;
+    border-radius: 1rem;
+    position: relative;
+    z-index: 3;
+    justify-items: center;
+    opacity: 0;
+    -webkit-animation: scaleup 1s ease-out 300ms, fadein 1.25s ease-out 300ms forwards;
+            animation: scaleup 1s ease-out 300ms, fadein 1.25s ease-out 300ms forwards;
+  }
+  
+  .card-header__container-dark {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .back__button {
+    position: absolute;
+    top: 3rem;
+    left: 3.25rem;
+    width: 5rem;
+    cursor: pointer;
+    z-index: 6;
+    margin-top: 2rem;
+  }
+  
+  .city__illustration {
+    width: 100%;
+    height: 500px;
+    border-radius: 1rem 1rem 0 0;
+    position: relative;
+    -o-object-fit: cover;
+       object-fit: cover;
+    display: block;
+  }
+  
+  .header-content__wrapper {
+    position: absolute;
+    z-index: 2;
+    color: white;
+    top: 0rem;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+  
+  }
+  
+  .temperature__text {
+    font-size: 6rem;
+    letter-spacing: 0.75rem;
+  }
+  
+  .city-name__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 25%;
+  }
+  
+  .city-name__underline {
+    background: transparent;
+    border-radius: 5px;
+    height: 5px;
+    box-shadow: 0 3rem 0 0 #ffffff;
+  }
+  
+  .city-name__text {
+    text-transform: uppercase;
+    letter-spacing: 0.3rem;
+    font-size: 1.75rem;
+    padding-bottom: 2rem;
+  }
+  
+  .today-weather__container {
+    align-self: center;
+    justify-self: center;
+    display: grid;
+    width: 100%;
+    grid-template-rows: 3fr 1fr;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    grid-gap: 2rem;
+  }
+  
+  .temp-state__container {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+  }
+  
+  .weather-state__text {
+    letter-spacing: 0.5rem;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+  
+  .hum-wind__container {
+    display: flex;
+    align-items: center;
+    margin-left: -4rem;
+  }
+  
+  .hum-wind__separator {
+    margin: 0 2rem;
+    width: 2px;
+    height: 2.5rem;
+    background-color: white;
+  }
+  
+  .hum__text, .wind__text {
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hum__container, .wind__container {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /*
+  ================
+       BODY
+  ================
+  */
+  
+  .body-content__wrapper {
+    
+    box-sizing: border-box;
+    width: 100%;
+    padding: 2rem;
+  }
+  
+  .forecast__container {
+    display: flex;
+    flex-flow: row;
+    margin-left: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .twitter-feed__container {
+    margin-top: 1rem;
+    width: 100%;
+  }
+  
+  .twitter-feed__text {
+    color: #0c1066;
+    font-size: 1.25rem;
+  }
+  
+  .twitter__icon {
+    width: 1.5rem;
+  }
+  
+  .twitter-feed-tag__text {
+    font-size: 0.85rem;
+    color: #5f84fb;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+  }
+  
+  .twitter-feed__header {
+    display: grid;
+    grid-template-rows: 2rem;
+    grid-template-columns: 0.5fr 1.5fr 1fr;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+  }
+  
+  .day-weather__container {
+    display: flex;
+    flex-flow: column;
+    margin: 2rem 1.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .day-name__text {
+    font-size: 1.5rem;
+    color: #39437a;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  
+  .forecast-condition__icon {
+    height: 4rem;
+  }
+  
+  .day-temp__text {
+    font-size: 1.85rem;
+    color: #0c1066;
+    letter-spacing: 0.25rem;
+    margin: 0.75rem 0;
+    text-align: center;
+    padding-left: 0.35rem;
+  }
+  
+  .day-state__text {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    color: #2B244D;
+  }
+  
+  .tweet-avatar {
+    border-radius: 50%;
+    height: 2rem;
+    width: 2rem;
+  }
+  
+  /* Media Query:   LT-XL   */
+  
+  @media screen and (max-width: 1919px) {
+    .main-weather__card {
+      height: 80%;
+      width: 75%;
+    }
+  }
+  
+  /* Media Query:   LT-LG  */
+  
+  @media screen and (max-width: 1279px) {
+    .back__button {
+      top: 1rem;
+    }
+  
+    .main-weather__card {
+      width: 80%;
+    }
+  
+    .body-content__wrapper {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Media Query:   LT-MD   */
+  
+  @media screen and (max-width: 959px) {
+  
+    .header-content__wrapper {
+      grid-template-columns: 1fr;
+      grid-template-rows: 2fr 1fr;
+    }
+  
+    .back__button {
+      position: static;
+      margin-bottom: 1rem;
+    }
+  
+    .details-page__wrapper {
+      flex-flow: column;
+    }
+  
+    .hum-wind__container, .temp-state__container {
+      margin: 0 auto;
+    }
+  
+    .city-name__container {
+      padding-bottom: 0;
+    }
+  }
+  
