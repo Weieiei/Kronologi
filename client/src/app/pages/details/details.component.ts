@@ -21,6 +21,8 @@ export class DetailsComponent implements OnInit {
   businessId : number;
   businessObj : BusinessDTO;
   private _subscription: Subscription;
+  public lng;
+  public lat;  
 
   constructor( private imageResizeService :ImageResizeService,private spinner: NgxSpinnerService,private _lightbox: Lightbox, private _lightboxEvent: LightboxEvent, private _lighboxConfig: LightboxConfig ,private sanitizer: DomSanitizer, public route: ActivatedRoute, public businessService : BusinessService, private geoCodeService :  GeocodingApiService) {
     // set default config
@@ -29,30 +31,23 @@ export class DetailsComponent implements OnInit {
     this.businessService.getBusinessById(this.businessId).subscribe(
       res=>{
           this.businessObj = res;
-          // this.imagePath = 'data:image/png;base64,' + data["image_encoded"];
-          //        // show data base64:
-          //        // console.log(this.imagePath);
-          //       this.sanitizedImageData = this.sanitizer.bypassSecurityTrustUrl(this.imagePath);
-          //     } else {
-          //               this.sanitizedImageData = 'assets/images/user_default.png';
-          //               console.log(this.sanitizedImageData);
-          //           }
 
-          // },
           this.businessService.getMoreInfoBusiness("3040 Rue Sherbrooke Ouest, Montréal, QC H3Z 1A4, Canada", "Dawson College").subscribe(
-            res=>{
+            async res=>{
+              console.log(res)
               for(const pictures_string of res["pictures"]){
-                const src : any =  'data:image/jpeg;base64,'+ pictures_string;
-                const thumbnial = this.imageResizeService.resizeImage(src, 50,50)
+                const src : any =  'data:image/jpeg;base64,'+ pictures_string; 
+                const thumbnail = await this.resizedataURL(src,150,150); 
                 const album = {
                   src: src,
                   caption: "trying",
-                  thumb:thumbnial
+                  thumb:thumbnail.toString()
 
                };
                this.albums.push(album);
               }
               
+              this.updateLatLngFromAddress("3040 Rue Sherbrooke Ouest, Montréal, QC H3Z 1A4, Canada")
               this.spinner.hide();
               this.dataIsAllLoaded = true;
             }
@@ -67,8 +62,8 @@ export class DetailsComponent implements OnInit {
   }  
 
 
-  updateLatLngFromAddress(business: BusinessDTO) {
-    let businessArr: string[] = business.formattedAddress.split(',');
+  updateLatLngFromAddress(formattedAddress:string) {
+    let businessArr: string[] =  formattedAddress.split(',');
     let address = businessArr[0];
     let portalCode = '';
     let selectedPlace = '';
@@ -76,8 +71,8 @@ export class DetailsComponent implements OnInit {
         .findFromAddress(address, null, null, null, null, null)
         .subscribe(response => {
             if (response.status === 'OK') {
-                business.lat = response.results[0].geometry.location.lat;
-                business.lng = response.results[0].geometry.location.lng;
+                this.lat = response.results[0].geometry.location.lat;
+                this.lng = response.results[0].geometry.location.lng;
             } else if (response.status === 'ZERO_RESULTS') {
                 console.log('geocodingAPIService', 'ZERO_RESULTS', response.status);
             } else {
@@ -99,8 +94,36 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  resizeImage(base64image : string) : string{
-    return this.imageResizeService.imageToDataUri(base64image, 50,50);
-  }
+  resizedataURL(datas, wantedWidth, wantedHeight){
+    return new Promise(async function(resolve,reject){
+
+        // We create an image to receive the Data URI
+        var img = document.createElement('img');
+
+        // When the event "onload" is triggered we can resize the image.
+        img.onload = function()
+        {        
+            // We create a canvas and get its context.
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            // We set the dimensions at the wanted size.
+            canvas.width = wantedWidth;
+            canvas.height = wantedHeight;
+
+            // We resize the image with the canvas method drawImage();
+            ctx.drawImage(img, 0, 0, wantedWidth, wantedHeight);
+
+            var dataURI = canvas.toDataURL();
+
+            // This is the return of the Promise
+            resolve(dataURI);
+        };
+
+        // We put the Data URI in the image's src attribute
+        img.src = datas;
+
+    })
+}
 }
 

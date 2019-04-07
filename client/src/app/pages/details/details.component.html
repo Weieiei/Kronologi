@@ -8,7 +8,7 @@
       </div>
   </ngx-spinner>
 </div>
-<div *ngIf="dataIsAllLoaded"  class="details-page__wrapper" [ngClass]="{'details-page__wrapper-dark': darkMode}">
+<div  *ngIf="dataIsAllLoaded"  class="details-page__wrapper" [ngClass]="{'details-page__wrapper-dark': darkMode}">
     <div class="background-gradient__circle" [ngClass]="{'background-gradient__circle-dark': darkMode}"></div>
     <svg class="back__button" routerLink="" viewBox="4085 152 98.5 126" tabindex="0">
       <defs>
@@ -52,19 +52,24 @@
        
 
         <div class="header-content__wrapper">
-          <div class="today-weather__container">
-
+         <div class="today-weather__container">
+                <span class="temperature__text">{{ businessObj.name }}</span>
+                <!-- <div class="temp-state__container">
+                  <span class="weather-state__text">hello</span>
+                </div> -->
           </div>
           <div class="city-name__container">
-              <app-google-maps></app-google-maps>
+              <app-google-maps [lng]="lng" [lat]="lat"></app-google-maps>
           </div>  
           
         </div>
       </section>
       <main class="body-content__wrapper">
-        <div *ngFor="let image of albums; let i=index">
-          <img [src]="image.thumb" (click)="open(i)"/>
-        </div>  
+        <div class="column">
+          <div class="img-row" *ngFor="let image of albums; let i=index">
+            <img class="img-frame" [src]="image.thumb" (click)="open(i)"/>
+          </div>
+        </div>
       </main>
     </section>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-google-maps',
@@ -13,6 +13,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GoogleMapsComponent implements OnInit {
   mapType = 'roadmap';
+  @Input() lat;
+  @Input() lng;
+  
   constructor() { }
 
   ngOnInit() {

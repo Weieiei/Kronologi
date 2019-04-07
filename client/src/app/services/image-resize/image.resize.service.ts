@@ -2,7 +2,6 @@ import {ElementRef, Injectable, ViewChild} from '@angular/core';
 // pica can be installed by typing npm install pica
 // more information is available at https://github.com/nodeca/pica
 import pica from 'pica';
-import { PickDayComponent } from 'src/app/pages/dashboard/reserve/pick-day/pick-day.component';
 
 @Injectable({
   providedIn: 'root'
@@ -24,20 +23,8 @@ export class ImageResizeService {
 
   constructor() { }
 
-  resizeImage(img, width, height) : any {
-
-   
-    var canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d');
-
-    
-    var image = new Image();
-    image.onload = function() {
-      ctx.drawImage(image, 0, 0);
-    };
-    image.src = img
-    var resizedCanvas = document.createElement('canvas'),
-        ctx2 = canvas.getContext('2d');
+  resizeImage(img, width, height) {
+      const resizedCanvas = document.createElement('canvas');
       resizedCanvas.height = height;
       resizedCanvas.width = width;
 
@@ -49,25 +36,9 @@ export class ImageResizeService {
           console.log(`resize done!  ${result}`);
           return result;})
           .catch(err => console.log(err))
-    return resizedCanvas.toDataURL()
+
   }
-  imageToDataUri(img, width, height) {
 
-    // create an off-screen canvas
-    var canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d');
-
-    // set its dimension to target size
-    canvas.width = width;
-    canvas.height = height;
-
-    // draw source image into the off-screen canvas:
-    ctx.drawImage(img, 0, 0, width, height);
-
-    // encode image to data-uri with base64 version of compressed image
-    let quality : any = [0.0,1.0];
-    return canvas.toDataURL('image/jpeg', quality);
-}
     // to properly crop the image, we calculate the ratio
     // this allows us to crop either the top and bottom or the left and right parts of the image
     // we crop first and then resize to avoid stretching the image the user provides us
