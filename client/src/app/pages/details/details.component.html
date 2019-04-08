@@ -1,13 +1,12 @@
 
-<div  *ngIf="!dataIsAllLoaded">
-  <ngx-spinner bdColor = "rgba(109,109,109,0.7)"   size = "medium"   color = "#673ab7"
+
+<ngx-spinner bdColor = "rgba(109,109,109,0.7)"   size = "medium"   color = "#673ab7"
                type = "ball-scale-ripple-multiple" fullScreen = "false">
-      <p style="color: #673ab7">Hold on tight,  we're trying to save your info.</p>
-      <div class="div-center-button">
-          <button mat-raised-button color="primary" (click)=stopRegistering()>Stop Registering my business</button>
-      </div>
-  </ngx-spinner>
-</div>
+    <p style="color: #673ab7">Hold on tight,  we're trying to save your info.</p>
+    <div class="div-center-button">
+        <button mat-raised-button color="primary" (click)=stopDescription()>Stop Registering my business</button>
+    </div>
+</ngx-spinner>
 <div  *ngIf="dataIsAllLoaded"  class="details-page__wrapper" [ngClass]="{'details-page__wrapper-dark': darkMode}">
     <div class="background-gradient__circle" [ngClass]="{'background-gradient__circle-dark': darkMode}"></div>
     <svg class="back__button" routerLink="" viewBox="4085 152 98.5 126" tabindex="0">
@@ -53,15 +52,56 @@
 
         <div class="header-content__wrapper">
          <div class="today-weather__container">
-                <span class="temperature__text">{{ businessObj.name }}</span>
-                <!-- <div class="temp-state__container">
-                  <span class="weather-state__text">hello</span>
-                </div> -->
+                <div style="text-align:center">
+                  <span class="temperature__text">{{ businessObj.name }}</span>
+                  <star-rating [starType]="'svg'" [rating]="rating">({{rating}})</star-rating> 
+                </div>
+                
+                <div class="temp-state__container">
+                  <span class="weather-state__text">
+                    <span style="font-weight:bold;">Address:  </span>
+                    <span>{{ businessObj.formattedAddress }} </span>
+                  </span>
+                </div>
+                  
+                <div style="padding-top:1rem">
+                    <mat-accordion >
+                      <mat-expansion-panel (opened)="panelOpenState = true"
+                      (closed)="panelOpenState = false" disabled="expansionPanel">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Business Hours:
+                            </mat-panel-title>
+                            <mat-panel-description>
+                              {{dateToday()}}
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+                          <div  [ngClass] = "main">
+                              <mat-card>
+                                  <div *ngFor="let dayInfo of businessObj.business_hours">
+                                      {{ dayInfo.day }} :  {{ dayInfo.openHour}}   -    {{ dayInfo.closeHour }}
+                                  </div>
+                              </mat-card>
+                        </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+                <div class="temp-state__container">
+                    <span class="weather-state__text">
+                      <span style="font-weight:bold;">Description:  </span>
+                      <span>{{ businessObj.description }} </span>
+                    </span>
+                </div>
+                <div class="review__container">
+                    <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+                        <div *cdkVirtualFor="let item of reviews;let i=index" class="example-item">{{i}}. {{item}}</div>
+                    </cdk-virtual-scroll-viewport>       
+                </div>
+                    
           </div>
           <div class="city-name__container">
               <app-google-maps [lng]="lng" [lat]="lat"></app-google-maps>
-          </div>  
-          
+          </div>
         </div>
       </section>
       <main class="body-content__wrapper">

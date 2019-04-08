@@ -23,6 +23,7 @@ import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.serializer.BusinessSerializer;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
+import appointmentscheduler.service.GoogleApiCalls.GoogleApi;
 import appointmentscheduler.service.business.BusinessService;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.file.FileStorageService;
@@ -73,6 +74,7 @@ public class BusinessController extends AbstractController {
     private final BusinessService businessService;
     private final ModelMapper modelMapper;
     private final BusinessDTOToBusiness businessConverter;
+    private GoogleApi googleApi;
     private ServiceDTOToService serviceConverter;
     private UserService userService;
     private EmailService emailService;
@@ -81,8 +83,9 @@ public class BusinessController extends AbstractController {
     @Autowired
     public BusinessController(BusinessService businessService, BusinessRepository businessRepository,
                               ObjectMapperFactory objectMapperFactory, ModelMapper modelMapper,BusinessDTOToBusiness businessConverter,
-                              ServiceDTOToService serviceConverter, UserService userService, EmailService emailService, FileStorageService fileStorageService,BusinessHoursDTOToBusinessHours businessHoursConverter) {
-
+                              ServiceDTOToService serviceConverter, UserService userService, EmailService emailService, FileStorageService fileStorageService,BusinessHoursDTOToBusinessHours businessHoursConverter,
+                              GoogleApi googleApi) {
+        this.googleApi = googleApi;
         this.businessService = businessService;
         this.businessRepository = businessRepository;
         this.objectMapperFactory = objectMapperFactory;
@@ -129,70 +132,28 @@ public class BusinessController extends AbstractController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    //TODO Create POST
 
-//    @PostMapping
-//    public ResponseEntity<String> add(@RequestBody AppointmentDTO appointmentDTO) throws MessagingException {
-//        Appointment appointment = mapAppointmentDTOToAppointment(appointmentDTO);
-//        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
-//        Appointment savedAppointment = appointmentService.add(appointment);
-//        sendConfirmationMessage(savedAppointment, false);
-//        return getJson(mapper, savedAppointment);
-//    }
 
-    //TODO Create POST
-
-  /*  return ResponseEntity<Map<String, String>> response
-  @PostMapping("/business")
-    public ResponseEntity<Map<String, String>> add(@RequestBody BusinessDTO businessDTO) {
-        Business business = businessConverter.convert(businessDTO);
-        Map<String, String> message =businessService.add(business);
-
-        return ResponseEntity.ok(message);
-    }
-    */
 
   @LogREST
   @GetMapping("/getMoreInfo")
-  public Map<String,List<String>> findWithGoogle(@RequestParam String nameOfBusiness, @RequestParam String addressOfBusiness) throws JSONException, InterruptedException, ApiException, IOException {
-
-      GeoApiContext context = new GeoApiContext.Builder()
-              .apiKey(googleApiKey)
-              .build();
-
-
-      String  fullAddress = nameOfBusiness.concat(",").concat(addressOfBusiness);
-      GeocodingResult[] placesFoud = GeocodingApi.geocode(context,fullAddress).await();
-      GeocodingResult first = placesFoud[0];
-
-      PlaceDetails placeDetails = PlacesApi.placeDetails(context, first.placeId).await();
-
+  public ResponseEntity<Map<String,List<String>>> findWithGoogle(@RequestParam(required = false) String nameOfBusiness, @RequestParam(required = false) String addressOfBusiness) throws JSONException, InterruptedException, ApiException, IOException {
       Map<String,List<String>> returnMap = new HashMap<>();
-
-      List<ImageResult> allImages = new ArrayList<>();
-      for(Photo photo : placeDetails.photos){
-          ImageResult imageResult = PlacesApi.photo(context,photo.photoReference).maxHeight(400).maxWidth(400).await();
-          allImages.add(imageResult);
-
+      if(addressOfBusiness.equalsIgnoreCase("undefined") && nameOfBusiness.equalsIgnoreCase("undefined")) {
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      }else if(nameOfBusiness.equalsIgnoreCase("undefined")){
+          returnMap.put("pictures", null);
+          returnMap.put("review", null);
+          returnMap.put("rating", null);
+          return ResponseEntity.ok(returnMap);
+      }
+      try{
+          returnMap = this.googleApi.getMoreBusinessInfo(nameOfBusiness,addressOfBusiness,400,400);
+          return ResponseEntity.ok(returnMap);
+      }catch(Exception e){
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
       }
 
-     List<String> rating =  new ArrayList<>();
-     rating.add(String.valueOf(placeDetails.rating));
-     List<String> reviews = new ArrayList<>();
-     for(PlaceDetails.Review review : placeDetails.reviews){
-         reviews.add(review.text);
-     }
-
-     List<String> pictures = new ArrayList<>();
-     for(ImageResult imgResult : allImages) {
-         pictures.add(Base64Utils.encodeToString(imgResult.imageData));
-     }
-
-
-       returnMap.put("rating",  rating);
-       returnMap.put("review", reviews);
-       returnMap.put("pictures", pictures);
-      return returnMap;
   }
 
     @LogREST
@@ -330,34 +291,4 @@ public class BusinessController extends AbstractController {
       return lt;
   }
 
-//  private Base64 getGooglePhotos(String photoReference, String maxHeight, String maxWidth){
-
-//      private RequestHandler requestHandler;
-//      RestTemplate restTemplate = new RestTemplate();
-//      HttpHeaders headers = new HttpHeaders();
-//      UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
-//              .queryParam("key", googleApiKey)
-//              .queryParam("photoreference",photoReference )
-//              .queryParam("maxheight", maxHeight)
-//              .queryParam("maxwidth",maxWidth);
-//
-//      HttpEntity<?> entity = new HttpEntity<>(headers);
-//
-//
-//      HttpEntity<String> response = restTemplate.exchange(
-//              builder.toUriString(),
-//              HttpMethod.GET,
-//              entity,
-//              String.class);
-//
-//      try {
-//          InputStream in =
-//          if (in == null)
-//              throw new GooglePlacesException("Could not attain input stream at " + uri);
-//          debug("Successfully attained InputStream at " + uri);
-//          return in;
-//      } catch (Exception e) {
-//          throw new GooglePlacesException(e);
-//      }
-  //}
 }

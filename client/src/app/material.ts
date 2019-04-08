@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-
+import {ScrollingModule} from '@angular/cdk/scrolling';
 import {
     MatButtonModule,
     MatCardModule,
@@ -55,6 +55,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatPaginatorModule,
     ],
     exports: [
+        ScrollingModule,    
         MatRadioModule,
         MatExpansionModule,
         MatButtonModule,

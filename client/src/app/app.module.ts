@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { StarRatingModule } from 'angular-star-rating'
 import { LightboxModule } from 'ngx-lightbox';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -164,8 +164,8 @@ import {SearchInputComponent} from "./components/search-box/search-box.component
         ReactiveFormsModule,
         AgmCoreModule.forRoot({
             apiKey: "AIzaSyBstSo5jhmmQQ5u2ZjEXOLbMIzXJIdV_48"
-          })
-
+          }),
+        StarRatingModule.forRoot()
     ],
     entryComponents: [
         ErrorDialogComponent,

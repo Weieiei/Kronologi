@@ -1,5 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BusinessService} from '../../services/business/business.service';
 import { GeocodingApiService } from 'src/app/services/google/geocode.service';
 import { BusinessDTO } from '../../interfaces/business/business-dto'
@@ -16,25 +16,38 @@ import { ImageResizeService } from 'src/app/services/image-resize/image.resize.s
   styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit {
+  items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
+  dayArray : string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday"];
+  expansionPanel : boolean = true;
   dataIsAllLoaded = false;
-  public albums: Array<IAlbum> = [];
   businessId : number;
   businessObj : BusinessDTO;
+  rating : number;
+  private httpSub : Subscription;
   private _subscription: Subscription;
   public lng;
   public lat;  
+  public albums: Array<IAlbum> = [];
+  public reviews : string[] = [];
 
-  constructor( private imageResizeService :ImageResizeService,private spinner: NgxSpinnerService,private _lightbox: Lightbox, private _lightboxEvent: LightboxEvent, private _lighboxConfig: LightboxConfig ,private sanitizer: DomSanitizer, public route: ActivatedRoute, public businessService : BusinessService, private geoCodeService :  GeocodingApiService) {
-    // set default config
+  constructor( private imageResizeService :ImageResizeService,private spinner: NgxSpinnerService,private _lightbox: Lightbox, private _lightboxEvent: LightboxEvent, private _lighboxConfig: LightboxConfig , public route: ActivatedRoute, 
+                public businessService : BusinessService, private geoCodeService :  GeocodingApiService,private router: Router) {
+   
+  }
+
+  ngOnInit() {
     this.spinner.show();
     this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"))
-    this.businessService.getBusinessById(this.businessId).subscribe(
+    this.httpSub = this.businessService.getBusinessById(this.businessId).subscribe(
       res=>{
           this.businessObj = res;
 
+          if(this.businessObj.business_hours !== undefined){
+            this.expansionPanel  = false;
+          }
           this.businessService.getMoreInfoBusiness("3040 Rue Sherbrooke Ouest, Montréal, QC H3Z 1A4, Canada", "Dawson College").subscribe(
             async res=>{
-              console.log(res)
+              
               for(const pictures_string of res["pictures"]){
                 const src : any =  'data:image/jpeg;base64,'+ pictures_string; 
                 const thumbnail = await this.resizedataURL(src,150,150); 
@@ -46,19 +59,18 @@ export class DetailsComponent implements OnInit {
                };
                this.albums.push(album);
               }
-              
+
+              this.rating = res["rating"]
+              this.reviews= res["review"]
               this.updateLatLngFromAddress("3040 Rue Sherbrooke Ouest, Montréal, QC H3Z 1A4, Canada")
-              this.spinner.hide();
+              
               this.dataIsAllLoaded = true;
+              this.spinner.hide();
             }
           )
       }
     )
     this._lighboxConfig.fadeDuration = 1;
-  }
-
-  ngOnInit() {
-    
   }  
 
 
@@ -124,6 +136,26 @@ export class DetailsComponent implements OnInit {
         img.src = datas;
 
     })
-}
+  }
+  dateToday() : string{
+    const today : string = this.dayArray[new Date().getDay()];
+    
+    if(this.businessObj.business_hours === undefined){
+      return "no hours found for this  business"
+    }
+    for(const businessHours of this.businessObj.business_hours){
+      if(businessHours.day === today){
+        return "Today: " + businessHours.openHour + " - " + businessHours.closeHour;  
+      }
+    }
+
+    return "no hours found for today"
+  }
+
+  stopDescription(): void{
+    this.httpSub.unsubscribe();
+    this.spinner.hide();
+    this.router.navigate(['home']);
+  }
 }
 

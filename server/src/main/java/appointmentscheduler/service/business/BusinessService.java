@@ -41,6 +41,10 @@ public class BusinessService {
     }
 
 
+    public Business findByName(String name){
+        return businessRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with name %d not found",name)));
+    }
     public void addAll(List<BusinessHours> businessHours){
         businessHoursRepository.saveAll(businessHours);
     }

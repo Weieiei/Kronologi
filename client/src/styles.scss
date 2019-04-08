@@ -8,7 +8,8 @@
 @import "primary-theme.scss";
 @import "dark-theme.scss";
 @import "light-theme.scss";
-
+@import '~css-star-rating/scss/star-rating';
+  
 
 html, body {
     height: 100%;
