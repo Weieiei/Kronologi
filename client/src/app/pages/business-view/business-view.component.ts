@@ -26,16 +26,6 @@ export class BusinessViewComponent implements OnInit {
       })
   }
 
-  getAllAppointmentsForUserForBusiness(businessId: number){
-    //TODO CALL GET ALL APPOINTMENTS BY BUSINESS ID GOTTEN FROM CARD -- HAVE TO WAIT FOR GET ALL BUSINESS ROUTE FROM BACKEND
-    //TEMP FIX TO FIX LAYOUT
-    this.router.navigate(['home']);
-  }
-
-  openModalForService(businessId:number){
-    //TODO GET BUSINESS SERVICES FROM CARD AND CALL THIS FUNCTION -- HAVE TO WAIT FOR GET ALL BUSINESS ROUTE FROM BACKEND
-
-    }
 
     getAllBusiness(): void{
         this.businessService.getAllBusinesses().subscribe(
