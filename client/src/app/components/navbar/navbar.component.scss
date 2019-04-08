@@ -35,13 +35,22 @@
     border-bottom: 1px solid #495CFC;
   }
   .menu-link {
+    color:black;
     outline: none;
     font-size: 1rem;
     padding: 1rem 0;
     margin: 0.5rem 0;
     cursor: pointer;
-}
+  }
 
+  .menu-link-dark {
+    color:white;
+    outline: none;
+    font-size: 1rem;
+    padding: 1rem 0;
+    margin: 0.5rem 0;
+    cursor: pointer;
+  }
   .side-menu__container {
     position: fixed;
     left: 0;
@@ -108,7 +117,7 @@
 }
   
   .menu-header {
-    background: linear-gradient(to right, #00FF9B, #5f84fb);
+    background: linear-gradient(to right, rgb(115, 142, 150), rgb(133, 146, 146));
     display: grid;
     grid-template-rows: 1fr 4fr;
     grid-template-columns: 1fr 4fr;
@@ -187,6 +196,7 @@
   
   /*Header*/
   .main__header {
+    color:black;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 0.25fr;
