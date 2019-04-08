@@ -18,11 +18,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
 import { UrlInterceptor } from './interceptor';
-import { ReserveComponent } from './pages/dashboard/reserve/reserve.component';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
-import { SchedulerComponent } from './pages/dashboard/reserve/scheduler/scheduler.component';
-import { CalendarComponent } from './pages/dashboard/reserve/scheduler/calendar/calendar.component';
-import { MonthPickerComponent } from './pages/dashboard/reserve/scheduler/month-picker/month-picker.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
 import { ShiftPickerComponent } from './components/shift-picker/shift-picker.component';
@@ -42,9 +38,6 @@ import { AccountSettingsComponent } from './pages/settings/account-settings/acco
 import { ReminderSettingsComponent } from './pages/settings/reminder-settings/reminder-settings.component';
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { CancelDialogComponent } from './components/cancel-dialog/cancel-dialog.component';
-import { EmployeePickerComponent } from './pages/dashboard/reserve/employee-picker/employee-picker.component';
-import { ServiceSelectionComponent } from './pages/dashboard/reserve/service-selection/service-selection.component';
-import { TimePickerComponent } from './pages/dashboard/reserve/time-picker/time-picker.component';
 import { NotesAndReserveComponent } from './pages/dashboard/reserve/notes-and-reserve/notes-and-reserve.component';
 import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
@@ -85,11 +78,7 @@ import {SearchInputComponent} from "./components/search-box/search-box.component
         RegisterComponent,
         HomeComponent,
         LoginComponent,
-        ReserveComponent,
         AppointmentsComponent,
-        SchedulerComponent,
-        CalendarComponent,
-        MonthPickerComponent,
         CustomStepperComponent,
         ShiftPickerComponent,
         TimePickerDialogComponent,
@@ -115,9 +104,6 @@ import {SearchInputComponent} from "./components/search-box/search-box.component
         AdminUsersComponent,
         AssignServicesDialogComponent,
         ChangeClientToEmployeeDialogComponent,
-        EmployeePickerComponent,
-        ServiceSelectionComponent,
-        TimePickerComponent,
         NotesAndReserveComponent,
         ReviewComponent,
         AddShiftFormComponent,
