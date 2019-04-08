@@ -191,7 +191,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr 0.25fr;
     grid-template-rows: 1fr;
-    box-shadow: 0 0 2rem rgba(0, 0, 255, 0.1);
+    box-shadow: .5rem  .5rem 1rem rgba(83, 83, 83, 0.486);
+    background-color:rgb(115, 142, 150);
     height: 4rem;
     margin: 0;
     align-items: center;

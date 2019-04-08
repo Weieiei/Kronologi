@@ -1,22 +1,6 @@
-<section class="cards-ui card-image"  [ngClass]="{'weather__card-dark': darkModeActive}" >
-  <!-- <div class="body__container" class = 'image-cropper'>
-    <img [src] = "url" style="border-radius:1.5rem"/>
-  </div> -->
-    <!-- <span class="city-name__text">{{ businessName }}</span>
-  
-    <div>
-        {{ businessDescription }}
-  </div>
-  <div>
-    
-    <button mat-raised-button (click)="moreInfo()">
-        <mat-icon>info</mat-icon>
-        More information: 
-    </button>
-  </div> -->
-
+<section class="cards-ui card-image"  [ngClass]="{'cards-ui-dark': darkModeActive }" >
   <div class="main">
-        <div class="quarter quarter3" (click)="button1Function()">
+        <div class="quarter quarter3"  [ngClass]="{'quarter3-dark': darkModeActive }" (click)="button1Function()">
                           <style type='text/css'>
                                  #warped {position: relative; display: block; width:588px; height:471px;}
             
@@ -102,7 +86,7 @@
                                  <span class='w0'>B</span><span class='w1'>o</span><span class='w2'>o</span><span class='w3'>k</span><span class='w4'>i</span><span class='w5'>n</span><span class='w6'>g</span><span class='w7'>s</span>
                           </div>
         </div>
-        <div class="quarter quarter4">
+        <div class="quarter quarter4" [ngClass]="{'quarter4-dark': darkModeActive }">
                           <style type='text/css'>
                                  #warped_book {position: relative; display: block; width:588px; height:471px;}
             
@@ -188,7 +172,7 @@
                                  <span class='w0' style="padding-top:1.1rem">B</span><span class='w1' style="padding-top:.9rem">o</span><span class='w2' style="padding-top:.8rem">o</span><span class='w3' style="padding-top:.65rem">k</span><span class='w4'> </span><span class='w5' style="padding-top:.60rem">N</span><span class='w6' style="padding-top:.5rem">o</span><span class='w7' style="padding-top:.35rem">w</span><span class='w8'>!</span>
                           </div>
         </div>
-        <div class="bottom">
+        <div class="bottom" [ngClass]="{'bottom-dark': darkModeActive }">
           <h3 style="text-align:center; padding-top:.5rem">{{businessName}}</h3>
           <div style="text-align:center; padding-top:.5rem" >
               <button mat-raised-button (click)="moreInfo()">

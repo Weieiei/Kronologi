@@ -2,9 +2,9 @@
 
 <ngx-spinner bdColor = "rgba(109,109,109,0.7)"   size = "medium"   color = "#673ab7"
                type = "ball-scale-ripple-multiple" fullScreen = "false">
-    <p style="color: #673ab7">Hold on tight,  we're trying to save your info.</p>
+    <p style="color: #673ab7">Hold on, we're getting the info.</p>
     <div class="div-center-button">
-        <button mat-raised-button color="primary" (click)=stopDescription()>Stop Registering my business</button>
+        <button mat-raised-button color="primary" (click)=stopDescription()>I don't want the info, take me back.</button>
     </div>
 </ngx-spinner>
 <div  *ngIf="dataIsAllLoaded"  class="details-page__wrapper" [ngClass]="{'details-page__wrapper-dark': darkMode}">
