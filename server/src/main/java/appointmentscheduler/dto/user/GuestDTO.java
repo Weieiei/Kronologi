@@ -1,26 +1,17 @@
 package appointmentscheduler.dto.user;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
+
 public class GuestDTO {
 
     private String firstName;
     private String lastName;
-    private int phoneNumber;
+    private PhoneNumberDTO phoneNumber;
     private String email;
-
-    public GuestDTO() {
-    }
-
-    public GuestDTO(String name, String email, int phoneNumber) {
-        this.email = email;
-        this.firstName = name;
-
-        this.phoneNumber = phoneNumber;
-    }
 
     public String getFirstName() {
         return firstName;
     }
-
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -34,11 +25,11 @@ public class GuestDTO {
         this.lastName = lastName;
     }
 
-    public int getPhoneNumber(){
+    public PhoneNumberDTO getPhoneNumber(){
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(PhoneNumberDTO phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

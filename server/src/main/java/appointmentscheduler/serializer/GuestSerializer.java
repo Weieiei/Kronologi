@@ -24,6 +24,7 @@ public class GuestSerializer extends StdSerializer<User> {
         gen.writeStringField("firstName", guest.getFirstName());
         gen.writeObjectField("lastName", guest.getLastName());
         gen.writeObjectField("email", guest.getEmail());
+        gen.writeObjectField("phoneNumber", guest.getPhoneNumber());
         gen.writeObjectField("roles", guest.getRole());
 
         gen.writeEndObject();

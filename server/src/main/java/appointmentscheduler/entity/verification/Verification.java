@@ -2,6 +2,7 @@ package appointmentscheduler.entity.verification;
 
 import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.guest.Guest;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -34,6 +35,10 @@ public class Verification extends AuditableEntity {
 
     public Verification(User user) {
         this.user = user;
+    }
+
+    public Verification(Guest guest) {
+
     }
 
     public Verification(User user, Business business) {

@@ -1,5 +1,6 @@
 package appointmentscheduler.util;
 
+import appointmentscheduler.entity.guest.Guest;
 import appointmentscheduler.entity.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
@@ -48,6 +49,26 @@ public class JwtProvider implements Serializable {
                 .compact();
 
     }
+
+    public String generateGuestToken(Guest guest, Authentication authentication) {
+
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        return Jwts.builder()
+                .claim("sub", guest.getId())
+                .claim("roles", authorities)
+                .claim("firstName", guest.getFirstName())
+                .claim("lastName", guest.getLastName())
+                .claim("email", guest.getEmail())
+                .signWith(SignatureAlgorithm.HS256, getKey())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .compact();
+
+    }
+
 
     public String generateCalendarToken(User user, Authentication authentication) {
 

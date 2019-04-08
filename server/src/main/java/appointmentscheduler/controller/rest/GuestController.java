@@ -1,40 +1,40 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.dto.user.GuestDTO;
-import appointmentscheduler.dto.user.UserRegisterDTO;
-import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.email.EmailService;
-import appointmentscheduler.service.user.UserService;
+import appointmentscheduler.service.guest.GuestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 @RestController
 @RequestMapping("${rest.api.path}/guest")
 public class GuestController extends AbstractController{
 
-    private final UserService userService;
+    private final GuestService guestService;
     private final EmailService emailService;
 
     @Autowired
     private final AppointmentService appointmentService;
 
-    public GuestController(UserService userService, EmailService emailService, AppointmentService appointmentService){
-        this.userService = userService;
+    public GuestController(GuestService guestService, EmailService emailService, AppointmentService appointmentService){
+        this.guestService = guestService;
         this.emailService = emailService;
         this.appointmentService = appointmentService;
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<Map<String, Object>> addGuest (@RequestBody UserRegisterDTO userRegisterDTO){
-        Map<String, Object> tokenMap = userService.createGuest(userRegisterDTO);
+    public ResponseEntity<Map<String, Object>> addGuest (@RequestBody GuestDTO guestDTO) throws NoSuchAlgorithmException, MessagingException, IOException {
+        Map<String, Object> tokenMap = guestService.register(guestDTO);
         return ResponseEntity.ok(tokenMap);
     }
 
