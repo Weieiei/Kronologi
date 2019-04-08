@@ -12,16 +12,17 @@ import { AppointmentService } from 'src/app/services/appointment/appointment.ser
 export class CardsUiComponent implements OnInit {
   
   public url : String;
+  public useDefaultPicture : boolean = false;
   public businessDescription : String;
   public businessName : String;
-
+  public bkUrl :any = {};
   @Input() businessDTO: BusinessDTO;
   @Input() public buttonName1: String;
   @Input() public buttonName2: String;
   @Input() public image: String;
   @Output() public button1FunctionMapping : EventEmitter<any> = new EventEmitter<any>();
   @Output() public button2FunctionMapping : EventEmitter<any> = new EventEmitter<any>();
-
+  
 
   constructor(public themeService: ThemeService, private router: Router, private appointmentService  : AppointmentService) { 
   }
@@ -32,11 +33,12 @@ export class CardsUiComponent implements OnInit {
       })
       console.log(this.businessDTO);
       this.url = this.businessDTO.image;
-      if(!this.url){
-        this.url = "../../../assets/images/business.jpg"
+      if(!this.url || this.url === undefined){
+        this.url = "../../../assets/images/business.jpg";
       }
       this.businessName = this.businessDTO.name
       this.businessDescription = this.businessDTO.description;
+      this.bkUrl = this.getBkUrl();
   }
 
   button1Function(){
@@ -44,7 +46,7 @@ export class CardsUiComponent implements OnInit {
   }
 
   button2Function(){
-    ;
+    this.router.navigate(['/book/'+ this.businessDTO.id] , { state: { businessId: this.businessDTO.id}});
   }
 
   moreInfo(){
@@ -52,6 +54,17 @@ export class CardsUiComponent implements OnInit {
   }
   check(){
     console.log("hello");
+  }
+
+  getBkUrl() {
+    const styles = {
+
+    'background-image': 'url('+ this.url + ')',
+    'background-size': '100% 50%',
+     'background-repeat':'no-repeat',
+    };
+    console.log(styles);
+    return styles;
   }
 
 }

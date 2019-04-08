@@ -2,7 +2,7 @@
     <!--<div class="main-container__bg" [ngClass]="{'main-container__bg-dark': darkModeActive}"></div>-->
 
 
- <div fxFlex="row" fxLayoutAlign="center">
+ <div fxFlex="row" fxLayoutAlign="center" style="text-align: center">
     <div gdColumns="repeat(auto-fill, 344px)" gdGap="16px" gdAlignRows="space-evenly" fxFlex.gt-sm="90" fxFlex.lt-md="100" style="padding-top:2rem">
       <app-cards-ui *ngFor="let business of businesses" [businessDTO] = "business" class="cards-ui" [ngClass]="{'cards-ui-dark': darkModeActive}"  buttonName1="My Appointments" buttonName2="Book Appointment"
 
