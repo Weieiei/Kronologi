@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/dashboard/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
-import { ReserveComponent } from './pages/dashboard/reserve/reserve.component';
 import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth/auth.guard';
@@ -58,19 +57,11 @@ const routes: Routes = [
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
             // Reserving and modifying reservation
-            {
-                path: 'reserve', children: [
-                    { path: '', component: ReserveComponent, data: { edit: false }, canActivate: [ClientGuard] },
-                    { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
-                ]
-            },
-
             {path : 'details/:businessId', component: DetailsComponent},
             {path : 'syncCalendars', component: SyncCalendarsComponent, canActivate: [EmployeeGuard]},
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
-            { path: 'reserve', component: ReserveComponent, canActivate: [ClientGuard] },
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },

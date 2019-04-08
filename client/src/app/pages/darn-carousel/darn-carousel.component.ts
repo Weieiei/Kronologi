@@ -4,12 +4,9 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { SwiperModule } from 'angular2-useful-swiper';
 import { NgModule } from '@angular/core';
-import * as $ from 'jquery';
 import {Observable, Observer} from "rxjs";
 import {CancelDialogComponent} from "../../components/cancel-dialog/cancel-dialog.component";
-import {SchedulerComponent} from "../dashboard/reserve/scheduler/scheduler.component";
 import {ReasonDialogComponent} from "../../components/reason-dialog/reason-dialog.component";
-import {MonthPickerComponent} from "../dashboard/reserve/scheduler/month-picker/month-picker.component";
 
 
 export interface ExampleTab {
@@ -42,14 +39,7 @@ export class DarnCarouselComponent {
 
     }
     openReasonDialog(): void {
-        let dialogRef = this.dialog.open(SchedulerComponent, {
-            width: '100vh',
-            height:  '100vh',
-            maxWidth: '100vh',
-            maxHeight: '100vh',
-            hasBackdrop: false
-        });
-    }
+      }
 
 
     open123ReasonDialog(){
@@ -63,7 +53,6 @@ export class DarnCarouselComponent {
         dialogConfig.data = {
         };
 
-        this.dialog.open(SchedulerComponent, dialogConfig);
     }
 
     ngAfterViewInit() {
