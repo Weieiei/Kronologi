@@ -9,7 +9,7 @@ import {TimeDTO} from "../../../../interfaces/date-and-time/TimeDTO";
 import * as moment from 'moment'
 import {EmployeeTimes} from "../../../../interfaces/employee/employee-times";
 import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appointment-dto';
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-book',
@@ -29,10 +29,13 @@ export class BookComponent implements OnInit {
     daysMap: Map <number, Array<EmployeeFreeTime>>;
     employeeId: number;
     appointment: BookAppointmentDTO;
-    constructor(private router: Router, private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
+    businessId: number;
+    constructor(public route: ActivatedRoute, private router: Router, private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
     }
 
     ngOnInit() {
+        this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"))
+
         this.firstFormGroup = this._formBuilder.group({
             firstCtrl: ''
         });
@@ -105,7 +108,6 @@ export class BookComponent implements OnInit {
                                         arr.push(dayOfMonth);
 
                                         this.monthsMap.set(parseInt(each['date']['monthValue']), arr);
-                                        console.log('abc');
                                     }
                                     //if the month key is already in the map, add the day in the amp
                                     else if (this.monthsMap.has(each['date']['monthValue'])) {
@@ -113,7 +115,6 @@ export class BookComponent implements OnInit {
                                         dayOfMonth = parseInt(each['date']['dayOfMonth']);
                                         arrayOfDays.push(dayOfMonth);
                                         this.monthsMap.set(parseInt(each['date']['monthValue']), arrayOfDays);
-                                        console.log('def');
                                     }
                                     //daysMap
                                     if (!this.daysMap.has(each['date']['dayOfYear'])) {
@@ -131,7 +132,6 @@ export class BookComponent implements OnInit {
                                         arr.push(empFreeTime);
 
                                         this.daysMap.set(parseInt(each['date']['dayOfYear']), arr);
-                                        console.log('eee');
 
                                     }
                                     //if the DAY key is already in the map, add the day in the amp
@@ -146,7 +146,7 @@ export class BookComponent implements OnInit {
                                         };
                                         arrayOfEmployeeFreeTimes.push(empFreeTime);
                                         this.daysMap.set(parseInt(each['date']['dayOfYear']), arrayOfEmployeeFreeTimes);
-                                        console.log('fff');
+
                                     }
                                 }
                             }

@@ -70,7 +70,7 @@ const routes: Routes = [
             { path: 'admin/services/create', component: CreateServiceComponent },
             { path: 'admin/users', component: AdminUsersComponent },
             { path: 'darn-carousel', component: DarnCarouselComponent },
-            { path: 'book/:businessid', component: BookComponent },
+            { path: 'book/:businessId', component: BookComponent },
 
             // User settings
             {

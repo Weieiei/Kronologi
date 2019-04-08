@@ -13,8 +13,8 @@ export class ServiceService {
     constructor(private http: HttpClient) {
     }
 
-    public getServices(): Observable<ServiceDTO[]> {
-        return this.http.get<ServiceDTO[]>(['api', 'business','services', 1].join('/'));
+    public getServices(businessId:number): Observable<ServiceDTO[]> {
+        return this.http.get<ServiceDTO[]>(['api', 'business','services', businessId].join('/'));
     }
 
     public getPlainServices(): Observable<Service[]> {

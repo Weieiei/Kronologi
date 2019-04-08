@@ -234,7 +234,6 @@ export class AccountSettingsComponent implements OnInit {
       }
 
       updateProfilePicture(): void {
-          console.log(this.selectedFile);
         if (this.selectedFile != null) {
             this.userService.uploadUserPicture(this.selectedFile).subscribe(
                 res => {

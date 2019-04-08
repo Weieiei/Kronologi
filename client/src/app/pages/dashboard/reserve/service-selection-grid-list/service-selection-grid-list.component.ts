@@ -15,6 +15,7 @@ export class ServiceSelectionGridListComponent implements OnInit, OnDestroy{
     serviceId: number;
     serviceSubscription: Subscription;
     @Input() serviceEvent: Observable<number>;
+    @Input() businessId : number;
     @Output() serviceChange = new EventEmitter();
 
     itemsPerPageOptions: Array<number> = [4, 8, 16, 32, 64];
@@ -44,14 +45,12 @@ export class ServiceSelectionGridListComponent implements OnInit, OnDestroy{
     selectService(service: ServiceDTO) {
         this.serviceChange.emit(service);
         this.serviceId = service.id;
-        console.log(this.serviceId);
     }
 
     getServices() {
-        this.serviceService.getServices().subscribe(res => {
+        this.serviceService.getServices(this.businessId).subscribe(res => {
             this.services = res;
             this.componentState.totalItems = this.services.length;
-            console.log(this.services.length);
             this.services.sort((a, b) => {
                 if (a.name.toLowerCase() < b.name.toLowerCase()) {
                     return -1;

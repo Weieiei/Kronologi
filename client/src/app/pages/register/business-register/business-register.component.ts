@@ -157,10 +157,6 @@ export class BusinessRegisterComponent implements OnInit {
     checkPasswords(inputFormGroup: FormGroup) {
         const password = inputFormGroup.controls.password.value;
         const confirmPassword = inputFormGroup.controls.confirmPassword.value;
-        console.log('Password is ' + password);
-        console.log('Repeat is ' + confirmPassword);
-        console.log(inputFormGroup.errors);
-
         return password === confirmPassword ? null : { mismatched: true };
     }
     onUpload()  {
@@ -169,7 +165,7 @@ export class BusinessRegisterComponent implements OnInit {
         this.http.post('https://url', fd )
                 .subscribe(
                     response => {
-                    console.log(response);
+                        console.log(response);
                 });
     }
 
@@ -187,9 +183,7 @@ export class BusinessRegisterComponent implements OnInit {
         this.animationState = false;
         const businessHoursDTO: BusinessHoursDTO[] = [];
         if (!this.isEmptyObject(this.businessHourMap)) {
-            console.log('hello');
             this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) => {
-                console.log(day);
                 const businessHourDTOTemp: BusinessHoursDTO = {
                     day: day,
                     openHour : openAndClose.start,
@@ -200,8 +194,6 @@ export class BusinessRegisterComponent implements OnInit {
         }
 
         const finalizedAddress: string = this.address + ',' + this.city + ',' + this.province + ' ' + this.postalCode;
-        console.log(finalizedAddress);
-        console.log(businessHoursDTO);
         const payload_business: BusinessRegisterDTO = {
             name: this.businessName,
             domain: this.businessDomain,

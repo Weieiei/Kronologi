@@ -33,7 +33,6 @@ export class DarnCarouselComponent {
 
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
         this.events.push(`${type}: ${event.value}`);
-        console.log(event);
     }
     constructor(private dialog: MatDialog){
 

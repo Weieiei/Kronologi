@@ -31,7 +31,6 @@ export class CardsUiComponent implements OnInit {
       this.themeService.darkModeState.subscribe( value => {
           this.darkModeActive = value;
       })
-      console.log(this.businessDTO);
       this.url = this.businessDTO.image;
       if(!this.url || this.url === undefined){
         this.url = "../../../assets/images/business.jpg";
@@ -52,9 +51,6 @@ export class CardsUiComponent implements OnInit {
   moreInfo(){
     this.router.navigate(['/details/' + this.businessDTO.id] , { state: { businessId: this.businessDTO.id}});
   }
-  check(){
-    console.log("hello");
-  }
 
   getBkUrl() {
     const styles = {
@@ -63,7 +59,6 @@ export class CardsUiComponent implements OnInit {
     'background-size': '100% 50%',
      'background-repeat':'no-repeat',
     };
-    console.log(styles);
     return styles;
   }
 

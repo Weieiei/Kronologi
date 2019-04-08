@@ -77,20 +77,16 @@ export class FindBusinessDialogComponent implements OnInit {
       this.animationState = false;
       this.businessService.findBusinessThroughGoogle(businessName).subscribe(
         res => {
-            console.log(res)
             for (const business of res){
               this.updateLatLngFromAddress(business);
               if (business.business_hours.length < 7){
                 for (const [index, value] of business.business_hours.entries()){
-                  console.log(index);
-                  console.log(value);
                   if (business.business_hours[index].day !== this.daysOfWeek[index]){
                     let businessHourTemp: BusinessHoursDTO = {
                         day : this.daysOfWeek[index],
                         openHour: 'Close',
                         closeHour: 'Close'
                     }
-                    console.log(businessHourTemp);
                     business.business_hours.splice(index, 0, businessHourTemp);
                   }
                 }

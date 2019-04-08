@@ -32,7 +32,6 @@ export class ShiftComponent implements OnInit {
     showEditShiftform = false;
 
     static sortShifts(shifts: AdminEmployeeShiftDTO[]): void {
-        console.log(shifts.length);
         shifts.sort((a, b) => {
             if (a.date < b.date) {
                 return -1;
@@ -115,7 +114,6 @@ export class ShiftComponent implements OnInit {
     }
 
     addRecurringShift(newShifts: Array<NewShiftDTO>) {
-        console.log(newShifts);
         this.adminService.addShiftList(this.employeeId, newShifts).subscribe(
             res => {
                 this.snackBar.openSnackBarSuccess('Successfully added recurrent shift.');
