@@ -3,11 +3,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BusinessService} from '../../services/business/business.service';
 import { GeocodingApiService } from 'src/app/services/google/geocode.service';
 import { BusinessDTO } from '../../interfaces/business/business-dto'
-import { DomSanitizer} from '@angular/platform-browser';
 import { Lightbox, LightboxConfig, LightboxEvent, LIGHTBOX_EVENT, IEvent, IAlbum } from 'ngx-lightbox';
 import { Subscription } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
 import { ImageResizeService } from 'src/app/services/image-resize/image.resize.service';
 
 @Component({
@@ -45,7 +43,7 @@ export class DetailsComponent implements OnInit {
           if(this.businessObj.business_hours !== undefined){
             this.expansionPanel  = false;
           }
-          this.businessService.getMoreInfoBusiness("3040 Rue Sherbrooke Ouest, Montréal, QC H3Z 1A4, Canada", "Dawson College").subscribe(
+          this.businessService.getMoreInfoBusiness(this.businessObj.formattedAddress, this.businessObj.name).subscribe(
             async res=>{
               
               for(const pictures_string of res["pictures"]){
@@ -62,10 +60,15 @@ export class DetailsComponent implements OnInit {
 
               this.rating = res["rating"]
               this.reviews= res["review"]
-              this.updateLatLngFromAddress("3040 Rue Sherbrooke Ouest, Montréal, QC H3Z 1A4, Canada")
+              this.updateLatLngFromAddress(res["formatted_address"])
               
               this.dataIsAllLoaded = true;
               this.spinner.hide();
+            },
+            err => {
+              console.log("no business found with this name")
+              this.lat=0.00000;
+              this.lng=0.00000;
             }
           )
       }
@@ -155,7 +158,7 @@ export class DetailsComponent implements OnInit {
   stopDescription(): void{
     this.httpSub.unsubscribe();
     this.spinner.hide();
-    this.router.navigate(['home']);
+    this.router.navigate(['business']);
   }
 }
 

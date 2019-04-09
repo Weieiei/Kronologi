@@ -13,34 +13,50 @@ services:
       - "80:80"
 
   web-server:
-    depends_on:
-      - db
+  #   depends_on:
+  #     - db
     build: ./server
     image: appointment-scheduler-server
     container_name: appointment-scheduler-server
     environment:
-      # can also be 'db'
-      # overrides the DB_HOST variable in .env
-      DB_HOST: postgres
+      EMAILSERVICE_ID: kronologi-appointments@outlook.com
+      EMAILSERVICE_PASSWORD: _S7)CqNVJP}E(sE6
+      TWILIO_AUTH_TOKEN: 84b8023cffb22f0a72c8cf2bbfe73459
+      TWILIO_FROM_NUMBER: +14387951801
+      TWILIO_ACCOUNT_SID: ACb13e39c6d0fc16a2900e5cf0e4a5a538
+      GOOGLE_CLIENT_CLIENT-ID: 21157635342-a0i8f8bbbebgj7t7insbokrp85povskk.apps.googleusercontent.com
+      GOOGLE_CLIENT_CLIENT-SECRET: yb0UOMxCJTDHh8YyjMSDTARY
+      GOOGLE_CLIENT_ACCESS-TOKEN-URI: https://accounts.google.com/o/oauth2/auth?access_type=offline&prompt=consent
+      GOOGLE_CLIENT_CLIENT-AUTHENTICATION-SCHEME: query
+      GOOGLE_CLIENT_SCOPE: https://www.googleapis.com/auth/calendar 
+      GOOGLE_RESOURCE_USER-INFO-URI: https://www.googleapis.com/oauth2/v2/userinfo
+      GOOGLE_RESOURCE_PREFER-TOKEN-INFO: 'true'
+      GOOGLE_CLIENT_REDIRECTURI: http://localhost:3000/external/google/login/calendarCallback
+      GOOGLE_KEY: AIzaSyC8dJm42p5ASWP_9_w-_1kkrV9PTj2L1rA
+      SPRING_SERVLET_MULTIPART_ENABLED: 'true'
+      SPRING_SERVLET_MULTIPART_FILE-SIZE-THRESHOLD: 2kb
+      SPRING_SERVLET_MULTIPART_MAX-FILE-SIZE: 200MB
+      SPRING_SERVLET_MULTIPART_MAX-REQUEST-SIZE: 215MB
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: INFO,DEBUG
+      SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_LOB_NON_CONTEXTUAL_CREATION: 'true'
+      SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_BATCH_SIZE: 100
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_DATASOURCE_URL: jdbc:postgresql://scheduler.cqbq6kge68z6.us-east-2.rds.amazonaws.com:5432/scheduler?user=scheduler&password=scheduler
     ports:
       - "3000:3000"
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "tcp://localhost:5000"
 
-  db:
-    image: postgres:11
-    container_name: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_DB: scheduler
-      POSTGRES_USER: scheduler
-      POSTGRES_PASSWORD: scheduler
-    volumes:
-      - "pgdata:/var/lib/postgresql/data"
+#   db:
+#     image: postgres:11
+#     container_name: postgres
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       POSTGRES_DB: scheduler
+#       POSTGRES_USER: scheduler
+#       POSTGRES_PASSWORD: scheduler
+#     volumes:
+#       - "pgdata:/var/lib/postgresql/data"
 
-volumes:
-  pgdata:
-    name: pgdata
+# volumes:
+#   pgdata:
+#     name: pgdata

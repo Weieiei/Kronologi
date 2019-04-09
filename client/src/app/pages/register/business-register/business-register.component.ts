@@ -7,7 +7,7 @@ import { BusinessUserRegisterDTO } from '../../../interfaces/user/business-user-
 import { BusinessRegisterDTO } from '../../../interfaces/business/business-register-dto';
 import { BusinessDTO } from '../../../interfaces/business/business-dto';
 import { UserService } from '../../../services/user/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
@@ -319,6 +319,10 @@ export class BusinessRegisterComponent implements OnInit {
         this.spinner.hide();
     }
 
+    get newServiceForms() {
+        return this.serviceInfoForm.get('new_services') as FormArray;
+    
+    }
     addService() {
 
         const newService = this._formBuilder.group({
@@ -328,8 +332,8 @@ export class BusinessRegisterComponent implements OnInit {
         this.newServiceForms.push(newService);
     }
     deleteService(i) {
-        this.newServiceForms.removeAt(i);
-      }
+    this.newServiceForms.removeAt(i);
+  }
 }
 
 /*

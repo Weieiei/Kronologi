@@ -74,6 +74,7 @@ public class GoogleApi {
         finalMap.put("pictures", foundImages);
         finalMap.put("review", reviews);
         finalMap.put("rating", Collections.singletonList(String.valueOf(detailsOfFound.rating)));
+        finalMap.put("formatted_address", Collections.singletonList(detailsOfFound.formattedAddress));
 
         return finalMap;
     }
