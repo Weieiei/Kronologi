@@ -3,9 +3,9 @@
         <img src="assets/images/kronologi-logo-1.png" width="128"/>
         <span class="title">Register a business account</span>
 
-<mat-horizontal-stepper [linear]="isLinear" #stepper class = "stepper">
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
+<mat-horizontal-stepper linear #stepper class = "stepper">
+  <mat-step [stepControl]="personalInfoForm">
+    <form [formGroup]="personalInfoForm">
     <ng-template matStepLabel>Personal Information</ng-template>
                 <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                 <mat-form-field appearance="outline" fxFlex>
@@ -97,9 +97,9 @@
     </form>
 
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
+  <mat-step [stepControl]="businessInfoForm">
   <ng-template matStepLabel>Business Information</ng-template>
-    <form [formGroup]="secondFormGroup">
+    <form [formGroup]="businessInfoForm">
 
       <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                     <p>Select a domain</p>
@@ -253,7 +253,7 @@
                                 Selected Business Logo:
                         </div>
                         <div class="file-selector-div">
-                            <td-file-upload #singleFileUpload [(ngModel)]="files" (select)="selectEvent($event)"
+                            <td-file-upload #singleFileUpload (select)="selectEvent($event)"
                                             (upload)="uploadEvent($event)" (cancel)="cancelEvent()"
                                             [disabled]="disabled" required accept=".jpeg,.jpg,.png,.svg">
                                 <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
@@ -393,7 +393,7 @@
 
                 <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Add the service duration(in minutes)</mat-label>
-                            <input matInput [(ngModel)]="serviceDuration" [ngModelOptions]="{standalone: true}"  type="text" name="serviceDuration" pattern=".{1,}" required appAutofocus>
+                            <input matInput [(ngModel)]="service_duration" [ngModelOptions]="{standalone: true}"  type="text" name="service_duration" pattern=".{1,}" required appAutofocus>
                         </mat-form-field>
 
             </div>
@@ -430,7 +430,7 @@
 
             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
             <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
-            <button mat-raised-button color="primary" type="submit" (click)="businessRegister()">Register</button>
+            <button mat-raised-button color="primary" type="submit" (click)="business_register()">Register</button>
         </div>
 
         <div>

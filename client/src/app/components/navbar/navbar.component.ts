@@ -33,8 +33,8 @@ export class NavbarComponent implements OnInit {
     isImageLoading: any;
     constructor(
         private sanitizer: DomSanitizer,
-        private userService: UserService,
-        private authService: AuthService,
+        public userService: UserService,
+        public authService: AuthService,
         private router: Router,
         private googleAnalytics: GoogleAnalyticsService,
         public themeService: ThemeService,

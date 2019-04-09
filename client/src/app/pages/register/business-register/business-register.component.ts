@@ -318,6 +318,18 @@ export class BusinessRegisterComponent implements OnInit {
         this.animationState = true;
         this.spinner.hide();
     }
+
+    addService() {
+
+        const newService = this._formBuilder.group({
+          newServiceName: [],
+          newServiceDuration: [],
+        });
+        this.newServiceForms.push(newService);
+    }
+    deleteService(i) {
+        this.newServiceForms.removeAt(i);
+      }
 }
 
 /*
