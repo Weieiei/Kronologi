@@ -4,13 +4,13 @@ jdk: oraclejdk8
 services:
   - postgresql
 
-# before_script:
-#   - psql -c "CREATE DATABASE scheduler;" -U postgres
-#   - psql -c "CREATE USER scheduler WITH PASSWORD 'scheduler';" -U postgres
+before_script:
+  - psql -c "CREATE DATABASE scheduler;" -U postgres
+  - psql -c "CREATE USER scheduler WITH PASSWORD 'scheduler';" -U postgres
 
 script:
   - cd server
-  - cp src/main/resources/secret.example.properties src/main/resources/secret.properties
+#  - cp src/main/resources/secret.example.properties src/main/resources/secret.properties
   - mvn verify
 
 notifications:
