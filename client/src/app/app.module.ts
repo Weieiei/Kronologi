@@ -69,6 +69,7 @@ import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/ser
 import {BookComponent} from "./pages/dashboard/reserve/book/book.component";
 import {PickDayComponent} from "./pages/dashboard/reserve/pick-day/pick-day.component";
 import {SearchInputComponent} from "./components/search-box/search-box.component";
+import {MessageDialogComponent} from "./components/msg-dialog/msg-dialog.component";
 
 
 @NgModule({
@@ -128,7 +129,9 @@ import {SearchInputComponent} from "./components/search-box/search-box.component
         ErrorDialogComponent,
         ErrorDialogComponent,
         DetailsComponent,
-        GoogleMapsComponent
+        GoogleMapsComponent,
+        MessageDialogComponent,
+
     ],
     imports: [
         LightboxModule,
@@ -154,6 +157,7 @@ import {SearchInputComponent} from "./components/search-box/search-box.component
         StarRatingModule.forRoot()
     ],
     entryComponents: [
+        MessageDialogComponent,
         ErrorDialogComponent,
         FindBusinessDialogComponent,
         TimePickerDialogComponent,
