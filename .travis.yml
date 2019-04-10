@@ -10,7 +10,7 @@ before_script:
 
 script:
   - cd server
-#  - cp src/main/resources/secret.example.properties src/main/resources/secret.properties
+  - cp src/main/resources/secret.example.properties src/main/resources/secret.properties
   - mvn verify
 
 notifications:
