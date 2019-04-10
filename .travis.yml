@@ -4,9 +4,9 @@ jdk: oraclejdk8
 services:
   - postgresql
 
-before_script:
-  - psql -c "CREATE DATABASE scheduler;" -U postgres
-  - psql -c "CREATE USER scheduler WITH PASSWORD 'scheduler';" -U postgres
+# before_script:
+#   - psql -c "CREATE DATABASE scheduler;" -U postgres
+#   - psql -c "CREATE USER scheduler WITH PASSWORD 'scheduler';" -U postgres
 
 script:
   - cd server
