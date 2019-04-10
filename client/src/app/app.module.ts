@@ -56,7 +56,6 @@ import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 import { FindBusinessDialogComponent } from './components/find-business-dialog/find-business-dialog.component';
 import { AgmCoreModule } from '@agm/core';
-import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { DetailsComponent } from './pages/details/details.component';
 import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
 import { AddRecurringShiftFormComponent } from './pages/dashboard/home/shift/add-recurring-shift-form/add-recurring-shift-form.component';
@@ -126,8 +125,6 @@ import {MessageDialogComponent} from "./components/msg-dialog/msg-dialog.compone
 	    SearchInputComponent,
         SyncCalendarsComponent,
         FindBusinessDialogComponent,
-        ErrorDialogComponent,
-        ErrorDialogComponent,
         DetailsComponent,
         GoogleMapsComponent,
         MessageDialogComponent,
@@ -158,7 +155,6 @@ import {MessageDialogComponent} from "./components/msg-dialog/msg-dialog.compone
     ],
     entryComponents: [
         MessageDialogComponent,
-        ErrorDialogComponent,
         FindBusinessDialogComponent,
         TimePickerDialogComponent,
         CancelDialogComponent,
