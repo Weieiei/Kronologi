@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { Observable, Subscription } from 'rxjs';
 import { ServiceService } from '../../../../services/service/service.service';
+import {AppointmentService} from "../../../../services/appointment/appointment.service";
 
 @Component({
     selector: 'app-service-selection-grid-list',
