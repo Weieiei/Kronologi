@@ -32,7 +32,7 @@ public class UserFile {
     private byte[] data;
 
     public UserFile() {
-        this.fileOrigin = FileOrigin.MISC;
+        this.fileOrigin = FileOrigin.USER;
     }
 
     public UserFile(String fileName, String fileType, byte[] data, User user) {
@@ -40,7 +40,7 @@ public class UserFile {
         this.fileType = fileType;
         this.data = data;
         size = data.length;
-        this.fileOrigin = FileOrigin.MISC;
+        this.fileOrigin = FileOrigin.USER;
         this.user = user;
     }
 

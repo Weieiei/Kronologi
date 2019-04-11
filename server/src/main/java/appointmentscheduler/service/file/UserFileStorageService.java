@@ -5,6 +5,7 @@ import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.exception.FileStorageException;
 import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.repository.UserFileRepository;
+import appointmentscheduler.util.StringMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,11 +31,6 @@ public class UserFileStorageService {
         this.userRepository = userRepository;
     }
 
-    public static boolean verifyNaming(String fileName) {
-        //alphanumeric character followed by dot and alpha character
-        final Pattern pattern = Pattern.compile("\\w*.[A-Za-z]*");
-        return pattern.matcher(fileName).matches();
-    }
 
     @Transactional
     public Map<String, String> saveUserFile(MultipartFile file, long userId) {
@@ -44,7 +40,7 @@ public class UserFileStorageService {
 
         try {
             // Check if the file's name contains invalid characters
-            if(!verifyNaming(fileName)) {
+            if(!StringMatcher.verifyNaming(fileName)) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
