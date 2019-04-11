@@ -10,8 +10,12 @@
                 </mat-card-subtitle>
             </mat-card-header>
             <!--<img mat-card-image src="../assets/images/alex-bertha-215867-unsplash.jpg">-->
-            <mat-card-actions>
+            <mat-card-actions *ngIf="servicesAvailable.includes(service.id) == true">
                 <button mat-button (click)="selectService(service)">SELECT</button>
+            </mat-card-actions>
+
+            <mat-card-actions *ngIf="servicesAvailable.includes(service.id) == false">
+                <button mat-raised-button disabled>Service temporarily unavailable</button>
             </mat-card-actions>
         </mat-card>
     </mat-grid-tile>
