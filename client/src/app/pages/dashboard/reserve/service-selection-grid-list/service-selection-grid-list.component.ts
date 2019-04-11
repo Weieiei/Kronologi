@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { Observable, Subscription } from 'rxjs';
 import { ServiceService } from '../../../../services/service/service.service';
@@ -8,14 +8,14 @@ import { ServiceService } from '../../../../services/service/service.service';
     templateUrl: 'service-selection-grid-list.component.html',
     styleUrls: ['service-selection-grid-list.component.scss']
 })
-export class ServiceSelectionGridListComponent implements OnInit, OnDestroy{
+export class ServiceSelectionGridListComponent implements OnInit {
 
     services: ServiceDTO[] = [];
 
     serviceId: number;
     serviceSubscription: Subscription;
     @Input() serviceEvent: Observable<number>;
-    @Input() businessId : number;
+    @Input() businessId: number;
     @Output() serviceChange = new EventEmitter();
 
     itemsPerPageOptions: Array<number> = [4, 8, 16, 32, 64];
@@ -36,10 +36,6 @@ export class ServiceSelectionGridListComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
         this.getServices();
-    }
-
-    ngOnDestroy() {
-     //   this.serviceSubscription.unsubscribe();
     }
 
     selectService(service: ServiceDTO) {
