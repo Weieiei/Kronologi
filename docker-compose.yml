@@ -11,29 +11,29 @@ services:
       - "80:80"
 
   web-server:
-    depends_on:
-      - db
-    build: server-old
+    # depends_on:
+    #   - db
+    build: server
     image: appointment-scheduler-server
     container_name: appointment-scheduler-server
     environment:
       NODE_ENV: production
-      DB_HOST: postgres
+      DB_HOST: scheduler.cqbq6kge68z6.us-east-2.rds.amazonaws.com:5432/scheduler?user=scheduler&password=scheduler
       DB_PORT: 5432
       DB_USER: scheduler
       DB_PASSWORD: scheduler
       DB_NAME: scheduler
 
-  db:
-    image: postgres:11
-    container_name: postgres
-    environment:
-      POSTGRES_DB: scheduler
-      POSTGRES_USER: scheduler
-      POSTGRES_PASSWORD: scheduler
-    volumes:
-      - "pgdata:/var/lib/postgresql/data"
+#   db:
+#     image: postgres:11
+#     container_name: postgres
+#     environment:
+#       POSTGRES_DB: scheduler
+#       POSTGRES_USER: scheduler
+#       POSTGRES_PASSWORD: scheduler
+#     volumes:
+#       - "pgdata:/var/lib/postgresql/data"
 
-volumes:
-  pgdata:
+# volumes:
+#   pgdata:
     name: pgdata

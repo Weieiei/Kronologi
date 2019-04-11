@@ -4,48 +4,55 @@ Card Styling
 ====================
 */
 .cards-ui{
-  background-color: #ffffff;
-  box-shadow: 0 0 2rem rgba(0, 0, 255, 0.1);
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-  padding: 2rem;
-  margin: 2rem;
-  width: 20rem;
-  height: 30rem;
+  background-color:rgb(232, 232, 233);
+  box-shadow: 1rem  1rem .5rem rgba(83, 83, 83, 0.486);
+  width: 23rem;
+  height: 23rem;
   justify-items: center;
   cursor: pointer;
-  border-radius: 1.75rem;
   animation: fadein 1.25s ease-in-out 0ms 1;
   color: #443282;
+  border-radius:23rem;
 }
+
+.card-image{
+  background-image: url("../../../assets/images/business.jpg");
+  background-size:100% 50%;
+  background-repeat:no-repeat;
+}
+
 
 .cards-ui-dark {
-    background: linear-gradient(to bottom, #711B86, #00057A);
+    color: black;
+    background-color:rgb(85, 59, 107);
+    box-shadow: 1rem  1rem .5rem rgba(83, 83, 83, 0.486);
+    width: 23rem;
+    height: 23rem;
+    justify-items: center;
+    cursor: pointer;
+    animation: fadein 1.25s ease-in-out 0ms 1;
     color: white;
+    border-radius:23rem;
 }
 
-
-  
-  .weather__card-dark {
-    background: linear-gradient(to bottom, #711B86, #00057A);
-    color: white;
-  }
-  
-  .city-name__text {
-    text-transform: uppercase;
-    font-size: 1.4rem;
-    letter-spacing: 0.1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .body__container {
-    align-self: end;
-    display: flex;
-    justify-content: space-between;
+.my-appointment-button{
+    width: 50%;
+    background: white;
     align-items: center;
-    flex-flow: column;
-  }
+    text-align: center;
+    padding-top: .70rem;
+    
+
+    border:1px solid black;
+}
+
+.book-appointment-button{
+    width: 50%;
+    text-align: center;
+    padding-top: .70rem;
+    background-color: white;
+    border:1px solid black;
+}
   
   .min-max__container {
     display: grid;
@@ -69,25 +76,87 @@ Card Styling
     grid-template-rows: 1fr ;
   }
    
-  .city__illustration {
-    width: 20rem;
-    overflow: hidden;
-  }
 
-  .button__card{
-    overflow-wrap: break-word;
-  }
-//   .image-cropper {
-//     width: 200px;
-//     height: 200px;
-//     position: relative;
-//     overflow: hidden;
-//     border-radius: 50%;
-// }
+.main {
+	position:relative;
+	width:23rem;
+	height:23rem;
+	
+}
 
-// svg {
-//     display: inline;
-//     margin: 0 auto;
-//     height: 100%;
-//     width: auto;
-// }  
+.quarter {
+	position:absolute;
+	width:50%;
+	height:50%;
+	transition:background-color 0.2s ease-in-out;
+}
+.quarter:hover {
+	background-color:rgb(204, 204, 204);
+}
+
+.quarter3 {
+	bottom:0;
+	left:0;
+  border-bottom-width: 1px;
+	background-color:rgb(231, 230, 230);
+  border-radius:0 0 0 100%;
+  border: 1px solid black;
+}
+.quarter4 {
+	bottom:0;
+  right:0;
+  border-color:black;
+  border-bottom-width: 1px;
+	background-color:rgb(231, 230, 230);
+  border-radius:0 0 100% 0 ;
+  border: 1px solid black;
+}
+
+.quarter3-dark {
+	bottom:0;
+	left:0;
+	background-color:rgb(88, 88, 88);
+  border-radius:0 0 0 100%;
+  border: 1px solid rgb(3, 3, 3);
+}
+.quarter4-dark {
+	bottom:0;
+  right:0;
+  border-color:black;
+  border-bottom-width: 1px;
+	background-color:rgb(88, 88, 88);
+  border-radius:0 0 100% 0 ;
+  border: 1px solid black;
+}
+
+.bottom {
+  height: 9rem;
+  width: 9rem * 2;
+  background-color: rgb(238, 236, 236);
+  position: absolute;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  top: 50%;
+  left: 11%;
+}
+.bottom {
+  border-bottom-left-radius: 9rem * 2;
+  border-bottom-right-radius: 9rem * 2;
+}
+
+.bottom-dark {
+  height: 9rem;
+  width: 9rem * 2;
+  background-color: rgb(88, 88, 88);
+  position: absolute;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  top: 50%;
+  left: 11%;
+}
+.bottom {
+  border-bottom-left-radius: 9rem * 2;
+  border-bottom-right-radius: 9rem * 2;
+}

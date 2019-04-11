@@ -1,0 +1,35 @@
+<mat-horizontal-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Select a service</ng-template>
+                <app-service-selection-grid-list [businessId]="businessId" (serviceChange)="setService($event)"></app-service-selection-grid-list>
+
+            <div *ngIf="serviceIsSelected()">
+                <button mat-button matStepperNext (click)="getAllAvailabilitiesForService(service)">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" [optional]="isOptional">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Select a date and time</ng-template>
+                <app-pick-day (dateChange)="setDate($event)" [childService]="service" [childMonthsMap]="monthsMap"
+                              [childDaysMap]="daysMap" (timeChangeAndEmployeeChange)="setTimeAndEmployeeId($event)">
+                </app-pick-day>
+            <div *ngIf="timeIsSelected()">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext (click)="bookAppointment()">Next</button>
+            </div>
+
+            <div *ngIf="timeIsSelected() == false">
+                <button mat-button matStepperPrevious>Back</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        You are now done.
+        <div>
+        <button mat-button color="primary" type="button" routerLink="/business">Return to home page</button>
+        </div>
+  </mat-step>
+</mat-horizontal-stepper>

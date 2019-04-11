@@ -20,6 +20,7 @@ import appointmentscheduler.repository.*;
 import appointmentscheduler.service.file.UserFileStorageService;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,6 +31,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import javax.management.relation.Role;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -57,7 +59,7 @@ public class UserService {
             EmployeeRepository employeeRepository, BusinessRepository businessRepository, UserRepository userRepository,
             JwtProvider jwtProvider,
             VerificationRepository verificationRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
-            AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
+            @Qualifier("authenticationManagerBean") AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
     ) {
         this.employeeRepository = employeeRepository;
         this.businessRepository = businessRepository;
@@ -70,7 +72,7 @@ public class UserService {
         this.phoneNumberRepository = phoneNumberRepository;
     }
 
-    public Map<String, Object> register(UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+    public Map<String, Object> register(UserRegisterDTO userRegisterDTO, RoleEnum role) throws IOException, MessagingException, NoSuchAlgorithmException {
 
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
@@ -91,7 +93,11 @@ public class UserService {
             phoneNumber.setUser(user);
 
         }
-    user.setRole(RoleEnum.CLIENT.toString());
+        if(role.toString().equals(RoleEnum.ADMIN.toString())){
+            user.setRole(RoleEnum.ADMIN.toString());
+        }else{
+            user.setRole(RoleEnum.CLIENT.toString());
+        }
 
         User savedUser = userRepository.save(user);
 
@@ -329,9 +335,9 @@ public class UserService {
         return buildTokenRegisterMap( token, verification);
     }
 
-public Map<String, Object> business_register_test(UserRepository userRepository,UserRegisterDTO userRegisterDTO, Business business, User user, Verification verification,User savedUser, Verification savedVerification) throws IOException, MessagingException, NoSuchAlgorithmException {
-//works the same as the business_register, just put the class this method depends as
-//parameters, so it is easy to mock
+    public Map<String, Object> business_register_test(UserRepository userRepository,UserRegisterDTO userRegisterDTO, Business business, User user, Verification verification,User savedUser, Verification savedVerification) throws IOException, MessagingException, NoSuchAlgorithmException {
+    //works the same as the business_register, just put the class this method depends as
+    //parameters, so it is easy to mock
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
         }
@@ -362,4 +368,5 @@ public Map<String, Object> business_register_test(UserRepository userRepository,
 
         return buildTokenRegisterMap( token, verification);
     }
+
 }

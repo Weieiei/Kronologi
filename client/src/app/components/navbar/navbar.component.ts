@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { ThemeService } from "../../core/theme/theme.service";
-import {OverlayContainer} from "@angular/cdk/overlay";
+import { OverlayContainer } from "@angular/cdk/overlay";
 import { DomSanitizer} from '@angular/platform-browser';
 
 @Component({
@@ -24,15 +24,17 @@ export class NavbarComponent implements OnInit {
     showMenu = false;
     darkModeActive: boolean;
     user;
-    theme :string = 'dark-theme';
+    dark_theme :string = 'dark-theme';
+    light_theme:string = 'light-theme';
+    theme:string = 'light-theme';
     imagePath :string = "";
 
     imageToShow: any;
     isImageLoading: any;
     constructor(
         private sanitizer: DomSanitizer,
-        private userService: UserService,
-        private authService: AuthService,
+        public userService: UserService,
+        public authService: AuthService,
         private router: Router,
         private googleAnalytics: GoogleAnalyticsService,
         public themeService: ThemeService,
@@ -43,25 +45,22 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
-
         this.authService.checkAdmin();
         this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
         this.userEmail = this.userService.getEmailFromToken();
         this.themeService.darkModeState.subscribe(value => {
             this.darkModeActive = value;
         });
-        this.overlayContainer.getContainerElement().classList.add(this.theme);
+        this.overlayContainer.getContainerElement().classList.add(this.dark_theme);
+        this.overlayContainer.getContainerElement().classList.add(this.light_theme);
 
         this.userService.getUserProfile().subscribe(
           data => {
               if ( data ) {
                 this.imagePath = 'data:image/png;base64,' + data["image_encoded"];
-                 // show data base64:
-                 // console.log(this.imagePath);
                 this.sanitizedImageData = this.sanitizer.bypassSecurityTrustUrl(this.imagePath);
               } else {
                         this.sanitizedImageData = 'assets/images/user_default.png';
-                        console.log(this.sanitizedImageData);
                     }
 
           },
@@ -72,10 +71,8 @@ export class NavbarComponent implements OnInit {
 
     }
 
-
     onThemeChange(theme:string) {
         this.theme = theme;
-        //console.log(theme);
         const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;
         const themeClassesToRemove = Array.from(overlayContainerClasses).filter((item: string) => item.includes('-theme'));
         if (themeClassesToRemove.length) {
@@ -93,7 +90,7 @@ export class NavbarComponent implements OnInit {
     modeToggleSwitch() {
         this.darkModeActive = !this.darkModeActive;
         this.themeService.darkModeState.next(this.darkModeActive);
-        const currentTheme: string = this.darkModeActive ? 'dark-theme': '';
+        const currentTheme: string = this.darkModeActive ? 'light-theme': 'dark-theme';
         this.onThemeChange(currentTheme);
     }
 

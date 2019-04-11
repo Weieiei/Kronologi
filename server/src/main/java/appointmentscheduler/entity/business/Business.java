@@ -1,8 +1,12 @@
 package appointmentscheduler.entity.business;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.file.File;
+import appointmentscheduler.entity.user.User;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "business")
@@ -20,6 +24,19 @@ public class Business extends AuditableEntity {
 
     @Column(name = "description")
     private String description;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User business_owner;
+
+    @OneToMany(mappedBy = "business",  fetch=FetchType.EAGER)
+    private List<BusinessHours> businessHours;
+
+    @Column(name = "image")
+    private String businessLogo;
+
+    @Column(name = "address")
+    private String formattedAddress;
 
     public Business() {
     }
@@ -60,5 +77,25 @@ public class Business extends AuditableEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getOwner(){return this.business_owner;}
+
+    public void setOwner(User user){this.business_owner = user;}
+
+    public void setBusinessHours(List<BusinessHours> businessHours){this.businessHours = businessHours;}
+
+    public List<BusinessHours> getBusinessHours(){return this.businessHours;}
+
+    public void setAddress(String address){this.formattedAddress = address;}
+
+    public String getAddress(){return this.formattedAddress;}
+
+    public String getBusinessLogo() {
+        return businessLogo;
+    }
+
+    public void setBusinessLogo(String businessLogo) {
+        this.businessLogo = businessLogo;
     }
 }

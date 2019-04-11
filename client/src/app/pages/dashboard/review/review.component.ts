@@ -26,7 +26,6 @@ export class ReviewComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this._Activatedroute.snapshot.params['apptmtId']);
         this.appointmentId = this._Activatedroute.snapshot.params['apptmtId'];
         this.themeService.darkModeState.subscribe(value => {
             this.darkModeActive = value;

@@ -9,6 +9,7 @@ import appointmentscheduler.entity.settings.Settings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -58,8 +59,6 @@ public class User extends AuditableEntity {
     )
     private Settings settings;
 
-    @OneToMany
-    private List<Service> employeeServices;
 
 
     @Override
@@ -136,18 +135,6 @@ public class User extends AuditableEntity {
         this.roles.add(role);
     }
 */
-
-    public List<Service> getEmployeeServices() {
-        return employeeServices;
-    }
-
-    public void setEmployeeServices(List<Service> employeeServices) {
-        this.employeeServices = employeeServices;
-    }
-
-    public void addEmployeeService(Service service){
-        this.employeeServices.add(service);
-    }
 
     public PhoneNumber getPhoneNumber() {
         return phoneNumber;

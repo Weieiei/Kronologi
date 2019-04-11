@@ -1,0 +1,116 @@
+
+
+<ngx-spinner bdColor = "rgba(109,109,109,0.7)"   size = "medium"   color = "#673ab7"
+               type = "ball-scale-ripple-multiple" fullScreen = "false">
+    <p style="color: #673ab7">Hold on, we're getting the info.</p>
+    <div class="div-center-button">
+        <button mat-raised-button color="primary" (click)=stopDescription()>I don't want the info, take me back.</button>
+    </div>
+</ngx-spinner>
+<div  *ngIf="dataIsAllLoaded"  class="details-page__wrapper" [ngClass]="{'details-page__wrapper-dark': darkMode}">
+    <div class="background-gradient__circle" [ngClass]="{'background-gradient__circle-dark': darkMode}"></div>
+    <svg class="back__button" routerLink="/business" viewBox="4085 152 98.5 126" tabindex="0">
+      <defs>
+        <style>.a {
+          fill: #2b244d;
+        }
+  
+        .b {
+          fill: rgba(0, 0, 0, 0);
+        }
+  
+        .b, .c {
+          stroke: #fff;
+          stroke-width: 2px;
+        }
+  
+        .c {
+          fill: none;
+        }
+  
+        .d {
+          fill: #fff;
+          font-size: 15px;
+          font-family: SegoeUI, Segoe UI, sans-serif;
+          letter-spacing: 0.4em;
+        }</style>
+      </defs>
+      <g transform="translate(3980)">
+        <circle class="a" cx="39" cy="39" r="39" transform="translate(105 152)"></circle>
+        <line class="b" transform="translate(123.5 190.5)" x1="80"></line>
+        <line class="b" transform="translate(123.5 164.5)" x2="26" y1="26"></line>
+        <line class="c" transform="translate(123.5 190.5)" x1="26" y1="27"></line>
+        <text class="d" transform="translate(117 274)">
+          <tspan x="0" y="0">BACK</tspan>
+        </text>
+      </g>
+    </svg>
+    <section class="main-weather__card">
+      <section class="card-header__container-dark" [ngSwitch]="true">
+        <img class="city__illustration" src="../../../assets/images/image.svg"/>
+       
+
+        <div class="header-content__wrapper">
+         <div class="today-weather__container">
+                <div style="text-align:center">
+                  <span class="temperature__text">{{ businessObj.name }}</span>
+                  <star-rating [starType]="'svg'" [rating]="rating">({{rating}})</star-rating> 
+                </div>
+                
+                <div class="temp-state__container">
+                  <span class="weather-state__text">
+                    <span style="font-weight:bold;">Address:  </span>
+                    <span>{{ businessObj.formattedAddress }} </span>
+                  </span>
+                </div>
+                  
+                <div style="padding-top:1rem">
+                    <mat-accordion >
+                      <mat-expansion-panel (opened)="panelOpenState = true"
+                      (closed)="panelOpenState = false" disabled="expansionPanel">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Business Hours:
+                            </mat-panel-title>
+                            <mat-panel-description>
+                              {{dateToday()}}
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+                          <div  [ngClass] = "main">
+                              <mat-card>
+                                  <div *ngFor="let dayInfo of businessObj.business_hours">
+                                      {{ dayInfo.day }} :  {{ dayInfo.openHour}}   -    {{ dayInfo.closeHour }}
+                                  </div>
+                              </mat-card>
+                        </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+                <div class="temp-state__container">
+                    <span class="weather-state__text">
+                      <span style="font-weight:bold;">Description:  </span>
+                      <span>{{ businessObj.description }} </span>
+                    </span>
+                </div>
+                <div class="review__container">
+                    <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+                        <div *cdkVirtualFor="let item of reviews;let i=index" class="example-item">{{i}}. {{item}}</div>
+                    </cdk-virtual-scroll-viewport>       
+                </div>
+                    
+          </div>
+          <div class="city-name__container">
+              <app-google-maps [lng]="lng" [lat]="lat"></app-google-maps>
+          </div>
+        </div>
+      </section>
+      <main class="body-content__wrapper">
+        <div class="column">
+          <div class="img-row" *ngFor="let image of albums; let i=index">
+            <img class="img-frame" [src]="image.thumb" (click)="open(i)"/>
+          </div>
+        </div>
+      </main>
+    </section>
+  </div>
+  

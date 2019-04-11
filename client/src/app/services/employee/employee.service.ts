@@ -32,7 +32,7 @@ export class EmployeeService {
     }
 
     getAvailableEmployeesShiftsByDate(date: string): Observable<ShiftDTO[]> {
-        return this.http.get<ShiftDTO[]>(['api','business', 'appointments', '1','employee', 'shifts'].join('/'), { params: { date } });
+        return this.http.get<ShiftDTO[]>(['api','business', '1', 'employee', 'shifts'].join('/'), { params: { date } });
     }
 
     getAvailableEmployeesAppointmentsByDate(date: string): Observable<EmployeeAppointmentDTO[]> {

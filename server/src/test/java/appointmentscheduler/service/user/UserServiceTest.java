@@ -11,6 +11,7 @@ import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.User;
@@ -345,7 +346,7 @@ public void businessRegisterFailed() throws IOException, MessagingException, NoS
     when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(mockedUser));
 
     // run method
-    userService.register(userRegisterDTO);
+    userService.register(userRegisterDTO, RoleEnum.ADMIN);
 
     // fail if it didn't throw an error
     fail("Exception should have been thrown");

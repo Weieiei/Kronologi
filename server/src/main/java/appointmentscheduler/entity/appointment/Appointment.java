@@ -4,8 +4,11 @@ import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.event.EventComparer;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -30,6 +33,10 @@ public class Appointment extends GeneralAppointment implements AppEvent {
     @ManyToOne
     private Business business;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shift_id")
+    private Shift shift;
+
     private String type;
 
     private LocalDate date;
@@ -48,13 +55,15 @@ public class Appointment extends GeneralAppointment implements AppEvent {
     }
 
     public Appointment(User client, Employee employee, Service service, LocalDate date, LocalTime startTime, String notes) {
-        this.client = client;
-        this.employee = employee;
-        this.service = service;
-        this.date = date;
-        this.startTime = startTime;
-        this.notes = notes;
+            this.client = client;
+            this.employee = employee;
+            this.service = service;
+            this.date = date;
+            this.startTime = startTime;
+            this.notes = notes;
     }
+
+
 
     public Appointment(User client, Employee employee, Service service, LocalDate date, LocalTime startTime,
                        String notes, Business business) {
@@ -153,6 +162,14 @@ public class Appointment extends GeneralAppointment implements AppEvent {
 
     public void setBusiness(Business business) {
         this.business = business;
+    }
+
+    public Shift getShift() {
+        return shift;
+    }
+
+    public void setShift(Shift shift) {
+        this.shift = shift;
     }
 
     @PrePersist

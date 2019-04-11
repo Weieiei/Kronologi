@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/dashboard/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
-import { ReserveComponent } from './pages/dashboard/reserve/reserve.component';
 import { AnonymousGuard } from './guards/anonymous/anonymous.guard';
 import { AppointmentsComponent } from './pages/dashboard/home/appointments/appointments.component';
 import { AuthGuard } from './guards/auth/auth.guard';
@@ -20,15 +19,14 @@ import { ReviewComponent } from './pages/dashboard/review/review.component';
 import { AdminServicesComponent } from './pages/dashboard/home/admin-services/admin-services.component';
 import { CreateServiceComponent } from './pages/create-service/create-service.component';
 import { AdminUsersComponent } from './pages/dashboard/home/admin-users/admin-users.component';
-import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
-import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
-
-import { ClientGuard } from './guards/client/client.guard';
+import { BusinessViewComponent } from './pages/business-view/business-view.component';
+import { BookComponent } from './pages/dashboard/reserve/book/book.component';
+import { DetailsComponent } from './pages/details/details.component';
 
 const routes: Routes = [
     // Login
@@ -51,24 +49,19 @@ const routes: Routes = [
             { path: 'business', component: BusinessViewComponent },
 
             // Home
-            { path: 'home', component: HomeComponent },
+            { path: 'home/:businessId', component: HomeComponent },
 
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
-            // Reserving and modifying reservation
-            {
-                path: 'reserve', children: [
-                    { path: '', component: ReserveComponent, data: { edit: false }, canActivate: [ClientGuard] },
-                    { path: 'edit/:id', component: ReserveComponent, data: { edit: true } }
-                ]
-            },
 
+            // Reserving and modifying reservation
+            {path : 'details/:businessId', component: DetailsComponent},
             {path : 'syncCalendars', component: SyncCalendarsComponent, canActivate: [EmployeeGuard]},
+
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
-            { path: 'reserve', component: ReserveComponent, canActivate: [ClientGuard] },
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
@@ -76,7 +69,7 @@ const routes: Routes = [
             { path: 'admin/services', component: AdminServicesComponent },
             { path: 'admin/services/create', component: CreateServiceComponent },
             { path: 'admin/users', component: AdminUsersComponent },
-            { path: 'darn-carousel', component: DarnCarouselComponent },
+            { path: 'book/:businessId', component: BookComponent },
 
             // User settings
             {
