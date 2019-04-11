@@ -1,7 +1,6 @@
 <mat-grid-list cols="4" rowHeight="2:1">
     <mat-grid-tile *ngFor="let service of services">
         <mat-card class="service-card">
-            <!--<img mat-card-image src="../assets/images/alex-bertha-215867-unsplash.jpg">-->
             <mat-card-header>
                 <mat-card-title>{{service.name}}</mat-card-title>
                 <mat-card-subtitle>100 $</mat-card-subtitle>
@@ -10,8 +9,13 @@
                     <span>  {{ service.duration }} minutes</span>
                 </mat-card-subtitle>
             </mat-card-header>
+            <!--<img mat-card-image src="../assets/images/alex-bertha-215867-unsplash.jpg">-->
             <mat-card-actions>
                 <button mat-button (click)="selectService(service)">SELECT</button>
+            </mat-card-actions>
+
+            <mat-card-actions *ngIf="servicesAvailable.includes(service.id) == false">
+                <button mat-raised-button disabled>Service temporarily unavailable</button>
             </mat-card-actions>
         </mat-card>
     </mat-grid-tile>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { Observable, Subscription } from 'rxjs';
 import { ServiceService } from '../../../../services/service/service.service';
@@ -11,6 +11,7 @@ import { ServiceService } from '../../../../services/service/service.service';
 export class ServiceSelectionGridListComponent implements OnInit {
 
     services: ServiceDTO[] = [];
+    servicesAvailable = [];
 
     serviceId: number;
     serviceSubscription: Subscription;
@@ -26,7 +27,7 @@ export class ServiceSelectionGridListComponent implements OnInit {
         currentPage: number;
     };
 
-    constructor(private serviceService: ServiceService) {
+    constructor(private serviceService: ServiceService, private appointmentService: AppointmentService) {
         this.componentState = {
             totalItems: 0,
             currentPageSize: 8,
@@ -46,6 +47,15 @@ export class ServiceSelectionGridListComponent implements OnInit {
     getServices() {
         this.serviceService.getServices(this.businessId).subscribe(res => {
             this.services = res;
+            for (let service in this.services) {
+                let serviceId = this.services[service]['id'];
+                this.appointmentService.getAvailabilitiesForService(serviceId).subscribe(
+                    res => {
+                        if (res.toString().length != 0)
+                            this.servicesAvailable.push(serviceId);
+                    }
+                )
+            }
             this.componentState.totalItems = this.services.length;
             this.services.sort((a, b) => {
                 if (a.name.toLowerCase() < b.name.toLowerCase()) {
