@@ -33,13 +33,8 @@
         </div>
         <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="20">
             <mat-label>Occurences</mat-label>
-            <input matInput  name="occurences" type="number" min="1" max="52" required [(ngModel)]="occurences">
+            <input matInput  name="occurrences" type="number" min="1" max="52" required [(ngModel)]="occurrences">
         </mat-form-field>
         <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md (click)="createRecurringDate()">Create Shifts</button>
     </form>
 </div>
-
-
-<!-- Copyright 2019 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license -->
