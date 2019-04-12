@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from "../../services/user/user.service";
 import { Router } from "@angular/router";
 import {UserRegisterDTO} from "../../interfaces/user/user-register-dto";
+import * as countryData from 'country-telephone-data';
 import {PhoneNumberDTO} from "../../interfaces/phonenumber/phone-number-dto";
 
 @Component({
@@ -14,6 +15,11 @@ export class GuestAppointmentComponent implements OnInit {
     firstName: string;
     lastName: string;
     email: string;
+    countries: Object[] = countryData.allCountries;
+    selectedCountry: Object;
+    areaCode: string;
+    number: string;
+    registerPhone = false;
 
   constructor(
       private userService: UserService,

@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="center" fxFlex="noshrink">
     <div fxLayout="column" fxFlex.gt-sm="600px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
-        <img src="assets/images/asapp_logo.png" width="128"/>
+        <img src="assets/images/kronologi-logo-1.png" width="128"/>
         <span class="title">Make a Guest Appointment</span>
 
         <form (submit)="register()" autocomplete="off" fxLayout="column">
@@ -23,7 +23,38 @@
             </mat-form-field>
 
 
+            <div class="phone-container" fxLayout="column" fxLayoutGap="20px">
 
+                <mat-checkbox class="phone-checkbox" color="primary" [(ngModel)]="registerPhone" name="registerPhone">Add phone number?</mat-checkbox>
+
+                <div fxLayout="column" fxLayoutGap="20px" *ngIf="registerPhone">
+                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25">
+                        <mat-label>Country</mat-label>
+                        <mat-select [required]="true" (selectionChange)="selectCountry($event.value)">
+                            <mat-select-trigger *ngIf="selectedCountry">
+                                {{ selectedCountry.name }} <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let country of countries" [value]="country">
+                                <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;
+                                <span> {{ country.name }} | <span class="country-code">+{{ country.dialCode }}</span></span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="30">
+                            <mat-label>Area Code</mat-label>
+                            <input matInput [(ngModel)]="areaCode" name="areaCode" pattern="\d{3}" minlength="3" maxlength="3" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="70">
+                            <mat-label>Phone Number</mat-label>
+                            <input matInput [(ngModel)]="number" name="number" pattern="\d{7}" minlength="7" maxlength="7" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </div>
 
 
             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
