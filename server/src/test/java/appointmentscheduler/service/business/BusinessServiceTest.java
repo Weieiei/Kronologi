@@ -1,19 +1,19 @@
 package appointmentscheduler.service.business;
 
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.BusinessRepository;
-import appointmentscheduler.service.file.FileStorageService;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.mock.web.MockMultipartFile;
+
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyObject;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 
@@ -46,4 +46,26 @@ public class BusinessServiceTest {
 
 
     }
+
+    @Test
+    public void testFindById() {
+
+        when(businessRepository.findById(anyLong()).get()).thenReturn(business);
+        Assert.assertEquals(businessRepository.findById((long) 1), business);
+    }
+
+    @Test
+    public void testFindByIdNoBusinessFound() {
+        when(businessRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        try {
+            businessService.findById((long) 1);
+            fail();
+        } catch (ResourceNotFoundException e) {
+            Assert.assertEquals(e.getMessage(), "Business with id 1 not found.");
+        }
+
+    }
+
+
 }

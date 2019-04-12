@@ -11,42 +11,25 @@ import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.exception.*;
-import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.*;
 import appointmentscheduler.service.googleService.GoogleSyncService;
-import appointmentscheduler.service.googleService.JPADataStoreFactory;
-import appointmentscheduler.service.googleService.JPADataStoreService;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import appointmentscheduler.util.DateConflictChecker;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import appointmentscheduler.util.DateConflictChecker;
 import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
-import appointmentscheduler.repository.AppointmentRepository;
-import appointmentscheduler.repository.CancelledRepository;
-import appointmentscheduler.repository.EmployeeRepository;
-import appointmentscheduler.repository.ShiftRepository;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class AppointmentService {
@@ -83,20 +66,6 @@ public class AppointmentService {
         this.appointmentRepository = appointmentRepository;
     }
 
-    public List<Appointment> findByBusinessId(long id) {
-        return appointmentRepository.findByBusinessId(id);
-    }
-
-    public List<Appointment> findByEmployeeIdAndBusinessId(long employeeId, long businessId) {
-        return appointmentRepository.findByEmployeeIdAndBusinessId(employeeId, businessId);
-    }
-
-    public List<Appointment> findByBusinessIdAndEmployeeId(long businessId, long employeeId) {
-        return appointmentRepository.findByBusinessIdAndEmployeeId(businessId, employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment list with employee id %d " +
-                        "and business id %d not found", employeeId, businessId)));
-    }
-
     @Autowired
     public AppointmentService(
             AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository,
@@ -112,6 +81,22 @@ public class AppointmentService {
         this.googleSyncService = googleSyncService;
     }
 
+
+    public List<Appointment> findByBusinessId(long id) {
+        return appointmentRepository.findByBusinessId(id);
+    }
+
+    public List<Appointment> findByEmployeeIdAndBusinessId(long employeeId, long businessId) {
+        return appointmentRepository.findByEmployeeIdAndBusinessId(employeeId, businessId);
+    }
+
+    public List<Appointment> findByBusinessIdAndEmployeeId(long businessId, long employeeId) {
+        return appointmentRepository.findByBusinessIdAndEmployeeId(businessId, employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment list with employee id %d " +
+                        "and business id %d not found", employeeId, businessId)));
+    }
+
+
     public List<Appointment> findByClientIdAndBusinessId(long clientId, long businessId){
         Optional<List<Appointment>> opt =
                 Optional.ofNullable(appointmentRepository.findByClientIdAndBusinessId(clientId, businessId));
@@ -119,13 +104,7 @@ public class AppointmentService {
                 "and business id %d not found", clientId, businessId)));
     }
 
-/*
-    //for admin to see employee's appointments
-    public List<Appointment> findByEmployeeId(long id) {
-        Optional<List<Appointment>> opt = Optional.ofNullable(appointmentRepository.findByEmployeeId(id));
-        return opt.orElseThrow(() -> new ResourceNotFoundException(String.format("Appointment with employee id %d not found.", id)));
-    }
-*/
+
     public Appointment add(Appointment appointment) {
         // todo should this return a boolean instead ?
         // Right now this is void return type because it will throw exceptions if it doesn't work.
@@ -221,12 +200,6 @@ public class AppointmentService {
      *
      * @param appointment The appointment to validate.
      * @param modifying   Whether or not it's an appointment being modified.
-     * @throws ModelValidationException             If the client and employee are the same person.
-     * @throws EmployeeDoesNotOfferServiceException If the employee is not assigned to the service specified.
-     * @throws EmployeeNotWorkingException          If the employee does not have a shift on the date specified.
-     * @throws EmployeeAppointmentConflictException If the employee is already booked on the date and time specified.
-     * @throws ClientAppointmentConflictException   If the client is already booked on the date and time specified.
-     * @throws NoRoomAvailableException             If there are no rooms available to perform the service specified.
      */
     private void validate(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException, NoRoomAvailableException {
         final Employee employee = appointment.getEmployee();

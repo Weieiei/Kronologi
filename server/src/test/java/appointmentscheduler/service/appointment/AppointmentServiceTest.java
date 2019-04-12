@@ -1,74 +1,95 @@
-//package appointmentscheduler.service.appointment;
-//
-//import appointmentscheduler.entity.appointment.Appointment;
-//import appointmentscheduler.entity.user.Employee;
-//import appointmentscheduler.entity.user.User;
-//import appointmentscheduler.exception.*;
-//import appointmentscheduler.repository.AppointmentRepository;
-//import appointmentscheduler.repository.CancelledRepository;
-//import appointmentscheduler.repository.EmployeeRepository;
-//import appointmentscheduler.repository.ShiftRepository;
-//import com.google.common.collect.Sets;
-//import org.junit.Before;
-//import org.junit.Ignore;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.mockito.Mock;
-//import org.mockito.junit.MockitoJUnitRunner;
-//import org.mockito.Answers;
-//
-//import java.util.Collections;
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.Set;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.mockito.ArgumentMatchers.anyLong;
-//import static org.mockito.Mockito.*;
-//
-//@RunWith(MockitoJUnitRunner.class)
-//public class AppointmentServiceTest {
-//
-//    @Mock
-//    private AppointmentRepository appointmentRepository;
-//
-//    @Mock
-//    private EmployeeRepository employeeRepository;
-//
-//    @Mock
-//    private ShiftRepository shiftRepository;
-//
-//    @Mock
-//    private CancelledRepository cancelledRepository;
-//    private AppointmentService appointmentService;
-//
-//    @Before
-//    public void setup() {
-//        appointmentService = new AppointmentService(appointmentRepository, employeeRepository, shiftRepository, cancelledRepository);
-//    }
-//
-//    @Test(expected = ModelValidationException.class)
-//    public void addShouldFailWhenClientAndEmployeeAreSame() {
-//        final int ID = 1;
-//
-//        // Must create real objects because Mockito can't mock equals method
-//        final User client = new User();
-//        client.setId(ID);
-//
-//        // Must create real objects because Mockito can't mock equals method
-//        final Employee employee = new Employee();
-//        employee.setId(ID);
-//
-//        final Appointment mockAppointment = mock(Appointment.class);
-//
-//        when(mockAppointment.getClient()).thenReturn(client);
-//        when(mockAppointment.getEmployee()).thenReturn(employee);
-//
-//        appointmentService.add(mockAppointment);
-//    }
-//
+package appointmentscheduler.service.appointment;
+
+import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.user.Employee;
+import appointmentscheduler.entity.user.User;
+import appointmentscheduler.exception.ModelValidationException;
+import appointmentscheduler.repository.*;
+import appointmentscheduler.service.googleService.GoogleSyncService;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+
+@RunWith(MockitoJUnitRunner.class)
+public class AppointmentServiceTest {
+
+    @Mock
+    GoogleCredentialRepository googleCredentialRepository;
+    @Mock
+    GoogleSyncService googleSyncService;
+    @Mock
+    List<Appointment> appointments;
+    @Mock
+    Employee employee;
+    @Mock
+    private AppointmentRepository appointmentRepository;
+    @Mock
+    private EmployeeRepository employeeRepository;
+    @Mock
+    private ShiftRepository shiftRepository;
+    @Mock
+    private CancelledRepository cancelledRepository;
+    @Mock
+    private GeneralAppointmentRepository generalAppointmentRepository;
+    private AppointmentService appointmentService;
+
+    @Before
+    public void setup() {
+        appointmentService = new AppointmentService(appointmentRepository, employeeRepository, shiftRepository, cancelledRepository,
+                generalAppointmentRepository, googleCredentialRepository, googleSyncService);
+    }
+
+    @Test
+    public void testFindByBusinessId() {
+        when(appointmentRepository.findByBusinessId(anyLong())).thenReturn(appointments);
+        Assert.assertEquals(appointmentService.findByBusinessId((long) 1), appointments);
+    }
+
+    @Test
+    public void testfindByEmployeeIdAndBusinessId() {
+        when(appointmentRepository.findByEmployeeIdAndBusinessId(anyLong(), anyLong())).thenReturn(appointments);
+        Assert.assertEquals(appointmentService.findByEmployeeIdAndBusinessId((long) 1, (long) 1), appointments);
+    }
+
+
+    public void testfindByBusinessIdAndEmployeeId() {
+        //   Optional<List<Appointment>> = new List<Appointment>();
+        when(appointmentRepository.findByBusinessIdAndEmployeeId(anyLong(), anyLong())).thenReturn(Optional.of(appointments));
+        Assert.assertEquals(appointmentService.findByEmployeeIdAndBusinessId((long) 1, (long) 1),
+                appointments);
+    }
+
+
+    @Test(expected = ModelValidationException.class)
+    public void addShouldFailWhenClientAndEmployeeAreSame() {
+        final int ID = 1;
+
+        // Must create real objects because Mockito can't mock equals method
+        final User client = new User();
+        client.setId(ID);
+
+        // Must create real objects because Mockito can't mock equals method
+        final Employee employee = new Employee();
+        employee.setId(ID);
+
+        final Appointment mockAppointment = mock(Appointment.class);
+
+        when(mockAppointment.getClient()).thenReturn(client);
+        when(mockAppointment.getEmployee()).thenReturn(employee);
+
+        appointmentService.add(mockAppointment);
+    }
+
 //    @Test(expected = EmployeeDoesNotOfferServiceException.class)
 //    public void addShouldFailBecauseEmployeeDoesNotOfferService() {
 //        final Appointment mockAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
@@ -234,38 +255,38 @@
 //
 //        verify(appointmentRepository).save(mockAppointment);
 //    }
-//
-//    private Appointment createMockedConflictingAppointment() {
-//        final Appointment mockedAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
-//        when(mockedAppointment.isConflicting(any(Appointment.class))).thenReturn(true);
-//
-//        return mockedAppointment;
-//    }
-//
-//    private Appointment createMockedNonConflictingAppointment() {
-//        final Appointment mockedAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
-//        when(mockedAppointment.isConflicting(any(Appointment.class))).thenReturn(false);
-//
-//        return mockedAppointment;
-//    }
-//
-//    @Ignore
-//    @Test
-//    public void findById() {
-//        long testId = 1;
-//        Appointment appointment = this.appointmentService.findMyAppointmentById(testId, testId);
-//        System.out.print("");
-//
-//    }
-//
-//    @Test
-//    public void findByEmployeeId() {
-//        List<Appointment> appointments = new ArrayList<>();
-//        for (int i = 0; i < 6; i++) {
-//            appointments.add(mock(Appointment.class));
-//        }
-//        when(appointmentRepository.findByEmployeeId(anyLong())).thenReturn(appointments);
-//        List<Appointment> result = this.appointmentService.findByEmployeeId(Long.valueOf(4));
-//        assertEquals(6, result.size());
-//    }
-//}
+
+    private Appointment createMockedConflictingAppointment() {
+        final Appointment mockedAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
+        when(mockedAppointment.isConflicting(any(Appointment.class))).thenReturn(true);
+
+        return mockedAppointment;
+    }
+
+    private Appointment createMockedNonConflictingAppointment() {
+        final Appointment mockedAppointment = mock(Appointment.class, RETURNS_DEEP_STUBS);
+        when(mockedAppointment.isConflicting(any(Appointment.class))).thenReturn(false);
+
+        return mockedAppointment;
+    }
+
+    @Ignore
+    @Test
+    public void findById() {
+        long testId = 1;
+        Appointment appointment = this.appointmentService.findMyAppointmentById(testId, testId);
+        System.out.print("");
+
+    }
+
+/*    @Test
+    public void findByEmployeeId() {
+        List<Appointment> appointments = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            appointments.add(mock(Appointment.class));
+        }
+        when(appointmentRepository.findByEmployeeId(anyLong())).thenReturn(appointments);
+        List<Appointment> result = this.appointmentService.findByEmployeeId(Long.valueOf(4));
+        assertEquals(6, result.size());
+    }*/
+}
