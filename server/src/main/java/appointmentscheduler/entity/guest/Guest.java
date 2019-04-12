@@ -28,19 +28,14 @@ public class Guest extends AuditableEntity {
     @Column(name = "verified")
     private boolean verified;
 
+    @Column(name = "phone_number")
+    private PhoneNumber phoneNumber;
+
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-
-//    @OneToOne(
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.EAGER,
-//            mappedBy = "guest"
-//    )
-//    private PhoneNumber phoneNumber;
-
     public boolean isEqual(Guest guest) {
-        return guest instanceof Guest && ((Guest) guest).getId() == this.getId();
+        return guest != null && guest.getId() == this.getId();
     }
 
     public long getId() {
@@ -48,12 +43,7 @@ public class Guest extends AuditableEntity {
     }
 
     public boolean isGuest() {
-        if(role.toString() == "GUEST"){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return role.toString().equals("GUEST");
     }
 
     public void setRole(String role) {
@@ -89,11 +79,11 @@ public class Guest extends AuditableEntity {
         this.email = email;
     }
 
-//    public PhoneNumber getPhoneNumber() {
-//        return phoneNumber;
-//    }
-//
-//    public void setPhoneNumber(PhoneNumber phoneNumber) {
-//        this.phoneNumber = phoneNumber;
-//    }
+    public PhoneNumber getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

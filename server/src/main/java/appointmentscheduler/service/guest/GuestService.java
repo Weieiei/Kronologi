@@ -51,19 +51,20 @@ public class GuestService {
 
         Guest guest = GuestFactory.createGuest(Guest.class, guestDTO.getFirstName(), guestDTO.getLastName(), guestDTO.getEmail());
 
-//        if (guestDTO.getPhoneNumber() != null) {
-//
-//            PhoneNumberDTO phoneNumberDTO = guestDTO.getPhoneNumber();
-//            PhoneNumber phoneNumber = new PhoneNumber(
-//                    phoneNumberDTO.getCountryCode(),
-//                    phoneNumberDTO.getAreaCode(),
-//                    phoneNumberDTO.getNumber()
-//            );
-//
-//            guest.setPhoneNumber(phoneNumber);
-//            phoneNumber.setUser(guest);
-//
-//        }
+        if (guestDTO.getPhoneNumber() != null) {
+
+            PhoneNumberDTO phoneNumberDTO = guestDTO.getPhoneNumber();
+            PhoneNumber phoneNumber = new PhoneNumber(
+                    phoneNumberDTO.getCountryCode(),
+                    phoneNumberDTO.getAreaCode(),
+                    phoneNumberDTO.getNumber()
+            );
+
+            guest.setPhoneNumber(phoneNumber);
+            phoneNumber.setGuest(guest);
+
+        }
+
         guest.setRole(RoleEnum.GUEST.toString());
 
         Guest savedGuest = guestRepository.save(guest);
@@ -73,6 +74,10 @@ public class GuestService {
 
         String token = generateToken(savedGuest);
         return buildTokenRegisterMap(token, verification);//, verification);
+    }
+
+    public PhoneNumber getPhoneNumber(long guestId){
+        return phoneNumberRepository.findByGuestId(guestId).orElse(null);
     }
 
     private String generateToken(Guest guest) {
