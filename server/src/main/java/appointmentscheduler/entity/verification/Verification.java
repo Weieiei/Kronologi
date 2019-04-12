@@ -38,11 +38,6 @@ public class Verification extends AuditableEntity {
 
     }
 
-    public Verification(User user, Business business) {
-        this.user = user;
-        this.business = business;
-    }
-
     @PostPersist
     public void afterInsert()  {
         generateHash();

@@ -2,7 +2,10 @@ package appointmentscheduler.service.user;
 
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.dto.settings.UpdateSettingsDTO;
-import appointmentscheduler.dto.user.*;
+import appointmentscheduler.dto.user.UpdateEmailDTO;
+import appointmentscheduler.dto.user.UpdatePasswordDTO;
+import appointmentscheduler.dto.user.UserLoginDTO;
+import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;

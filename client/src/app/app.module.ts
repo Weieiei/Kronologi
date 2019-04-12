@@ -126,7 +126,7 @@ import { GuestAppointmentComponent } from './pages/guest-appointment/guest-appoi
         ErrorDialogComponent,
         ErrorDialogComponent,
         DetailsComponent,
-        GoogleMapsComponent
+        GoogleMapsComponent,
         SyncCalendarsComponent,
         GuestAppointmentComponent
     ],
