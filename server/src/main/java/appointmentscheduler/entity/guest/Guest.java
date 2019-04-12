@@ -28,9 +28,13 @@ public class Guest extends AuditableEntity {
     @Column(name = "verified")
     private boolean verified;
 
-    @Column(name = "phone_number")
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "guest"
+    )
     private PhoneNumber phoneNumber;
-
+;
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
