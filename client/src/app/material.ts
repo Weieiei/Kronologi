@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-
+import {ScrollingModule} from '@angular/cdk/scrolling';
 import {
     MatButtonModule,
     MatCardModule,
@@ -10,11 +10,14 @@ import {
     MatMenuModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    MatRadioModule,
     MatRippleModule,
     MatSelectModule,
     MatSidenavModule,
     MatSnackBarModule,
-    MatTableModule
+    MatPaginatorModule,
+    MatTableModule,
+    MatExpansionModule
 } from '@angular/material';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,6 +29,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     imports: [
+        MatRadioModule,
+        MatExpansionModule,
         MatButtonModule,
         MatCheckboxModule,
         MatToolbarModule,
@@ -46,9 +51,13 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSidenavModule,
         MatCardModule,
         MatSnackBarModule,
-        MatRippleModule
+        MatRippleModule,
+        MatPaginatorModule,
     ],
     exports: [
+        ScrollingModule,    
+        MatRadioModule,
+        MatExpansionModule,
         MatButtonModule,
         MatCheckboxModule,
         MatToolbarModule,
@@ -69,7 +78,9 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSidenavModule,
         MatCardModule,
         MatSnackBarModule,
-        MatRippleModule
+        MatRippleModule,
+        MatRadioModule,
+        MatPaginatorModule,
     ]
 })
 export class MaterialModule {

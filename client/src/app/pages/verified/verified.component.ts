@@ -19,7 +19,6 @@ export class VerifiedComponent implements OnInit {
             const hash = params.hash;
             if (hash !== undefined) {
                 this.verif.verify(hash).subscribe(res => {
-                    console.log(res.ok);
                     this.result = res.ok;
                 });
             }

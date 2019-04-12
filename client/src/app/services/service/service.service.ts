@@ -13,8 +13,8 @@ export class ServiceService {
     constructor(private http: HttpClient) {
     }
 
-    public getServices(): Observable<ServiceDTO[]> {
-        return this.http.get<ServiceDTO[]>(['api', 'business','services', 1].join('/'));
+    public getServices(businessId:number): Observable<ServiceDTO[]> {
+        return this.http.get<ServiceDTO[]>(['api', 'business','services', businessId].join('/'));
     }
 
     public getPlainServices(): Observable<Service[]> {
@@ -27,6 +27,7 @@ export class ServiceService {
     public registerService(businessId: number, service: ServiceCreateDto): Observable<any> {
         return this.http.post<Service>(['api', 'business', 'services', businessId.toString(), 'service'].join('/'), service);
     }
+    
 //TODO: need to add the businessID instead of s=using '1'
     public addServiceToUser(employeedId: number, serviceId: number):Observable<any> {
         return this.http.post<any>(['api', 'business', 'admin','1', 'service', employeedId, serviceId].join('/'), "");

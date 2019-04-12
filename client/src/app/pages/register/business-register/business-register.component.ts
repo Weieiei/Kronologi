@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ServiceService } from '../../../services/service/service.service';
@@ -8,24 +7,79 @@ import { BusinessUserRegisterDTO } from '../../../interfaces/user/business-user-
 import { BusinessRegisterDTO } from '../../../interfaces/business/business-register-dto';
 import { BusinessDTO } from '../../../interfaces/business/business-dto';
 import { UserService } from '../../../services/user/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
+import { BusinessHoursDTO } from '../../../interfaces/business/businessHours-dto'
+import { FindBusinessDialogComponent } from '../../../components/find-business-dialog/find-business-dialog.component';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { trigger, state, style, transition, animate, group } from '@angular/animations';
+import { PasswordMismatchStateMatcher } from '../../../../shared/password-mismatch-state-matcher';
 
 export interface Domain {
     value: string;
-  }
+}
+
+export interface BusinessHours {
+    start: string;
+    end: string;
+}
+
 @Component ({
   selector: 'app-business-register',
   templateUrl: './business-register.component.html',
-  styleUrls: ['./business-register.component.scss']
+  styleUrls: ['./business-register.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('true', style({
+          'max-height': '500px', 'opacity': '1', 'visibility': 'visible'
+      })),
+      state('false', style({
+          'max-height': '0px', 'opacity': '0', 'visibility': 'hidden'
+      })),
+      transition('true => false', [group([
+          animate('1ms ease-in-out', style({
+              'opacity': '0'
+          })),
+          animate('1ms ease-in-out', style({
+              'max-height': '0px'
+          })),
+          animate('1ms ease-in-out', style({
+              'visibility': 'hidden'
+          }))
+      ]
+      )]),
+      transition('false => true', [group([
+          animate('1ms ease-in-out', style({
+              'visibility': 'visible'
+          })),
+          animate('1ms ease-in-out', style({
+              'max-height': '500px'
+          })),
+          animate('1ms ease-in-out', style({
+              'opacity': '1'
+          }))
+      ]
+      )])
+    ])
+  ]
 })
 export class BusinessRegisterComponent implements OnInit {
 
-    firstFormGroup: FormGroup;
-    secondFormGroup: FormGroup;
-    thirdFormGroup: FormGroup;
+    daysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    possibleBusinessHours: string[] = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00',
+       '11:00', '12:00', '13:00', '14:00', '15,00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'];
+    selectedBusiness: BusinessDTO;
+    businessHourMap = new Map();
+    animationState = true;
+    fileSelectMsg = 'No file selected yet.';
+    fileUploadMsg = 'No file uploaded yet.';
+    disabled = false;
+    personalInfoForm: FormGroup;
+    businessInfoForm: FormGroup;
+    serviceInfoForm: FormGroup;
     selectedFile: File = null;
 // new business object
     business: BusinessDTO;
@@ -39,10 +93,15 @@ export class BusinessRegisterComponent implements OnInit {
         {value: 'Other'}
       ];
     description: string;
-// new service object
+    address: string;
+    city:  string;
+    province: string;
+    country: string;
+    postalCode: string;
+    // new service object
     service: string;
     service_duration: number;
-//new user object
+    // new user object
     firstName: string;
     lastName: string;
     email: string;
@@ -60,8 +119,12 @@ export class BusinessRegisterComponent implements OnInit {
     registerPhone = false;
 
     businessId: number;
+    matcher: PasswordMismatchStateMatcher;
 
+    index: number = 0;
     constructor(
+        private spinner: NgxSpinnerService,
+        private dialog: MatDialog,
         private http: HttpClient,
         private router: Router,
         private _formBuilder: FormBuilder,
@@ -69,22 +132,32 @@ export class BusinessRegisterComponent implements OnInit {
         private serviceService: ServiceService,
         private googleAnalytics: GoogleAnalyticsService,
         private businessService: BusinessService
-         ) { }
+         ) {
+        this.matcher = new PasswordMismatchStateMatcher();
+    }
 
     ngOnInit() {
-        this.firstFormGroup = this._formBuilder.group({
-          firstCtrl: ['', Validators.required]
-        });
-        this.secondFormGroup = this._formBuilder.group({
+        this.personalInfoForm = this._formBuilder.group({
+            firstName: [this.firstName || '',  [Validators.required] ],
+            lastName: [this.lastName || '',  [Validators.required] ],
+            email: [this.email || '',  [Validators.required, Validators.email] ],
+            password: [this.password || '',  [Validators.required, Validators.pattern('^(?=.*\\d)(?=.*[a-zA-Z]).{6,30}$')] ],
+            confirmPassword: [this.confirmPassword || '',  [Validators.required] ],
+            areaCode: [this.areaCode || '',  [] ],
+            number: [this.number || '',  [] ],
+        }, {validator: this.checkPasswords});
+        this.businessInfoForm = this._formBuilder.group({
           secondCtrl: ['', Validators.required]
         });
-        this.thirdFormGroup = this._formBuilder.group({
+        this.serviceInfoForm = this._formBuilder.group({
             thirdCtrl: ['', Validators.required]
           });
       }
 
-    onFileSelected(event) {
-        this.selectedFile = <File> event.target.files[0];
+    checkPasswords(inputFormGroup: FormGroup) {
+        const password = inputFormGroup.controls.password.value;
+        const confirmPassword = inputFormGroup.controls.confirmPassword.value;
+        return password === confirmPassword ? null : { mismatched: true };
     }
     onUpload()  {
         const  fd = new FormData();
@@ -92,7 +165,7 @@ export class BusinessRegisterComponent implements OnInit {
         this.http.post('https://url', fd )
                 .subscribe(
                     response => {
-                    console.log(response);
+                        console.log(response);
                 });
     }
 
@@ -106,71 +179,59 @@ export class BusinessRegisterComponent implements OnInit {
     }
 
     business_register() {
-        // register business
-        console.log(this.businessName);
-        console.log(this.businessDomain);
-        console.log(this.description);
+        this.spinner.show();
+        this.animationState = false;
+        const businessHoursDTO: BusinessHoursDTO[] = [];
+        if (!this.isEmptyObject(this.businessHourMap)) {
+            this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) => {
+                const businessHourDTOTemp: BusinessHoursDTO = {
+                    day: day,
+                    openHour : openAndClose.start,
+                    closeHour : openAndClose.end
+                };
+                businessHoursDTO.push(businessHourDTOTemp);
+            });
+        }
+
+        const finalizedAddress: string = this.address + ',' + this.city + ',' + this.province + ' ' + this.postalCode;
         const payload_business: BusinessRegisterDTO = {
             name: this.businessName,
             domain: this.businessDomain,
-            description: this.description
+            description: this.description,
+            formatted_address: this.address
         };
-        this.businessService.createBusiness(payload_business).subscribe(
-            res => {
-                console.log(res);
-                this.businessId = res;
 
-                const payload_service: ServiceCreateDto = {
+        const payload_service: ServiceCreateDto = {
+            name: this.service,
+            duration: this.service_duration,
+        };
 
-                    name: this.service,
-                    duration: this.service_duration,
-                   // businessId: this.businessId
-                     };
-                 this.serviceService.registerService(this.businessId, payload_service).subscribe(
-                     res => {
-                        console.log(res);
-                     },
-                     err => console.log(err)
-                 );
-         // TODO: when register user, we need to add business id, also need to link service to the user
-                 if (this.password === this.confirmPassword ) {
-         console.log(this.firstName);
-                     const payload: BusinessUserRegisterDTO = {
+        let payload: BusinessUserRegisterDTO = null;
+        if (this.password === this.confirmPassword ) {
+        payload = {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            password: this.password,
+            phoneNumber: {
+                countryCode: this.selectedCountry['dialCode'],
+                areaCode: this.areaCode,
+                number: this.number
+            }
+        };
 
-                        firstName: this.firstName,
-                        lastName: this.lastName,
-                        email: this.email,
-                        password: this.password,
-                        phoneNumber: null
-                      //  businessId: this.businessId
-                     };
-
-                     if ( this.registerPhone) {
-                         payload.phoneNumber = {
-                            countryCode: this.selectedCountry['dialCode'],
-                            areaCode: this.areaCode,
-                            number: this.number
-
-                         };
-                     }
-
-                     this.googleAnalytics.trackValues('formSubmit', 'register');
-
-                     this.userService.businessRegister(this.businessId, payload).subscribe(
-                         res => {
-                             console.log(res);
-                             this.router.navigate(['login']);
-                         },
-                         err => console.log(err)
-                     );
-                    } else {
-                        alert('The passwords don\'t match.');
-                    }
+        this.googleAnalytics.trackValues('formSubmit', 'register');
+        this.businessService.createBusiness(payload_business, payload_service, payload, businessHoursDTO, this.selectedFile).subscribe(
+        res => {
+                this.router.navigate(['login']);
             },
-            err => console.log(err)
-        );
-
+        err => {
+            console.log(err);
+            }
+            );
+        }
     }
+
     togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;
     }
@@ -179,6 +240,100 @@ export class BusinessRegisterComponent implements OnInit {
         this.selectedCountry = country;
     }
 
+    selectEvent(file: File): void {
+        this.selectedFile = file;
+        this.fileSelectMsg = file.name;
+    }
+
+    uploadEvent(file: File): void {
+        this.fileUploadMsg = file.name;
+    }
+
+    cancelEvent(): void {
+        this.fileSelectMsg = 'No file selected yet.';
+        this.fileUploadMsg = 'No file uploaded yet.';
+    }
+
+    toggleDisabled(): void {
+        this.disabled = !this.disabled;
+    }
+
+    saveStartTime(day: string, time: string): void {
+        if  (this.businessHourMap.has(day)) {
+            const businessHours: BusinessHours = this.businessHourMap.get(day);
+        businessHours.start = time;
+        } else {
+            const businessHours: BusinessHours = {start: time, end: ''};
+        this.businessHourMap.set(day, businessHours);
+        }
+    }
+
+    saveEndTime(day: string, time: string): void {
+        if (this.businessHourMap.has(day)) {
+            const businessHours: BusinessHours = this.businessHourMap.get(day);
+            businessHours.end = time;
+        } else {
+            const businessHours: BusinessHours = {start: '', end: time};
+            this.businessHourMap.set(day, businessHours);
+        }
+    }
+
+    isTimeLower(day: string, end: string): boolean {
+        if (this.businessHourMap.has(day)) {
+            const startString: string[] = this.businessHourMap.get(day).start.split(':');
+            const startTime: number = (+startString[0]) * 60 * 60 + (+startString[1]) * 60;
+
+            const endString: string[] = end.split(':');
+            const endTime: number = (+endString[0]) * 60 * 60 + (+endString[1]) * 60;
+
+            if (endTime <= startTime) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isEmptyObject(obj: any): boolean {
+        return Object.keys(obj).length === 0 && obj.constructor === Object;
+    }
+
+    openFindBusinessDialog() {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = '400px';
+        dialogConfig.height = '400px';
+
+        dialogConfig.data = {
+            business: this.selectedBusiness
+        };
+        const dialogRef = this.dialog.open(FindBusinessDialogComponent, dialogConfig);
+
+        dialogRef.afterClosed().subscribe(business => {
+        });
+    }
+
+    stopRegistering() {
+        this.animationState = true;
+        this.spinner.hide();
+    }
+
+    get newServiceForms() {
+        return this.serviceInfoForm.get('new_services') as FormArray;
+    
+    }
+    addService() {
+
+        const newService = this._formBuilder.group({
+          newServiceName: [],
+          newServiceDuration: [],
+        });
+        this.newServiceForms.push(newService);
+    }
+    deleteService(i) {
+    this.newServiceForms.removeAt(i);
+  }
 }
 
 /*

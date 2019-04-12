@@ -41,4 +41,7 @@ export class ReasonDialogComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
+  getReason():boolean{
+    return this.reason=='Cancelled by customer'
+  }
 }

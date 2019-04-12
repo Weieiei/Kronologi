@@ -33,7 +33,6 @@ export class ImageResizeService {
               unsharpRadius: 0.6,
               unsharpThreshold: 2
       }).then(result => {
-          console.log(`resize done!  ${result}`);
           return result;})
           .catch(err => console.log(err))
 

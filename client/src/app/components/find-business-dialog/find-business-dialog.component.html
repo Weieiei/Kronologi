@@ -1,0 +1,76 @@
+<div>
+    <div [@slideInOut]="animationState">
+      <h2 mat-dialog-title *ngIf="!businessWasFetched">Let's look for your business!</h2>
+      <h2 mat-dialog-title *ngIf="businessWasFetched">Here's what we found!</h2>
+      <hr>
+      <div *ngIf="!businessWasFetched">
+        <mat-dialog-content>
+            <mat-form-field>
+              <input matInput placeholder="Enter Business Name" [(ngModel)]="data.businessName">
+            </mat-form-field>
+        </mat-dialog-content>
+        <hr>
+        <mat-dialog-actions>
+            <div fxLayout="row">
+                <div class="padding-right-div">
+                  <button mat-raised-button (click)="searchBusiness(data.businessName)">Search</button>&nbsp;
+                </div>
+                <div>
+                  <button mat-raised-button color="primary" (click)="closeDialog()">Cancel</button>
+                </div>
+              </div>
+        </mat-dialog-actions>
+      </div>
+
+      <div *ngIf="businessWasFetched">
+        <mat-accordion>
+            <mat-radio-group  [(ngModel)]="selectedContent">
+              <mat-expansion-panel  *ngFor="let business of businessArray"  >
+                  <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <mat-radio-button value="businessChosen" (click)="onSelectionChange(business)">
+                            {{ business.name }}
+                        </mat-radio-button>
+                      </mat-panel-title>
+                      <mat-panel-description>
+                        {{ business.formattedAddress }}
+                      </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  
+                  <div  [ngClass] = "main">
+                        <agm-map  [latitude]='business.lat' [longitude]='business.lng' 
+                        [mapTypeId]='mapType'>
+                        <agm-marker [latitude]="business.lat" [longitude]="business.lng"></agm-marker>
+                        </agm-map> 
+
+                        <mat-card>
+                            <div *ngFor="let dayInfo of business.business_hours">
+                                {{ dayInfo.day }} :  {{ dayInfo.openHour}}   -    {{ dayInfo.closeHour }}
+                            </div>
+                        </mat-card>
+                  </div>
+              </mat-expansion-panel>
+          </mat-radio-group>
+        </mat-accordion>
+      </div>
+      
+
+      <div *ngIf="businessWasFetched">
+        <mat-dialog-actions align="bottom">
+          <button mat-raised-button color="primary" (click)="closeDialog()">Cancel</button>
+          <button mat-raised-button color ="primary"[mat-dialog-close]="data" >This is my business!</button>
+        </mat-dialog-actions>
+      </div>
+  </div>
+  
+  <div [@slideInOut]="!animationState">
+      <h2 mat-dialog-title>We're looking for your business, hang tight!</h2>
+      <hr>
+      <mat-dialog-content>
+      <ngx-spinner bdColor = "rgba(0, 0, 0, 0)"   size = "medium"   color = "#800080" type = "ball-scale-ripple-multiple" fullScreen = "false" >
+            <p style="color: purple" > Loading... </p>
+      </ngx-spinner>
+
+    </mat-dialog-content>
+  </div>
+</div>

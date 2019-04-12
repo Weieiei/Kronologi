@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Input} from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
 import { MatDialog } from '@angular/material';
 import { UserAppointmentDTO } from '../../../../interfaces/appointment/user-appointment-dto';
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
     styleUrls: ['./appointments.component.scss']
 })
 export class AppointmentsComponent implements OnInit {
-
+    @Input()  businessId;
     upcomingAppointments: UserAppointmentDTO[];
     pastAppointments: UserAppointmentDTO[];
 
@@ -41,7 +41,7 @@ export class AppointmentsComponent implements OnInit {
     }
 
     getMyAppointments(): void {
-        this.appointmentService.getMyAppointments().subscribe(
+        this.appointmentService.getMyAppointments(this.businessId).subscribe(
             res => {
                 const now = new Date();
 

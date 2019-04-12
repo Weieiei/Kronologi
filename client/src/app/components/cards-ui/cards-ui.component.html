@@ -1,96 +1,192 @@
-<section class="cards-ui"  [ngClass]="{'weather__card-dark': darkModeActive}">
-  <div class="body__container" class = 'image-cropper'>
-    <svg class="city__illustration" id="City_Illustration" data-name="City Illustration"  viewBox="1367.8 616.6 403.6 331.4">
-      <defs>
-        <style>
-          .cls-1{fill:#a1ffd9}.cls-2{fill:#f5f5f5}.cls-3{fill:#c4d1fe}.cls-6{fill:#bffee6}.cls-7{fill:#31feae}.cls-11{fill:#7d9cff}.cls-14{fill:#5f84fb}.cls-17,.cls-19{fill:none}.cls-17{stroke:#fff;stroke-width:2px}.cls-18{fill:#606cb9}.cls-19{stroke:#a1ffd9;stroke-width:3px}
-        </style>
-      </defs>
-      <path id="City_grass" d="M1488.3 646.3v-30H1892v30z" class="cls-1" data-name="City grass" transform="translate(-120.5 301.7)"/>
-      <g id="Buidings">
-        <g id="Buiding_Shadow" data-name="Buiding Shadow">
-          <path id="Path_23" d="M1488.3 777.8V616.3h26.6v161.5z" class="cls-2" data-name="Path 23" transform="translate(-120.5 48.4)"/>
-          <path id="Path_29" d="M1488.3 788.9V616.3h26.6V789z" class="cls-2" data-name="Path 29" transform="translate(-30.5 5.3)"/>
-          <path id="Path_21" d="M1488.3 783.8V616.3h96.8v167.5z" class="cls-2" data-name="Path 21" transform="translate(176.5 45.4)"/>
-          <path id="Path_30" d="M1488.3 735V616.3h34.3V735z" class="cls-2" data-name="Path 30" transform="translate(128.5 48.2)"/>
-          <path id="Path_31" d="M1488.3 811V616.3h34.3V811z" class="cls-2" data-name="Path 31" transform="translate(28.5 5.2)"/>
-        </g>
-        <g id="Core">
-          <path id="Path_8" d="M1488.3 771.2V616.3h59.7v154.9z" class="cls-3" data-name="Path 8" transform="translate(-112 54)"/>
-          <path id="Path_9" d="M1488.3 825V616.2h96.8V825z" class="cls-1" data-name="Path 9" transform="translate(-43.5 .3)"/>
-          <path id="Path_10" fill="#7affcb" d="M1488.3 660.7v-44.4h96.8v44.4z" data-name="Path 10" transform="translate(62.5 164.4)"/>
-          <path id="Path_11" d="M1488.3 771.2V616.3h96.8v154.9z" class="cls-3" data-name="Path 11" transform="translate(168.5 54)"/>
-        </g>
-      </g>
-      <path id="City_water" fill="#8091ff" d="M1488.3 692.6v-76.3H1892v76.3z" data-name="City water" transform="translate(-120.5 217.2)"/>
-      <g id="Windows" transform="translate(8 40)">
-        <path id="Path_13" d="M1488.3 628.5v-12.2h36.6v12.2z" class="cls-6" data-name="Path 13" transform="translate(-43.2 -19.8)"/>
-        <path id="Path_14" d="M1488.3 628.5v-12.2h36.6v12.2z" class="cls-7" data-name="Path 14" transform="translate(-43.2 2.2)"/>
-        <path id="Path_25" d="M1488.3 628.5v-12.2h83.7v12.2z" class="cls-7" data-name="Path 25" transform="translate(168.2 110.2)"/>
-        <path id="Path_26" d="M1488.3 628.5v-12.2h83.7v12.2z" class="cls-7" data-name="Path 26" transform="translate(169.2 132.2)"/>
-        <path id="Path_18" fill="#a1feda" d="M1488.3 628.5v-12.2h36.6v12.2z" data-name="Path 18" transform="translate(-108.2 26.2)"/>
-        <path id="Path_20" fill="#3564fb" d="M1488.3 628.5v-12.2h36.6v12.2z" data-name="Path 20" transform="translate(-108.2 146.2)"/>
-        <path id="Path_19" fill="#a2b8ff" d="M1488.3 665.4v-49h36.6v49z" data-name="Path 19" transform="translate(-108.2 54.3)"/>
-        <path id="Path_15" d="M1488.3 651v-34.7h36.6V651z" class="cls-11" data-name="Path 15" transform="translate(-3.2 47.2)"/>
-        <path id="Path_16" fill="#3b5dca" d="M1488.3 651v-34.7h36.6V651z" data-name="Path 16" transform="translate(-46.2 46.2)"/>
-        <path id="Path_17" fill="#597ff7" d="M1488.3 651v-34.7h36.6V651z" data-name="Path 17" transform="translate(-12.2 117.2)"/>
-        <path id="Path_27" d="M1488.3 641.2v-24.9h62.9v24.9z" class="cls-6" data-name="Path 27" transform="translate(169.1 28.2)"/>
-        <path id="Path_28" d="M1488.3 634.3v-18h17.5v18z" class="cls-14" data-name="Path 28" transform="translate(194.4 56)"/>
-        <path id="Path_46" d="M1488.3 634.3v-18h17.5v18z" class="cls-14" data-name="Path 46" transform="translate(194.4 82)"/>
-        <path id="Path_47" d="M1488.3 634.3v-18h17.5v18z" class="cls-14" data-name="Path 47" transform="translate(169.4 82)"/>
-        <path id="Path_48" d="M1488.3 634.3v-18h17.5v18z" class="cls-7" data-name="Path 48" transform="translate(169.4 56)"/>
-        <path id="Path_44" d="M1488.3 634.3v-18h17.5v18z" class="cls-11" data-name="Path 44" transform="translate(232.4 56)"/>
-        <path id="Path_45" fill="#aebff7" d="M1488.3 634.3v-18h17.5v18z" data-name="Path 45" transform="translate(232.4 84)"/>
-      </g>
-      <path id="Bridge" fill="#ccc8ff" d="M1580.5 875.5c1-.3-17.9-39 .2-85.3h40s-11.4 42.6 5.5 85.3c-47.4-1.7-46.7.3-45.7 0z" transform="translate(8 40)"/>
-      <g id="Water_Turbulence" data-name="Water Turbulence" transform="translate(8 40)">
-        <g id="Group_4" data-name="Group 4">
-          <path id="Path_42" d="M1386.3 831.3s18.2 3.5 21.8-5.2" class="cls-17" data-name="Path 42" transform="translate(11.8 2)"/>
-          <path id="Path_43" d="M1401.3 831.3a23 23 0 0 1-3.7.7c-3.8.3-9.7-.2-11.3-5.9" class="cls-17" data-name="Path 43" transform="translate(32.1 2)"/>
-        </g>
-        <g id="Group_5" data-name="Group 5" transform="translate(74 -14)">
-          <path id="Path_42-2" d="M1386.3 831.3s18.2 3.5 21.8-5.2" class="cls-17" data-name="Path 42" transform="translate(11.8 2)"/>
-          <path id="Path_43-2" d="M1401.3 831.3a23 23 0 0 1-3.7.7c-3.8.3-9.7-.2-11.3-5.9" class="cls-17" data-name="Path 43" transform="translate(32.1 2)"/>
-        </g>
-        <g id="Group_8" data-name="Group 8" transform="translate(85 17)">
-          <path id="Path_42-3" d="M1386.3 831.3s18.2 3.5 21.8-5.2" class="cls-17" data-name="Path 42" transform="translate(11.8 2)"/>
-          <path id="Path_43-3" d="M1401.3 831.3a23 23 0 0 1-3.7.7c-3.8.3-9.7-.2-11.3-5.9" class="cls-17" data-name="Path 43" transform="translate(32.1 2)"/>
-        </g>
-        <g id="Group_17" data-name="Group 17" transform="translate(315 14)">
-          <path id="Path_42-4" d="M1386.3 831.3s18.2 3.5 21.8-5.2" class="cls-17" data-name="Path 42" transform="translate(11.8 2)"/>
-          <path id="Path_43-4" d="M1401.3 831.3a23 23 0 0 1-3.7.7c-3.8.3-9.7-.2-11.3-5.9" class="cls-17" data-name="Path 43" transform="translate(32.1 2)"/>
-        </g>
-        <g id="Group_18" data-name="Group 18" transform="translate(245 -17)">
-          <path id="Path_42-5" d="M1386.3 831.3s18.2 3.5 21.8-5.2" class="cls-17" data-name="Path 42" transform="translate(11.8 2)"/>
-          <path id="Path_43-5" d="M1401.3 831.3a23 23 0 0 1-3.7.7c-3.8.3-9.7-.2-11.3-5.9" class="cls-17" data-name="Path 43" transform="translate(32.1 2)"/>
-        </g>
-      </g>
-      <g id="Fence" transform="translate(8 40)">
-        <g id="Poles">
-          <rect id="Rectangle_13" width="5" height="25" class="cls-18" data-name="Rectangle 13" rx="2" transform="translate(1375 858)"/>
-          <rect id="Rectangle_18" width="5" height="25" class="cls-18" data-name="Rectangle 18" rx="2" transform="translate(1450 858)"/>
-          <rect id="Rectangle_21" width="5" height="25" class="cls-18" data-name="Rectangle 21" rx="2" transform="translate(1525 858)"/>
-          <rect id="Rectangle_14" width="5" height="25" class="cls-18" data-name="Rectangle 14" rx="2" transform="translate(1400 858)"/>
-          <rect id="Rectangle_17" width="5" height="25" class="cls-18" data-name="Rectangle 17" rx="2" transform="translate(1475 858)"/>
-          <rect id="Rectangle_20" width="5" height="25" class="cls-18" data-name="Rectangle 20" rx="2" transform="translate(1550 858)"/>
-          <rect id="Rectangle_15" width="5" height="25" class="cls-18" data-name="Rectangle 15" rx="2" transform="translate(1425 858)"/>
-          <rect id="Rectangle_16" width="5" height="25" class="cls-18" data-name="Rectangle 16" rx="2" transform="translate(1500 858)"/>
-        </g>
-        <g id="Ropes">
-          <path id="Path_45-2" d="M1377.5 858c.4-1 14.2 17 25.4 0" class="cls-19" data-name="Path 45" transform="translate(0 4)"/>
-          <path id="Path_46-2" d="M1377.5 858c.4-1 14.2 17 25.4 0" class="cls-19" data-name="Path 46" transform="translate(25 5)"/>
-          <path id="Path_47-2" d="M1377.5 858c.4-1 14.2 17 25.4 0" class="cls-19" data-name="Path 47" transform="translate(50 3)"/>
-          <path id="Path_48-2" d="M1377.5 858c.4-1 14.2 17 25.4 0" class="cls-19" data-name="Path 48" transform="translate(75 5)"/>
-          <path id="Path_49" d="M1377.5 858c.4-1 14.2 17 25.4 0" class="cls-19" data-name="Path 49" transform="translate(101 3)"/>
-          <path id="Path_50" d="M1377.5 858c.4-1 14.2 17 25.4 0" class="cls-19" data-name="Path 50" transform="translate(125 7)"/>
-          <path id="Path_51" d="M1377.5 858c.4-1 14.2 17 25.4 0" class="cls-19" data-name="Path 51" transform="translate(150 5)"/>
-        </g>
-      </g>
-    </svg>
+<section class="cards-ui"  [ngClass]="{'cards-ui-dark': darkModeActive }"  [ngStyle]="bkUrl">
+  <div class="main">
+        <div class="quarter quarter3"  [ngClass]="{'quarter3-dark': darkModeActive }" (click)="button1Function()">
+                          <style type='text/css'>
+                                 #warped {position: relative; display: block; width:588px; height:471px;}
+            
+                                 #warped>span[class^=w]:nth-of-type(n+0){display:block; position:absolute;
+                                 -moz-transform-origin:50% 100%; -webkit-transform-origin:50% 100%; -o-transform-origin:50%
+                                 100%; -ms-transform-origin:50% 100%; transform-origin:50% 100%; }
+            
+                                 #warped span{font-family:'ABeeZee';font-size:22px;font-weight:regular;font-style:normal;
+                                 line-height:0.65; white-space:pre; overflow:visible; padding:0px;}
+            
+                                 #warped .w0 {-moz-transform: rotate(7.08rad);-webkit-transform: rotate(7.08rad);-o-transform:
+                                 rotate(7.08rad);-ms-transform: rotate(7.08rad); transform: rotate(7.08rad);
+                                 width: 15px; height: 14px; left: 160.86px; top: 326.38px;}
+            
+                                 #warped .w1 {-moz-transform: rotate(6.98rad);-webkit-transform: rotate(6.98rad);-o-transform:
+                                 rotate(6.98rad);-ms-transform: rotate(6.98rad); transform: rotate(6.98rad);
+                                 width: 11px; height: 14px; left: 175.96px; top: 338.71px;}
+            
+                                 #warped .w2 {-moz-transform: rotate(6.89rad);-webkit-transform: rotate(6.89rad);-o-transform:
+                                 rotate(6.89rad);-ms-transform: rotate(6.89rad); transform: rotate(6.89rad);
+                                 width: 11px; height: 14px; left: 188.63px; top: 348.48px;}
+            
+                                 #warped .w3 {-moz-transform: rotate(6.8rad);-webkit-transform: rotate(6.8rad);-o-transform:
+                                 rotate(6.8rad);-ms-transform: rotate(6.8rad); transform: rotate(6.8rad);
+                                 width: 11px; height: 14px; left: 202.13px; top: 357.05px;}
+            
+                                 #warped .w4 {-moz-transform: rotate(6.72rad);-webkit-transform: rotate(6.72rad);-o-transform:
+                                 rotate(6.72rad);-ms-transform: rotate(6.72rad); transform: rotate(6.72rad);
+                                 width: 6px; height: 14px; left: 216.6px; top: 363.29px;}
+            
+                                 #warped .w5 {-moz-transform: rotate(6.64rad);-webkit-transform: rotate(6.64rad);-o-transform:
+                                 rotate(6.64rad);-ms-transform: rotate(6.64rad); transform: rotate(6.64rad);
+                                 width: 11px; height: 14px; left: 226.52px; top: 368.58px;}
+            
+                                 #warped .w6 {-moz-transform: rotate(6.55rad);-webkit-transform: rotate(6.55rad);-o-transform:
+                                 rotate(6.55rad);-ms-transform: rotate(6.55rad); transform: rotate(6.55rad);
+                                 width: 11px; height: 14px; left: 241.71px; top: 373.59px;}
+            
+                                 #warped .w7 {-moz-transform: rotate(6.46rad);-webkit-transform: rotate(6.46rad);-o-transform:
+                                 rotate(6.46rad);-ms-transform: rotate(6.46rad); transform: rotate(6.46rad);
+                                 width: 9px; height: 14px; left: 257.31px; top: 376.99px;}
+            
+                                 #warped .w8 {-moz-transform: rotate(5.49rad);-webkit-transform: rotate(5.49rad);-o-transform:
+                                 rotate(5.49rad);-ms-transform: rotate(5.49rad); transform: rotate(5.49rad);
+                                 width: 7px; height: 14px; left: 414.13px; top: 328.43px;}
+            
+                                 #warped .w9 {-moz-transform: rotate(-0.66rad);-webkit-transform: rotate(-0.66rad);-o-transform:
+                                 rotate(-0.66rad);-ms-transform: rotate(-0.66rad); transform: rotate(-0.66rad);
+                                 width: 6px; height: 14px; left: 179.03px; top: 59.98px;}
+            
+                                 #warped .w10 {-moz-transform: rotate(-0.57rad);-webkit-transform: rotate(-0.57rad);-o-transform:
+                                 rotate(-0.57rad);-ms-transform: rotate(-0.57rad); transform: rotate(-0.57rad);
+                                 width: 17px; height: 14px; left: 187.06px; top: 50.54px;}
+            
+                                 #warped .w11 {-moz-transform: rotate(-0.47rad);-webkit-transform: rotate(-0.47rad);-o-transform:
+                                 rotate(-0.47rad);-ms-transform: rotate(-0.47rad); transform: rotate(-0.47rad);
+                                 width: 10px; height: 14px; left: 206.66px; top: 41.44px;}
+            
+                                 #warped .w12 {-moz-transform: rotate(-0.38rad);-webkit-transform: rotate(-0.38rad);-o-transform:
+                                 rotate(-0.38rad);-ms-transform: rotate(-0.38rad); transform: rotate(-0.38rad);
+                                 width: 11px; height: 14px; left: 220.3px; top: 35.1px;}
+            
+                                 #warped .w13 {-moz-transform: rotate(-0.31rad);-webkit-transform: rotate(-0.31rad);-o-transform:
+                                 rotate(-0.31rad);-ms-transform: rotate(-0.31rad); transform: rotate(-0.31rad);
+                                 width: 6px; height: 14px; left: 235.51px; top: 30.56px;}
+            
+                                 #warped .w14 {-moz-transform: rotate(-0.24rad);-webkit-transform: rotate(-0.24rad);-o-transform:
+                                 rotate(-0.24rad);-ms-transform: rotate(-0.24rad); transform: rotate(-0.24rad);
+                                 width: 9px; height: 14px; left: 246.05px; top: 27.2px;}
+            
+                                 #warped .w15 {-moz-transform: rotate(-0.17rad);-webkit-transform: rotate(-0.17rad);-o-transform:
+                                 rotate(-0.17rad);-ms-transform: rotate(-0.17rad); transform: rotate(-0.17rad);
+                                 width: 7px; height: 14px; left: 259.78px; top: 24.58px;}
+            
+                          </style>
+                          <div id='warped' style="
+                          padding-left: 5rem;
+                          top: -114%;
+                          left: -65%;
+                          transform: rotate(-2deg);
+                          width: 0px;
+                          height: 0px;">
+                                 <span class='w0'>B</span><span class='w1'>o</span><span class='w2'>o</span><span class='w3'>k</span><span class='w4'>i</span><span class='w5'>n</span><span class='w6'>g</span><span class='w7'>s</span>
+                          </div>
+        </div>
+        <div class="quarter quarter4" [ngClass]="{'quarter4-dark': darkModeActive }" (click)="button2Function()">
+                          <style type='text/css'>
+                                 #warped_book {position: relative; display: block; width:588px; height:471px;}
+            
+                                 #warped_book>span[class^=w]:nth-of-type(n+0){display:block; position:absolute;
+                                 -moz-transform-origin:50% 100%; -webkit-transform-origin:50% 100%; -o-transform-origin:50%
+                                 100%; -ms-transform-origin:50% 100%; transform-origin:50% 100%; }
+            
+                                 #warped_book span{font-family:'ABeeZee';font-size:22px;font-weight:regular;font-style:normal;
+                                 line-height:0.65; white-space:pre; overflow:visible; padding:0px;}
+            
+                                 #warped_book .w0 {-moz-transform: rotate(6.25rad);-webkit-transform: rotate(6.25rad);-o-transform:
+                                 rotate(6.25rad);-ms-transform: rotate(6.25rad); transform: rotate(6.25rad);
+                                 width: 15px; height: 14px; left: 291px; top: 379.94px;}
+            
+                                 #warped_book .w1 {-moz-transform: rotate(6.15rad);-webkit-transform: rotate(6.15rad);-o-transform:
+                                 rotate(6.15rad);-ms-transform: rotate(6.15rad); transform: rotate(6.15rad);
+                                 width: 11px; height: 14px; left: 310.94px; top: 378.54px;}
+            
+                                 #warped_book .w2 {-moz-transform: rotate(6.06rad);-webkit-transform: rotate(6.06rad);-o-transform:
+                                 rotate(6.06rad);-ms-transform: rotate(6.06rad); transform: rotate(6.06rad);
+                                 width: 11px; height: 14px; left: 326.69px; top: 375.75px;}
+            
+                                 #warped_book .w3 {-moz-transform: rotate(5.96rad);-webkit-transform: rotate(5.96rad);-o-transform:
+                                 rotate(5.96rad);-ms-transform: rotate(5.96rad); transform: rotate(5.96rad);
+                                 width: 11px; height: 14px; left: 342.12px; top: 371.53px;}
+            
+                                 #warped_book .w4 {-moz-transform: rotate(5.89rad);-webkit-transform: rotate(5.89rad);-o-transform:
+                                 rotate(5.89rad);-ms-transform: rotate(5.89rad); transform: rotate(5.89rad);
+                                 width: 6px; height: 14px; left: 357.29px; top: 366.87px;}
+            
+                                 #warped_book .w5 {-moz-transform: rotate(5.8rad);-webkit-transform: rotate(5.8rad);-o-transform:
+                                 rotate(5.8rad);-ms-transform: rotate(5.8rad); transform: rotate(5.8rad);
+                                 width: 16px; height: 14px; left: 366.78px; top: 360.11px;}
+            
+                                 #warped_book .w6 {-moz-transform: rotate(5.69rad);-webkit-transform: rotate(5.69rad);-o-transform:
+                                 rotate(5.69rad);-ms-transform: rotate(5.69rad); transform: rotate(5.69rad);
+                                 width: 11px; height: 14px; left: 385.18px; top: 350.66px;}
+            
+                                 #warped_book .w7 {-moz-transform: rotate(5.58rad);-webkit-transform: rotate(5.58rad);-o-transform:
+                                 rotate(5.58rad);-ms-transform: rotate(5.58rad); transform: rotate(5.58rad);
+                                 width: 16px; height: 14px; left: 397.48px; top: 339.59px;}
+            
+                                 #warped_book .w8 {-moz-transform: rotate(5.49rad);-webkit-transform: rotate(5.49rad);-o-transform:
+                                 rotate(5.49rad);-ms-transform: rotate(5.49rad); transform: rotate(5.49rad);
+                                 width: 7px; height: 14px; left: 414.13px; top: 328.43px;}
+            
+                                 #warped_book .w9 {-moz-transform: rotate(-0.66rad);-webkit-transform: rotate(-0.66rad);-o-transform:
+                                 rotate(-0.66rad);-ms-transform: rotate(-0.66rad); transform: rotate(-0.66rad);
+                                 width: 6px; height: 14px; left: 179.03px; top: 59.98px;}
+            
+                                 #warped_book .w10 {-moz-transform: rotate(-0.57rad);-webkit-transform: rotate(-0.57rad);-o-transform:
+                                 rotate(-0.57rad);-ms-transform: rotate(-0.57rad); transform: rotate(-0.57rad);
+                                 width: 17px; height: 14px; left: 187.06px; top: 50.54px;}
+            
+                                 #warped_book .w11 {-moz-transform: rotate(-0.47rad);-webkit-transform: rotate(-0.47rad);-o-transform:
+                                 rotate(-0.47rad);-ms-transform: rotate(-0.47rad); transform: rotate(-0.47rad);
+                                 width: 10px; height: 14px; left: 206.66px; top: 41.44px;}
+            
+                                 #warped_book .w12 {-moz-transform: rotate(-0.38rad);-webkit-transform: rotate(-0.38rad);-o-transform:
+                                 rotate(-0.38rad);-ms-transform: rotate(-0.38rad); transform: rotate(-0.38rad);
+                                 width: 11px; height: 14px; left: 220.3px; top: 35.1px;}
+            
+                                 #warped_book .w13 {-moz-transform: rotate(-0.31rad);-webkit-transform: rotate(-0.31rad);-o-transform:
+                                 rotate(-0.31rad);-ms-transform: rotate(-0.31rad); transform: rotate(-0.31rad);
+                                 width: 6px; height: 14px; left: 235.51px; top: 30.56px;}
+            
+                                 #warped_book .w14 {-moz-transform: rotate(-0.24rad);-webkit-transform: rotate(-0.24rad);-o-transform:
+                                 rotate(-0.24rad);-ms-transform: rotate(-0.24rad); transform: rotate(-0.24rad);
+                                 width: 9px; height: 14px; left: 246.05px; top: 27.2px;}
+            
+                                 #warped_book .w15 {-moz-transform: rotate(-0.17rad);-webkit-transform: rotate(-0.17rad);-o-transform:
+                                 rotate(-0.17rad);-ms-transform: rotate(-0.17rad); transform: rotate(-0.17rad);
+                                 width: 7px; height: 14px; left: 259.78px; top: 24.58px;}
+            
+                          </style>
+                          <div id='warped_book' style="
+                                margin-left: .4rem;
+                                top: -125%;
+                                right: 155%;
+                                width: 0px;
+                                height: 0px;
+                                transform: rotate(-1deg);">
+                                 <span class='w0' style="padding-top:1.1rem">B</span><span class='w1' style="padding-top:.9rem">o</span><span class='w2' style="padding-top:.8rem">o</span><span class='w3' style="padding-top:.65rem">k</span><span class='w4'> </span><span class='w5' style="padding-top:.60rem">N</span><span class='w6' style="padding-top:.5rem">o</span><span class='w7' style="padding-top:.35rem">w</span><span class='w8'>!</span>
+                          </div>
+        </div>
+        <div class="bottom" [ngClass]="{'bottom-dark': darkModeActive }">
+          <h3 style="text-align:center; padding-top:.5rem">{{businessName}}</h3>
+          <div style="text-align:center; padding-top:.5rem" >
+              <button mat-raised-button (click)="moreInfo()">
+                  <mat-icon>info</mat-icon>
+                  More information: 
+              </button>
+          </div>
+        </div>
     </div>
-    <span class="city-name__text">{{ businessName }}</span>
-    <div>
-        <button mat-button  class="button__card" (click)="button1Function()"> {{ buttonName1 }}</button>
-        <button mat-button class="button__card" (click)="button2Function()"> {{ buttonName2 }}</button>
-    </div>  
+  <!-- <div>
+      <button mat-raised-button  class="button__card" (click)="button1Function()" style="margin-right:1rem"> {{ buttonName1 }}</button>
+      <button mat-raised-button class="button__card" (click)="button2Function()"> {{ buttonName2 }}</button>
+  </div>   -->
 </section>
+             
+
+

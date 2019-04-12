@@ -1,8 +1,12 @@
 <div *ngIf="services?.length">
 
-    <p>The system has {{ services?.length }} service(s):</p>
+    <p>The system has {{ componentState.services?.length }} service(s):</p>
+    <app-search-input
+        [placeholderText]="'Search'"
+        (changed)="onSearch($event)">
+    </app-search-input>
 
-    <table mat-table [dataSource]="services" class="mat-elevation-z8">
+    <table mat-table [dataSource]="componentState.services" class="mat-elevation-z8">
 
         <!-- Service Column -->
         <ng-container matColumnDef="id">

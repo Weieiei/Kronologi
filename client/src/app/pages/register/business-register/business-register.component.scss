@@ -31,3 +31,55 @@
     background:rgba(255,255,255, 0.9);
 }
 
+.div-row{
+    padding: 1.5rem;
+}
+
+.div-center-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.div-text-box-size{
+    width:10rem;
+}
+
+.div-indicator-text{
+    padding-top:1.5rem;
+    padding-right:.75rem;
+}
+
+.button-color{
+   background-color:#800020;
+   border-radius:.5rem;
+   color:white;
+   padding-left:2rem;
+   padding-right:2rem;
+   padding-top:.25rem;
+   padding-bottom:.25rem;
+}
+
+.button-color-sign-in{
+    background-color:#800020;
+    border-radius:.5rem;
+    color:white;
+    padding-left:2rem;
+    padding-right:2rem;
+    padding-top:.25rem;
+    padding-bottom:.25rem;
+ }
+
+ 
+.file-selector-div{
+    margin-top:.85rem;
+}
+
+.div-file-selector-text{
+    padding-top:1.5rem;
+    padding-right:.25rem;
+}
+
+.phone-container {
+    padding-top: 15px;
+}

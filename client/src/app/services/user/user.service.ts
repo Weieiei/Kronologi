@@ -30,10 +30,6 @@ export class UserService {
         return this.http.post<any>(['api', 'user', 'register'].join('/'), payload);
     }
 
-    businessRegister(businessId: number, payload: BusinessUserRegisterDTO): Observable<any> {
-        return this.http.post<any>(['api', 'user', businessId.toString(), 'business_register'].join('/'), payload);
-    }
-
     login(payload: UserLoginDTO): Observable<any> {
         return this.http.post(['api', 'user', 'login'].join('/'), payload);
     }
@@ -154,4 +150,16 @@ export class UserService {
     changeUserToEmployee(id: number): Observable<any> {
         return this.http.post<any[]>(['api', 'business','admin','1', 'user', 'employee', id].join('/'), "");
     }
-}
+
+    uploadUserPicture(userFile: File): Observable<any> {
+        let formData = new FormData();
+        formData.append('file', userFile);
+        return this.http.post(['api', 'user', 'profile'].join('/'), formData);
+        }
+
+    getUserProfile(): Observable<any> {
+       return this.http.get<any>(['api', 'user', 'profile'].join('/'));
+    }
+
+
+    }

@@ -25,7 +25,7 @@ export class AssignServicesDialogComponent {
         this.dialogRef.close();
     }
 
-    onDialogAccept(employeeId: number): void {
+    onDialogAccept(): void {
         this.serviceService.addServiceToUser(this.data.user.id, this.selectedService.id
         ).subscribe(
                 res => this.dialogRef.close(),

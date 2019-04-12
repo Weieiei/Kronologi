@@ -1,0 +1,23 @@
+<mat-grid-list cols="4" rowHeight="2:1">
+    <mat-grid-tile *ngFor="let service of services">
+        <mat-card class="service-card">
+            <!--<img mat-card-image src="../assets/images/alex-bertha-215867-unsplash.jpg">-->
+            <mat-card-header>
+                <mat-card-title>{{service.name}}</mat-card-title>
+                <mat-card-subtitle>100 $</mat-card-subtitle>
+                <mat-card-subtitle>
+                    <mat-icon appButtonIcon>access_time</mat-icon>
+                    <span>  {{ service.duration }} minutes</span>
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-actions>
+                <button mat-button (click)="selectService(service)">SELECT</button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+<mat-paginator [length]=componentState.totalItems
+               [pageSize]=componentState.currentPageSize
+               [pageSizeOptions]=itemsPerPageOptions
+               (page)="printPageEvent($event)">
+</mat-paginator>

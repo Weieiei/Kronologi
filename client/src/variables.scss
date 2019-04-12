@@ -29,3 +29,10 @@ $dark-primary: mat-palette($mat-indigo);
 $dark-accent:  mat-palette($mat-pink, A200, A100, A400);
 $dark-warn:    mat-palette($mat-red);
 $dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+
+//light theme
+$light-primary: mat-palette($mat-gray);
+$light-accent:  mat-palette($mat-orange, A200, A100, A400);
+$light-warn:    mat-palette($mat-yellow);
+$light-theme:   mat-light-theme($light-primary, $light-accent, $light-warn);

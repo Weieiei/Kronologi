@@ -29,7 +29,7 @@ public class FileController {
 
     @LogREST
     @PostMapping("/business/{businessId}/uploadFile")
-    public String uploadFile(@RequestParam("file") MultipartFile aFile, @PathVariable long businessId) {
+    public String uploadFile(@RequestPart("file") MultipartFile aFile, @PathVariable long businessId) {
         File file = fileStorageService.saveFile(aFile, businessId);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()

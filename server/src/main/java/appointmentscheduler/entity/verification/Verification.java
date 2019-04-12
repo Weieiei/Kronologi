@@ -27,15 +27,12 @@ public class Verification extends AuditableEntity {
     @Column(name = "hash")
     private String hash;
 
-    @ManyToOne
-    @JoinColumn(name = "business_id", nullable = true)
-    private Business business;
-
     public Verification() { }
 
     public Verification(User user) {
         this.user = user;
     }
+
 
     public Verification(Guest guest) {
 
@@ -88,11 +85,5 @@ public class Verification extends AuditableEntity {
 
     public void setHash(String date) { this.hash = date; }
 
-    public Business getBusiness() {
-        return business;
-    }
 
-    public void setBusiness(Business business) {
-        this.business = business;
-    }
 }
