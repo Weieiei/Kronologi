@@ -29,7 +29,7 @@ public class Employee extends User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "shift_id")
-    private Set<Shift> shifts;
+    private Set<Shift> shifts = new HashSet<>();
 
 
     public Set<EmployeeService> getServices() {
@@ -146,5 +146,9 @@ public class Employee extends User {
             }
         }
         return false;
+    }
+
+    public void addShift(Shift shift){
+        shifts.add(shift);
     }
 }

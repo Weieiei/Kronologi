@@ -139,44 +139,6 @@ public class AppointmentServiceTest {
         appointmentService.add(mockAppointmentDTO, 1, 1);
     }
 
-    @Ignore
-    @Test(expected = EmployeeAppointmentConflictException.class)
-    public void addShouldFailBecauseEmployeeIsBookedAlready() {
-        AppointmentDTO mockAppointmentDTO = new AppointmentDTO();
-        final Employee mockEmployee = mock(Employee.class);
-        final Service mockService = mock(Service.class);
-        final Business mockBusiness = mock(Business.class);
-        final Shift mockShift = mock(Shift.class);
-        EmployeeService mockEmployeeService = mock(EmployeeService.class);
-        final User client = mock(User.class);
-        final long empId = 1;
-        HashSet<EmployeeService> employeeServiceHashSet = new HashSet<>();
-        List<Appointment> employeeAppointments = new ArrayList<>();
-
-        //set DTO times, will be converted into appointment object in service
-        mockAppointmentDTO.setDate(LocalDate.now());
-        mockAppointmentDTO.setStartTime(LocalTime.now());
-        when(mockService.getDuration()).thenReturn(1);
-
-        when(mockEmployee.getId()).thenReturn(empId);
-
-        //add employee to selected service
-        when(mockEmployeeService.getEmployee()).thenReturn(mockEmployee);
-        employeeServiceHashSet.add(mockEmployeeService);
-        when(mockService.getEmployees()).thenReturn(employeeServiceHashSet);
-
-        //employee is available during appointment time
-        when(mockEmployee.isAvailable(any())).thenReturn(mockShift);
-
-        mockGetAppointment(client, mockEmployee, mockService, mockBusiness);
-
-        //Add appointment for employee that conflicts with new appointment
-        employeeAppointments.add(new Appointment(client, mockEmployee, mockService, LocalDate.now(),LocalTime.now(), "mock", mockBusiness));
-
-        when(appointmentRepository.findByDateAndEmployeeIdAndBusinessIdAndStatus(any(), anyLong(), anyLong(), any())).thenReturn(employeeAppointments);
-
-        appointmentService.add(mockAppointmentDTO, 1, 1);
-    }
 
     @Test(expected = ClientAppointmentConflictException.class)
     public void addShouldFailBecauseClientIsBookedAlready() {
