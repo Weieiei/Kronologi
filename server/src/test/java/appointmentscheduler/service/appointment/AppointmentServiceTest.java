@@ -107,37 +107,6 @@ public class AppointmentServiceTest {
     }
 
 
-    @Ignore
-    @Test(expected = EmployeeNotWorkingException.class)
-    public void addShouldFailBecauseEmployeeDoesNotHaveShiftSpecified() {
-        AppointmentDTO mockAppointmentDTO = new AppointmentDTO();
-        final Employee mockEmployee = mock(Employee.class);
-        final Service mockService = mock(Service.class);
-        final Business mockBusiness = mock(Business.class);
-        EmployeeService mockEmployeeService = mock(EmployeeService.class);
-        final User client = mock(User.class);
-        final long empId = 1;
-        HashSet<EmployeeService> employeeServiceHashSet = new HashSet<>();
-
-        //set DTO times, will be converted into appointment object in service
-        mockAppointmentDTO.setDate(LocalDate.now());
-        mockAppointmentDTO.setStartTime(LocalTime.now());
-        when(mockService.getDuration()).thenReturn(1);
-
-        when(mockEmployee.getId()).thenReturn(empId);
-
-        //add employee to selected service
-        when(mockEmployeeService.getEmployee()).thenReturn(mockEmployee);
-        employeeServiceHashSet.add(mockEmployeeService);
-        when(mockService.getEmployees()).thenReturn(employeeServiceHashSet);
-
-        //employee is busy during appointment time
-        when(mockEmployee.isAvailable(any())).thenReturn(null);
-
-        mockGetAppointment(client, mockEmployee, mockService, mockBusiness);
-
-        appointmentService.add(mockAppointmentDTO, 1, 1);
-    }
 
 
     @Test(expected = ClientAppointmentConflictException.class)

@@ -7,6 +7,7 @@ import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.exception.EmployeeAppointmentConflictException;
 import appointmentscheduler.exception.EmployeeDoesNotOfferServiceException;
+import appointmentscheduler.exception.EmployeeNotWorkingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -196,6 +197,39 @@ public class EmployeeTest {
         employee.validateAndAddAppointment(mockAppointment);
     }
 
+    @Test(expected = EmployeeNotWorkingException.class)
+    public void addShouldFailBecauseEmployeeDoesNotHaveShiftSpecified() {
+        final Appointment mockAppointment = mock(Appointment.class);
+        final Appointment mockExistingAppointment = mock(Appointment.class);
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        Shift employeeShift = createMockShifts().iterator().next();
+        User client = new User();
+        AppEvent conflictingTime;
+
+        conflictingTime = employeeShift;
+
+        //employee not client
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        //employee performs service
+        when(mockService.getId()).thenReturn((long)1);
+        employee.addService(mockService);
+        when(mockRetrievedService.getId()).thenReturn((long)1);
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        //set appointment to not encapsulate shift
+        when(mockAppointment.getDate()).thenReturn(conflictingTime.getDate().minusDays(1));
+        when(mockAppointment.getStartTime()).thenReturn(conflictingTime.getStartTime());
+        when(mockAppointment.getEndTime()).thenReturn(conflictingTime.getEndTime());
+
+
+        employee.validateAndAddAppointment(mockAppointment);
+    }
+
     @Test(expected = EmployeeAppointmentConflictException.class)
     public void addShouldFailBecauseEmployeeIsBookedAlready() {
         final Appointment mockAppointment = mock(Appointment.class);
@@ -235,4 +269,82 @@ public class EmployeeTest {
 
         employee.validateAndAddAppointment(mockAppointment);
     }
+
+    @Test
+    public void addSuccessEmptyShift() {
+        final Appointment mockAppointment = mock(Appointment.class);
+        final Appointment mockExistingAppointment = mock(Appointment.class);
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        Shift employeeShift = createMockShifts().iterator().next();
+        User client = new User();
+        AppEvent conflictingTime;
+
+        conflictingTime = employeeShift;
+
+        //employee not client
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        //employee performs service
+        when(mockService.getId()).thenReturn((long)1);
+        employee.addService(mockService);
+        when(mockRetrievedService.getId()).thenReturn((long)1);
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        //set appointment to encapsulate shift
+        when(mockAppointment.getDate()).thenReturn(conflictingTime.getDate());
+        when(mockAppointment.getStartTime()).thenReturn(conflictingTime.getStartTime());
+        when(mockAppointment.getEndTime()).thenReturn(conflictingTime.getEndTime());
+
+        employee.addShift(employeeShift);
+
+        employee.validateAndAddAppointment(mockAppointment);
+    }
+
+    @Test
+    public void addSuccessAppointmentInShift() {
+        final Appointment mockAppointment = mock(Appointment.class);
+        final Appointment mockExistingAppointment = mock(Appointment.class);
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        Shift employeeShift = createMockShifts().iterator().next();
+        User client = new User();
+        AppEvent conflictingTime;
+
+        conflictingTime = employeeShift;
+
+        //employee not client
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        //employee performs service
+        when(mockService.getId()).thenReturn((long)1);
+        employee.addService(mockService);
+        when(mockRetrievedService.getId()).thenReturn((long)1);
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        //set shift to encapsulate appointment
+        when(mockAppointment.getDate()).thenReturn(conflictingTime.getDate());
+        when(mockAppointment.getStartTime()).thenReturn(conflictingTime.getStartTime());
+        when(mockAppointment.getEndTime()).thenReturn(conflictingTime.getStartTime().plusHours(1));
+
+        //add conflicting appointment to shift
+        when(mockExistingAppointment.getDate()).thenReturn(conflictingTime.getDate());
+        when(mockExistingAppointment.getStartTime()).thenReturn(conflictingTime.getEndTime().minusHours(1));
+        when(mockExistingAppointment.getEndTime()).thenReturn(conflictingTime.getEndTime());
+        employeeShift.addAppointment(mockExistingAppointment);
+
+        employee.addShift(employeeShift);
+
+        employee.validateAndAddAppointment(mockAppointment);
+    }
+
+    //TODO test isAvailable
+
+    //TODO test getEmployeeAvailabilities
 }
