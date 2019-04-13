@@ -161,6 +161,7 @@ export class BusinessRegisterComponent implements OnInit {
         return password === confirmPassword ? null : { mismatched: true };
     }
 
+
     getBusinessById(businessId: Number): BusinessDTO {
         this.businessService.getBusinessById(this.businessId).subscribe(
             res => {
@@ -320,7 +321,6 @@ export class BusinessRegisterComponent implements OnInit {
         const newService = this._formBuilder.group({
           newServiceName: [],
           newServiceDuration: [],
-          serviceImage: [],
         });
         this.newServiceForms.push(newService);
     }
