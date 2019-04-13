@@ -200,7 +200,7 @@ public class EmployeeTest {
     @Test(expected = EmployeeNotWorkingException.class)
     public void addShouldFailBecauseEmployeeDoesNotHaveShiftSpecified() {
         final Appointment mockAppointment = mock(Appointment.class);
-        final Appointment mockExistingAppointment = mock(Appointment.class);
+
         final Service mockService = mock(Service.class);
         final Service mockRetrievedService = mock(Service.class);
         Employee employee = new Employee();
@@ -226,6 +226,7 @@ public class EmployeeTest {
         when(mockAppointment.getStartTime()).thenReturn(conflictingTime.getStartTime());
         when(mockAppointment.getEndTime()).thenReturn(conflictingTime.getEndTime());
 
+        employee.addShift(employeeShift);
 
         employee.validateAndAddAppointment(mockAppointment);
     }
