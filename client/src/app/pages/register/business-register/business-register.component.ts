@@ -100,7 +100,7 @@ export class BusinessRegisterComponent implements OnInit {
     postalCode: string;
     // new service object
     service: string;
-    service_duration: number;
+    serviceDuration: number;
     // new user object
     firstName: string;
     lastName: string;
@@ -150,7 +150,8 @@ export class BusinessRegisterComponent implements OnInit {
           secondCtrl: ['', Validators.required]
         });
         this.serviceInfoForm = this._formBuilder.group({
-            thirdCtrl: ['', Validators.required]
+            thirdCtrl: ['', Validators.required],
+            newServices: this._formBuilder.array([])
           });
       }
 
@@ -158,15 +159,6 @@ export class BusinessRegisterComponent implements OnInit {
         const password = inputFormGroup.controls.password.value;
         const confirmPassword = inputFormGroup.controls.confirmPassword.value;
         return password === confirmPassword ? null : { mismatched: true };
-    }
-    onUpload()  {
-        const  fd = new FormData();
-        fd.append('image', this.selectedFile, this.selectedFile.name );
-        this.http.post('https://url', fd )
-                .subscribe(
-                    response => {
-                        console.log(response);
-                });
     }
 
     getBusinessById(businessId: Number): BusinessDTO {
@@ -203,7 +195,7 @@ export class BusinessRegisterComponent implements OnInit {
 
         const payload_service: ServiceCreateDto = {
             name: this.service,
-            duration: this.service_duration,
+            duration: this.serviceDuration,
         };
 
         let payload: BusinessUserRegisterDTO = null;
@@ -320,14 +312,15 @@ export class BusinessRegisterComponent implements OnInit {
     }
 
     get newServiceForms() {
-        return this.serviceInfoForm.get('new_services') as FormArray;
-    
+        return this.serviceInfoForm.get('newServices') as FormArray;
+
     }
     addService() {
 
         const newService = this._formBuilder.group({
           newServiceName: [],
           newServiceDuration: [],
+          serviceImage: [],
         });
         this.newServiceForms.push(newService);
     }
@@ -336,13 +329,3 @@ export class BusinessRegisterComponent implements OnInit {
   }
 }
 
-/*
-frontend for uploading
- <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-            <p> Upload your business logo </p>
-            <input type="file" (change) = "onFileSelected($event)" placeholder="Upload file" accept=".jpeg,.png">
-            <button mat-button color="primary" type="button" (click)="onUpload()">Upload</button>
-
-            </div>
-
-            */
