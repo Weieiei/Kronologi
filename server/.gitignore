@@ -2,3 +2,5 @@
 *.iml
 target/
 secret.properties
+application.properties
+application.docker.properties
