@@ -169,6 +169,13 @@ public class Shift extends AuditableEntity implements AppEvent {
         //shifts can only be on one day
         LocalDate date = this.date;
 
+        //full shift available
+        if(appointments.size() == 0) {
+            availability = new AppEventBase(startTime, endTime, date);
+            availabilities.add(availability);
+            return availabilities;
+        }
+
         for(int i = 0; i < sortedAppointments.size(); i++){
             appointment = sortedAppointments.get(i);
             //availability between start and first appointment
