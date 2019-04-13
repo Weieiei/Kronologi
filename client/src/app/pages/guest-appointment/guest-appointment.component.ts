@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from "../../services/user/user.service";
+import { GuestService } from "../../services/guest/guest.service";
 import { Router } from "@angular/router";
-import {UserRegisterDTO} from "../../interfaces/user/user-register-dto";
 import * as countryData from 'country-telephone-data';
 import {PhoneNumberDTO} from "../../interfaces/phonenumber/phone-number-dto";
+import {GuestCreateDto} from "../../interfaces/guest/guest-create-dto";
 
 @Component({
   selector: 'app-guest-appointment',
@@ -22,7 +22,7 @@ export class GuestAppointmentComponent implements OnInit {
     registerPhone = false;
 
   constructor(
-      private userService: UserService,
+      private guestService: GuestService,
       private router: Router
   ) { }
 
@@ -30,17 +30,16 @@ export class GuestAppointmentComponent implements OnInit {
   }
 
   reserve() {
-        const payload: UserRegisterDTO = {
+        const payload: GuestCreateDto = {
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
-            password: 'temp',
             phoneNumber: null
         };
-        this.userService.register_guest(payload).subscribe(
+        this.guestService.register_guest(payload).subscribe(
             res => {
                 const token = res['token'];
-                this.userService.setToken(token);
+                this.guestService.setToken(token);
                 this.router.navigate(['appointments']);
             },
             err => {
