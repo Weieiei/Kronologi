@@ -26,7 +26,7 @@ export interface Domain {
 })
 export class BusinessRegisterComponent implements OnInit {
  // Fields to upload a profiel picture
- selectedFile: File = null;
+ selectedServiceFile: File = null;
  fileSelectMsg: string = 'No file selected yet.';
  fileUploadMsg: string = 'No file uploaded yet.';
  disabled: boolean = false;
@@ -124,12 +124,13 @@ export class BusinessRegisterComponent implements OnInit {
                 this.businessId = res;
                 const payloadService: ServiceCreateDto = {
                     name: this.service,
-                    duration: this.serviceDuration
+                    duration: this.serviceDuration,
+                    serviceFile: this.selectedServiceFile
                 };
                 console.log(payloadService);
 
                 console.log(this.businessId);
-                this.serviceService.registerService(this.businessId, payloadService, this.selectedFile ).subscribe(
+                this.serviceService.registerService(this.businessId, payloadService, this.selectedServiceFile ).subscribe(
                      res => {
                         console.log(res);
                      },
@@ -144,9 +145,10 @@ export class BusinessRegisterComponent implements OnInit {
                 const payloadNewService: ServiceCreateDto = {
 
                     name: this.newServiceForms.at(_i).value.newServiceName,
-                    duration: this.newServiceForms.at(_i).value.newServiceDuration
+                    duration: this.newServiceForms.at(_i).value.newServiceDuration,
+                    serviceFile: this.newServiceForms.at(_i).value.newServiceFile
                 };
-                this.serviceService.registerService(this.businessId, payloadNewService, this.selectedFile).subscribe(
+                this.serviceService.registerService(this.businessId, payloadNewService, this.selectedServiceFile).subscribe(
                     res => {
                      console.log(res);
                  },
@@ -210,45 +212,46 @@ export class BusinessRegisterComponent implements OnInit {
         const newService = this._formBuilder.group({
           newServiceName: [],
           newServiceDuration: [],
+          newServiceFile: [],
     });
     this.newServiceForms.push(newService);
 }
-deleteService(i) {
+ deleteServiceForService(i) {
     this.newServiceForms.removeAt(i);
   }
 
-  selectEvent(file: File): void {
-    this.selectedFile = file;
-    console.log(this.selectedFile);
+  selectEventForService(file: File): void {
+    this.selectedServiceFile = file;
+    console.log(this.selectedServiceFile);
     this.fileSelectMsg = file.name;
   }
 
-   uploadEvent(file: File): void {
+   uploadEventForService(file: File): void {
     this.fileUploadMsg = file.name;
   }
 
-   cancelEvent(): void {
+   cancelEventForService(): void {
     this.fileSelectMsg = 'No file selected yet.';
     this.fileUploadMsg = 'No file uploaded yet.';
   }
 
-  addServicePicture(): void {
-    console.log(this.selectedFile);
-  if (this.selectedFile != null) {
-      this.userService.uploadUserPicture(this.selectedFile).subscribe(
-          res => {
+//   addServicePicture(): void {
+//     console.log(this.selectedServiceFile);
+//   if (this.selectedServiceFile != null) {
+//       this.userService.uploadUserPicture(this.selectedServiceFile).subscribe(
+//           res => {
 
-              console.log('File seccessfully uploaded. ');
+//               console.log('File seccessfully uploaded. ');
 
-          },
-          err => {
-              if (err instanceof HttpErrorResponse) {
-                  err => console.log(err);
-              }
-          }
-      );
-  }
-}
+//           },
+//           err => {
+//               if (err instanceof HttpErrorResponse) {
+//                   err => console.log(err);
+//               }
+//           }
+//       );
+//   }
+//}
 
 }
 

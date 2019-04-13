@@ -158,10 +158,10 @@
                         </mat-form-field>
 
             </div>
-            
+
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                     <p>Selected Picture: {{fileSelectMsg}}</p>
-                    <td-file-upload #singleFileUpload  (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
+                    <td-file-upload #singleFileUpload  formControlName="newServiceFile" (select)="selectEventForService($event)" (upload)="uploadEventForService($event)" (cancel)="cancelEventForService()" [disabled]="disabled" required
                                accept=".jpeg,.jpg,.png,.svg">
                          <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
                         <ng-template td-file-input-label>
@@ -201,10 +201,10 @@
                          <mat-hint fxFlex="60" fxFlex.lt-md [ngClass]="{'text-color-dark' : darkModeActive}">Please upload a picture</mat-hint>
                 </div>
 
-                 <form (submit)="updateProfilePicture()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
-                            <p>Selected Picture: {{fileSelectMsg}}</p>
-                    <td-file-upload #singleFileUpload  (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                    <p>Selected Picture: {{fileSelectMsg}}</p>
+                    <td-file-upload formControlName="newServiceFile" #singleFileUpload  (select)="selectEventForService($event)" (upload)="uploadEventForService($event)" (cancel)="cancelEventForService()" [disabled]="disabled" required
                                accept=".jpeg,.jpg,.png,.svg">
                          <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
                         <ng-template td-file-input-label>
@@ -216,19 +216,16 @@
                     </ng-template>
                     </td-file-upload>
 
+                    </div>
 
-                <div fxLayout="row" class="submit-button-container">
-                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md >Upload</button>
-                </div>
 
-            </form>
 
         </div>
 
 
 
                          <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
-                                <button mat-button color="primary" (click)="deleteService()">Delete</button>
+                                <button mat-button color="primary" (click)="deleteServiceForService()">Delete</button>
                     </div>
 
 
