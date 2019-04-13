@@ -6,61 +6,26 @@
         <form (submit)="register()" autocomplete="off" fxLayout="column">
             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>First Name</mat-label>
-                    <input matInput [(ngModel)]="firstName" type="text" name="firstname" pattern=".{1,}" required appAutofocus>
+                    <mat-label>Business</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let business of businesses" [value]="business.value">
+                            {{business.viewValue}}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Last Name</mat-label>
-                    <input matInput [(ngModel)]="lastName" type="text" name="lastname" pattern=".{1,}" required>
+                    <mat-label>Service</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let business of businesses" [value]="business.value">
+                            {{business.viewValue}}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
-            </div>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Email</mat-label>
-                <input matInput [(ngModel)]="email" type="email" name="email" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$" required>
-                <mat-hint>E.g.: johndoe@gmail.com</mat-hint>
-            </mat-form-field>
-
-
-            <div class="phone-container" fxLayout="column" fxLayoutGap="20px">
-
-                <mat-checkbox class="phone-checkbox" color="primary" [(ngModel)]="registerPhone" name="registerPhone">Add phone number?</mat-checkbox>
-
-                <div fxLayout="column" fxLayoutGap="20px" *ngIf="registerPhone">
-                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25">
-                        <mat-label>Country</mat-label>
-                        <mat-select [required]="true" (selectionChange)="selectCountry($event.value)">
-                            <mat-select-trigger *ngIf="selectedCountry">
-                                {{ selectedCountry.name }} <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>
-                            </mat-select-trigger>
-                            <mat-option *ngFor="let country of countries" [value]="country">
-                                <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;
-                                <span> {{ country.name }} | <span class="country-code">+{{ country.dialCode }}</span></span>
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">
-                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="30">
-                            <mat-label>Area Code</mat-label>
-                            <input matInput [(ngModel)]="areaCode" name="areaCode" pattern="\d{3}" minlength="3" maxlength="3" required>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="70">
-                            <mat-label>Phone Number</mat-label>
-                            <input matInput [(ngModel)]="number" name="number" pattern="\d{7}" minlength="7" maxlength="7" required>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
-                <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
-                <button mat-raised-button color="primary" type="button" routerLink="/appointments" (click)="reserve()" >Reserve</button>
-
+                <mat-form-field class="example-full-width">
+                    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" placeholder="Choose a date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
 
             </div>
         </form>

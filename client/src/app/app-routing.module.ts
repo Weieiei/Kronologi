@@ -24,6 +24,7 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
+import { GuestComponent } from "./pages/guest/guest.component";
 import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
@@ -40,6 +41,7 @@ const routes: Routes = [
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
 
     // Guest
+    { path: 'guest', component: GuestComponent, canActivate: [AnonymousGuard] },
     { path: 'guest_appointment', component: GuestAppointmentComponent, canActivate: [AnonymousGuard] },
 
     // Dashboard
