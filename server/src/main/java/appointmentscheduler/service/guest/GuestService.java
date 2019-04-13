@@ -6,6 +6,7 @@ import appointmentscheduler.entity.guest.Guest;
 import appointmentscheduler.entity.guest.GuestFactory;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
+import appointmentscheduler.entity.verification.GuestVerification;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.repository.*;
 import appointmentscheduler.util.JwtProvider;
@@ -29,18 +30,18 @@ public class GuestService {
     private static final Logger logger = Logger.getLogger(GuestService.class.getName());
     private final GuestRepository guestRepository;
     private final JwtProvider jwtProvider;
-    private final VerificationRepository verificationRepository;
+    private final GuestVerificationRepository guestVerificationRepository;
     private final AuthenticationManager authenticationManager;
     private final PhoneNumberRepository phoneNumberRepository;
 
     @Autowired
     public GuestService(
             GuestRepository guestRepository, JwtProvider jwtProvider,
-            VerificationRepository verificationRepository, AuthenticationManager authenticationManager,
+            GuestVerificationRepository guestVerificationRepository, AuthenticationManager authenticationManager,
             PhoneNumberRepository phoneNumberRepository
     ) {
         this.guestRepository = guestRepository;
-        this.verificationRepository = verificationRepository;
+        this.guestVerificationRepository = guestVerificationRepository;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
         this.phoneNumberRepository = phoneNumberRepository;
@@ -69,11 +70,11 @@ public class GuestService {
 
         Guest savedGuest = guestRepository.save(guest);
 
-        Verification verification = new Verification(savedGuest);
-        verificationRepository.save(verification);
+        GuestVerification guestVerification = new GuestVerification(savedGuest);
+        guestVerificationRepository.save(guestVerification);
 
         String token = generateToken(savedGuest);
-        return buildTokenRegisterMap(token, verification);//, verification);
+        return buildTokenRegisterMap(token, guestVerification);//, verification);
     }
 
     public PhoneNumber getPhoneNumber(long guestId){
@@ -91,6 +92,14 @@ public class GuestService {
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);
         map.put("verification", verification);
+
+        return map;
+    }
+
+    private Map<String, Object> buildTokenRegisterMap(String token, GuestVerification guestVerification) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", token);
+        map.put("verification", guestVerification);
 
         return map;
     }
