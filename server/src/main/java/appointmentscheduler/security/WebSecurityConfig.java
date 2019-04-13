@@ -1,11 +1,7 @@
 package appointmentscheduler.security;
 
-import appointmentscheduler.controller.rest.GoogleCalendarController;
 import appointmentscheduler.service.user.UserDetailsEmailService;
-import appointmentscheduler.util.AccessDeniedHandlerApp;
-import appointmentscheduler.util.GoogleApiFilter;
-import appointmentscheduler.util.JwtAuthenticationEntryPoint;
-import appointmentscheduler.util.JwtAuthenticationFilter;
+import appointmentscheduler.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,14 +20,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -120,6 +109,17 @@ public class WebSecurityConfig  {
 
             return registrationBean;
         }
+
+//        @Bean
+//        public FilterRegistrationBean<GuestAuthenticationFilter> jwtGuestFilter(){
+//            FilterRegistrationBean<GuestAuthenticationFilter> registrationBean
+//                    = new FilterRegistrationBean<>();
+//
+//            registrationBean.setFilter(guestAuthenticationFilter);
+//            registrationBean.addUrlPatterns("/guest/*");
+//
+//            return registrationBean;
+//        }
 
     }
 

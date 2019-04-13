@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 @Entity
 @Table(name = "guest_verification")
 public class GuestVerification extends AuditableEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -42,10 +43,8 @@ public class GuestVerification extends AuditableEntity {
                 MessageDigest m = MessageDigest.getInstance("SHA-256");
                 m.reset();
                 m.update(this.guest.getEmail().getBytes());
-                byte[] digest = m.digest();
-                BigInteger bigInt = new BigInteger(1, digest);
+                BigInteger bigInt = new BigInteger(1, m.digest());
                 hashtext = bigInt.toString(16);
-                //retrieve hashed text
                 while (hashtext.length() < 32) {
                     hashtext = "0" + hashtext;
                 }

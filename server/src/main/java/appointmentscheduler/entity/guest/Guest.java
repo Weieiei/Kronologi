@@ -54,6 +54,10 @@ public class Guest extends AuditableEntity {
         this.role =  RoleEnum.valueOf(role);
     }
 
+    public RoleEnum getRole() {
+        return role;
+    }
+
     public String getFirstName() {
         return firstName;
     }

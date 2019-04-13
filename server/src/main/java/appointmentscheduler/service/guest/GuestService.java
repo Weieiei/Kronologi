@@ -8,19 +8,27 @@ import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.verification.GuestVerification;
 import appointmentscheduler.entity.verification.Verification;
-import appointmentscheduler.repository.*;
+import appointmentscheduler.repository.GuestRepository;
+import appointmentscheduler.repository.GuestVerificationRepository;
+import appointmentscheduler.repository.PhoneNumberRepository;
+import appointmentscheduler.service.user.UserDetailsEmailService;
 import appointmentscheduler.util.JwtProvider;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -33,18 +41,20 @@ public class GuestService {
     private final GuestVerificationRepository guestVerificationRepository;
     private final AuthenticationManager authenticationManager;
     private final PhoneNumberRepository phoneNumberRepository;
+    private final UserDetailsEmailService userDetailsEmailService;
 
     @Autowired
     public GuestService(
             GuestRepository guestRepository, JwtProvider jwtProvider,
             GuestVerificationRepository guestVerificationRepository, AuthenticationManager authenticationManager,
-            PhoneNumberRepository phoneNumberRepository
+            PhoneNumberRepository phoneNumberRepository, UserDetailsEmailService userDetailsEmailService
     ) {
         this.guestRepository = guestRepository;
         this.guestVerificationRepository = guestVerificationRepository;
         this.jwtProvider = jwtProvider;
         this.authenticationManager = authenticationManager;
         this.phoneNumberRepository = phoneNumberRepository;
+        this.userDetailsEmailService = userDetailsEmailService;
     }
 
     public Map<String, Object> register(GuestDTO guestDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
@@ -82,9 +92,12 @@ public class GuestService {
     }
 
     private String generateToken(Guest guest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(guest.getId(), "abc"));
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(RoleEnum.GUEST.toString()));
+        UserDetails userDetails = userDetailsEmailService.loadUserByUsername(String.valueOf(guest.getId()));
+        Authentication authentication = new AnonymousAuthenticationToken(String.valueOf(guest.getId()), userDetails, authorities );
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(guest.getId(), "", authorities));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         return jwtProvider.generateGuestToken(guest, authentication);
     }
 
