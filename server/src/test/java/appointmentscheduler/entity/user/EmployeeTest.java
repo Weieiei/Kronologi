@@ -372,5 +372,31 @@ public class EmployeeTest {
         assertNotNull(employee.isAvailable(validDay));
     }
 
-    //TODO test getEmployeeAvailabilities
+
+    @Test
+    public void getAvailabilitiesEmptyShifts(){
+        Employee employee = new Employee();
+        Set<Shift> createdShifts = createMockShifts();
+        addShiftsToEmployeeEntity(employee, createdShifts);
+
+        assertEquals(3, employee.getEmployeeAvailabilities(480).size());
+    }
+
+    @Test
+    public void getAvailabilitiesShiftsWithAppointments(){
+        Employee employee = new Employee();
+        Set<Shift> createdShifts = createMockShifts();
+        AppEvent appointmentInShift = createdShifts.iterator().next();
+        Appointment mockAppointment = mock(Appointment.class);
+
+        when(mockAppointment.getDate()).thenReturn(appointmentInShift.getDate());
+        when(mockAppointment.getStartTime()).thenReturn(appointmentInShift.getStartTime().plusHours(1));
+        when(mockAppointment.getEndTime()).thenReturn(appointmentInShift.getEndTime().minusHours(1));
+        createdShifts.iterator().next().addAppointment(mockAppointment);
+
+        addShiftsToEmployeeEntity(employee, createdShifts);
+
+        assertEquals(4, employee.getEmployeeAvailabilities(60).size());
+    }
+
 }
