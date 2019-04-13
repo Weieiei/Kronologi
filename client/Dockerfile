@@ -3,6 +3,7 @@ FROM node:10-alpine AS node
 WORKDIR /home/node
 
 COPY package.json /home/node
+RUN apk add --no-cache git
 RUN npm install
 
 COPY . /home/node
