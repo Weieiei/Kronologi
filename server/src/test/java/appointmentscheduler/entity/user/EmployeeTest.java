@@ -344,7 +344,32 @@ public class EmployeeTest {
         employee.validateAndAddAppointment(mockAppointment);
     }
 
-    //TODO test isAvailable
+    private void addShiftsToEmployeeEntity(Employee employee, Set<Shift> shifts){
+        for (final Shift shift : shifts) {
+            employee.addShift(shift);
+        }
+    }
+
+    //Note robust time conflict logic tests executed in Shift class tests
+    @Test
+    public void noShiftAvailable() {
+        Employee employee = new Employee();
+        Set<Shift> createdShifts = createMockShifts();
+        addShiftsToEmployeeEntity(employee, createdShifts);
+        AppEventBase invalidDay = new AppEventBase(LocalTime.now(), LocalTime.now(), LocalDate.now());
+
+        assertNull(employee.isAvailable(invalidDay));
+    }
+
+    @Test
+    public void shiftAvailable() {
+        Employee employee = new Employee();
+        Set<Shift> createdShifts = createMockShifts();
+        addShiftsToEmployeeEntity(employee, createdShifts);
+        AppEvent validDay = createdShifts.iterator().next();
+
+        assertNotNull(employee.isAvailable(validDay));
+    }
 
     //TODO test getEmployeeAvailabilities
 }
