@@ -81,7 +81,7 @@ export class BusinessRegisterComponent implements OnInit {
     businessInfoForm: FormGroup;
     serviceInfoForm: FormGroup;
     selectedFile: File = null;
-// new business object
+    // new business object
     business: BusinessDTO;
     businessName: string;
     businessDomain: string;
@@ -91,7 +91,7 @@ export class BusinessRegisterComponent implements OnInit {
         {value: 'Healthcare'},
         {value: 'Retail'},
         {value: 'Other'}
-      ];
+    ];
     description: string;
     address: string;
     city:  string;
@@ -121,7 +121,7 @@ export class BusinessRegisterComponent implements OnInit {
     businessId: number;
     matcher: PasswordMismatchStateMatcher;
 
-    index: number = 0;
+    index = 0;
     constructor(
         private spinner: NgxSpinnerService,
         private dialog: MatDialog,
@@ -150,9 +150,10 @@ export class BusinessRegisterComponent implements OnInit {
           secondCtrl: ['', Validators.required]
         });
         this.serviceInfoForm = this._formBuilder.group({
-            thirdCtrl: ['', Validators.required],
+            firstNewService: [this.service, Validators.required],
+            firstNewServiceDuration: [this.serviceDuration, Validators.required],
             newServices: this._formBuilder.array([])
-          });
+        });
       }
 
     checkPasswords(inputFormGroup: FormGroup) {
@@ -317,15 +318,14 @@ export class BusinessRegisterComponent implements OnInit {
 
     }
     addService() {
-
         const newService = this._formBuilder.group({
-          newServiceName: [],
-          newServiceDuration: [],
+          newServiceName: ['', Validators.required],
+          newServiceDuration: ['', Validators.required],
         });
         this.newServiceForms.push(newService);
     }
     deleteService(i) {
-    this.newServiceForms.removeAt(i);
-  }
+        this.newServiceForms.removeAt(i);
+    }
 }
 
