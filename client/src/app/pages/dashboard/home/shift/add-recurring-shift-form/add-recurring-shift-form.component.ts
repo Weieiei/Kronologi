@@ -11,7 +11,7 @@ export class AddRecurringShiftFormComponent implements OnInit {
     days: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     daysSelect: Set<string> = new Set();
     relativeToday: Set<number> = new Set<number>();
-    occurences: number;
+    occurrences: number;
     startHour: number;
     startMinute: number;
     @Output() shiftChange = new EventEmitter();
@@ -46,7 +46,7 @@ export class AddRecurringShiftFormComponent implements OnInit {
       const relativeTodayArray: Array<number> = Array.from(this.relativeToday.values());
       let currRel: number;
 
-      for (let j = 0; j < this.occurences; j++) {
+      for (let j = 0; j < this.occurrences; j++) {
           for (let i = 0; i <   this.daysSelect.size; i++) {
               // calculate difference between today and recurrence date
               currRel = relativeTodayArray[i] + j * 7;
@@ -72,6 +72,6 @@ export class AddRecurringShiftFormComponent implements OnInit {
       this.startMinute = void 0;
       this.endHour = void 0;
       this.endMinute = void 0;
-      this.occurences = void 0;
+      this.occurrences = void 0;
   }
 }

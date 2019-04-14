@@ -24,10 +24,8 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
-import { DarnCarouselComponent } from './pages/darn-carousel/darn-carousel.component';
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
-import {BookComponent} from "./pages/dashboard/reserve/book/book.component";
-import { ClientGuard } from './guards/client/client.guard';
+import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { DetailsComponent } from './pages/details/details.component';
 
 const routes: Routes = [
@@ -50,15 +48,17 @@ const routes: Routes = [
             // Appointments for business
             { path: 'business', component: BusinessViewComponent },
 
-            //Home
+            // Home
             { path: 'home/:businessId', component: HomeComponent },
 
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
+
             // Reserving and modifying reservation
             {path : 'details/:businessId', component: DetailsComponent},
             {path : 'syncCalendars', component: SyncCalendarsComponent, canActivate: [EmployeeGuard]},
+
             // Appointments
             { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
@@ -69,7 +69,6 @@ const routes: Routes = [
             { path: 'admin/services', component: AdminServicesComponent },
             { path: 'admin/services/create', component: CreateServiceComponent },
             { path: 'admin/users', component: AdminUsersComponent },
-            { path: 'darn-carousel', component: DarnCarouselComponent },
             { path: 'book/:businessId', component: BookComponent },
 
             // User settings
