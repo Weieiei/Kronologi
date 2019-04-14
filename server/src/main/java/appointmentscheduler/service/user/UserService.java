@@ -7,7 +7,6 @@ import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.business.Business;
-import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
@@ -17,7 +16,6 @@ import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.*;
-import appointmentscheduler.service.file.UserFileStorageService;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,7 +29,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.management.relation.Role;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -78,7 +75,11 @@ public class UserService {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
         }
 
-        User user = UserFactory.createUser(User.class, userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(), userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
+        final User user = new User();
+        user.setFirstName(userRegisterDTO.getFirstName());
+        user.setLastName(userRegisterDTO.getLastName());
+        user.setEmail(userRegisterDTO.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
 
         if (userRegisterDTO.getPhoneNumber() != null) {
 
@@ -153,11 +154,10 @@ public class UserService {
     }
 
     public Employee findByIdAndBusinessId(long id, long businessId) {
-        Employee employee = employeeRepository.findByIdAndBusinessId(id, businessId).
+        return employeeRepository.findByIdAndBusinessId(id, businessId).
                 orElseThrow(() -> new ResourceNotFoundException(String.format("Employee with id %d and business id %d" +
                         " " +
                         "not found.", id, businessId)));
-        return employee;
     }
 
 
@@ -302,7 +302,7 @@ public class UserService {
         return map;
     }
 
-    public Map<String, Object> business_register(UserRegisterDTO userRegisterDTO, Business business) throws IOException, MessagingException, NoSuchAlgorithmException {
+    public Map<String, Object> businessRegister(UserRegisterDTO userRegisterDTO, Business business) throws IOException, MessagingException, NoSuchAlgorithmException {
 
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
@@ -336,7 +336,7 @@ public class UserService {
     }
 
     public Map<String, Object> business_register_test(UserRepository userRepository,UserRegisterDTO userRegisterDTO, Business business, User user, Verification verification,User savedUser, Verification savedVerification) throws IOException, MessagingException, NoSuchAlgorithmException {
-    //works the same as the business_register, just put the class this method depends as
+        //works the same as the businessRegister, just put the class this method depends as
     //parameters, so it is easy to mock
         if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
             throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
