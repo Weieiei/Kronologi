@@ -203,7 +203,7 @@ public class UserController extends AbstractController {
         return ResponseEntity.ok(userService.deletePhoneNumber(getUserId()));
     }
 
-    @GetMapping(value = "/business/{businessId}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/busines/{businessId}/appointments", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findAllAppointments(@PathVariable long businessId) {
         final List<Appointment> appointments = appointmentService.findByClientIdAndBusinessId(getUserId(), businessId);
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
