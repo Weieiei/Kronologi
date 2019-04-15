@@ -26,7 +26,10 @@ import org.springframework.web.bind.annotation.*;
 import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.converters.service.ServiceDTOToService;
 import appointmentscheduler.dto.service.ServiceCreateDTO;
+import org.springframework.web.multipart.MultipartFile;
+import appointmentscheduler.service.file.ServiceFileStorageService;
 import java.util.Map;
+
 @RestController
 @RequestMapping("${rest.api.path}/business/services")
 
@@ -37,16 +40,19 @@ public class ServiceController {
     private final ServiceService serviceService;
     private final ObjectMapperFactory objectMapperFactory;
     private final BusinessService businessService;
+    private final ServiceFileStorageService serviceFileStorageService;
+
     @Autowired
     private ServiceDTOToService serviceConverter;
 
     @Autowired
-    public ServiceController(ServiceRepository serviceRepository, BusinessRepository businessRepository, ObjectMapperFactory objectMapperFactory) {
+    public ServiceController(ServiceRepository serviceRepository, BusinessRepository businessRepository, ObjectMapperFactory objectMapperFactory,  ServiceFileStorageService serviceFileStorageService) {
         this.serviceRepository = serviceRepository;
         this.businessRepository = businessRepository;
         this.serviceService = new ServiceService(serviceRepository);
         this.businessService = new BusinessService(businessRepository);
         this.objectMapperFactory = objectMapperFactory;
+        this.serviceFileStorageService = serviceFileStorageService;
     }
 
     @GetMapping(value = "/{businessId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -86,5 +92,11 @@ public class ServiceController {
         Business business = businessService.findById(businessId);
         service.setBusiness(business);
         return ResponseEntity.ok(serviceService.add(service));
+    }
+
+    @PostMapping("/{serviceId}/profile")
+    public ResponseEntity<Map<String, String>> updateProfile(@PathVariable long serviceId,
+                                                             @RequestPart("file") MultipartFile userFile) {
+        return ResponseEntity.ok(serviceFileStorageService.saveServiceFile(userFile, serviceId));
     }
 }
