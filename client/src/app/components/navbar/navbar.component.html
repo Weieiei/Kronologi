@@ -1,5 +1,5 @@
 <!-- Slide Menu-->
-<aside class="side-menu__container bg-container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
+<aside *ngIf="authService.isAdmin() || authService.isEmployee()" class="side-menu__container bg-container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
         <nav class="slide-menu" [ngClass]="{'slide-menu-active': showMenu, 'slide-menu-active-dark': darkModeActive}" (click)="$event.stopImmediatePropagation();">
           <section class="menu-header" [ngClass] = "{'menu-header-dark': darkModeActive}">
             <span class="greeting__text">Welcome Back</span>
@@ -33,9 +33,9 @@
       </aside>
 
         <header [ngClass]="{'main__header-dark': darkModeActive}" class="main__header">
-
+            <!--<div *ngIf='isNotLoggedIn' class="left__section bg-container">fuck me</div>-->
           <div class="left__section bg-container">
-            <svg (click)="toggleMenu()" class="hamburger__icon" id="Menu_Burger_Icon" data-name="Menu Burger Icon"
+            <svg *ngIf="authService.isAdmin() || authService.isEmployee()" (click)="toggleMenu()" class="hamburger__icon" id="Menu_Burger_Icon" data-name="Menu Burger Icon"
                  viewBox="31.5 30 49.9 32">
               <defs>
                 <style>.hamburger__icon__fill {

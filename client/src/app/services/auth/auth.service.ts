@@ -93,8 +93,14 @@ export class AuthService {
 
     checkAdmin(): void {
         const claims: any = this.getTokenClaims(this.getToken());
-        const roles: Array<string> = claims.roles.toString().split(",");
-        this.admin = claims === null ? false : (roles.includes(UserType.admin) || roles.includes(UserType.admin.toUpperCase()));
+        let roles: Array<string> = [];
+        if (claims != null) {
+            roles = claims.roles.toString().split(",");
+            this.admin = (roles.includes(UserType.admin) || roles.includes(UserType.admin.toUpperCase()));
+        }
+        else {
+            this.admin = false;
+        }
     }
 
 }

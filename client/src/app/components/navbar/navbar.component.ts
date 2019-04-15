@@ -7,11 +7,12 @@ import { AuthService } from '../../services/auth/auth.service';
 import { ThemeService } from "../../core/theme/theme.service";
 import { OverlayContainer } from "@angular/cdk/overlay";
 import { DomSanitizer} from '@angular/platform-browser';
+import {AuthGuard} from "../../guards/auth/auth.guard";
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.scss']
+    styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
 
@@ -35,6 +36,7 @@ export class NavbarComponent implements OnInit {
         private sanitizer: DomSanitizer,
         public userService: UserService,
         public authService: AuthService,
+        public authGuard: AuthGuard,
         private router: Router,
         private googleAnalytics: GoogleAnalyticsService,
         public themeService: ThemeService,
@@ -127,5 +129,13 @@ export class NavbarComponent implements OnInit {
 
     goToEmployees() {
         this.router.navigate(['admin', 'employees']);
+    }
+
+    isLoggedIn() {
+        return this.authGuard.canActivate();
+    }
+
+    isNotLoggedIn() {
+        return !this.isLoggedIn();
     }
 }
