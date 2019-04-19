@@ -10,6 +10,9 @@ import * as moment from 'moment'
 import {EmployeeTimes} from "../../../../interfaces/employee/employee-times";
 import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appointment-dto';
 import {Router, ActivatedRoute} from "@angular/router";
+import {AnonymousGuard} from '../../../../guards/anonymous/anonymous.guard';
+import {AuthService} from '../../../../services/auth/auth.service';
+import { GuestComponent } from '../../../../pages/guest/guest.component.ts';
 
 @Component({
   selector: 'app-book',
@@ -30,7 +33,10 @@ export class BookComponent implements OnInit {
     employeeId: number;
     appointment: BookAppointmentDTO;
     businessId: number;
-    constructor(public route: ActivatedRoute, private router: Router, private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
+    constructor(public route: ActivatedRoute, private router: Router,
+                public authService: AuthService,
+                private _formBuilder: FormBuilder, private appointmentService: AppointmentService,
+                private anonGuard: AnonymousGuard) {
     }
 
     ngOnInit() {
@@ -168,6 +174,7 @@ export class BookComponent implements OnInit {
         this.appointmentService.bookAppointment(this.appointment).subscribe(
             res => console.log(res)
         );
+
     }
 
     setTimeAndEmployeeId(map: Map<number, string>) {
@@ -179,6 +186,10 @@ export class BookComponent implements OnInit {
 
     goBack() {
         this.router.navigate(['/home']);
+    }
+
+    register(){
+        guest.register();
     }
 }
 

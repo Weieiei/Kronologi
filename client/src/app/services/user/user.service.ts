@@ -43,7 +43,6 @@ export class UserService {
     }
 
     setToken(token: string): void {
-        debugger;
         localStorage.setItem(UserService.TOKEN_KEY, token);
     }
 

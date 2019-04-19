@@ -36,7 +36,6 @@ export class NavbarComponent implements OnInit {
         private sanitizer: DomSanitizer,
         public userService: UserService,
         public authService: AuthService,
-        public authGuard: AuthGuard,
         private router: Router,
         private googleAnalytics: GoogleAnalyticsService,
         public themeService: ThemeService,
@@ -131,11 +130,4 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['admin', 'employees']);
     }
 
-    isLoggedIn() {
-        return this.authGuard.canActivate();
-    }
-
-    isNotLoggedIn() {
-        return !this.isLoggedIn();
-    }
 }
