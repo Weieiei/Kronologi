@@ -105,10 +105,11 @@ export class AdminServicesComponent implements OnInit {
         this.fileUploadMsg = 'No file uploaded yet.';
       }
 
-      updateServiceProfilePicture(serviceId): void {
+      updateServicePicture(serviceId): void {
           console.log(serviceId);
+
         if (this.selectedFile != null) {
-            this.serviceService.updateServicePicture(this.selectedFile , serviceId.value).subscribe(
+            this.serviceService.updateServicePicture(this.selectedFile , serviceId).subscribe(
                 res => {
                     console.log('File seccessfully uploaded. ');
                     //this.fileUploadMsg = 'File seccessfully uploaded. ';

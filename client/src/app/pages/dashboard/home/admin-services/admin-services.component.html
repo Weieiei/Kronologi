@@ -44,7 +44,7 @@
 <td mat-cell *matCellDef="let service" class="center">
 <form (submit)="updateServicePicture(service.id)" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
-<p>Selected Picture: {{service.id}}</p>
+<p>Selected Picture: </p>
 <td-file-upload #singleFileUpload (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
 accept=".jpeg,.jpg,.png,.svg">
 <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>

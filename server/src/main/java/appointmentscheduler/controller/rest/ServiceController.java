@@ -94,9 +94,10 @@ public class ServiceController {
         return ResponseEntity.ok(serviceService.add(service));
     }
 
+    @LogREST
     @PostMapping("/{serviceId}/profile")
     public ResponseEntity<Map<String, String>> updateProfile(@PathVariable long serviceId,
-                                                             @RequestPart("file") MultipartFile userFile) {
-        return ResponseEntity.ok(serviceFileStorageService.saveServiceFile(userFile, serviceId));
+                                                             @RequestPart("file") MultipartFile serviceFile) {
+        return ResponseEntity.ok(serviceFileStorageService.saveServiceFile(serviceFile, serviceId));
     }
 }
