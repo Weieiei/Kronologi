@@ -4,6 +4,9 @@
             <!--<img mat-card-image src="../assets/images/alex-bertha-215867-unsplash.jpg">-->
             <mat-card-header>
                 <mat-card-title>{{service.name}}</mat-card-title>
+                <img [src]="sanitizedImageData"
+                    alt="profile-image"
+                    class="profile__image">
                 <mat-card-subtitle>100 $</mat-card-subtitle>
                 <mat-card-subtitle>
                     <mat-icon appButtonIcon>access_time</mat-icon>

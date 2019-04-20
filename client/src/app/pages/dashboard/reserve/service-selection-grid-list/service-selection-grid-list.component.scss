@@ -11,3 +11,12 @@
 //.mat-card-image {
 //    width:350px
 //}
+
+.mat-card-header {
+    ::ng-deep {
+        img{
+            width: 100px;
+            height: 50px;
+        }
+    }
+}

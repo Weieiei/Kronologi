@@ -39,4 +39,7 @@ export class ServiceService {
         return this.http.post(['api', 'business', 'services', serviceId.toString(), 'profile'].join('/'), formData);
         }
 
+     public  getServiceProfile(serviceId: number): Observable<any> {
+            return this.http.get<any>(['api', 'business', 'services' , serviceId.toString(), 'profile'].join('/'));
+        }
 }

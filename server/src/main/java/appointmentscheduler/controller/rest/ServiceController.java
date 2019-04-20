@@ -1,6 +1,7 @@
 package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.file.ServiceFile;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.BusinessRepository;
@@ -13,6 +14,7 @@ import appointmentscheduler.service.business.BusinessService;
 import appointmentscheduler.service.service.ServiceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +30,11 @@ import appointmentscheduler.converters.service.ServiceDTOToService;
 import appointmentscheduler.dto.service.ServiceCreateDTO;
 import org.springframework.web.multipart.MultipartFile;
 import appointmentscheduler.service.file.ServiceFileStorageService;
+
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
+import appointmentscheduler.exception.FileStorageException;
 
 @RestController
 @RequestMapping("${rest.api.path}/business/services")
@@ -100,4 +106,27 @@ public class ServiceController {
                                                              @RequestPart("file") MultipartFile serviceFile) {
         return ResponseEntity.ok(serviceFileStorageService.saveServiceFile(serviceFile, serviceId));
     }
-}
+
+    @LogREST
+    @GetMapping("/{serviceId}/profile")
+    public  ResponseEntity<Map<String,String>> getProfile(@PathVariable long serviceId) throws JSONException {
+        ServiceFile serviceFile;
+        try {
+            serviceFile = serviceFileStorageService.getServiceFile(serviceId);
+        }catch(FileStorageException e){
+
+            // return null;
+            return ResponseEntity.ok(null);
+
+        }
+        byte[] imageData = serviceFile.getData();
+        String imageDataBase64Encoded = Base64.getEncoder().encodeToString(imageData);
+
+        Map<String,String> map = new HashMap<>();
+        map.put("image_encoded", imageDataBase64Encoded);
+
+        return ResponseEntity.ok(map);
+
+    }
+
+    }
