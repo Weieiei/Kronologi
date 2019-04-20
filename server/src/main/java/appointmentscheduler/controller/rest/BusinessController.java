@@ -52,6 +52,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
+import com.stripe.net.RequestOptions;
+import com.stripe.model.Account;
+
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,6 +69,9 @@ import java.util.*;
 @RestController
 @RequestMapping("${rest.api.path}/businesses")
 public class BusinessController extends AbstractController {
+
+    @Value("${stripe.key}")
+    private String stripe_key;
 
     @Value("${google.key}")
     private String googleApiKey;
@@ -237,19 +246,25 @@ public class BusinessController extends AbstractController {
   @LogREST
   @PostMapping("/businessWithLogo")
   public ResponseEntity<Map<String, Object>> createBusinessWithLogo(@RequestPart("file") MultipartFile aFile, @RequestPart("business") BusinessDTO businessDTO,
-                                                     @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+                                                     @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws StripeException, IOException, MessagingException, NoSuchAlgorithmException {
       return createBusiness(aFile,businessDTO,businessHoursDTO,service,userRegisterDTO);
   }
 
   @LogREST
   @PostMapping("/businessNoLogo")
-  public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO, @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+  public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO, @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws StripeException, IOException, MessagingException, NoSuchAlgorithmException {
       return createBusiness(null,businessDTO,businessHoursDTO,service,userRegisterDTO);
   }
 
-    private ResponseEntity<Map<String, Object>> createBusiness(MultipartFile aFile, BusinessDTO businessDTO, BusinessHoursDTO businessHoursDTO[], ServiceCreateDTO service, UserRegisterDTO userRegisterDTO)throws IOException, MessagingException, NoSuchAlgorithmException {
+    private ResponseEntity<Map<String, Object>> createBusiness(MultipartFile aFile, BusinessDTO businessDTO, BusinessHoursDTO businessHoursDTO[], ServiceCreateDTO service, UserRegisterDTO userRegisterDTO)throws StripeException, IOException, MessagingException, NoSuchAlgorithmException {
         try {
+            Stripe.apiKey = "sk_test_PGAvep9Hlolpo6wUKh2NxEI600vssAShv4";
 
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("country", "US");
+            params.put("type", "custom");
+
+            Account acct = Account.create(params);
             Map<String, Object> tokenMap = userService.register(userRegisterDTO, RoleEnum.ADMIN);
             Verification verification = (Verification) tokenMap.get("verification");
             emailService.sendRegistrationEmail(userRegisterDTO.getEmail(), verification.getHash(), true);

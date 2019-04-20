@@ -33,9 +33,13 @@ import appointmentscheduler.service.user.UserService;
 import appointmentscheduler.service.verification.VerificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Account;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -61,6 +65,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("${rest.api.path}/user")
 public class UserController extends AbstractController {
+
+    @Value("${stripe.key}")
+    private String stripe_key;
 
     private final UserService userService;
     private final EmailService emailService;
@@ -131,8 +138,15 @@ public class UserController extends AbstractController {
     }
     @LogREST(LoggingLevel.WARN)
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO userLoginDTO) {
-        try {
+    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO userLoginDTO) throws StripeException
+    {
+        try{
+                Stripe.apiKey = "sk_test_PGAvep9Hlolpo6wUKh2NxEI600vssAShv4";
+
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("country", "CA");
+                params.put("type", "custom");
+            Account acct = Account.create(params);
             return ResponseEntity.ok(userService.login(userLoginDTO));
         } catch (BadCredentialsException e) {
             e.printStackTrace();
