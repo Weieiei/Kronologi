@@ -30,8 +30,7 @@
         <ng-template matStepLabel>Guest Reservation</ng-template>
         <div>
             <div fxLayout="row" fxLayoutAlign="center" fxFlex="noshrink">
-                <div fxLayout="column" fxFlex.gt-sm="600px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
-                    <img src="assets/images/kronologi-logo-1.png" width="128"/>
+                <div fxLayout="column" fxFlex.gt-sm="800px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
                     <span class="title">Guest</span>
 
                     <form (submit)="register()" autocomplete="off" fxLayout="column">
@@ -87,9 +86,7 @@
                         </div>
                         <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
                             <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
-                            <button mat-raised-button color="primary" type="button" routerLink="/appointments" (click)="bookAppointment()" >Reserve</button>
-
-
+                            <button mat-raised-button color="primary" type="button" mat-button matStepperNext (click)="bookAppointment()">Reserve</button>
                         </div>
                     </form>
                 </div>

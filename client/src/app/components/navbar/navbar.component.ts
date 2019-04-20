@@ -82,6 +82,10 @@ export class NavbarComponent implements OnInit {
         overlayContainerClasses.add(theme);
     }
 
+    login(): void {
+        this.router.navigate(['login']);
+    }
+
     logout(): void {
         this.googleAnalytics.trackValues('security', 'logout');
         this.userService.logout();

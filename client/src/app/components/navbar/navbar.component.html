@@ -52,8 +52,9 @@
                     class="hamburger__icon__fill" data-name="Rectangle 11" rx="2"
                     transform="translate(31.5 30)"/>
             </svg>
-
-
+            <div *ngIf="authService.isGuest()">
+                <button mat-button  class="login_button" (click)="login()">Login</button>
+            </div>
           </div>
       
           <div class="nav-title"
