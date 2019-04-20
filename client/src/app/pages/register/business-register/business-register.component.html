@@ -51,13 +51,13 @@
                                     Between 6-30 characters, at least 1 number and  1 digit
                                 </mat-hint>
                                 <mat-error *ngIf="personalInfoForm.get('password').touched &&
-                                personalInfoForm.get('password').errors
-                         && personalInfoForm.get('password').errors.required">
+                                    personalInfoForm.get('password').errors
+                                    && personalInfoForm.get('password').errors.required">
                                     Password is <strong>required</strong>
                                 </mat-error>
                                 <mat-error *ngIf="personalInfoForm.get('password').touched &&
-                                personalInfoForm.get('password').errors
-                         && personalInfoForm.get('password').errors.pattern">
+                                    personalInfoForm.get('password').errors
+                                    && personalInfoForm.get('password').errors.pattern">
                                     Password is <strong>not</strong> in correct format
                                 </mat-error>
                             </mat-form-field>
@@ -67,12 +67,12 @@
                                        [type]="isPasswordVisible ? 'text' : 'password'" name="confirmPassword"
                                        [errorStateMatcher]="matcher">
                                 <mat-error *ngIf="personalInfoForm.get('confirmPassword').touched &&
-                                personalInfoForm.get('confirmPassword').errors
-                                && personalInfoForm.get('confirmPassword').errors.required">
+                                    personalInfoForm.get('confirmPassword').errors
+                                    && personalInfoForm.get('confirmPassword').errors.required">
                                     Password confirmation is <strong>required</strong>
                                 </mat-error>
                                 <mat-error *ngIf="personalInfoForm.get('confirmPassword').touched &&
-                                personalInfoForm.get('password').touched && personalInfoForm.errors?.mismatched">
+                                    personalInfoForm.get('password').touched && personalInfoForm.errors?.mismatched">
                                     Passwords do not match
                                 </mat-error>
                             </mat-form-field>
@@ -136,6 +136,11 @@
                                     {{domain.value}}
                                 </mat-option>
                             </mat-select>
+                            <mat-error *ngIf="businessInfoForm.get('businessDomain').touched &&
+                                businessInfoForm.get('businessDomain').errors
+                                && businessInfoForm.get('businessDomain').errors.required">
+                                Business sector is <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
 
@@ -163,6 +168,11 @@
                             <mat-label>Business Name</mat-label>
                             <input formControlName="businessName" matInput type="text"
                                    name="businessName" required appAutofocus>
+                            <mat-error *ngIf="businessInfoForm.get('businessName').touched &&
+                                businessInfoForm.get('businessName').errors
+                                && businessInfoForm.get('businessName').errors.required">
+                                Business name is <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
@@ -170,6 +180,11 @@
                             <mat-label>Description</mat-label>
                             <input formControlName="description" matInput type="text"
                                    name="description" required appAutofocus>
+                            <mat-error *ngIf="businessInfoForm.get('description').touched &&
+                                businessInfoForm.get('description').errors
+                                && businessInfoForm.get('description').errors.required">
+                                Business description is <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
@@ -181,6 +196,11 @@
                                 <mat-label>Ex: 2044 Main St.</mat-label>
                                 <input formControlName="address" matInput type="text"
                                        name="address" required appAutofocus>
+                                <mat-error *ngIf="businessInfoForm.get('address').touched &&
+                                    businessInfoForm.get('address').errors
+                                    && businessInfoForm.get('address').errors.required">
+                                    Address is <strong>required</strong>
+                                </mat-error>
                             </mat-form-field>
                         </div>
                         <div style="padding-left:8rem" >
@@ -191,6 +211,11 @@
                                     <mat-label>Ex: Toronto</mat-label>
                                     <input formControlName="city" matInput type="text"
                                            name="city" required appAutofocus>
+                                    <mat-error *ngIf="businessInfoForm.get('city').touched &&
+                                        businessInfoForm.get('city').errors
+                                        && businessInfoForm.get('city').errors.required">
+                                        City is <strong>required</strong>
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                             <div style="padding-left:.5rem" >
@@ -201,6 +226,11 @@
                                     <mat-label>Ex: Quebec</mat-label>
                                     <input formControlName="province" matInput
                                            type="text" name="city" required appAutofocus>
+                                    <mat-error *ngIf="businessInfoForm.get('province').touched &&
+                                    businessInfoForm.get('province').errors
+                                    && businessInfoForm.get('province').errors.required">
+                                        Province is <strong>required</strong>
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                     </div>
@@ -213,6 +243,11 @@
                                 <mat-label>Ex: Canada</mat-label>
                                 <input formControlName="country" matInput type="text"
                                        name="city" required appAutofocus>
+                                <mat-error *ngIf="businessInfoForm.get('country').touched &&
+                                    businessInfoForm.get('country').errors
+                                    && businessInfoForm.get('country').errors.required">
+                                    Country is <strong>required</strong>
+                                </mat-error>
                             </mat-form-field>
                         </div>
                         <div style="padding-left:.5rem" >
@@ -223,6 +258,11 @@
                                 <mat-label>Ex: H1A 1A1</mat-label>
                                 <input formControlName="postalCode" matInput
                                        type="text" name="city" required appAutofocus>
+                                <mat-error *ngIf="businessInfoForm.get('postalCode').touched &&
+                                    businessInfoForm.get('postalCode').errors
+                                    && businessInfoForm.get('postalCode').errors.required">
+                                    Postal code is <strong>required</strong>
+                                </mat-error>
                             </mat-form-field>
                         </div>
                     </div>
@@ -240,10 +280,10 @@
                                 <mat-form-field>
                                     <mat-label>Start</mat-label>
                                     <mat-select name="food">
-                                    <mat-option *ngFor="let time of possibleBusinessHours"
-                                                (onSelectionChange)="saveStartTime(day,time)" [value]="time">
-                                        {{time}}
-                                    </mat-option>
+                                        <mat-option *ngFor="let time of possibleBusinessHours"
+                                                    (onSelectionChange)="saveStartTime(day,time)" [value]="time">
+                                            {{time}}
+                                        </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -266,7 +306,10 @@
                     <div>
                         <div style="margin-top:2rem; margin-left:35rem">
                             <button mat-raised-button class="button-color" matStepperPrevious style="margin-right:1rem">Back</button>
-                            <button mat-raised-button class="button-color" matStepperNext>Next</button>
+                            <button mat-raised-button class="button-color" matStepperNext
+                                [disabled]="businessInfoForm.invalid">
+                                Next
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -279,11 +322,21 @@
                             <mat-label>Add a service that your business offers</mat-label>
                             <input matInput formControlName="firstNewService" type="text"
                                    name="service" required appAutofocus>
+                            <mat-error *ngIf="serviceInfoForm.get('firstNewService').touched &&
+                                    serviceInfoForm.get('firstNewService').errors
+                                    && serviceInfoForm.get('firstNewService').errors.required">
+                                Service info is <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Add the service duration(in minutes)</mat-label>
-                            <input matInput formControlName="firstNewServiceDuration" type="text" name="serviceDuration"
+                            <input matInput formControlName="firstNewServiceDuration" type="number" name="serviceDuration"
                                    pattern=".{1,}" required appAutofocus>
+                            <mat-error *ngIf="serviceInfoForm.get('firstNewServiceDuration').touched &&
+                                serviceInfoForm.get('firstNewServiceDuration').errors
+                                && serviceInfoForm.get('firstNewServiceDuration').errors.required">
+                                Service duration is <strong>required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div formArrayName="newServices">
@@ -292,11 +345,21 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Add a service that your business offers</mat-label>
                                     <input matInput type="text" formControlName="newServiceName" required appAutofocus>
+                                    <mat-error *ngIf="newServiceForms.controls[i].controls.newServiceName.touched &&
+                                        newServiceForms.controls[i].controls.newServiceName.errors
+                                        && newServiceForms.controls[i].controls.newServiceName.errors.required">
+                                        Service info is <strong>required</strong>
+                                    </mat-error>
                                 </mat-form-field>
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Add the service duration(in minutes)</mat-label>
-                                    <input matInput   type="text" formControlName="newServiceDuration" required
-                                           appAutofocus>
+                                    <input matInput type="number" formControlName="newServiceDuration" required
+                                           pattern=".{1,}" appAutofocus>
+                                    <mat-error *ngIf="newServiceForms.controls[i].controls.newServiceDuration.touched &&
+                                        newServiceForms.controls[i].controls.newServiceDuration.errors
+                                        && newServiceForms.controls[i].controls.newServiceDuration.errors.required">
+                                        Service duration is <strong>required</strong>
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
@@ -314,7 +377,6 @@
                             || newServiceForms.invalid">
                         Register
                     </button>
-                        {{newServiceForms.invalid}}
                     </div>
                     <div>
                          <button mat-button matStepperPrevious>Back</button>

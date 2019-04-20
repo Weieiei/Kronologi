@@ -159,8 +159,8 @@ export class BusinessRegisterComponent implements OnInit {
             postalCode: [this.postalCode || '',  [Validators.required] ],
         });
         this.serviceInfoForm = this._formBuilder.group({
-            firstNewService: [this.service, Validators.required],
-            firstNewServiceDuration: [this.serviceDuration, Validators.required],
+            firstNewService: [this.service, [Validators.required]],
+            firstNewServiceDuration: [this.serviceDuration, [Validators.required]],
             newServices: this._formBuilder.array([])
         });
       }
@@ -344,8 +344,8 @@ export class BusinessRegisterComponent implements OnInit {
     }
     addService() {
         const newService = this._formBuilder.group({
-          newServiceName: ['', Validators.required],
-          newServiceDuration: ['', Validators.required],
+          newServiceName: ['', [Validators.required]],
+          newServiceDuration: ['', [Validators.required]],
         });
         this.newServiceForms.push(newService);
     }
