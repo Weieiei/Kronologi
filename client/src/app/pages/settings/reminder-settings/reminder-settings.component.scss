@@ -29,8 +29,10 @@
             font-weight: bold;
         }
     }
+    
+
 }
 
-::ng-deep .mat-checkbox-layout .mat-checkbox-label {
-    color: black;
+.mat-checkbox-frame{
+    border-color:blue;
 }
