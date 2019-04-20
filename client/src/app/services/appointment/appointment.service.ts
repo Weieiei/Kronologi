@@ -33,6 +33,10 @@ export class AppointmentService {
         return this.http.post<any>(['api', 'business', '1', 'appointments'].join('/'), payload);
     }
 
+    public bookGuestAppointment(appointment: BookAppointmentDTO): Observable<any> {
+        return this.http.post<any>(['api', 'business', '1', 'guest_appointments'].join('/'), appointment);
+    }
+
     public updateAppointment(id: number, payload: BookAppointmentDTO): Observable<any> {
         return this.http.put<any>(['api','business','1','appointments', id].join('/'), payload);
     }

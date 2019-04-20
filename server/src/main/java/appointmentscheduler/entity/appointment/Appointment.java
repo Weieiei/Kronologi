@@ -3,6 +3,7 @@ package appointmentscheduler.entity.appointment;
 import appointmentscheduler.entity.event.AppEvent;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.event.EventComparer;
+import appointmentscheduler.entity.guest.Guest;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
@@ -23,6 +24,25 @@ public class Appointment extends GeneralAppointment implements AppEvent {
 
     @ManyToOne
     private User client;
+
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @ManyToOne
+    private Guest guest;
 
     @ManyToOne
     private Employee employee;

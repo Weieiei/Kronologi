@@ -117,22 +117,5 @@ public class GuestService {
         return map;
     }
 
-//    public Map<String, Object> createGuest (UserRegisterDTO guestDTO){
-//        if (guestRepository.findByEmailIgnoreCase(guestDTO.getEmail()).orElse(null) != null) {
-//            throw new UserAlreadyExistsException(String.format("A guest with the email %s already exists.", guestDTO.getEmail()));
-//        }
-//
-//        User guest = UserFactory.createGuest(User.class, guestDTO.getFirstName(), guestDTO.getLastName(), guestDTO.getEmail());
-//
-//        guest.setRole(RoleEnum.GUEST.toString());
-//        User savedUser = guestRepository.save(guest);
-//        Verification verification = new Verification(savedUser);
-//
-//        verificationRepository.save(verification);
-//
-//        String token = generateToken(savedUser, guestDTO.getPassword());
-//
-//        return guestRepository( token, verification);
-//
-//    }
+
 }

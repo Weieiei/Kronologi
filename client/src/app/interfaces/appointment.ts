@@ -12,4 +12,6 @@ export interface Appointment {
     client: User;
     employee: User;
     service: Service;
+    firstName: string
+    lastName: string
 }

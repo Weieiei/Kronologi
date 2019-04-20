@@ -22,6 +22,9 @@ import { GuestComponent } from '../../../../pages/guest/guest.component';
 export class BookComponent implements OnInit {
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
+    firstName;
+    lastName;
+    email;
     isOptional = false;
     service: ServiceDTO;
     date: any;
@@ -35,8 +38,7 @@ export class BookComponent implements OnInit {
     businessId: number;
     constructor(public route: ActivatedRoute, private router: Router,
                 public authService: AuthService,
-                private _formBuilder: FormBuilder, private appointmentService: AppointmentService,
-                private anonGuard: AnonymousGuard) {
+                private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
     }
 
     ngOnInit() {
@@ -48,6 +50,7 @@ export class BookComponent implements OnInit {
         this.secondFormGroup = this._formBuilder.group({
             secondCtrl: ''
         });
+
     }
 
     setService(service: ServiceDTO): void {
@@ -188,8 +191,20 @@ export class BookComponent implements OnInit {
         this.router.navigate(['/home']);
     }
 
-    // register(){
-    //     guest.register();
-    // }
+    bookGuestAppointment() {
+        this.appointment = {
+            employeeId: this.employeeId,
+            serviceId: this.service.id,
+            date: this.date,
+            startTime: this.time,
+            email: this.email,
+            firstName: this.firstName,
+            lastName: this.lastName
+        };
+        this.appointmentService.bookGuestAppointment(this.appointment).subscribe(
+            res => console.log(res)
+        );
+
+    }
 }
 

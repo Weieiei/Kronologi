@@ -2,35 +2,28 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
+import appointmentscheduler.dto.user.GuestDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
-import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.guest.Guest;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.EmployeeAvailability;
-import appointmentscheduler.entity.user.User;
-import appointmentscheduler.exception.ResourceNotFoundException;
-import appointmentscheduler.repository.EmployeeRepository;
-import appointmentscheduler.repository.ServiceRepository;
-import appointmentscheduler.repository.UserRepository;
+import appointmentscheduler.repository.GuestRepository;
 import appointmentscheduler.serializer.*;
 import appointmentscheduler.service.appointment.AppointmentService;
-import appointmentscheduler.service.business.BusinessService;
-import appointmentscheduler.service.email.EmailService;
+import appointmentscheduler.service.guest.GuestService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/${rest.api.path}/business", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,14 +32,19 @@ public class AppointmentController extends AbstractController {
    
     private final AppointmentService appointmentService;
     private final ObjectMapperFactory objectMapperFactory;
+    private final GuestService guestService;
+    private final GuestRepository guestRepository;
 
 
     @Autowired
     public AppointmentController(
-            AppointmentService appointmentService,  ObjectMapperFactory objectMapperFactory
+            AppointmentService appointmentService,  ObjectMapperFactory objectMapperFactory,
+            GuestService guestService, GuestRepository guestRepository
     ) {
         this.appointmentService = appointmentService;
         this.objectMapperFactory = objectMapperFactory;
+        this.guestService = guestService;
+        this.guestRepository = guestRepository;
     }
 
 
@@ -55,6 +53,20 @@ public class AppointmentController extends AbstractController {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new UserAppointmentSerializer());
         Appointment savedAppointment = appointmentService.add(appointmentDTO, getUserId(), businessId);
 
+        return getJson(mapper, savedAppointment);
+    }
+
+    @PostMapping("/{businessId}/guest_appointments")
+    public ResponseEntity<String> addGuestAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO, @PathVariable long businessId) throws NoSuchAlgorithmException, MessagingException, IOException {
+        final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new GuestSerializer());
+        GuestDTO guestDTO = new GuestDTO();
+        guestDTO.setEmail(appointmentDTO.getEmail());
+        guestDTO.setFirstName(appointmentDTO.getFirstName());
+        guestDTO.setLastName(appointmentDTO.getLastName());
+        guestService.register(guestDTO);
+        Optional<Guest> guestOptional = guestRepository.findGuestByEmailIgnoreCase(guestDTO.getEmail());
+        long guest_id = guestOptional.get().getId();
+        Appointment savedAppointment = appointmentService.addGuest(appointmentDTO, guest_id, businessId);
         return getJson(mapper, savedAppointment);
     }
 
