@@ -207,10 +207,22 @@ export class BusinessRegisterComponent implements OnInit {
         };
 
         const serviceInfoValues = this.serviceInfoForm.value;
-        const payload_service: ServiceCreateDto = {
+        const firstService = {
             name: serviceInfoValues.firstNewService,
             duration: serviceInfoValues.firstNewServiceDuration,
         };
+
+        const payload_service: ServiceCreateDto[] = [firstService];
+
+        if (this.newServiceForms) {
+            this.newServiceForms.controls.forEach((individualControl: FormGroup) => {
+                const subsequentService = {
+                    name: individualControl.controls.newServiceName.value,
+                    duration: individualControl.controls.newServiceDuration.value,
+                };
+                payload_service.push(subsequentService);
+            });
+        }
 
         const personalInfoValues = this.personalInfoForm.value;
         let payload: BusinessUserRegisterDTO = null;

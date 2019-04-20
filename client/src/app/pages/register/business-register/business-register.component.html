@@ -267,7 +267,6 @@
                         <div style="margin-top:2rem; margin-left:35rem">
                             <button mat-raised-button class="button-color" matStepperPrevious style="margin-right:1rem">Back</button>
                             <button mat-raised-button class="button-color" matStepperNext>Next</button>
-
                         </div>
                     </div>
                 </form>
@@ -310,7 +309,12 @@
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
                     <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>
-                    <button mat-raised-button color="primary" type="submit" (click)="business_register()">Register</button>
+                    <button mat-raised-button color="primary" type="submit" (click)="business_register()"
+                            [disabled]="personalInfoForm.invalid || businessInfoForm.invalid || serviceInfoForm.invalid
+                            || newServiceForms.invalid">
+                        Register
+                    </button>
+                        {{newServiceForms.invalid}}
                     </div>
                     <div>
                          <button mat-button matStepperPrevious>Back</button>

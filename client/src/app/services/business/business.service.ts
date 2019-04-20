@@ -15,7 +15,7 @@ export class BusinessService {
     constructor(private http: HttpClient) {
     }
 
-    public createBusiness(business: BusinessRegisterDTO, service: ServiceCreateDto, newUser: BusinessUserRegisterDTO,
+    public createBusiness(business: BusinessRegisterDTO, service: ServiceCreateDto[], newUser: BusinessUserRegisterDTO,
                           businessHoursDTO: BusinessHoursDTO[], avatar: File): Observable<boolean> {
         const formData = new FormData();
 
@@ -24,7 +24,7 @@ export class BusinessService {
             {
                 type: 'application/json',
             }));
-        formData.append('service', new Blob([JSON.stringify(service)],
+        formData.append('services', new Blob([JSON.stringify(service)],
             {
                 type: 'application/json',
             }));
@@ -32,7 +32,7 @@ export class BusinessService {
             {
                 type: 'application/json',
             }));
-        formData.append('businessHour', new Blob([JSON.stringify(businessHoursDTO)],
+        formData.append('businessHours', new Blob([JSON.stringify(businessHoursDTO)],
             {
                 type: 'application/json',
             }));
