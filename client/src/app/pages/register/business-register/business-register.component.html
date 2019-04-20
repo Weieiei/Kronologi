@@ -339,6 +339,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
+
                     <div formArrayName="newServices">
                         <div *ngFor="let newService of newServiceForms.controls; let i=index" [formGroupName]="i">
                             <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
@@ -352,6 +353,7 @@
                                     </mat-error>
                                 </mat-form-field>
                                 <mat-form-field appearance="outline" fxFlex>
+
                                     <mat-label>Add the service duration(in minutes)</mat-label>
                                     <input matInput type="number" formControlName="newServiceDuration" required
                                            pattern=".{1,}" appAutofocus>
@@ -361,6 +363,7 @@
                                         Service duration is <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
+
                             </div>
                             <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
                                 <button mat-button color="primary" (click)="deleteService(newService)">Delete</button>
@@ -378,11 +381,13 @@
                         Register
                     </button>
                     </div>
+
                     <div>
                          <button mat-button matStepperPrevious>Back</button>
                     </div>
                 </form>
             </mat-step>
+
         </mat-horizontal-stepper>
     </div>
 </div>
