@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import appointmentscheduler.util.StringMatcher;
 
 @org.springframework.stereotype.Service
 public class ServiceFileStorageService {
@@ -32,12 +33,6 @@ public class ServiceFileStorageService {
         this.serviceRepository = serviceRepository;
     }
 
-    public static boolean verifyNaming(String fileName) {
-        //alphanumeric character followed by dot and alpha character
-        final Pattern pattern = Pattern.compile("\\w*.[A-Za-z]*");
-        return pattern.matcher(fileName).matches();
-    }
-
     @Transactional
     public Map<String, String> saveServiceFile(MultipartFile file, long serviceId) {
         // clean file name
@@ -46,7 +41,7 @@ public class ServiceFileStorageService {
 
         try {
             // Check if the file's name contains invalid characters
-            if(!verifyNaming(fileName)) {
+            if(!StringMatcher.verifyNaming(fileName)) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 

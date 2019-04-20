@@ -31,7 +31,7 @@ public class ServiceFile {
     private byte[] data;
 
     public ServiceFile() {
-        this.fileOrigin = FileOrigin.MISC;
+        this.fileOrigin = FileOrigin.SERVICE;
     }
 
     public ServiceFile(String fileName, String fileType, byte[] data, Service service) {
@@ -39,7 +39,7 @@ public class ServiceFile {
         this.fileType = fileType;
         this.data = data;
         size = data.length;
-        this.fileOrigin = FileOrigin.MISC;
+        this.fileOrigin = FileOrigin.SERVICE;
         this.service = service;
     }
 
