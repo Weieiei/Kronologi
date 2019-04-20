@@ -27,6 +27,7 @@ import appointmentscheduler.service.GoogleApiCalls.GoogleApi;
 import appointmentscheduler.service.business.BusinessService;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.file.FileStorageService;
+import appointmentscheduler.service.service.ServiceService;
 import appointmentscheduler.service.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,22 +76,24 @@ public class BusinessController extends AbstractController {
     private final ModelMapper modelMapper;
     private final BusinessDTOToBusiness businessConverter;
     private GoogleApi googleApi;
+    private ServiceService serviceService;
     private ServiceDTOToService serviceConverter;
     private UserService userService;
     private EmailService emailService;
     private FileStorageService fileStorageService;
     private BusinessHoursDTOToBusinessHours businessHoursConverter;
     @Autowired
-    public BusinessController(BusinessService businessService, BusinessRepository businessRepository,
-                              ObjectMapperFactory objectMapperFactory, ModelMapper modelMapper,BusinessDTOToBusiness businessConverter,
-                              ServiceDTOToService serviceConverter, UserService userService, EmailService emailService, FileStorageService fileStorageService,BusinessHoursDTOToBusinessHours businessHoursConverter,
-                              GoogleApi googleApi) {
+    public BusinessController(  BusinessService businessService, BusinessRepository businessRepository,
+                                ObjectMapperFactory objectMapperFactory, ModelMapper modelMapper,BusinessDTOToBusiness businessConverter,
+                                ServiceService serviceService, ServiceDTOToService serviceConverter, UserService userService, EmailService emailService,
+                                FileStorageService fileStorageService,BusinessHoursDTOToBusinessHours businessHoursConverter, GoogleApi googleApi) {
         this.googleApi = googleApi;
         this.businessService = businessService;
         this.businessRepository = businessRepository;
         this.objectMapperFactory = objectMapperFactory;
         this.modelMapper = modelMapper;
         this.businessConverter = businessConverter;
+        this.serviceService = serviceService;
         this.serviceConverter = serviceConverter;
         this.businessHoursConverter = businessHoursConverter;
         this.userService = userService;
@@ -236,42 +239,51 @@ public class BusinessController extends AbstractController {
 
   @LogREST
   @PostMapping("/businessWithLogo")
-  public ResponseEntity<Map<String, Object>> createBusinessWithLogo(@RequestPart("file") MultipartFile aFile, @RequestPart("business") BusinessDTO businessDTO,
-                                                     @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
-      return createBusiness(aFile,businessDTO,businessHoursDTO,service,userRegisterDTO);
+  public ResponseEntity<Map<String, Object>> createBusinessWithLogo(@RequestPart("file") MultipartFile aFile,
+          @RequestPart("business") BusinessDTO businessDTO, @RequestPart("businessHours")BusinessHoursDTO[] businessHoursDTOs,
+          @RequestPart("services") ServiceCreateDTO[] serviceCreateDTOs, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException,
+          MessagingException, NoSuchAlgorithmException {
+      return createBusiness(aFile, businessDTO, businessHoursDTOs, serviceCreateDTOs, userRegisterDTO);
   }
 
   @LogREST
   @PostMapping("/businessNoLogo")
-  public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO, @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
-      return createBusiness(null,businessDTO,businessHoursDTO,service,userRegisterDTO);
+  public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO,
+          @RequestPart("businessHours")BusinessHoursDTO[] businessHoursDTOs, @RequestPart("services") ServiceCreateDTO[] serviceCreateDTOs,
+          @RequestPart("user") UserRegisterDTO userRegisterDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+      return createBusiness(null, businessDTO, businessHoursDTOs, serviceCreateDTOs, userRegisterDTO);
   }
 
-    private ResponseEntity<Map<String, Object>> createBusiness(MultipartFile aFile, BusinessDTO businessDTO, BusinessHoursDTO businessHoursDTO[], ServiceCreateDTO service, UserRegisterDTO userRegisterDTO)throws IOException, MessagingException, NoSuchAlgorithmException {
+  private ResponseEntity<Map<String, Object>> createBusiness(MultipartFile aFile, BusinessDTO businessDTO, BusinessHoursDTO[] businessHoursDTOs,
+            ServiceCreateDTO[] serviceCreateDTOs, UserRegisterDTO userRegisterDTO)throws IOException, MessagingException, NoSuchAlgorithmException {
         try {
 
             Map<String, Object> tokenMap = userService.register(userRegisterDTO, RoleEnum.ADMIN);
             Verification verification = (Verification) tokenMap.get("verification");
             emailService.sendRegistrationEmail(userRegisterDTO.getEmail(), verification.getHash(), true);
 
-            //create business and save it.
+            // create business and save it
             Business business = businessConverter.convert(businessDTO);
             business.setOwner(verification.getUser());
             long businessId = businessService.add(business);
 
-
-            //businessHours
+            // create and associate business hours to business
             List<BusinessHours> businessHours = new ArrayList<>();
-            for(BusinessHoursDTO bhDTO : businessHoursDTO){
+            for(BusinessHoursDTO bhDTO : businessHoursDTOs){
                 BusinessHours businessHour = businessHoursConverter.convert(bhDTO);
                 businessHour.setBusiness(business);
                 businessHours.add(businessHour);
             }
-
             businessService.addAll(businessHours);
-            //associate service to business
-            Service newService = serviceConverter.convert(service);
-            newService.setBusiness(business);
+
+            // create and associate services to business
+            List<Service> services = new ArrayList<>();
+            for(ServiceCreateDTO scDTO : serviceCreateDTOs){
+                Service service = serviceConverter.convert(scDTO);
+                service.setBusiness(business);
+                services.add(service);
+            }
+            serviceService.addAll(services);
 
             if(aFile !=null){
                 fileStorageService.saveFile(aFile, businessId);
