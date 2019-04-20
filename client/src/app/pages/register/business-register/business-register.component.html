@@ -131,8 +131,7 @@
                     <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                         <p>Select the sector your business services</p>
                         <mat-form-field>
-                            <mat-select placeholder="Sector" [(ngModel)]="businessDomain"
-                                        [ngModelOptions]="{standalone: true}">
+                            <mat-select formControlName="businessDomain" placeholder="Sector">
                                 <mat-option *ngFor="let domain of domains" [value]="domain.value">
                                     {{domain.value}}
                                 </mat-option>
@@ -162,14 +161,14 @@
                     <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Business Name</mat-label>
-                            <input matInput [(ngModel)]="businessName" [ngModelOptions]="{standalone: true}" type="text"
+                            <input formControlName="businessName" matInput type="text"
                                    name="businessName" required appAutofocus>
                         </mat-form-field>
                     </div>
                     <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Description</mat-label>
-                            <input matInput [(ngModel)]="description" [ngModelOptions]="{standalone: true}" type="text"
+                            <input formControlName="description" matInput type="text"
                                    name="description" required appAutofocus>
                         </mat-form-field>
                     </div>
@@ -180,7 +179,7 @@
                             </div>
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Ex: 2044 Main St.</mat-label>
-                                <input matInput [(ngModel)]="address" [ngModelOptions]="{standalone: true}" type="text"
+                                <input formControlName="address" matInput type="text"
                                        name="address" required appAutofocus>
                             </mat-form-field>
                         </div>
@@ -190,7 +189,7 @@
                                 </div>
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Ex: Toronto</mat-label>
-                                    <input matInput [(ngModel)]="city" [ngModelOptions]="{standalone: true}" type="text"
+                                    <input formControlName="city" matInput type="text"
                                            name="city" required appAutofocus>
                                 </mat-form-field>
                             </div>
@@ -200,7 +199,7 @@
                                 </div>
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Ex: Quebec</mat-label>
-                                    <input matInput [(ngModel)]="province" [ngModelOptions]="{standalone: true}"
+                                    <input formControlName="province" matInput
                                            type="text" name="city" required appAutofocus>
                                 </mat-form-field>
                             </div>
@@ -212,7 +211,7 @@
                             </div>
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Ex: Canada</mat-label>
-                                <input matInput [(ngModel)]="country" [ngModelOptions]="{standalone: true}" type="text"
+                                <input formControlName="country" matInput type="text"
                                        name="city" required appAutofocus>
                             </mat-form-field>
                         </div>
@@ -222,7 +221,7 @@
                             </div>
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Ex: H1A 1A1</mat-label>
-                                <input matInput [(ngModel)]="postalCode" [ngModelOptions]="{standalone: true}"
+                                <input formControlName="postalCode" matInput
                                        type="text" name="city" required appAutofocus>
                             </mat-form-field>
                         </div>
@@ -240,7 +239,7 @@
                             <div *ngFor="let day of daysOfWeek">
                                 <mat-form-field>
                                     <mat-label>Start</mat-label>
-                                    <mat-select [(ngModel)]="selectedValue"  [ngModelOptions]="{standalone: true}" name="food" >
+                                    <mat-select name="food">
                                     <mat-option *ngFor="let time of possibleBusinessHours"
                                                 (onSelectionChange)="saveStartTime(day,time)" [value]="time">
                                         {{time}}
@@ -253,7 +252,7 @@
                             <div *ngFor="let day of daysOfWeek">
                                 <mat-form-field>
                                     <mat-label>End</mat-label>
-                                    <mat-select [(ngModel)]="selectedValue" name="food">
+                                    <mat-select name="food">
                                         <mat-option *ngFor="let time of possibleBusinessHours"
                                                     (onSelectionChange)="saveEndTime(day,time)"
                                                     [disabled]="isTimeLower(day,time)" [value]="time">
