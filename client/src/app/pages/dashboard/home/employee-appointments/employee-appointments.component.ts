@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AppointmentService } from '../../../../services/appointment/appointment.service';
-import { Appointment } from 'src/app/interfaces/appointment';
-import { MatDialogConfig, MatDialog } from '@angular/material';
-import { CancelDialogComponent } from 'src/app/components/cancel-dialog/cancel-dialog.component';
-import {now} from "moment";
+import {Component, OnInit} from '@angular/core';
+import {AppointmentService} from '../../../../services/appointment/appointment.service';
+import {Appointment} from 'src/app/interfaces/appointment';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {CancelDialogComponent} from 'src/app/components/cancel-dialog/cancel-dialog.component';
 
 @Component({
     selector: 'app-employee-appointments',
@@ -13,6 +12,7 @@ import {now} from "moment";
 export class EmployeeAppointmentsComponent implements OnInit {
 
     displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee', 'status', 'actions'];
+    displayedColumnsPastAppointments: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee', 'status'];
     appointments: Appointment[];
     pastAppointments: Appointment[];
 
@@ -52,8 +52,9 @@ export class EmployeeAppointmentsComponent implements OnInit {
         );
     }
 
-    openDialog(row_id:any){
-        let appointmentToCancel: Appointment = this.appointments[row_id-1];
+    openDialog(element_id: any, row_id: any) {
+        let appointmentToCancel: Appointment = this.appointments[row_id];
+        console.log(appointmentToCancel);
         const dialogConfig = new MatDialogConfig();
         let longDescription: any;
 
@@ -63,14 +64,14 @@ export class EmployeeAppointmentsComponent implements OnInit {
         dialogConfig.data = {
             appointment: appointmentToCancel,
             serviceName: appointmentToCancel.service.name,
-            longDescription
         };
 
         this.dialog.open(CancelDialogComponent, dialogConfig);
     }
 
-    checkIfCancelled(row_id:any){
-        return this.appointments[row_id-1].status == 'CANCELLED'
+    checkIfCancelled(row_number: any) {
+        console.log(this.appointments[row_number].status);
+        return this.appointments[row_number].status == 'CANCELLED';
     }
 
 

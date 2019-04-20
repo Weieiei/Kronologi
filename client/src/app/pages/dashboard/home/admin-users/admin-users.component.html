@@ -1,6 +1,6 @@
 <div *ngIf="users?.length">
 
-    <p>The system has {{ componentState.users?.length }} user(s):</p>
+    <p class="users-msg">The system has {{ componentState.users?.length }} user(s):</p>
     <app-search-input
         [placeholderText]="'Search'"
         (changed)="onSearch($event)">
