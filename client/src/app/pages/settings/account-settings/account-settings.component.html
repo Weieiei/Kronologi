@@ -10,7 +10,7 @@
     <div fxLayout="column" fxLayoutGap="20px">
 
         <div fxLayout="column" fxLayoutGap="8px">
-            <h5>Change Your Email</h5>
+            <h5 class="account-settings-title">Change Your Email</h5>
             <mat-divider></mat-divider>
         </div>
 
@@ -50,7 +50,7 @@
 
         <div fxLayout="column" fxLayoutGap="8px">
             <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start end">
-                <h5>Change Your Password</h5>
+                <h5 class="account-settings-title" >Change Your Password</h5>
                 <button mat-icon-button type="button" class="icon-button" (click)="togglePasswordVisibility()">
                     <mat-icon>{{ isPasswordVisible ? 'visibility_on' : 'visibility_off'}}</mat-icon>
                 </button>
@@ -108,7 +108,7 @@
     <div fxLayout="column" fxLayoutGap="20px">
 
         <div fxLayout="column" fxLayoutGap="8px">
-            <h5>Manage Your Phone Number</h5>
+            <h5 class="account-settings-title">Manage Your Phone Number</h5>
             <mat-divider></mat-divider>
         </div>
 
@@ -181,7 +181,7 @@
   <div fxLayout="column" fxLayoutGap="20px">
 
         <div fxLayout="column" fxLayoutGap="8px">
-            <h5>Change Your Profile Picture</h5>
+            <h5 class="account-settings-title">Change Your Profile Picture</h5>
             <mat-divider></mat-divider>
         </div>
 
@@ -193,7 +193,7 @@
 
             <form (submit)="updateProfilePicture()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
-             <p>Selected Picture: {{fileSelectMsg}}</p>
+             <mat-hint fxFlex="60">Selected Picture: {{fileSelectMsg}}</mat-hint>
             <td-file-upload #singleFileUpload  (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
                 accept=".jpeg,.jpg,.png,.svg">
               <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>

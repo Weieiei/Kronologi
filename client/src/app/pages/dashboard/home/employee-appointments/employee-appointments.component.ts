@@ -3,6 +3,7 @@ import { AppointmentService } from '../../../../services/appointment/appointment
 import { Appointment } from 'src/app/interfaces/appointment';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CancelDialogComponent } from 'src/app/components/cancel-dialog/cancel-dialog.component';
+import {now} from "moment";
 
 @Component({
     selector: 'app-employee-appointments',
@@ -70,5 +71,13 @@ export class EmployeeAppointmentsComponent implements OnInit {
 
     checkIfCancelled(row_id:any){
         return this.appointments[row_id-1].status == 'CANCELLED'
+    }
+
+
+    getFormattedDate(date: Date) {
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+        var year = date.getFullYear();
+        return month + "-" + day + "-" + year;
     }
 }
