@@ -68,6 +68,9 @@ import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/ser
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.component';
 import { SearchInputComponent } from './components/search-box/search-box.component';
+import { ConfirmationAndPaymentComponent } from './pages/dashboard/reserve/confirmation-and-payment/confirmation-and-payment.component';
+import { PaymentDialogComponent } from './components/payment-dialog/payment-dialog.component';
+import { Module as StripeModule } from "stripe-angular";
 
 
 @NgModule({
@@ -125,9 +128,12 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
         ErrorDialogComponent,
         ErrorDialogComponent,
         DetailsComponent,
-        GoogleMapsComponent
+        GoogleMapsComponent,
+        ConfirmationAndPaymentComponent,
+        PaymentDialogComponent
     ],
     imports: [
+        StripeModule.forRoot(),
         LightboxModule,
         CovalentFileModule,
         NgxSpinnerModule,
@@ -151,6 +157,7 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
         StarRatingModule.forRoot()
     ],
     entryComponents: [
+        PaymentDialogComponent,
         ErrorDialogComponent,
         FindBusinessDialogComponent,
         TimePickerDialogComponent,

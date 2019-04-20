@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ServiceDTO} from "../../../../interfaces/service/service-dto";
-import {MatDatepickerInputEvent} from "@angular/material";
+import {MatDatepickerInputEvent, MatDialogConfig, MatDialog} from "@angular/material";
 import {AppointmentService} from "../../../../services/appointment/appointment.service";
 import {EmployeeFreeTime} from "../../../../interfaces/employee/employee-free-time";
 import {DateDTO} from "../../../../interfaces/date-and-time/DateDTO";
@@ -10,6 +10,7 @@ import * as moment from 'moment'
 import {EmployeeTimes} from "../../../../interfaces/employee/employee-times";
 import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appointment-dto';
 import {Router, ActivatedRoute} from "@angular/router";
+import { PaymentDialogComponent } from 'src/app/components/payment-dialog/payment-dialog.component';
 
 @Component({
   selector: 'app-book',
@@ -17,11 +18,15 @@ import {Router, ActivatedRoute} from "@angular/router";
   styleUrls: ['./book.component.scss']
 })
 export class BookComponent implements OnInit {
+    days : string[] =['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    months : string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
+    thirdFormGroup: FormGroup;
     isOptional = false;
     service: ServiceDTO;
     date: any;
+    dateString: string;
     time: any;
     monthMax = 11;
     dayMax = 365;
@@ -30,7 +35,7 @@ export class BookComponent implements OnInit {
     employeeId: number;
     appointment: BookAppointmentDTO;
     businessId: number;
-    constructor(public route: ActivatedRoute, private router: Router, private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
+    constructor( private dialog: MatDialog, public route: ActivatedRoute, private router: Router, private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
     }
 
     ngOnInit() {
@@ -42,6 +47,9 @@ export class BookComponent implements OnInit {
         this.secondFormGroup = this._formBuilder.group({
             secondCtrl: ''
         });
+        this.thirdFormGroup = this._formBuilder.group({
+            thirdCtrl: ''
+        })
     }
 
     setService(service: ServiceDTO): void {
@@ -55,8 +63,32 @@ export class BookComponent implements OnInit {
 
     setDate(date: any) {
         this.date = date;
-    }
+        let dayOfWeek : string = this.days[date.getDay()];
+        let month : string = this.months[date.getMonth()];
+        let dayOfMonth : string = date.getDate();
+        let yearOfDate : string = date.getFullYear();
+        this.dateString = dayOfWeek + " " + month + " " + dayOfMonth + ", " + yearOfDate;
 
+    }
+    
+    setIsPayment(client_pays : any){
+        console.log("hello")
+        console.log(client_pays)
+        if(client_pays){
+            const dialogConfig = new MatDialogConfig();
+
+            dialogConfig.disableClose = true;
+            dialogConfig.autoFocus = true;
+            dialogConfig.width = '400px';
+            dialogConfig.height = '400px';
+    
+            
+            const dialogRef = this.dialog.open(PaymentDialogComponent, dialogConfig);
+    
+            dialogRef.afterClosed().subscribe(business => {
+            });
+        }
+    }
     dateIsSelected(): boolean{
         return !!this.date;
     }

@@ -320,7 +320,7 @@ export class BusinessRegisterComponent implements OnInit {
     }
 
     get newServiceForms() {
-        return this.serviceInfoForm.get('new_services') as FormArray;
+        return this.serviceInfoForm.get('newServices') as FormArray;
     
     }
     addService() {

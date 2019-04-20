@@ -25,6 +25,14 @@
             </div>
         </form>
     </mat-step>
+    <mat-step [stepControl]="thirdFormGroup" [optional]="isOptional">
+        <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Confirmation</ng-template>
+            <app-confirmation-and-payment (isPaymentWanted) ="setIsPayment($event)" [service]="service" [chosenTime]="time" [chosenDate]="dateString"></app-confirmation-and-payment>
+            <button mat-raised-button matStepperPrevious>Back</button>
+            <button mat-raised-button matStepperNext (click)="bookAppointment()">Next</button>
+        </form>
+    </mat-step>
     <mat-step>
         <ng-template matStepLabel>Done</ng-template>
         You are now done.
