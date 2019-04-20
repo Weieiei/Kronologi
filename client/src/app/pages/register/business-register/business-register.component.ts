@@ -68,9 +68,11 @@ export interface BusinessHours {
 })
 export class BusinessRegisterComponent implements OnInit {
 
-    daysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    possibleBusinessHours: string[] = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00',
-       '11:00', '12:00', '13:00', '14:00', '15,00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'];
+    daysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    possibleBusinessHours: string[] = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00',
+        '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00',
+        '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00',
+        '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30', '24:00'];
     selectedBusiness: BusinessDTO;
     businessHourMap = new Map();
     animationState = true;
@@ -81,7 +83,7 @@ export class BusinessRegisterComponent implements OnInit {
     businessInfoForm: FormGroup;
     serviceInfoForm: FormGroup;
     selectedFile: File = null;
-// new business object
+    // new business object
     business: BusinessDTO;
     businessName: string;
     businessDomain: string;
@@ -91,7 +93,7 @@ export class BusinessRegisterComponent implements OnInit {
         {value: 'Healthcare'},
         {value: 'Retail'},
         {value: 'Other'}
-      ];
+    ];
     description: string;
     address: string;
     city:  string;
@@ -100,7 +102,7 @@ export class BusinessRegisterComponent implements OnInit {
     postalCode: string;
     // new service object
     service: string;
-    service_duration: number;
+    serviceDuration: number;
     // new user object
     firstName: string;
     lastName: string;
@@ -121,7 +123,7 @@ export class BusinessRegisterComponent implements OnInit {
     businessId: number;
     matcher: PasswordMismatchStateMatcher;
 
-    index: number = 0;
+    index = 0;
     constructor(
         private spinner: NgxSpinnerService,
         private dialog: MatDialog,
@@ -147,11 +149,20 @@ export class BusinessRegisterComponent implements OnInit {
             number: [this.number || '',  [] ],
         }, {validator: this.checkPasswords});
         this.businessInfoForm = this._formBuilder.group({
-          secondCtrl: ['', Validators.required]
+            businessDomain: [this.businessDomain || '',  [Validators.required] ],
+            businessName: [this.businessName || '',  [Validators.required] ],
+            description: [this.description || '',  [Validators.required] ],
+            address: [this.address || '',  [Validators.required] ],
+            city: [this.city || '',  [Validators.required] ],
+            province: [this.province || '',  [Validators.required] ],
+            country: [this.country || '',  [Validators.required] ],
+            postalCode: [this.postalCode || '',  [Validators.required] ],
         });
         this.serviceInfoForm = this._formBuilder.group({
-            thirdCtrl: ['', Validators.required]
-          });
+            firstNewService: [this.service, [Validators.required]],
+            firstNewServiceDuration: [this.serviceDuration, [Validators.required]],
+            newServices: this._formBuilder.array([])
+        });
       }
 
     checkPasswords(inputFormGroup: FormGroup) {
@@ -159,15 +170,7 @@ export class BusinessRegisterComponent implements OnInit {
         const confirmPassword = inputFormGroup.controls.confirmPassword.value;
         return password === confirmPassword ? null : { mismatched: true };
     }
-    onUpload()  {
-        const  fd = new FormData();
-        fd.append('image', this.selectedFile, this.selectedFile.name );
-        this.http.post('https://url', fd )
-                .subscribe(
-                    response => {
-                        console.log(response);
-                });
-    }
+
 
     getBusinessById(businessId: Number): BusinessDTO {
         this.businessService.getBusinessById(this.businessId).subscribe(
@@ -193,30 +196,46 @@ export class BusinessRegisterComponent implements OnInit {
             });
         }
 
-        const finalizedAddress: string = this.address + ',' + this.city + ',' + this.province + ' ' + this.postalCode;
+        const businessInfoValues = this.businessInfoForm.value;
+        const finalizedAddress: string = businessInfoValues.address + ',' + businessInfoValues.city + ',' + businessInfoValues.province
+            + ' ' + businessInfoValues.postalCode;
         const payload_business: BusinessRegisterDTO = {
-            name: this.businessName,
-            domain: this.businessDomain,
-            description: this.description,
-            formatted_address: this.address
+            name: businessInfoValues.businessName,
+            domain: businessInfoValues.businessDomain,
+            description: businessInfoValues.description,
+            formatted_address: finalizedAddress
         };
 
-        const payload_service: ServiceCreateDto = {
-            name: this.service,
-            duration: this.service_duration,
+        const serviceInfoValues = this.serviceInfoForm.value;
+        const firstService = {
+            name: serviceInfoValues.firstNewService,
+            duration: serviceInfoValues.firstNewServiceDuration,
         };
 
+        const payload_service: ServiceCreateDto[] = [firstService];
+
+        if (this.newServiceForms) {
+            this.newServiceForms.controls.forEach((individualControl: FormGroup) => {
+                const subsequentService = {
+                    name: individualControl.controls.newServiceName.value,
+                    duration: individualControl.controls.newServiceDuration.value,
+                };
+                payload_service.push(subsequentService);
+            });
+        }
+
+        const personalInfoValues = this.personalInfoForm.value;
         let payload: BusinessUserRegisterDTO = null;
         if (this.password === this.confirmPassword ) {
         payload = {
-            firstName: this.firstName,
-            lastName: this.lastName,
-            email: this.email,
-            password: this.password,
+            firstName: personalInfoValues.firstName,
+            lastName: personalInfoValues.lastName,
+            email: personalInfoValues.email,
+            password: personalInfoValues.password,
             phoneNumber: {
                 countryCode: this.selectedCountry['dialCode'],
-                areaCode: this.areaCode,
-                number: this.number
+                areaCode: personalInfoValues.areaCode,
+                number: personalInfoValues.number
             }
         };
 
@@ -225,9 +244,9 @@ export class BusinessRegisterComponent implements OnInit {
         res => {
                 this.router.navigate(['login']);
             },
-        err => {
-            console.log(err);
-            }
+            err => {
+                    console.log(err);
+                }
             );
         }
     }
@@ -320,29 +339,18 @@ export class BusinessRegisterComponent implements OnInit {
     }
 
     get newServiceForms() {
-        return this.serviceInfoForm.get('new_services') as FormArray;
-    
+        return this.serviceInfoForm.get('newServices') as FormArray;
+
     }
     addService() {
-
         const newService = this._formBuilder.group({
-          newServiceName: [],
-          newServiceDuration: [],
+          newServiceName: ['', [Validators.required]],
+          newServiceDuration: ['', [Validators.required]],
         });
         this.newServiceForms.push(newService);
     }
     deleteService(i) {
-    this.newServiceForms.removeAt(i);
-  }
+        this.newServiceForms.removeAt(i);
+    }
 }
 
-/*
-frontend for uploading
- <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
-            <p> Upload your business logo </p>
-            <input type="file" (change) = "onFileSelected($event)" placeholder="Upload file" accept=".jpeg,.png">
-            <button mat-button color="primary" type="button" (click)="onUpload()">Upload</button>
-
-            </div>
-
-            */

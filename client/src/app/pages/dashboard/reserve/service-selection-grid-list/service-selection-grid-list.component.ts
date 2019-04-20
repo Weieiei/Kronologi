@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { Observable, Subscription } from 'rxjs';
 import { ServiceService } from '../../../../services/service/service.service';
-import {AppointmentService} from "../../../../services/appointment/appointment.service";
+import { DomSanitizer} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-service-selection-grid-list',
@@ -12,7 +12,7 @@ import {AppointmentService} from "../../../../services/appointment/appointment.s
 export class ServiceSelectionGridListComponent implements OnInit {
 
     services: ServiceDTO[] = [];
-    servicesAvailable = [];
+    imagePath :string = "";
 
     serviceId: number;
     serviceSubscription: Subscription;
@@ -21,6 +21,7 @@ export class ServiceSelectionGridListComponent implements OnInit {
     @Output() serviceChange = new EventEmitter();
 
     itemsPerPageOptions: Array<number> = [4, 8, 16, 32, 64];
+    sanitizedImageData: any;
 
     componentState: {
         totalItems: number,
@@ -28,7 +29,8 @@ export class ServiceSelectionGridListComponent implements OnInit {
         currentPage: number;
     };
 
-    constructor(private serviceService: ServiceService, private appointmentService: AppointmentService) {
+    constructor(private serviceService: ServiceService,
+        private sanitizer: DomSanitizer,) {
         this.componentState = {
             totalItems: 0,
             currentPageSize: 8,
@@ -48,15 +50,25 @@ export class ServiceSelectionGridListComponent implements OnInit {
     getServices() {
         this.serviceService.getServices(this.businessId).subscribe(res => {
             this.services = res;
-            for (let service in this.services) {
-                let serviceId = this.services[service]['id'];
-                this.appointmentService.getAvailabilitiesForService(serviceId).subscribe(
-                    res => {
-                        if (res.toString().length != 0)
-                            this.servicesAvailable.push(serviceId);
-                    }
-                )
-            }
+//get prfile for each service
+for (let service of this.services){
+    this.serviceService.getServiceProfile(service.id).subscribe(
+        data => {
+            if ( data ) {
+              this.imagePath = 'data:image/png;base64,' + data["image_encoded"];
+              this.sanitizedImageData = this.sanitizer.bypassSecurityTrustUrl(this.imagePath);
+            } else {
+                      this.sanitizedImageData = 'assets/images/kronologi-logo-1.png';
+                  }
+
+        },
+
+
+               err => console.log(err)
+      );
+}
+
+  //added pics
             this.componentState.totalItems = this.services.length;
             this.services.sort((a, b) => {
                 if (a.name.toLowerCase() < b.name.toLowerCase()) {
