@@ -46,7 +46,8 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.authService.checkAdmin();
+        this.authService.setUserAuth();
+
         this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
         this.userEmail = this.userService.getEmailFromToken();
         this.themeService.darkModeState.subscribe(value => {

@@ -1,5 +1,5 @@
 <!-- Slide Menu-->
-<aside *ngIf="!authService.isGuest()" class="side-menu__container bg-container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
+<aside class="side-menu__container bg-container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
         <nav class="slide-menu" [ngClass]="{'slide-menu-active': showMenu, 'slide-menu-active-dark': darkModeActive}" (click)="$event.stopImmediatePropagation();">
           <section class="menu-header" [ngClass] = "{'menu-header-dark': darkModeActive}">
             <span class="greeting__text">Welcome Back</span>

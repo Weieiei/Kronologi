@@ -12,7 +12,7 @@ import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appo
 import {Router, ActivatedRoute} from "@angular/router";
 import {AnonymousGuard} from '../../../../guards/anonymous/anonymous.guard';
 import {AuthService} from '../../../../services/auth/auth.service';
-import { GuestComponent } from '../../../../pages/guest/guest.component.ts';
+import { GuestComponent } from '../../../../pages/guest/guest.component';
 
 @Component({
   selector: 'app-book',
@@ -188,8 +188,8 @@ export class BookComponent implements OnInit {
         this.router.navigate(['/home']);
     }
 
-    register(){
-        guest.register();
-    }
+    // register(){
+    //     guest.register();
+    // }
 }
 

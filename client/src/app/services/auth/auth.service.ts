@@ -111,6 +111,13 @@ export class AuthService {
         return this.guest;
     }
 
+    setUserAuth(): void {
+        this.checkAdmin();
+        this.checkClient();
+        this.checkEmployee();
+        this.isGuest();
+    }
+
     checkAdmin(): void {
         const claims: any = this.getTokenClaims(this.getToken());
         let roles: Array<string> = [];
