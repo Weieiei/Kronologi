@@ -2,34 +2,24 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
+import appointmentscheduler.dto.appointment.PaymentInfoDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
-import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.EmployeeAvailability;
-import appointmentscheduler.entity.user.User;
-import appointmentscheduler.exception.ResourceNotFoundException;
-import appointmentscheduler.repository.EmployeeRepository;
-import appointmentscheduler.repository.ServiceRepository;
-import appointmentscheduler.repository.UserRepository;
 import appointmentscheduler.serializer.*;
 import appointmentscheduler.service.appointment.AppointmentService;
-import appointmentscheduler.service.business.BusinessService;
-import appointmentscheduler.service.email.EmailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 
 @RestController
@@ -104,13 +94,26 @@ public class AppointmentController extends AbstractController {
         return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDateAndBusinessId(date,businessId));
     }
 
-
+    @LogREST
     @GetMapping("{businessId}/cancel/{id}")
     public ResponseEntity<String> findId(@PathVariable long id, @PathVariable long businessId){
         ObjectMapper mapper = objectMapperFactory.createMapper(CancelledAppointment.class, new CancelledAppointmentSerializer());
         return getJson(mapper, appointmentService.findByCancelledIdAndBusinessId(id,  businessId));
     }
 
+    @PostMapping("/{businessId}/processPayment")
+    public ResponseEntity<String> processPaymentForAppointment(@RequestBody PaymentInfoDTO paymentInfoDTO){
+       try {
+           Token client_token = paymentInfoDTO.getStripeToken();
+           long businessId = paymentInfoDTO.getBusinessId();
+           long price =  paymentInfoDTO.getServicePrice();
+           appointmentService.chargeClient(client_token,price,businessId);
+
+           return ResponseEntity.ok().build();
+       }catch(StripeException e){
+           return ResponseEntity.status(400).build();
+       }
+    }
     //TODO fix
     @LogREST
     @GetMapping("/{businessId}/availabilities/{serviceId}")

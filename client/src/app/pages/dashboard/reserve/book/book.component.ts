@@ -82,7 +82,10 @@ export class BookComponent implements OnInit {
             dialogConfig.width = '400px';
             dialogConfig.height = '400px';
     
-            
+            dialogConfig.data = {
+                service: this.service,
+                businessId: this.businessId
+            };
             const dialogRef = this.dialog.open(PaymentDialogComponent, dialogConfig);
     
             dialogRef.afterClosed().subscribe(business => {

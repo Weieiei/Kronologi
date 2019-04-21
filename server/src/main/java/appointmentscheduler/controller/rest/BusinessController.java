@@ -54,7 +54,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
+import com.stripe.model.Token;
 import com.stripe.net.RequestOptions;
 import com.stripe.model.Account;
 
@@ -297,6 +297,7 @@ public class BusinessController extends AbstractController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+
 
   private LocalTime convertMilitaryStringToRegular(String timeString){
       int time = Integer.parseInt(timeString);
