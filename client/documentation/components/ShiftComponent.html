@@ -1,0 +1,1173 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>appointment-scheduler documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">appointment-scheduler documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>ShiftComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/dashboard/home/shift/shift.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-shift</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./shift.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./shift.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#columns">columns</a>
+                            </li>
+                            <li>
+                                <a href="#employee">employee</a>
+                            </li>
+                            <li>
+                                <a href="#employeeId">employeeId</a>
+                            </li>
+                            <li>
+                                <a href="#shifts">shifts</a>
+                            </li>
+                            <li>
+                                <a href="#showEditShiftform">showEditShiftform</a>
+                            </li>
+                            <li>
+                                <a href="#showShiftform">showShiftform</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addRecurringShift">addRecurringShift</a>
+                            </li>
+                            <li>
+                                <a href="#addShift">addShift</a>
+                            </li>
+                            <li>
+                                <a href="#deleteShift">deleteShift</a>
+                            </li>
+                            <li>
+                                <a href="#getEmployee">getEmployee</a>
+                            </li>
+                            <li>
+                                <a href="#getEmployeeShifts">getEmployeeShifts</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                <a href="#sortShifts">sortShifts</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(adminService: <a href="../injectables/AdminService.html">AdminService</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, snackBar: <a href="../injectables/SnackBar.html">SnackBar</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:15</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>adminService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AdminService.html" target="_self" >AdminService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>snackBar</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SnackBar.html" target="_self" >SnackBar</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addRecurringShift"></a>
+                    <span class="name">
+                        <b>
+                            addRecurringShift
+                        </b>
+                        <a href="#addRecurringShift"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addRecurringShift(newShifts: Array<NewShiftDTO>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:116</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>newShifts</td>
+                                    <td>
+                                            <code>Array&lt;NewShiftDTO&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addShift"></a>
+                    <span class="name">
+                        <b>
+                            addShift
+                        </b>
+                        <a href="#addShift"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addShift(shift: <a href="../interfaces/NewShiftDTO.html">NewShiftDTO</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="98"
+                            class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:98</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>shift</td>
+                                    <td>
+                                                <code><a href="../interfaces/NewShiftDTO.html" target="_self" >NewShiftDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteShift"></a>
+                    <span class="name">
+                        <b>
+                            deleteShift
+                        </b>
+                        <a href="#deleteShift"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteShift(shiftId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:79</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>shiftId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getEmployee"></a>
+                    <span class="name">
+                        <b>
+                            getEmployee
+                        </b>
+                        <a href="#getEmployee"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getEmployee()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="58"
+                            class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:58</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getEmployeeShifts"></a>
+                    <span class="name">
+                        <b>
+                            getEmployeeShifts
+                        </b>
+                        <a href="#getEmployeeShifts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getEmployeeShifts()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:70</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:45</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sortShifts"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Static</span>
+                            sortShifts
+                        </b>
+                        <a href="#sortShifts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sortShifts(shifts: <a href="../classes/EmployeeShift.html">AdminEmployeeShiftDTO[]</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:34</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>shifts</td>
+                                    <td>
+                                                <code><a href="../classes/EmployeeShift.html" target="_self" >AdminEmployeeShiftDTO[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="columns"></a>
+                        <span class="name">
+                            <b>
+                            columns</b>
+                            <a href="#columns"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[&#x27;date&#x27;, &#x27;startTime&#x27;, &#x27;endTime&#x27;, &#x27;actions&#x27;]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="employee"></a>
+                        <span class="name">
+                            <b>
+                            employee</b>
+                            <a href="#employee"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/AdminEmployeeDTO.html" target="_self" >AdminEmployeeDTO</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="employeeId"></a>
+                        <span class="name">
+                            <b>
+                            employeeId</b>
+                            <a href="#employeeId"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:25</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="shifts"></a>
+                        <span class="name">
+                            <b>
+                            shifts</b>
+                            <a href="#shifts"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/EmployeeShift.html" target="_self" >AdminEmployeeShiftDTO[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showEditShiftform"></a>
+                        <span class="name">
+                            <b>
+                            showEditShiftform</b>
+                            <a href="#showEditShiftform"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:32</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showShiftform"></a>
+                        <span class="name">
+                            <b>
+                            showShiftform</b>
+                            <a href="#showShiftform"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/pages/dashboard/home/shift/shift.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { AdminService } from &#x27;../../../../services/admin/admin.service&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { SnackBar } from &#x27;../../../../snackbar&#x27;;
+import { AdminEmployeeShiftDTO } from &#x27;../../../../interfaces/shift/admin-employee-shift-dto&#x27;;
+import { AdminEmployeeDTO } from &#x27;../../../../interfaces/employee/admin-employee-dto&#x27;;
+import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { NewShiftDTO } from &#x27;../../../../interfaces/shift/new-shift-dto&#x27;;
+
+@Component({
+    selector: &#x27;app-shift&#x27;,
+    templateUrl: &#x27;./shift.component.html&#x27;,
+    styleUrls: [&#x27;./shift.component.scss&#x27;]
+})
+export class ShiftComponent implements OnInit {
+
+    constructor(
+        private adminService: AdminService,
+        private router: Router,
+        private route: ActivatedRoute,
+        private snackBar: SnackBar
+    ) {
+    }
+
+    employeeId: number;
+    employee: AdminEmployeeDTO;
+
+    columns: string[] &#x3D; [&#x27;date&#x27;, &#x27;startTime&#x27;, &#x27;endTime&#x27;, &#x27;actions&#x27;];
+    shifts: AdminEmployeeShiftDTO[];
+
+    showShiftform &#x3D; false;
+    showEditShiftform &#x3D; false;
+
+    static sortShifts(shifts: AdminEmployeeShiftDTO[]): void {
+        shifts.sort((a, b) &#x3D;&gt; {
+            if (a.date &lt; b.date) {
+                return -1;
+            } else if (a.date &gt; b.date) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+
+    ngOnInit() {
+        this.employeeId &#x3D; +this.route.snapshot.paramMap.get(&#x27;id&#x27;);
+
+        if (isNaN(this.employeeId)) {
+            this.snackBar.openSnackBarError(&#x27;Invalid URL.&#x27;);
+            this.router.navigate([&#x27;&#x27;]);
+            return;
+        }
+
+        this.getEmployee();
+        this.getEmployeeShifts();
+    }
+
+    getEmployee() {
+        this.adminService.getEmployee(this.employeeId).subscribe(
+            res &#x3D;&gt; this.employee &#x3D; res,
+            err &#x3D;&gt; {
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                    this.router.navigate([&#x27;&#x27;]);
+                }
+            }
+        );
+    }
+
+    getEmployeeShifts() {
+        this.adminService.getEmployeeShifts(this.employeeId).subscribe(
+            res &#x3D;&gt; {
+                this.shifts &#x3D; res;
+                ShiftComponent.sortShifts(this.shifts);
+            }
+        );
+    }
+
+    deleteShift(shiftId: number) {
+
+        if (!confirm(&#x27;Click OK to delete this shift.&#x27;)) {
+            return;
+        }
+
+        this.adminService.deleteShift(shiftId).subscribe(
+            res &#x3D;&gt; {
+                this.snackBar.openSnackBarSuccess(&#x27;Successfully deleted shift.&#x27;);
+                this.shifts &#x3D; this.shifts.filter(s &#x3D;&gt; s.id !&#x3D;&#x3D; shiftId);
+            },
+            err &#x3D;&gt; {
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                }
+            }
+        );
+    }
+
+    addShift(shift: NewShiftDTO) {
+        this.adminService.addShift(this.employeeId, shift).subscribe(
+            res &#x3D;&gt; {
+                this.snackBar.openSnackBarSuccess(&#x27;Successfully added shift.&#x27;);
+                this.shifts.push(res);
+                this.shifts &#x3D; this.shifts.map(s &#x3D;&gt; Object.assign({}, s));
+                ShiftComponent.sortShifts(this.shifts);
+                this.showShiftform &#x3D; false;
+            },
+            err &#x3D;&gt; {
+                console.log(err);
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                }
+            }
+        );
+    }
+
+    addRecurringShift(newShifts: Array&lt;NewShiftDTO&gt;) {
+        this.adminService.addShiftList(this.employeeId, newShifts).subscribe(
+            res &#x3D;&gt; {
+                this.snackBar.openSnackBarSuccess(&#x27;Successfully added recurrent shift.&#x27;);
+                this.shifts &#x3D; this.shifts.concat(res);
+                this.shifts &#x3D; this.shifts.map(s &#x3D;&gt; Object.assign({}, s));
+                ShiftComponent.sortShifts(this.shifts);
+                this.showEditShiftform &#x3D; false;
+            },
+            err &#x3D;&gt; {
+                console.log(err);
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                }
+            }
+        );
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;admin-shifts-container&quot; fxLayout&#x3D;&quot;column&quot; fxLayoutGap&#x3D;&quot;1rem&quot;&gt;
+
+    &lt;h5 class&#x3D;&quot;display-employee-name&quot;&gt;You are currently viewing {{ employee?.firstName + &#x27; &#x27; + employee?.lastName }}&#x27;s
+        shifts.&lt;/h5&gt;
+
+    &lt;table *ngIf&#x3D;&quot;shifts?.length&quot; class&#x3D;&quot;shift-table mat-elevation-z4&quot; mat-table [dataSource]&#x3D;&quot;shifts&quot;&gt;
+
+        &lt;ng-container matColumnDef&#x3D;&quot;date&quot;&gt;
+            &lt;th mat-header-cell *matHeaderCellDef&gt;Date&lt;/th&gt;
+            &lt;td mat-cell *matCellDef&#x3D;&quot;let shift&quot;&gt;{{ shift.date }}&lt;/td&gt;
+        &lt;/ng-container&gt;
+
+        &lt;ng-container matColumnDef&#x3D;&quot;startTime&quot;&gt;
+            &lt;th mat-header-cell *matHeaderCellDef&gt;Starts at&lt;/th&gt;
+            &lt;td mat-cell *matCellDef&#x3D;&quot;let shift&quot;&gt;{{ shift.startTime }}&lt;/td&gt;
+        &lt;/ng-container&gt;
+
+        &lt;ng-container matColumnDef&#x3D;&quot;endTime&quot;&gt;
+            &lt;th mat-header-cell *matHeaderCellDef&gt;Ends at&lt;/th&gt;
+            &lt;td mat-cell *matCellDef&#x3D;&quot;let shift&quot;&gt;{{ shift.endTime }}&lt;/td&gt;
+        &lt;/ng-container&gt;
+
+        &lt;ng-container matColumnDef&#x3D;&quot;actions&quot;&gt;
+            &lt;th mat-header-cell *matHeaderCellDef class&#x3D;&quot;center&quot;&gt;Actions&lt;/th&gt;
+            &lt;td mat-cell *matCellDef&#x3D;&quot;let shift&quot; class&#x3D;&quot;center&quot;&gt;
+                &lt;!-- todo: edit will be implemented in the future --&gt;
+                &lt;!--&lt;button mat-raised-button color&#x3D;&quot;primary&quot;&gt;Edit&lt;/button&gt;--&gt;
+                &lt;button mat-raised-button color&#x3D;&quot;primary&quot; (click)&#x3D;&quot;deleteShift(shift.id)&quot;&gt;Delete&lt;/button&gt;
+            &lt;/td&gt;
+        &lt;/ng-container&gt;
+
+        &lt;tr mat-header-row *matHeaderRowDef&#x3D;&quot;columns&quot;&gt;&lt;/tr&gt;
+        &lt;tr mat-row *matRowDef&#x3D;&quot;let row; columns: columns;&quot;&gt;&lt;/tr&gt;
+
+    &lt;/table&gt;
+
+    &lt;h6 *ngIf&#x3D;&quot;!shifts?.length&quot;&gt;
+        {{ employee?.firstName + &#x27; &#x27; + employee?.lastName }} currently doesn&#x27;t have any assigned shifts.
+    &lt;/h6&gt;
+
+    &lt;button mat-raised-button color&#x3D;&quot;primary&quot; (click)&#x3D;&quot;showShiftform &#x3D; !showShiftform; showEditShiftform &#x3D; false;&quot;&gt;Add Shift&lt;/button&gt;
+    &lt;button mat-raised-button color&#x3D;&quot;primary&quot; (click)&#x3D;&quot;showEditShiftform &#x3D; !showEditShiftform; showShiftform &#x3D; false&quot;&gt;Add Recurring Shift&lt;/button&gt;
+
+    &lt;app-add-shift-form *ngIf&#x3D;&quot;showShiftform&quot; (shiftChange)&#x3D;&quot;addShift($event)&quot;&gt;&lt;/app-add-shift-form&gt;
+    &lt;app-add-recurring-shift-form *ngIf&#x3D;&quot;showEditShiftform&quot; (shiftChange)&#x3D;&quot;addRecurringShift($event)&quot;&gt;&lt;/app-add-recurring-shift-form&gt;
+
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./shift.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.admin-shifts-container {
+    padding: 1rem;
+
+    .shift-table {
+        width: 100%;
+
+        .center {
+            text-align: center;
+        }
+
+        button {
+            font-weight: bold;
+            margin: 0 4px;
+        }
+    }
+}
+
+.display-employee-name{
+    color:black;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="admin-shifts-container" fxLayout="column" fxLayoutGap="1rem">    <h5 class="display-employee-name">You are currently viewing {{ employee?.firstName + \' \' + employee?.lastName }}\'s        shifts.</h5>    <table *ngIf="shifts?.length" class="shift-table mat-elevation-z4" mat-table [dataSource]="shifts">        <ng-container matColumnDef="date">            <th mat-header-cell *matHeaderCellDef>Date</th>            <td mat-cell *matCellDef="let shift">{{ shift.date }}</td>        </ng-container>        <ng-container matColumnDef="startTime">            <th mat-header-cell *matHeaderCellDef>Starts at</th>            <td mat-cell *matCellDef="let shift">{{ shift.startTime }}</td>        </ng-container>        <ng-container matColumnDef="endTime">            <th mat-header-cell *matHeaderCellDef>Ends at</th>            <td mat-cell *matCellDef="let shift">{{ shift.endTime }}</td>        </ng-container>        <ng-container matColumnDef="actions">            <th mat-header-cell *matHeaderCellDef class="center">Actions</th>            <td mat-cell *matCellDef="let shift" class="center">                <!-- todo: edit will be implemented in the future -->                <!--<button mat-raised-button color="primary">Edit</button>-->                <button mat-raised-button color="primary" (click)="deleteShift(shift.id)">Delete</button>            </td>        </ng-container>        <tr mat-header-row *matHeaderRowDef="columns"></tr>        <tr mat-row *matRowDef="let row; columns: columns;"></tr>    </table>    <h6 *ngIf="!shifts?.length">        {{ employee?.firstName + \' \' + employee?.lastName }} currently doesn\'t have any assigned shifts.    </h6>    <button mat-raised-button color="primary" (click)="showShiftform = !showShiftform; showEditShiftform = false;">Add Shift</button>    <button mat-raised-button color="primary" (click)="showEditShiftform = !showEditShiftform; showShiftform = false">Add Recurring Shift</button>    <app-add-shift-form *ngIf="showShiftform" (shiftChange)="addShift($event)"></app-add-shift-form>    <app-add-recurring-shift-form *ngIf="showEditShiftform" (shiftChange)="addRecurringShift($event)"></app-add-recurring-shift-form></div></div>'
+    var COMPONENTS = [{'name': 'AccountSettingsComponent', 'selector': 'app-account-settings'},{'name': 'AddRecurringShiftFormComponent', 'selector': 'app-add-recurring-shift-form'},{'name': 'AddShiftFormComponent', 'selector': 'app-add-shift-form'},{'name': 'AdminAppointmentsComponent', 'selector': 'app-admin-appointments'},{'name': 'AdminEmployeesComponent', 'selector': 'app-admin-employees'},{'name': 'AdminServicesComponent', 'selector': 'app-admin-services'},{'name': 'AdminUsersComponent', 'selector': 'app-admin-users'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppointmentCardComponent', 'selector': 'app-appointment-card'},{'name': 'AppointmentsComponent', 'selector': 'app-appointments'},{'name': 'AppointmentsSectionComponent', 'selector': 'app-appointments-section'},{'name': 'AssignServicesDialogComponent', 'selector': 'assign-services-dialog'},{'name': 'BookComponent', 'selector': 'app-book'},{'name': 'BusinessRegisterComponent', 'selector': 'app-business-register'},{'name': 'BusinessViewComponent', 'selector': 'app-business-view'},{'name': 'CancelDialogComponent', 'selector': 'cancel-dialog'},{'name': 'CardsUiComponent', 'selector': 'app-cards-ui'},{'name': 'ChangeClientToEmployeeDialogComponent', 'selector': 'change-client-to-employee-dialog'},{'name': 'CreateServiceComponent', 'selector': 'app-admin-create-service'},{'name': 'CustomStepperComponent', 'selector': 'app-custom-stepper'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DetailsComponent', 'selector': 'app-details'},{'name': 'EmployeeAppointmentsComponent', 'selector': 'app-employee-appointments'},{'name': 'ErrorDialogComponent', 'selector': 'app-error-dialog'},{'name': 'FindBusinessDialogComponent', 'selector': 'app-find-business-dialog'},{'name': 'GoogleMapsComponent', 'selector': 'app-google-maps'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'NotesAndReserveComponent', 'selector': 'app-notes-and-reserve'},{'name': 'PickDayComponent', 'selector': 'app-pick-day'},{'name': 'ReasonDialogComponent', 'selector': 'app-reason-dialog'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReminderSettingsComponent', 'selector': 'app-reminder-settings'},{'name': 'ReviewComponent', 'selector': 'app-review'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ServiceSelectionGridListComponent', 'selector': 'app-service-selection-grid-list'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'ShiftComponent', 'selector': 'app-shift'},{'name': 'ShiftPickerComponent', 'selector': 'app-shift-picker'},{'name': 'SyncCalendarsComponent', 'selector': 'app-sync-calendars'},{'name': 'TimePickerDialogComponent', 'selector': 'app-time-picker-dialog'},{'name': 'VerifiedComponent', 'selector': 'app-verified'}];
+    var DIRECTIVES = [{'name': 'AutofocusDirective', 'selector': '[appAutofocus]'},{'name': 'ButtonIconDirective', 'selector': '[appButtonIcon]'},{'name': 'CardSizeDirective', 'selector': '[appCardSize]'},{'name': 'FabBottomRightDirective', 'selector': 'button[appFabBottomRight]'}];
+    var ACTUAL_COMPONENT = {'name': 'ShiftComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ShiftComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

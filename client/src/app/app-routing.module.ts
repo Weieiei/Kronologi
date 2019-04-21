@@ -29,6 +29,7 @@ import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appoi
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { DetailsComponent } from './pages/details/details.component';
+import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 
 const routes: Routes = [
     // Login
@@ -37,7 +38,6 @@ const routes: Routes = [
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
-
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
     //
     // // Guest
@@ -46,6 +46,9 @@ const routes: Routes = [
     // { path: 'business', component: BusinessViewComponent, canActivate: [AnonymousGuard] },
     // { path: 'appointments', component: AppointmentsComponent, canActivate: [AnonymousGuard] },
     // { path: 'book/:businessId', component: BookComponent },
+
+    // Password Reset
+    { path: 'password/reset', component: PasswordResetRedirectComponent, canActivate: [AnonymousGuard] },
 
     // Dashboard
     {

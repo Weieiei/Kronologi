@@ -52,7 +52,6 @@ import { BusinessViewComponent } from './pages/business-view/business-view.compo
 import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
 import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 import { FindBusinessDialogComponent } from './components/find-business-dialog/find-business-dialog.component';
 import { AgmCoreModule } from '@agm/core';
@@ -68,6 +67,8 @@ import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/ser
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.component';
 import { SearchInputComponent } from './components/search-box/search-box.component';
+import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
+import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
 import { GuestComponent } from './pages/guest/guest.component';
 import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 
@@ -114,7 +115,6 @@ import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appoi
         BusinessViewComponent,
         CardsUiComponent,
         BusinessRegisterComponent,
-        ServicesComponent,
         SyncCalendarsComponent,
         AddRecurringShiftFormComponent,
         SearchInputComponent,
@@ -130,7 +130,9 @@ import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appoi
         GoogleMapsComponent,
         SyncCalendarsComponent,
         GuestComponent,
-        GuestAppointmentComponent
+        GuestAppointmentComponent,
+        PasswordResetRedirectComponent,
+        PasswordForgotDialogComponent
     ],
     imports: [
         LightboxModule,
@@ -162,7 +164,8 @@ import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appoi
         CancelDialogComponent,
         ReasonDialogComponent,
         AssignServicesDialogComponent,
-        ChangeClientToEmployeeDialogComponent
+        ChangeClientToEmployeeDialogComponent,
+        PasswordForgotDialogComponent
     ],
     providers: [
         AuthService,

@@ -141,7 +141,13 @@ public class AdminController extends AbstractController {
     @GetMapping("/{businessId}/admin/users")
     public ResponseEntity<String> getAllUsers(@PathVariable long businessId) {
         ObjectMapper mapper = objectMapperFactory.createMapper(User.class, new UserSerializer());
-        return getJson(mapper, userService.findAllByBusinessId(businessId));
+        return getJson(mapper, userService.findAllUsersForBusiness(businessId, RoleEnum.CLIENT));
+    }
+
+    @GetMapping("/{businessId}/admin/clients")
+    public ResponseEntity<String> getAllClients() {
+        ObjectMapper mapper = objectMapperFactory.createMapper(User.class, new UserSerializer());
+        return getJson(mapper, userService.findAllClients());
     }
 
     @LogREST

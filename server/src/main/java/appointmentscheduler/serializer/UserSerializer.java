@@ -1,6 +1,7 @@
 package appointmentscheduler.serializer;
 
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -28,8 +29,11 @@ public class UserSerializer extends StdSerializer<User> {
         gen.writeStringField("firstName", user.getFirstName());
         gen.writeObjectField("lastName", user.getLastName());
         gen.writeObjectField("email", user.getEmail());
-        gen.writeObjectField("roles", user.getRole());
-        serializeBusiness(user.getBusiness(), gen);
+        gen.writeObjectField("role", user.getRole());
+        //only serialize a business if the user is a client
+        if (!user.getRole().equals(RoleEnum.CLIENT.toString())) {
+            serializeBusiness(user.getBusiness(), gen);
+        }
 
         if (user instanceof Employee) {
             gen.writeArrayFieldStart("services");
