@@ -17,6 +17,7 @@ import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.FileStorageException;
@@ -50,6 +51,12 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.service.business.BusinessService;
+import appointmentscheduler.service.file.UserFileStorageService;
+import appointmentscheduler.repository.BusinessRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("${rest.api.path}/user")
@@ -249,5 +256,4 @@ public class UserController extends AbstractController {
         repo.delete(cred);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 }

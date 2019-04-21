@@ -67,6 +67,8 @@ import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/ser
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.component';
 import { SearchInputComponent } from './components/search-box/search-box.component';
+import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
+import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
 
 
 @NgModule({
@@ -123,7 +125,9 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
         ErrorDialogComponent,
         ErrorDialogComponent,
         DetailsComponent,
-        GoogleMapsComponent
+        GoogleMapsComponent,
+        PasswordResetRedirectComponent,
+        PasswordForgotDialogComponent
     ],
     imports: [
         LightboxModule,
@@ -155,7 +159,8 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
         CancelDialogComponent,
         ReasonDialogComponent,
         AssignServicesDialogComponent,
-        ChangeClientToEmployeeDialogComponent
+        ChangeClientToEmployeeDialogComponent,
+        PasswordForgotDialogComponent
     ],
     providers: [
         AuthService,

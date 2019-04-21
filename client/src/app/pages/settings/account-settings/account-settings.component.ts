@@ -51,7 +51,7 @@ export class AccountSettingsComponent implements OnInit {
         private userService: UserService,
         private snackBar: SnackBar,
         private router: Router,
-        private themeService :ThemeService
+        private themeService: ThemeService
     ) {
     }
 
