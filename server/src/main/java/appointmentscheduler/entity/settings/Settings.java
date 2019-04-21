@@ -1,6 +1,7 @@
 package appointmentscheduler.entity.settings;
 
 import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
@@ -28,6 +29,10 @@ public class Settings extends AuditableEntity {
     @JsonIgnore
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    private Business business;
+
     public Settings() {
     }
 
@@ -35,6 +40,13 @@ public class Settings extends AuditableEntity {
         this.emailReminder = emailReminder;
         this.textReminder = textReminder;
         this.user = user;
+    }
+
+    public Settings(boolean emailReminder, boolean textReminder, User user, Business business) {
+        this.emailReminder = emailReminder;
+        this.textReminder = textReminder;
+        this.user = user;
+        this.business = business;
     }
 
     public long getId() {
@@ -67,5 +79,13 @@ public class Settings extends AuditableEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 }

@@ -1,0 +1,793 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>appointment-scheduler documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">appointment-scheduler documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>ShiftPickerComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/shift-picker/shift-picker.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-shift-picker</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./shift-picker.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./shift-picker.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#date">date</a>
+                            </li>
+                            <li>
+                                <a href="#defaultDate">defaultDate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#dialog">dialog</a>
+                            </li>
+                            <li>
+                                <a href="#endTime">endTime</a>
+                            </li>
+                            <li>
+                                <a href="#maxDate">maxDate</a>
+                            </li>
+                            <li>
+                                <a href="#minDate">minDate</a>
+                            </li>
+                            <li>
+                                <a href="#startTime">startTime</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#openTimePicker">openTimePicker</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#number">number</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#shiftOutput">shiftOutput</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(dialog: MatDialog)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:33</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>dialog</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatDialog</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="number"></a>
+                        <b>number</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:26</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Since the register component (for adding an employee) contains multiple shift-picker components, we need a way to track which one
+we&#39;re manipulating. We can do this by attaching a unique number to each individual shift object emitted by the component.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="shiftOutput"></a>
+                        <b>shiftOutput</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:33</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="38"
+                            class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:38</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openTimePicker"></a>
+                    <span class="name">
+                        <b>
+                            openTimePicker
+                        </b>
+                        <a href="#openTimePicker"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openTimePicker()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:42</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="date"></a>
+                        <span class="name">
+                            <b>
+                            date</b>
+                            <a href="#date"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="defaultDate"></a>
+                        <span class="name">
+                            <b>
+                            defaultDate</b>
+                            <a href="#defaultDate"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:27</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dialog"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            dialog</b>
+                            <a href="#dialog"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>MatDialog</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:35</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="endTime"></a>
+                        <span class="name">
+                            <b>
+                            endTime</b>
+                            <a href="#endTime"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="maxDate"></a>
+                        <span class="name">
+                            <b>
+                            maxDate</b>
+                            <a href="#maxDate"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>new Date(moment(this.minDate).add(5, &#x27;months&#x27;).format())</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:20</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="minDate"></a>
+                        <span class="name">
+                            <b>
+                            minDate</b>
+                            <a href="#minDate"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>new Date()</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:19</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="startTime"></a>
+                        <span class="name">
+                            <b>
+                            startTime</b>
+                            <a href="#startTime"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/components/shift-picker/shift-picker.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from &#x27;@angular/core&#x27;;
+import * as moment from &#x27;moment&#x27;;
+import { MatDialog } from &#x27;@angular/material&#x27;;
+import { TimePickerDialogComponent } from &#x27;./time-picker-dialog/time-picker-dialog.component&#x27;;
+import { EmployeeShiftTimes } from &#x27;../../models/shift/EmployeeShiftTimes&#x27;;
+
+export interface DialogData {
+    startTime: string;
+    endTime: string;
+}
+
+@Component({
+    selector: &#x27;app-shift-picker&#x27;,
+    templateUrl: &#x27;./shift-picker.component.html&#x27;,
+    styleUrls: [&#x27;./shift-picker.component.scss&#x27;]
+})
+export class ShiftPickerComponent implements OnInit {
+
+    minDate: Date &#x3D; new Date();
+    maxDate: Date &#x3D; new Date(moment(this.minDate).add(5, &#x27;months&#x27;).format());
+
+    /**
+     * Since the register component (for adding an employee) contains multiple shift-picker components, we need a way to track which one
+     * we&#x27;re manipulating. We can do this by attaching a unique number to each individual shift object emitted by the component.
+     */
+    @Input() number: number;
+    defaultDate: Date;
+
+    date: string;
+    startTime: string;
+    endTime: string;
+
+    @Output() shiftOutput &#x3D; new EventEmitter();
+
+    constructor(public dialog: MatDialog) {
+    }
+
+    ngOnInit() {
+        this.defaultDate &#x3D; new Date(moment(this.minDate).add(this.number, &#x27;days&#x27;).format());
+    }
+
+    openTimePicker(): void {
+
+        const dialogRef &#x3D; this.dialog.open(TimePickerDialogComponent, {
+            width: &#x27;650px&#x27;,
+            data: { startTime: this.startTime, endTime: this.endTime }
+        });
+
+        dialogRef.afterClosed().subscribe(result &#x3D;&gt; {
+
+            try {
+
+                this.date &#x3D; moment(new Date(this.defaultDate)).format(&#x27;YYYY-MM-DD&#x27;);
+                this.startTime &#x3D; &#x60;${this.date} ${result.startTime}&#x60;;
+                this.endTime &#x3D; &#x60;${this.date} ${result.endTime}&#x60;;
+
+                this.shiftOutput.emit(new EmployeeShiftTimes(this.number, new Date(this.startTime), new Date(this.endTime)));
+
+            } catch (e) {
+                alert(&#x27;Please make sure to properly pick start and end times.&#x27;);
+            }
+
+        });
+
+    }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;mat-form-field class&#x3D;&quot;example-full-width&quot;&gt;
+    &lt;input #dateInput matInput [min]&#x3D;&quot;minDate&quot; [max]&#x3D;&quot;maxDate&quot; [matDatepicker]&#x3D;&quot;date&quot; [(ngModel)]&#x3D;&quot;defaultDate&quot; placeholder&#x3D;&quot;Pick a Date&quot; readonly&gt;
+    &lt;mat-datepicker-toggle matSuffix [for]&#x3D;&quot;date&quot;&gt;&lt;/mat-datepicker-toggle&gt;
+    &lt;mat-datepicker #date disabled&#x3D;&quot;false&quot;&gt;&lt;/mat-datepicker&gt;
+&lt;/mat-form-field&gt;
+&lt;button mat-raised-button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;openTimePicker()&quot; [disabled]&#x3D;&quot;!dateInput.value&quot;&gt;Pick Times&lt;/button&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./shift-picker.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><mat-form-field class="example-full-width">    <input #dateInput matInput [min]="minDate" [max]="maxDate" [matDatepicker]="date" [(ngModel)]="defaultDate" placeholder="Pick a Date" readonly>    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>    <mat-datepicker #date disabled="false"></mat-datepicker></mat-form-field><button mat-raised-button type="button" (click)="openTimePicker()" [disabled]="!dateInput.value">Pick Times</button></div>'
+    var COMPONENTS = [{'name': 'AccountSettingsComponent', 'selector': 'app-account-settings'},{'name': 'AddRecurringShiftFormComponent', 'selector': 'app-add-recurring-shift-form'},{'name': 'AddShiftFormComponent', 'selector': 'app-add-shift-form'},{'name': 'AdminAppointmentsComponent', 'selector': 'app-admin-appointments'},{'name': 'AdminEmployeesComponent', 'selector': 'app-admin-employees'},{'name': 'AdminServicesComponent', 'selector': 'app-admin-services'},{'name': 'AdminUsersComponent', 'selector': 'app-admin-users'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppointmentCardComponent', 'selector': 'app-appointment-card'},{'name': 'AppointmentsComponent', 'selector': 'app-appointments'},{'name': 'AppointmentsSectionComponent', 'selector': 'app-appointments-section'},{'name': 'AssignServicesDialogComponent', 'selector': 'assign-services-dialog'},{'name': 'BookComponent', 'selector': 'app-book'},{'name': 'BusinessRegisterComponent', 'selector': 'app-business-register'},{'name': 'BusinessViewComponent', 'selector': 'app-business-view'},{'name': 'CancelDialogComponent', 'selector': 'cancel-dialog'},{'name': 'CardsUiComponent', 'selector': 'app-cards-ui'},{'name': 'ChangeClientToEmployeeDialogComponent', 'selector': 'change-client-to-employee-dialog'},{'name': 'CreateServiceComponent', 'selector': 'app-admin-create-service'},{'name': 'CustomStepperComponent', 'selector': 'app-custom-stepper'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DetailsComponent', 'selector': 'app-details'},{'name': 'EmployeeAppointmentsComponent', 'selector': 'app-employee-appointments'},{'name': 'ErrorDialogComponent', 'selector': 'app-error-dialog'},{'name': 'FindBusinessDialogComponent', 'selector': 'app-find-business-dialog'},{'name': 'GoogleMapsComponent', 'selector': 'app-google-maps'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'NotesAndReserveComponent', 'selector': 'app-notes-and-reserve'},{'name': 'PickDayComponent', 'selector': 'app-pick-day'},{'name': 'ReasonDialogComponent', 'selector': 'app-reason-dialog'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReminderSettingsComponent', 'selector': 'app-reminder-settings'},{'name': 'ReviewComponent', 'selector': 'app-review'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ServiceSelectionGridListComponent', 'selector': 'app-service-selection-grid-list'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'ShiftComponent', 'selector': 'app-shift'},{'name': 'ShiftPickerComponent', 'selector': 'app-shift-picker'},{'name': 'SyncCalendarsComponent', 'selector': 'app-sync-calendars'},{'name': 'TimePickerDialogComponent', 'selector': 'app-time-picker-dialog'},{'name': 'VerifiedComponent', 'selector': 'app-verified'}];
+    var DIRECTIVES = [{'name': 'AutofocusDirective', 'selector': '[appAutofocus]'},{'name': 'ButtonIconDirective', 'selector': '[appButtonIcon]'},{'name': 'CardSizeDirective', 'selector': '[appCardSize]'},{'name': 'FabBottomRightDirective', 'selector': 'button[appFabBottomRight]'}];
+    var ACTUAL_COMPONENT = {'name': 'ShiftPickerComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ShiftPickerComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

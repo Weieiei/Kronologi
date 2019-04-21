@@ -1,36 +1,36 @@
-<div class="account-settings-container" fxLayout="column" fxLayoutGap="60px">
+<div class="account-settings-container" fxLayout="column" fxLayoutGap="60px" [ngClass]="{'account-settings-container-dark': darkModeActive }">
 
     <div fxLayout="column" fxLayoutGap="20px">
 
         <div fxLayout="column" fxLayoutGap="8px">
-            <h5>Change Your Email</h5>
+            <h5 class="account-settings-title">Change Your Email</h5>
             <mat-divider></mat-divider>
         </div>
 
-        <div class="change-email-container" fxLayout="column" fxLayoutGap="10px">
+        <div class="change-email-container" fxLayout="column" fxLayoutGap="10px" >
 
             <div fxLayout="row">
-                <mat-hint fxFlex="60" fxFlex.lt-md>After changing your email, you will be logged out and prompted to log back in.</mat-hint>
+                <mat-hint fxFlex="60" fxFlex.lt-md [ngClass]="{'text-color-dark' : darkModeActive}">After changing your email, you will be logged out and prompted to log back in.</mat-hint>
             </div>
 
             <form (submit)="updateEmail()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
 
-                <div fxLayout="row">
-                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
-                        <mat-label>Password</mat-label>
+                <div fxLayout="row" >
+                    <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md color="primary">
+                        <mat-label [ngClass]="{'text-color-dark' : darkModeActive}">Password</mat-label>
                         <input matInput [(ngModel)]="password" type="password" name="password" required>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row">
                     <mat-form-field appearance="outline" fxFlex="60" fxFlex.lt-md>
-                        <mat-label>New Email</mat-label>
+                        <mat-label [ngClass]="{'text-color-dark' : darkModeActive}">New Email</mat-label>
                         <input matInput [(ngModel)]="newEmail" type="email" name="newemail" required>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row" class="submit-button-container">
-                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md>Save</button>
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md >Save</button>
                 </div>
 
             </form>
@@ -43,7 +43,7 @@
 
         <div fxLayout="column" fxLayoutGap="8px">
             <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start end">
-                <h5>Change Your Password</h5>
+                <h5 class="account-settings-title" >Change Your Password</h5>
                 <button mat-icon-button type="button" class="icon-button" (click)="togglePasswordVisibility()">
                     <mat-icon>{{ isPasswordVisible ? 'visibility_on' : 'visibility_off'}}</mat-icon>
                 </button>
@@ -101,7 +101,7 @@
     <div fxLayout="column" fxLayoutGap="20px">
 
         <div fxLayout="column" fxLayoutGap="8px">
-            <h5>Manage Your Phone Number</h5>
+            <h5 class="account-settings-title">Manage Your Phone Number</h5>
             <mat-divider></mat-divider>
         </div>
 
@@ -170,5 +170,47 @@
         </div>
 
     </div>
+
+  <div fxLayout="column" fxLayoutGap="20px">
+
+        <div fxLayout="column" fxLayoutGap="8px">
+            <h5 class="account-settings-title">Change Your Profile Picture</h5>
+            <mat-divider></mat-divider>
+        </div>
+
+        <div class="change-profile-container" fxLayout="column" fxLayoutGap="10px" >
+
+            <div fxLayout="row">
+                <mat-hint fxFlex="60" fxFlex.lt-md [ngClass]="{'text-color-dark' : darkModeActive}">Please upload a picture</mat-hint>
+            </div>
+
+            <form (submit)="updateProfilePicture()" autocomplete="off" fxLayout="column" fxLayoutGap="8px">
+
+             <mat-hint fxFlex="60">Selected Picture: {{fileSelectMsg}}</mat-hint>
+            <td-file-upload #singleFileUpload  (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled" required
+                accept=".jpeg,.jpg,.png,.svg">
+              <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
+              <ng-template td-file-input-label>
+                <mat-icon>attach_file</mat-icon>
+                <span>
+                  Choose a file...
+                </span>
+                  <span [hidden]="!singleFileUpload?.required">*</span>
+              </ng-template>
+            </td-file-upload>
+
+
+                <div fxLayout="row" class="submit-button-container">
+                    <button mat-raised-button color="primary" type="submit" fxFlex="10" fxFlex.lt-md >Upload</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
 
 </div>

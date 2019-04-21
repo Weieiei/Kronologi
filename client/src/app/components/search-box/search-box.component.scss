@@ -1,0 +1,19 @@
+mat-form-field {
+    ::ng-deep {
+        .mat-form-field-infix {
+            display: inline-flex;
+        }
+    }
+}
+
+.input-action {
+    display: inline-flex;
+}
+
+.search-input-field{
+    color:black;
+}
+
+mat-icon{
+    color: black;
+}

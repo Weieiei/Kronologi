@@ -1,17 +1,24 @@
 package appointmentscheduler.entity.user;
 
+import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.entity.event.AppEvent;
+import appointmentscheduler.entity.event.AppEventBase;
+import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
-import appointmentscheduler.entity.shift.ShiftFactory;
+import appointmentscheduler.exception.EmployeeAppointmentConflictException;
+import appointmentscheduler.exception.EmployeeDoesNotOfferServiceException;
+import appointmentscheduler.exception.EmployeeNotWorkingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,26 +40,27 @@ public class EmployeeTest {
         shifts = createMockShifts();
     }
 
-    @Test
+   @Test
     public void isWorkingSuccess() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 12:00 - 13:00
         LocalDate date = LocalDate.of(2019, Month.FEBRUARY, 27);
         LocalTime startTime = LocalTime.of(12, 0);
         LocalTime endTime = LocalTime.of(13, 0);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        Shift result = mockEmployee.isAvailable(appEvent);
 
-        assertTrue(result);
+        assertNotNull(result);
     }
 
     @Test
     public void isWorkingWrongDate() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 28, 12:00 - 13:00
@@ -60,15 +68,17 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(12, 0);
         LocalTime endTime = LocalTime.of(13, 0);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     @Test
     public void isWorkingWrongTimeAfterNoOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 16:00:01 - 17:00
@@ -76,15 +86,17 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(16, 0, 1);
         LocalTime endTime = LocalTime.of(17, 0);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     @Test
     public void isWorkingWrongTimeBeforeNoOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 7:00 - 7:59:59
@@ -92,15 +104,17 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(7, 0);
         LocalTime endTime = LocalTime.of(7, 59, 59);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     @Test
     public void isWorkingWrongTimeAfterWithOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 15:30 - 16:30
@@ -108,15 +122,17 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(15, 30);
         LocalTime endTime = LocalTime.of(16, 30);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     @Test
     public void isWorkingWrongTimeBeforeWithOverlap() {
         when(mockEmployee.getShifts()).thenReturn(shifts);
-        when(mockEmployee.isWorking(any(LocalDate.class), any(LocalTime.class), any(LocalTime.class))).thenCallRealMethod();
+        when(mockEmployee.isAvailable(any(AppEvent.class))).thenCallRealMethod();
 
         // Date of appointment
         // Feb 27, 7:00 - 8:30 (1.5 hours)
@@ -124,9 +140,11 @@ public class EmployeeTest {
         LocalTime startTime = LocalTime.of(7, 0);
         LocalTime endTime = LocalTime.of(8, 30);
 
-        boolean result = mockEmployee.isWorking(date, startTime, endTime);
+        AppEvent appEvent = new AppEventBase(startTime, endTime, date);
 
-        assertFalse(result);
+        Shift result = mockEmployee.isAvailable(appEvent);
+
+        assertNull(result);
     }
 
     private Set<Shift> createMockShifts() {
@@ -147,10 +165,238 @@ public class EmployeeTest {
         LocalTime startTime3 = LocalTime.of(12, 30);
         LocalTime endTime3 = LocalTime.of(20, 30);
 
-        shifts.add(ShiftFactory.createShift(date1, startTime1, endTime1));
-        shifts.add(ShiftFactory.createShift(date2, startTime2, endTime2));
-        shifts.add(ShiftFactory.createShift(date3, startTime3, endTime3));
+        shifts.add( new Shift(mockEmployee, date1, startTime1, endTime1));
+        shifts.add(new Shift(mockEmployee,date2, startTime2, endTime2));
+        shifts.add(new Shift(mockEmployee,date3, startTime3, endTime3));
+
+        mockEmployee.setShifts(shifts);
 
         return shifts;
     }
+
+
+    @Test(expected = EmployeeDoesNotOfferServiceException.class)
+    public void addShouldFailBecauseEmployeeDoesNotOfferService() {
+        final Appointment mockAppointment = mock(Appointment.class);
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        User client = new User();
+
+        //employee not client
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        //employee does not perform service
+        when(mockService.getId()).thenReturn((long)1);
+        employee.addService(mockService);
+        when(mockRetrievedService.getId()).thenReturn((long)2);
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        employee.validateAndAddAppointment(mockAppointment);
+    }
+
+    @Test(expected = EmployeeNotWorkingException.class)
+    public void addShouldFailBecauseEmployeeDoesNotHaveShiftSpecified() {
+        final Appointment mockAppointment = mock(Appointment.class);
+
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        Shift employeeShift = createMockShifts().iterator().next();
+        User client = new User();
+        AppEvent conflictingTime;
+
+        conflictingTime = employeeShift;
+
+        //employee not client
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        //employee performs service
+        when(mockService.getId()).thenReturn((long)1);
+        employee.addService(mockService);
+        when(mockRetrievedService.getId()).thenReturn((long)1);
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        //set appointment to not encapsulate shift
+        when(mockAppointment.getDate()).thenReturn(conflictingTime.getDate().minusDays(1));
+        when(mockAppointment.getStartTime()).thenReturn(conflictingTime.getStartTime());
+        when(mockAppointment.getEndTime()).thenReturn(conflictingTime.getEndTime());
+
+        employee.addShift(employeeShift);
+
+        employee.validateAndAddAppointment(mockAppointment);
+    }
+
+    @Test(expected = EmployeeAppointmentConflictException.class)
+    public void addShouldFailBecauseEmployeeIsBookedAlready() {
+        final Appointment mockAppointment = mock(Appointment.class);
+        final Appointment mockExistingAppointment = mock(Appointment.class);
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        Shift employeeShift = createMockShifts().iterator().next();
+        User client = new User();
+        AppEvent conflictingTime;
+
+        conflictingTime = employeeShift;
+
+        //employee not client
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        //employee performs service
+        when(mockService.getId()).thenReturn((long)1);
+        employee.addService(mockService);
+        when(mockRetrievedService.getId()).thenReturn((long)1);
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        //set shift to encapsulate appointment
+        when(mockAppointment.getDate()).thenReturn(conflictingTime.getDate());
+        when(mockAppointment.getStartTime()).thenReturn(conflictingTime.getStartTime());
+        when(mockAppointment.getEndTime()).thenReturn(conflictingTime.getEndTime());
+
+        //add conflicting appointment to shift
+        when(mockExistingAppointment.getDate()).thenReturn(conflictingTime.getDate());
+        when(mockExistingAppointment.getStartTime()).thenReturn(conflictingTime.getStartTime());
+        when(mockExistingAppointment.getEndTime()).thenReturn(conflictingTime.getEndTime());
+        employeeShift.addAppointment(mockExistingAppointment);
+
+        employee.addShift(employeeShift);
+
+        employee.validateAndAddAppointment(mockAppointment);
+    }
+
+    @Test
+    public void addSuccessEmptyShift() {
+        final Appointment mockAppointment = mock(Appointment.class);
+        final Appointment mockExistingAppointment = mock(Appointment.class);
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        Shift employeeShift = createMockShifts().iterator().next();
+        User client = new User();
+        AppEvent conflictingTime;
+
+        conflictingTime = employeeShift;
+
+        //employee not client
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        //employee performs service
+        when(mockService.getId()).thenReturn((long)1);
+        employee.addService(mockService);
+        when(mockRetrievedService.getId()).thenReturn((long)1);
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        //set appointment to encapsulate shift
+        when(mockAppointment.getDate()).thenReturn(conflictingTime.getDate());
+        when(mockAppointment.getStartTime()).thenReturn(conflictingTime.getStartTime());
+        when(mockAppointment.getEndTime()).thenReturn(conflictingTime.getEndTime());
+
+        employee.addShift(employeeShift);
+
+        employee.validateAndAddAppointment(mockAppointment);
+    }
+
+    @Test
+    public void addSuccessAppointmentInShift() {
+        final Appointment mockAppointment = mock(Appointment.class);
+        final Appointment mockExistingAppointment = mock(Appointment.class);
+        final Service mockService = mock(Service.class);
+        final Service mockRetrievedService = mock(Service.class);
+        Employee employee = new Employee();
+        Shift employeeShift = createMockShifts().iterator().next();
+        User client = new User();
+        AppEvent conflictingTime;
+
+        conflictingTime = employeeShift;
+
+        //employee not client
+        employee.setId(0);
+        client.setId(1);
+        when(mockAppointment.getClient()).thenReturn(client);
+
+        //employee performs service
+        when(mockService.getId()).thenReturn((long)1);
+        employee.addService(mockService);
+        when(mockRetrievedService.getId()).thenReturn((long)1);
+        when(mockAppointment.getService()).thenReturn(mockRetrievedService);
+
+        //set shift to encapsulate appointment
+        when(mockAppointment.getDate()).thenReturn(conflictingTime.getDate());
+        when(mockAppointment.getStartTime()).thenReturn(conflictingTime.getStartTime());
+        when(mockAppointment.getEndTime()).thenReturn(conflictingTime.getStartTime().plusHours(1));
+
+        //add conflicting appointment to shift
+        when(mockExistingAppointment.getDate()).thenReturn(conflictingTime.getDate());
+        when(mockExistingAppointment.getStartTime()).thenReturn(conflictingTime.getEndTime().minusHours(1));
+        when(mockExistingAppointment.getEndTime()).thenReturn(conflictingTime.getEndTime());
+        employeeShift.addAppointment(mockExistingAppointment);
+
+        employee.addShift(employeeShift);
+
+        employee.validateAndAddAppointment(mockAppointment);
+    }
+
+    private void addShiftsToEmployeeEntity(Employee employee, Set<Shift> shifts){
+        for (final Shift shift : shifts) {
+            employee.addShift(shift);
+        }
+    }
+
+    //Note robust time conflict logic tests executed in Shift class tests
+    @Test
+    public void noShiftAvailable() {
+        Employee employee = new Employee();
+        Set<Shift> createdShifts = createMockShifts();
+        addShiftsToEmployeeEntity(employee, createdShifts);
+        AppEventBase invalidDay = new AppEventBase(LocalTime.now(), LocalTime.now(), LocalDate.now());
+
+        assertNull(employee.isAvailable(invalidDay));
+    }
+
+    @Test
+    public void shiftAvailable() {
+        Employee employee = new Employee();
+        Set<Shift> createdShifts = createMockShifts();
+        addShiftsToEmployeeEntity(employee, createdShifts);
+        AppEvent validDay = createdShifts.iterator().next();
+
+        assertNotNull(employee.isAvailable(validDay));
+    }
+
+
+    @Test
+    public void getAvailabilitiesEmptyShifts(){
+        Employee employee = new Employee();
+        Set<Shift> createdShifts = createMockShifts();
+        addShiftsToEmployeeEntity(employee, createdShifts);
+
+        assertEquals(3, employee.getEmployeeAvailabilities(480).size());
+    }
+
+    @Test
+    public void getAvailabilitiesShiftsWithAppointments(){
+        Employee employee = new Employee();
+        Set<Shift> createdShifts = createMockShifts();
+        AppEvent appointmentInShift = createdShifts.iterator().next();
+        Appointment mockAppointment = mock(Appointment.class);
+
+        when(mockAppointment.getDate()).thenReturn(appointmentInShift.getDate());
+        when(mockAppointment.getStartTime()).thenReturn(appointmentInShift.getStartTime().plusHours(1));
+        when(mockAppointment.getEndTime()).thenReturn(appointmentInShift.getEndTime().minusHours(1));
+        createdShifts.iterator().next().addAppointment(mockAppointment);
+
+        addShiftsToEmployeeEntity(employee, createdShifts);
+
+        assertEquals(4, employee.getEmployeeAvailabilities(60).size());
+    }
+
 }

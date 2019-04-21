@@ -7,14 +7,21 @@ import { UpdatePasswordDTO } from '../../../interfaces/user/update-password-dto'
 import { PhoneNumberDTO } from '../../../interfaces/phonenumber/phone-number-dto';
 import * as countryData from 'country-telephone-data';
 import { SnackBar } from '../../../snackbar';
-
+import { ThemeService } from 'src/app/core/theme/theme.service';
+import { TdFileUploadComponent } from '@covalent/core/file';
+//npm i -save @covalent/core to  install
 @Component({
     selector: 'app-account-settings',
     templateUrl: './account-settings.component.html',
     styleUrls: ['./account-settings.component.scss']
 })
 export class AccountSettingsComponent implements OnInit {
+    // Fields to upload a profiel picture
+    selectedFile: File = null;
+    fileSelectMsg: string = 'No file selected yet.';
+    fileUploadMsg: string = 'No file uploaded yet.';
 
+    disabled: boolean = false;
     // Fields to update email
     password: string;
     newEmail: string;
@@ -36,18 +43,23 @@ export class AccountSettingsComponent implements OnInit {
     countries: Object[] = countryData.allCountries;
     selectedCountry: Object;
 
+    darkModeActive: boolean;
     newAreaCode: string;
     newNumber: string;
 
     constructor(
         private userService: UserService,
         private snackBar: SnackBar,
-        private router: Router
+        private router: Router,
+        private themeService: ThemeService
     ) {
     }
 
     ngOnInit() {
         this.getPhoneNumber();
+        this.themeService.darkModeState.subscribe(value => {
+            this.darkModeActive = value;
+        })
     }
 
     updateEmail(): void {
@@ -206,4 +218,39 @@ export class AccountSettingsComponent implements OnInit {
     hidePhoneNumberForm() {
         this.showForm = false;
     }
+
+    selectEvent(file: File): void {
+        this.selectedFile = file;
+        this.fileSelectMsg = file.name;
+      }
+
+       uploadEvent(file: File): void {
+        this.fileUploadMsg = file.name;
+      }
+
+       cancelEvent(): void {
+        this.fileSelectMsg = 'No file selected yet.';
+        this.fileUploadMsg = 'No file uploaded yet.';
+      }
+
+      updateProfilePicture(): void {
+        if (this.selectedFile != null) {
+            this.userService.uploadUserPicture(this.selectedFile).subscribe(
+                res => {
+                    console.log('File seccessfully uploaded. ');
+                    //this.fileUploadMsg = 'File seccessfully uploaded. ';
+                    //get picture and show it in the profile  or update the page
+                    this.router.navigate(['business']);
+
+
+                },
+                err => {
+                    if (err instanceof HttpErrorResponse) {
+                        err => console.log(err)
+                    }
+                }
+            );
+        }
+    }
+
 }

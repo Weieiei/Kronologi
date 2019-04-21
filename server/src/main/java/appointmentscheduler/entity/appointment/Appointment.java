@@ -1,60 +1,79 @@
 package appointmentscheduler.entity.appointment;
 
-import appointmentscheduler.entity.AuditableEntity;
+import appointmentscheduler.entity.event.AppEvent;
+import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.event.EventComparer;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "appointments")
-public class Appointment extends AuditableEntity {
+public class Appointment extends GeneralAppointment implements AppEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
     private User client;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
     private Service service;
 
-    @Column(name = "date")
+    @ManyToOne
+    private Business business;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shift_id")
+    private Shift shift;
+
+    private String type;
+
     private LocalDate date;
 
-    @Column(name = "start_time")
     private LocalTime startTime;
 
-    @Column(name = "end_time")
     private LocalTime endTime;
 
-    @Column(name = "notes")
     private String notes;
 
-    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
+
 
     public Appointment() {
     }
 
     public Appointment(User client, Employee employee, Service service, LocalDate date, LocalTime startTime, String notes) {
+            this.client = client;
+            this.employee = employee;
+            this.service = service;
+            this.date = date;
+            this.startTime = startTime;
+            this.notes = notes;
+    }
+
+
+
+    public Appointment(User client, Employee employee, Service service, LocalDate date, LocalTime startTime,
+                       String notes, Business business) {
         this.client = client;
         this.employee = employee;
         this.service = service;
         this.date = date;
         this.startTime = startTime;
         this.notes = notes;
+        this.business = business;
     }
 
     @Override
@@ -137,6 +156,22 @@ public class Appointment extends AuditableEntity {
         this.status = status;
     }
 
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
+
+    public Shift getShift() {
+        return shift;
+    }
+
+    public void setShift(Shift shift) {
+        this.shift = shift;
+    }
+
     @PrePersist
     public void beforeInsert() {
         adjustEndTime();
@@ -153,7 +188,7 @@ public class Appointment extends AuditableEntity {
     }
 
     public boolean isConflicting(Appointment appointment) {
-        return appointment.getDate().equals(this.getDate()) &&
-                !(appointment.getEndTime().isBefore(this.getStartTime()) || appointment.getEndTime().equals(this.getStartTime()) || appointment.getStartTime().isAfter(this.getEndTime()) || appointment.getStartTime().equals(this.getEndTime()));
+        EventComparer eventComparer = new EventComparer();
+        return eventComparer.compare(this, appointment) == 0;
     }
 }

@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit {
     email: string;
     password: string;
 
+
     countries: Object[] = countryData.allCountries;
     selectedCountry: Object;
 
@@ -49,7 +50,8 @@ export class RegisterComponent implements OnInit {
                 lastName: this.lastName,
                 email: this.email,
                 password: this.password,
-                phoneNumber: null
+                phoneNumber: null,
+
             };
 
             if (this.registerPhone) {
@@ -82,5 +84,4 @@ export class RegisterComponent implements OnInit {
     selectCountry(country: Object) {
         this.selectedCountry = country;
     }
-
 }

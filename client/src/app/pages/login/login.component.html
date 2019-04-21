@@ -1,9 +1,9 @@
 <div fxLayout="row" fxLayoutAlign="center" fxFlex="noshrink">
     <div fxLayout="column" fxFlex.gt-sm="600px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
         <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5px">
-            <img src="assets/images/asapp_logo.png" width="128" />
+            <img src="assets/images/kronologi-logo-1.png" width="128" />
             <div class="title">Sign In</div>
-            <div class="sub-title">with your ASAPP Account</div>
+            <div class="sub-title">with your Kronologi Account</div>
         </div>
         <form autocomplete="off" (submit)="submit()">
             <div fxLayout="column">
@@ -20,6 +20,7 @@
 
                 <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
                     <button mat-button color="primary" type="button" routerLink="/register">Create an account</button>
+                    <button mat-raised-button color="primary" type="button" (click)="openDialog()">Forgot password?</button>
                     <button mat-raised-button color="primary" type="submit">Login</button>
                 </div>
             </div>

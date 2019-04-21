@@ -12,7 +12,11 @@
         font-size: 0.9rem;
         margin-left: 24px;
     }
-
+    .checkbox-hint-dark{
+        font-size: 0.9rem;
+        margin-left: 24px;
+        color:darkgray;
+    }
     .success-message {
         color: $success-color;
     }
@@ -25,5 +29,14 @@
             font-weight: bold;
         }
     }
+    
 
+}
+
+.mat-checkbox-frame{
+    border-color:blue;
+}
+
+::ng-deep .mat-checkbox-layout .mat-checkbox-label {
+    color: black;
 }

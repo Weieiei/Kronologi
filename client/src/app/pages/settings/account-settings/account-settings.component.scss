@@ -26,11 +26,71 @@
     .phone-message {
         margin-bottom: 10rem;
     }
+
+    ::ng-deep {
+        .mat-form-field-appearance-outline .mat-form-field-outline {
+           color: darkGray;
+        }
+        mat-form-field {
+           .mat-hint, input, ::placeholder, .mat-form-field-label {
+              color: black;
+           }
+        }
+     }
+}
+
+.account-settings-title{
+    color:black;
+}
+.account-settings-container-dark {
+
+    .change-password-container,
+    .change-email-container,
+    .change-phone-container {
+        ::ng-deep {
+            .mat-form-field-wrapper {
+                padding-bottom: 0;
+            }
+            .mat-form-field-appearance-outline .mat-form-field-outline {
+                color: white;
+             }
+             mat-form-field {
+                .mat-hint, input, ::placeholder, .mat-form-field-label {
+                   color: white;
+                }
+             }
+        }
+    }
+
+    .icon-button {
+        top: 5px;
+    }
+
+    .submit-button-container {
+
+        margin-top: 10px;
+
+        button {
+            font-weight: bold;
+        }
+    }
+
+    .phone-message {
+        margin-bottom: 10rem;
+    }
+}
+
+.div.send-reminders-checkbox {
+    color: black;
 }
 
 img.flag {
     vertical-align: middle;
     margin-bottom: 4px;
+}
+
+.text-color-dark{
+    color:white;
 }
 
 .country-code,

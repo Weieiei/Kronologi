@@ -14,6 +14,14 @@ import { NewShiftDTO } from '../../../../interfaces/shift/new-shift-dto';
 })
 export class ShiftComponent implements OnInit {
 
+    constructor(
+        private adminService: AdminService,
+        private router: Router,
+        private route: ActivatedRoute,
+        private snackBar: SnackBar
+    ) {
+    }
+
     employeeId: number;
     employee: AdminEmployeeDTO;
 
@@ -21,13 +29,17 @@ export class ShiftComponent implements OnInit {
     shifts: AdminEmployeeShiftDTO[];
 
     showShiftform = false;
+    showEditShiftform = false;
 
-    constructor(
-        private adminService: AdminService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private snackBar: SnackBar
-    ) {
+    static sortShifts(shifts: AdminEmployeeShiftDTO[]): void {
+        shifts.sort((a, b) => {
+            if (a.date < b.date) {
+                return -1;
+            } else if (a.date > b.date) {
+                return 1;
+            }
+            return 0;
+        });
     }
 
     ngOnInit() {
@@ -59,7 +71,7 @@ export class ShiftComponent implements OnInit {
         this.adminService.getEmployeeShifts(this.employeeId).subscribe(
             res => {
                 this.shifts = res;
-                this.sortShifts(this.shifts);
+                ShiftComponent.sortShifts(this.shifts);
             }
         );
     }
@@ -89,7 +101,8 @@ export class ShiftComponent implements OnInit {
                 this.snackBar.openSnackBarSuccess('Successfully added shift.');
                 this.shifts.push(res);
                 this.shifts = this.shifts.map(s => Object.assign({}, s));
-                this.sortShifts(this.shifts);
+                ShiftComponent.sortShifts(this.shifts);
+                this.showShiftform = false;
             },
             err => {
                 console.log(err);
@@ -100,15 +113,21 @@ export class ShiftComponent implements OnInit {
         );
     }
 
-    sortShifts(shifts: AdminEmployeeShiftDTO[]): void {
-        console.log(shifts.length);
-        shifts.sort((a, b) => {
-            if (a.date < b.date) {
-                return -1;
-            } else if (a.date > b.date) {
-                return 1;
+    addRecurringShift(newShifts: Array<NewShiftDTO>) {
+        this.adminService.addShiftList(this.employeeId, newShifts).subscribe(
+            res => {
+                this.snackBar.openSnackBarSuccess('Successfully added recurrent shift.');
+                this.shifts = this.shifts.concat(res);
+                this.shifts = this.shifts.map(s => Object.assign({}, s));
+                ShiftComponent.sortShifts(this.shifts);
+                this.showEditShiftform = false;
+            },
+            err => {
+                console.log(err);
+                if (err instanceof HttpErrorResponse) {
+                    this.snackBar.openSnackBarError(err.error.message);
+                }
             }
-            return 0;
-        });
+        );
     }
 }

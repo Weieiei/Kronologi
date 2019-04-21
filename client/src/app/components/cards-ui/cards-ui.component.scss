@@ -1,0 +1,162 @@
+/*
+====================
+Card Styling
+====================
+*/
+.cards-ui{
+  background-color:rgb(232, 232, 233);
+  box-shadow: 1rem  1rem .5rem rgba(83, 83, 83, 0.486);
+  width: 23rem;
+  height: 23rem;
+  justify-items: center;
+  cursor: pointer;
+  animation: fadein 1.25s ease-in-out 0ms 1;
+  color: #443282;
+  border-radius:23rem;
+}
+
+.card-image{
+  background-image: url("../../../assets/images/business.jpg");
+  background-size:100% 50%;
+  background-repeat:no-repeat;
+}
+
+
+.cards-ui-dark {
+    color: black;
+    background-color:rgb(85, 59, 107);
+    box-shadow: 1rem  1rem .5rem rgba(83, 83, 83, 0.486);
+    width: 23rem;
+    height: 23rem;
+    justify-items: center;
+    cursor: pointer;
+    animation: fadein 1.25s ease-in-out 0ms 1;
+    color: white;
+    border-radius:23rem;
+}
+
+.my-appointment-button{
+    width: 50%;
+    background: white;
+    align-items: center;
+    text-align: center;
+    padding-top: .70rem;
+    
+
+    border:1px solid black;
+}
+
+.book-appointment-button{
+    width: 50%;
+    text-align: center;
+    padding-top: .70rem;
+    background-color: white;
+    border:1px solid black;
+}
+  
+  .min-max__container {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .min__container {
+    margin: 1rem 3rem;
+    display: grid;
+    justify-items: flex-end;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr ;
+  } 
+  
+  .max__container {
+    margin: 1rem 3rem;
+    display: grid;
+    justify-items: flex-start;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr ;
+  }
+   
+
+.main {
+	position:relative;
+	width:23rem;
+	height:23rem;
+	
+}
+
+.quarter {
+	position:absolute;
+	width:50%;
+	height:50%;
+	transition:background-color 0.2s ease-in-out;
+}
+.quarter:hover {
+	background-color:rgb(204, 204, 204);
+}
+
+.quarter3 {
+	bottom:0;
+	left:0;
+  border-bottom-width: 1px;
+	background-color:rgb(231, 230, 230);
+  border-radius:0 0 0 100%;
+  border: 1px solid black;
+}
+.quarter4 {
+	bottom:0;
+  right:0;
+  border-color:black;
+  border-bottom-width: 1px;
+	background-color:rgb(231, 230, 230);
+  border-radius:0 0 100% 0 ;
+  border: 1px solid black;
+}
+
+.quarter3-dark {
+	bottom:0;
+	left:0;
+	background-color:rgb(88, 88, 88);
+  border-radius:0 0 0 100%;
+  border: 1px solid rgb(3, 3, 3);
+}
+.quarter4-dark {
+	bottom:0;
+  right:0;
+  border-color:black;
+  border-bottom-width: 1px;
+	background-color:rgb(88, 88, 88);
+  border-radius:0 0 100% 0 ;
+  border: 1px solid black;
+}
+
+.bottom {
+  height: 9rem;
+  width: 9rem * 2;
+  background-color: rgb(238, 236, 236);
+  position: absolute;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  top: 50%;
+  left: 11%;
+}
+.bottom {
+  border-bottom-left-radius: 9rem * 2;
+  border-bottom-right-radius: 9rem * 2;
+}
+
+.bottom-dark {
+  height: 9rem;
+  width: 9rem * 2;
+  background-color: rgb(88, 88, 88);
+  position: absolute;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  top: 50%;
+  left: 11%;
+}
+.bottom {
+  border-bottom-left-radius: 9rem * 2;
+  border-bottom-right-radius: 9rem * 2;
+}

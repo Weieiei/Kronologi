@@ -1,6 +1,7 @@
 <div class="admin-shifts-container" fxLayout="column" fxLayoutGap="1rem">
 
-    <h5>You are currently viewing {{ employee?.firstName + ' ' + employee?.lastName }}'s shifts.</h5>
+    <h5 class="display-employee-name">You are currently viewing {{ employee?.firstName + ' ' + employee?.lastName }}'s
+        shifts.</h5>
 
     <table *ngIf="shifts?.length" class="shift-table mat-elevation-z4" mat-table [dataSource]="shifts">
 
@@ -37,8 +38,10 @@
         {{ employee?.firstName + ' ' + employee?.lastName }} currently doesn't have any assigned shifts.
     </h6>
 
-    <button mat-raised-button color="primary" (click)="showShiftform = true">Add Shift</button>
+    <button mat-raised-button color="primary" (click)="showShiftform = !showShiftform; showEditShiftform = false;">Add Shift</button>
+    <button mat-raised-button color="primary" (click)="showEditShiftform = !showEditShiftform; showShiftform = false">Add Recurring Shift</button>
 
     <app-add-shift-form *ngIf="showShiftform" (shiftChange)="addShift($event)"></app-add-shift-form>
+    <app-add-recurring-shift-form *ngIf="showEditShiftform" (shiftChange)="addRecurringShift($event)"></app-add-recurring-shift-form>
 
 </div>
