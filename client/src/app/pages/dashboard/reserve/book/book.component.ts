@@ -30,8 +30,6 @@ export class BookComponent implements OnInit {
     service: ServiceDTO;
     date: any;
     time: any;
-    monthMax = 11;
-    dayMax = 365;
     monthsMap: Map <number, number[]>;
     daysMap: Map <number, Array<EmployeeFreeTime>>;
     employeeId: number;
@@ -51,7 +49,6 @@ export class BookComponent implements OnInit {
         this.secondFormGroup = this._formBuilder.group({
             secondCtrl: ''
         });
-
     }
 
     setService(service: ServiceDTO): void {
@@ -179,7 +176,6 @@ export class BookComponent implements OnInit {
         this.appointmentService.bookAppointment(this.appointment).subscribe(
             res => console.log(res)
         );
-
     }
 
     setTimeAndEmployeeId(map: Map<number, string>) {

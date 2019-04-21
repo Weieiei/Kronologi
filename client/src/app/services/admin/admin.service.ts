@@ -14,15 +14,15 @@ export class AdminService {
     }
 
     public getAllEmployees(): Observable<AdminEmployeeDTO[]> {
-        return this.http.get<AdminEmployeeDTO[]>(['api', 'business', 'admin', '1', 'employees'].join('/'));
+        return this.http.get<AdminEmployeeDTO[]>(['api', 'business',  '1', 'admin','employees'].join('/'));
     }
 
     getEmployee(employeeId: number): Observable<AdminEmployeeDTO> {
-        return this.http.get<AdminEmployeeDTO>(['api', 'business', 'admin', '1', 'employee', employeeId].join('/'));
+        return this.http.get<AdminEmployeeDTO>(['api', 'business', '1','admin', 'employee', employeeId].join('/'));
     }
 
     getEmployeeShifts(employeeId: number): Observable<AdminEmployeeShiftDTO[]> {
-        return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'business', 'admin', '1', 'employee', employeeId, 'shift'].join('/'));
+        return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'business', '1', 'admin', 'employee', employeeId, 'shift'].join('/'));
     }
 
     addShift(employeeId: number, payload: NewShiftDTO): Observable<AdminEmployeeShiftDTO> {
