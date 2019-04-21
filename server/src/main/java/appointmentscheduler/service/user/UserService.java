@@ -7,7 +7,6 @@ import appointmentscheduler.dto.user.UpdatePasswordDTO;
 import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.business.Business;
-import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
 import appointmentscheduler.entity.settings.Settings;
@@ -17,7 +16,6 @@ import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.*;
-import appointmentscheduler.service.file.UserFileStorageService;
 import appointmentscheduler.util.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,7 +29,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.management.relation.Role;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -369,4 +366,16 @@ public class UserService {
         return buildTokenRegisterMap( token, verification);
     }
 
+    public List<User> findAllClients() {
+        List<User> userlist = userRepository.findByRole(RoleEnum.CLIENT);
+        if (userlist == null) {
+            throw new ResourceNotFoundException("Clients not found");
+        }
+        return userlist;
+    }
+
+    public List<User> findAllUsersForBusiness(long businessId, RoleEnum roleEnum) {
+        return userRepository.findByRoleOrBusinessIdOrderByRole(roleEnum, businessId).orElseThrow(() -> new ResourceNotFoundException(String.format(
+                "Users not found for business with id %d .", businessId)));
+    }
 }

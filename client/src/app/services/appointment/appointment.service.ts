@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { RequestOptions, RequestMethod } from '@angular/http';
-import { Observable } from 'rxjs';
-import { BookAppointmentDTO } from '../../interfaces/appointment/book-appointment-dto';
-import { UserAppointmentDTO } from '../../interfaces/appointment/user-appointment-dto';
-import { Appointment } from 'src/app/interfaces/appointment';
-import { CancelAppointmentDTO } from 'src/app/interfaces/cancelAppointmentDTO';
-import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {BookAppointmentDTO} from '../../interfaces/appointment/book-appointment-dto';
+import {UserAppointmentDTO} from '../../interfaces/appointment/user-appointment-dto';
+import {Appointment} from 'src/app/interfaces/appointment';
+import {CancelAppointmentDTO} from 'src/app/interfaces/cancelAppointmentDTO';
+import {AppointmentDetailed} from '../../models/appointment/AppointmentDetailed';
 
 @Injectable({
     providedIn: 'root'
@@ -42,7 +41,7 @@ export class AppointmentService {
     }
 
     public getMyAppointmentsEmployee(): Observable<Appointment[]> {
-        return this.http.get<Appointment[]>(['api', 'business','1','employee','appointments'].join('/'));
+        return this.http.get<Appointment[]>(['api', 'business', 'employee', '1', 'appointments'].join('/'));
     }
 
     public cancelAppointmentsEmployee(appointment:CancelAppointmentDTO): Observable<any> {

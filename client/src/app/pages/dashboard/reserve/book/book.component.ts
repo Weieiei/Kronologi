@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {ServiceDTO} from "../../../../interfaces/service/service-dto";
-import {MatDatepickerInputEvent} from "@angular/material";
 import {AppointmentService} from "../../../../services/appointment/appointment.service";
 import {EmployeeFreeTime} from "../../../../interfaces/employee/employee-free-time";
-import {DateDTO} from "../../../../interfaces/date-and-time/DateDTO";
 import {TimeDTO} from "../../../../interfaces/date-and-time/TimeDTO";
-import * as moment from 'moment'
-import {EmployeeTimes} from "../../../../interfaces/employee/employee-times";
-import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appointment-dto';
-import {Router, ActivatedRoute} from "@angular/router";
+import {BookAppointmentDTO} from '../../../../interfaces/appointment/book-appointment-dto';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-book',
@@ -23,8 +19,6 @@ export class BookComponent implements OnInit {
     service: ServiceDTO;
     date: any;
     time: any;
-    monthMax = 11;
-    dayMax = 365;
     monthsMap: Map <number, number[]>;
     daysMap: Map <number, Array<EmployeeFreeTime>>;
     employeeId: number;
