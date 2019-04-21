@@ -10,8 +10,7 @@ import { UserToDisplay } from '../../../../models/user/UserToDisplay';
     styleUrls: ['./admin-services.component.scss']
 })
 export class AdminServicesComponent implements OnInit {
-
-    displayedColumns: string[] = ['id', 'name', 'duration', 'created at', 'updated at'];
+    displayedColumns: string[] = ['id', 'name', 'duration'];
     services: Service[];
 
     componentState: {
@@ -43,7 +42,9 @@ export class AdminServicesComponent implements OnInit {
         this.serviceService.getPlainServices().pipe(
             map(data => {
                 return data.map(a => {
-                    return a;
+                    return new Service(
+                        a.id, a.name, a.duration
+                    )
                 });
             })
         ).subscribe(

@@ -57,7 +57,6 @@ export class AdminUsersComponent implements OnInit {
         this.userService.getAllUsers().pipe(
             map(data => {
                 return data.map(a => {
-                    console.log((a.role.toString()));
                     return new UserToDisplay (
                         a.id, a.firstName, a.lastName, a.email,
                         a.role, a.services, a.createdAt, a.updatedAt
