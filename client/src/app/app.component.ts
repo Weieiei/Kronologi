@@ -16,7 +16,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.googleAnalyticsService.subscribe();
-    this.authService.adminObservable.subscribe(res => this.authService.checkAdmin());
+    this.authService.adminObservable.subscribe(res => {
+        this.authService.checkAdmin();
+        this.authService.checkEmployee();
+        this.authService.checkClient();
+    });
     this.authService.verifyAdminStatus();
 
   }
