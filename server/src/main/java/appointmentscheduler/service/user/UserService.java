@@ -369,4 +369,16 @@ public class UserService {
         return buildTokenRegisterMap( token, verification);
     }
 
+    public List<User> findAllClients() {
+        List<User> userlist = userRepository.findByRole(RoleEnum.CLIENT);
+        if (userlist == null) {
+            throw new ResourceNotFoundException("Clients not found");
+        }
+        return userlist;
+    }
+
+    public List<User> findAllUsersForBusiness(long businessId, RoleEnum roleEnum) {
+        return userRepository.findByRoleOrBusinessIdOrderByRole(roleEnum, businessId).orElseThrow(() -> new ResourceNotFoundException(String.format(
+                "Users not found for business with id %d .", businessId)));
+    }
 }

@@ -72,7 +72,6 @@ export class AdminAppointmentsComponent implements OnInit {
                         ),
                         new Service(
                             service.id, service.name, service.duration,
-                            service.createdAt, service.updatedAt
                         )
                     );
 
