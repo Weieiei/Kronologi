@@ -135,4 +135,8 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['admin', 'employees']);
     }
 
+    goToReceipts() {
+        this.router.navigate(['admin/receipts']);
+    }
+
 }
