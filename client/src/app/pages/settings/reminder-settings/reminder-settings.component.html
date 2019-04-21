@@ -16,7 +16,8 @@
             <form (submit)="updateSettings()" autocomplete="off" fxLayout="column" fxLayoutGap="12px">
 
                 <div fxLayout="column" fxLayoutGap="2px">
-                    <mat-checkbox color="primary" [(ngModel)]="emailReminder" name="emailReminder">
+                    <mat-checkbox class="send-reminders-checkbox" color="primary" [(ngModel)]="emailReminder"
+                                  name="emailReminder">
                         Send appointment reminders to my email
                     </mat-checkbox>
                     <mat-hint  [ngClass]="darkModeActive ? 'checkbox-hint-dark' : 'checkbox-hint'">
@@ -25,7 +26,13 @@
                 </div>
 
                 <div fxLayout="column" fxLayoutGap="2px">
-                    <mat-checkbox color="primary" [(ngModel)]="textReminder" [checked]="textReminder" name="textReminder" fxFlex>
+                    <mat-hint fxFlex="60" fxFlex.lt-md [ngClass]="{'text-color-dark' : darkModeActive}">After changing
+                        your email, you will be logged out and prompted to log back in.
+                    </mat-hint>
+
+                    <mat-checkbox color="primary" class="send-reminders-checkbox" [(ngModel)]="textReminder"
+                                  [checked]="textReminder"
+                                  name="textReminder" fxFlex>
                         Send appointment reminders to my phone number
                     </mat-checkbox>
                     <mat-hint [ngClass]="darkModeActive ? 'checkbox-hint-dark' : 'checkbox-hint'" >

@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {ServiceDTO} from "../../../../interfaces/service/service-dto";
 import {MatDatepickerInputEvent, MatDialogConfig, MatDialog} from "@angular/material";
 import {AppointmentService} from "../../../../services/appointment/appointment.service";
 import {EmployeeFreeTime} from "../../../../interfaces/employee/employee-free-time";
-import {DateDTO} from "../../../../interfaces/date-and-time/DateDTO";
 import {TimeDTO} from "../../../../interfaces/date-and-time/TimeDTO";
-import * as moment from 'moment'
-import {EmployeeTimes} from "../../../../interfaces/employee/employee-times";
-import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appointment-dto';
-import {Router, ActivatedRoute} from "@angular/router";
+import {BookAppointmentDTO} from '../../../../interfaces/appointment/book-appointment-dto';
+import {ActivatedRoute, Router} from "@angular/router";
 import { PaymentDialogComponent } from 'src/app/components/payment-dialog/payment-dialog.component';
 
 @Component({
@@ -28,8 +25,6 @@ export class BookComponent implements OnInit {
     date: any;
     dateString: string;
     time: any;
-    monthMax = 11;
-    dayMax = 365;
     monthsMap: Map <number, number[]>;
     daysMap: Map <number, Array<EmployeeFreeTime>>;
     employeeId: number;
@@ -70,7 +65,7 @@ export class BookComponent implements OnInit {
         this.dateString = dayOfWeek + " " + month + " " + dayOfMonth + ", " + yearOfDate;
 
     }
-    
+
     setIsPayment(client_pays : any){
         console.log("hello")
         console.log(client_pays)
@@ -81,13 +76,13 @@ export class BookComponent implements OnInit {
             dialogConfig.autoFocus = true;
             dialogConfig.width = '400px';
             dialogConfig.height = '400px';
-    
+
             dialogConfig.data = {
                 service: this.service,
                 businessId: this.businessId
             };
             const dialogRef = this.dialog.open(PaymentDialogComponent, dialogConfig);
-    
+
             dialogRef.afterClosed().subscribe(business => {
             });
         }

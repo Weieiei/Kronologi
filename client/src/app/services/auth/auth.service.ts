@@ -35,8 +35,8 @@ export class AuthService {
         return this.http.post(['api', 'user', 'login'].join('/'), payload);
     }
 
-    googleAuth(token:string) :  Observable<any>{
-        return this.http.get(['api','google','login','calendarCallback'].join('/'), { params: { code: token }})
+    googleAuth(token: string):  Observable<any> {
+        return this.http.get(['api', 'google', 'login', 'calendarCallback'].join('/'), { params: { code: token }});
     }
 
 

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>appointment-scheduler documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">appointment-scheduler documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>FindBusinessDialogComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/find-business-dialog/find-business-dialog.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-find-business-dialog</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./find-business-dialog.component.scss</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+  agm-map {
+    height: 200px;
+    width:  200px;
+  }
+</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./find-business-dialog.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#animationState">animationState</a>
+                            </li>
+                            <li>
+                                <a href="#businessArray">businessArray</a>
+                            </li>
+                            <li>
+                                <a href="#BusinessName">BusinessName</a>
+                            </li>
+                            <li>
+                                <a href="#businessWasFetched">businessWasFetched</a>
+                            </li>
+                            <li>
+                                <a href="#chosenBusiness">chosenBusiness</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#data">data</a>
+                            </li>
+                            <li>
+                                <a href="#daysOfWeek">daysOfWeek</a>
+                            </li>
+                            <li>
+                                <a href="#form">form</a>
+                            </li>
+                            <li>
+                                <a href="#mapType">mapType</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#closeDialog">closeDialog</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSelectionChange">onSelectionChange</a>
+                            </li>
+                            <li>
+                                <a href="#searchBusiness">searchBusiness</a>
+                            </li>
+                            <li>
+                                <a href="#updateLatLngFromAddress">updateLatLngFromAddress</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(geoCodeService: <a href="../injectables/GeocodingApiService.html">GeocodingApiService</a>, dialogRef: <a href="../interfaces/Business.html">MatDialogRef<FindBusinessDialogComponent></a>, spinner: <a href="../interfaces/Service.html">NgxSpinnerService</a>, fb: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, businessService: <a href="../injectables/BusinessService.html">BusinessService</a>, data: <a href="../interfaces/BusinessDTO.html">BusinessDTO</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:66</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>geoCodeService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/GeocodingApiService.html" target="_self" >GeocodingApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>dialogRef</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/Business.html" target="_self" >MatDialogRef&lt;FindBusinessDialogComponent&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>spinner</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/Service.html" target="_self" >NgxSpinnerService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>fb</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/forms/FormBuilder" target="_blank" >FormBuilder</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>businessService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/BusinessService.html" target="_self" >BusinessService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>data</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/BusinessDTO.html" target="_self" >BusinessDTO</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeDialog"></a>
+                    <span class="name">
+                        <b>
+                            closeDialog
+                        </b>
+                        <a href="#closeDialog"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeDialog()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="137"
+                            class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:137</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="72"
+                            class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:72</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSelectionChange"></a>
+                    <span class="name">
+                        <b>
+                            onSelectionChange
+                        </b>
+                        <a href="#onSelectionChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSelectionChange(business: <a href="../interfaces/BusinessDTO.html">BusinessDTO</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="132"
+                            class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:132</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>business</td>
+                                    <td>
+                                                <code><a href="../interfaces/BusinessDTO.html" target="_self" >BusinessDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchBusiness"></a>
+                    <span class="name">
+                        <b>
+                            searchBusiness
+                        </b>
+                        <a href="#searchBusiness"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>searchBusiness(businessName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:75</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>businessName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateLatLngFromAddress"></a>
+                    <span class="name">
+                        <b>
+                            updateLatLngFromAddress
+                        </b>
+                        <a href="#updateLatLngFromAddress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateLatLngFromAddress(business: <a href="../interfaces/BusinessDTO.html">BusinessDTO</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="113"
+                            class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:113</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>business</td>
+                                    <td>
+                                                <code><a href="../interfaces/BusinessDTO.html" target="_self" >BusinessDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="animationState"></a>
+                        <span class="name">
+                            <b>
+                            animationState</b>
+                            <a href="#animationState"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>true</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:62</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="businessArray"></a>
+                        <span class="name">
+                            <b>
+                            businessArray</b>
+                            <a href="#businessArray"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>BusinessDTO[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:65</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="BusinessName"></a>
+                        <span class="name">
+                            <b>
+                            BusinessName</b>
+                            <a href="#BusinessName"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:64</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="businessWasFetched"></a>
+                        <span class="name">
+                            <b>
+                            businessWasFetched</b>
+                            <a href="#businessWasFetched"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:63</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="chosenBusiness"></a>
+                        <span class="name">
+                            <b>
+                            chosenBusiness</b>
+                            <a href="#chosenBusiness"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/BusinessDTO.html" target="_self" >BusinessDTO</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:59</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="data"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            data</b>
+                            <a href="#data"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/BusinessDTO.html" target="_self" >BusinessDTO</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @Inject(MAT_DIALOG_DATA)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:67</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="daysOfWeek"></a>
+                        <span class="name">
+                            <b>
+                            daysOfWeek</b>
+                            <a href="#daysOfWeek"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[&quot;Monday&quot;,&quot;Tuesday&quot;,&quot;Wednesday&quot;,&quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:66</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="form"></a>
+                        <span class="name">
+                            <b>
+                            form</b>
+                            <a href="#form"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:61</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mapType"></a>
+                        <span class="name">
+                            <b>
+                            mapType</b>
+                            <a href="#mapType"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;roadmap&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/components/find-business-dialog/find-business-dialog.component.ts:60</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Inject, ViewChild } from &#x27;@angular/core&#x27;;
+import { BusinessService } from &#x27;../../services/business/business.service&#x27;
+import { FormBuilder, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
+import { MAT_DIALOG_DATA, MatDialogRef } from &#x27;@angular/material&#x27;;
+import { BusinessDTO } from &#x27;../../interfaces/business/business-dto&#x27;;
+import { BusinessHoursDTO } from &#x27;../../interfaces/business/businessHours-dto&#x27;;
+import { trigger, state, style, transition, animate, group, query, stagger, keyframes } from &#x27;@angular/animations&#x27;;
+import { NgxSpinnerService } from &#x27;ngx-spinner&#x27;;
+import { GeocodingApiService } from &#x27;../../services/google/geocode.service&#x27;
+
+
+@Component({
+  selector: &#x27;app-find-business-dialog&#x27;,
+  templateUrl: &#x27;./find-business-dialog.component.html&#x27;,
+  styleUrls: [&#x27;./find-business-dialog.component.scss&#x27;],
+  animations: [
+    trigger(&#x27;slideInOut&#x27;, [
+      state(&#x27;true&#x27;, style({
+          &#x27;max-height&#x27;: &#x27;500px&#x27;, &#x27;opacity&#x27;: &#x27;1&#x27;, &#x27;visibility&#x27;: &#x27;visible&#x27;
+      })),
+      state(&#x27;false&#x27;, style({
+          &#x27;max-height&#x27;: &#x27;0px&#x27;, &#x27;opacity&#x27;: &#x27;0&#x27;, &#x27;visibility&#x27;: &#x27;hidden&#x27;
+      })),
+      transition(&#x27;true &#x3D;&gt; false&#x27;, [group([
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;opacity&#x27;: &#x27;0&#x27;
+          })),
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;max-height&#x27;: &#x27;0px&#x27;
+          })),
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;visibility&#x27;: &#x27;hidden&#x27;
+          }))
+      ]
+      )]),
+      transition(&#x27;false &#x3D;&gt; true&#x27;, [group([
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;visibility&#x27;: &#x27;visible&#x27;
+          })),
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;max-height&#x27;: &#x27;500px&#x27;
+          })),
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;opacity&#x27;: &#x27;1&#x27;
+          }))
+      ]
+      )])
+    ])
+  ],
+  styles: [&#x60;
+  agm-map {
+    height: 200px;
+    width:  200px;
+  }
+&#x60;]
+})
+export class FindBusinessDialogComponent implements OnInit {
+
+  chosenBusiness : BusinessDTO;
+  mapType &#x3D; &#x27;roadmap&#x27;;
+  form: FormGroup;
+  animationState : boolean &#x3D; true;
+  businessWasFetched: boolean &#x3D; false;
+  BusinessName : string
+  businessArray : BusinessDTO[];
+  daysOfWeek : string[] &#x3D; [&quot;Monday&quot;,&quot;Tuesday&quot;,&quot;Wednesday&quot;,&quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;];
+  constructor(private geoCodeService : GeocodingApiService, private dialogRef: MatDialogRef&lt;FindBusinessDialogComponent&gt;, private spinner: NgxSpinnerService,private fb : FormBuilder,private businessService : BusinessService,  @Inject(MAT_DIALOG_DATA)public data:BusinessDTO) {
+
+    this.businessArray &#x3D; [];
+  }
+
+  ngOnInit() {
+  }
+
+  searchBusiness(businessName: string): void {
+      this.spinner.show();
+      this.animationState &#x3D; false;
+      this.businessService.findBusinessThroughGoogle(businessName).subscribe(
+        res &#x3D;&gt; {
+            for (const business of res){
+              this.updateLatLngFromAddress(business);
+              if (business.business_hours.length &lt; 7){
+                for (const [index, value] of business.business_hours.entries()){
+                  if (business.business_hours[index].day !&#x3D;&#x3D; this.daysOfWeek[index]){
+                    let businessHourTemp: BusinessHoursDTO &#x3D; {
+                        day : this.daysOfWeek[index],
+                        openHour: &#x27;Close&#x27;,
+                        closeHour: &#x27;Close&#x27;
+                    }
+                    business.business_hours.splice(index, 0, businessHourTemp);
+                  }
+                }
+              }
+              if(business.business_hours.length &lt; 7){
+                let businessHourTemp: BusinessHoursDTO &#x3D; {
+                  day : &#x27;Sunday&#x27;,
+                  openHour: &#x27;Close&#x27;,
+                  closeHour: &#x27;Close&#x27;
+              }
+                business.business_hours.push(businessHourTemp);
+              }
+              this.businessArray.push(business);
+            }
+            this.businessWasFetched &#x3D; true;
+            this.animationState &#x3D; true;
+            this.spinner.hide();
+            this.dialogRef.updateSize(&#x27;600px&#x27;,&#x27;600px&#x27;);
+        },
+        err &#x3D;&gt; console.log(err)
+      );
+  }
+
+  updateLatLngFromAddress(business: BusinessDTO) {
+    let businessArr: string[] &#x3D; business.formattedAddress.split(&#x27;,&#x27;);
+    let address &#x3D; businessArr[0];
+    let portalCode &#x3D; &#x27;&#x27;;
+    let selectedPlace &#x3D; &#x27;&#x27;;
+    this.geoCodeService
+        .findFromAddress(address, null, null, null, null, null)
+        .subscribe(response &#x3D;&gt; {
+            if (response.status &#x3D;&#x3D;&#x3D; &#x27;OK&#x27;) {
+                business.lat &#x3D; response.results[0].geometry.location.lat;
+                business.lng &#x3D; response.results[0].geometry.location.lng;
+            } else if (response.status &#x3D;&#x3D;&#x3D; &#x27;ZERO_RESULTS&#x27;) {
+                console.log(&#x27;geocodingAPIService&#x27;, &#x27;ZERO_RESULTS&#x27;, response.status);
+            } else {
+                console.log(&#x27;geocodingAPIService&#x27;, &#x27;Other error&#x27;, response.status);
+            }
+        });
+  }
+
+  onSelectionChange(business: BusinessDTO) : void{
+    this.chosenBusiness &#x3D; business;
+    this.data &#x3D; business;
+  }
+
+  closeDialog() : void {
+    this.dialogRef.close();
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div&gt;
+    &lt;div [@slideInOut]&#x3D;&quot;animationState&quot;&gt;
+      &lt;h2 mat-dialog-title *ngIf&#x3D;&quot;!businessWasFetched&quot;&gt;Let&#x27;s look for your business!&lt;/h2&gt;
+      &lt;h2 mat-dialog-title *ngIf&#x3D;&quot;businessWasFetched&quot;&gt;Here&#x27;s what we found!&lt;/h2&gt;
+      &lt;hr&gt;
+      &lt;div *ngIf&#x3D;&quot;!businessWasFetched&quot;&gt;
+        &lt;mat-dialog-content&gt;
+            &lt;mat-form-field&gt;
+              &lt;input matInput placeholder&#x3D;&quot;Enter Business Name&quot; [(ngModel)]&#x3D;&quot;data.businessName&quot;&gt;
+            &lt;/mat-form-field&gt;
+        &lt;/mat-dialog-content&gt;
+        &lt;hr&gt;
+        &lt;mat-dialog-actions&gt;
+            &lt;div fxLayout&#x3D;&quot;row&quot;&gt;
+                &lt;div class&#x3D;&quot;padding-right-div&quot;&gt;
+                  &lt;button mat-raised-button (click)&#x3D;&quot;searchBusiness(data.businessName)&quot;&gt;Search&lt;/button&gt;&amp;nbsp;
+                &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;button mat-raised-button color&#x3D;&quot;primary&quot; (click)&#x3D;&quot;closeDialog()&quot;&gt;Cancel&lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+        &lt;/mat-dialog-actions&gt;
+      &lt;/div&gt;
+
+      &lt;div *ngIf&#x3D;&quot;businessWasFetched&quot;&gt;
+        &lt;mat-accordion&gt;
+            &lt;mat-radio-group  [(ngModel)]&#x3D;&quot;selectedContent&quot;&gt;
+              &lt;mat-expansion-panel  *ngFor&#x3D;&quot;let business of businessArray&quot;  &gt;
+                  &lt;mat-expansion-panel-header&gt;
+                      &lt;mat-panel-title&gt;
+                        &lt;mat-radio-button value&#x3D;&quot;businessChosen&quot; (click)&#x3D;&quot;onSelectionChange(business)&quot;&gt;
+                            {{ business.name }}
+                        &lt;/mat-radio-button&gt;
+                      &lt;/mat-panel-title&gt;
+                      &lt;mat-panel-description&gt;
+                        {{ business.formattedAddress }}
+                      &lt;/mat-panel-description&gt;
+                  &lt;/mat-expansion-panel-header&gt;
+                  
+                  &lt;div  [ngClass] &#x3D; &quot;main&quot;&gt;
+                        &lt;agm-map  [latitude]&#x3D;&#x27;business.lat&#x27; [longitude]&#x3D;&#x27;business.lng&#x27; 
+                        [mapTypeId]&#x3D;&#x27;mapType&#x27;&gt;
+                        &lt;agm-marker [latitude]&#x3D;&quot;business.lat&quot; [longitude]&#x3D;&quot;business.lng&quot;&gt;&lt;/agm-marker&gt;
+                        &lt;/agm-map&gt; 
+
+                        &lt;mat-card&gt;
+                            &lt;div *ngFor&#x3D;&quot;let dayInfo of business.business_hours&quot;&gt;
+                                {{ dayInfo.day }} :  {{ dayInfo.openHour}}   -    {{ dayInfo.closeHour }}
+                            &lt;/div&gt;
+                        &lt;/mat-card&gt;
+                  &lt;/div&gt;
+              &lt;/mat-expansion-panel&gt;
+          &lt;/mat-radio-group&gt;
+        &lt;/mat-accordion&gt;
+      &lt;/div&gt;
+      
+
+      &lt;div *ngIf&#x3D;&quot;businessWasFetched&quot;&gt;
+        &lt;mat-dialog-actions align&#x3D;&quot;bottom&quot;&gt;
+          &lt;button mat-raised-button color&#x3D;&quot;primary&quot; (click)&#x3D;&quot;closeDialog()&quot;&gt;Cancel&lt;/button&gt;
+          &lt;button mat-raised-button color &#x3D;&quot;primary&quot;[mat-dialog-close]&#x3D;&quot;data&quot; &gt;This is my business!&lt;/button&gt;
+        &lt;/mat-dialog-actions&gt;
+      &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div [@slideInOut]&#x3D;&quot;!animationState&quot;&gt;
+      &lt;h2 mat-dialog-title&gt;We&#x27;re looking for your business, hang tight!&lt;/h2&gt;
+      &lt;hr&gt;
+      &lt;mat-dialog-content&gt;
+      &lt;ngx-spinner bdColor &#x3D; &quot;rgba(0, 0, 0, 0)&quot;   size &#x3D; &quot;medium&quot;   color &#x3D; &quot;#800080&quot; type &#x3D; &quot;ball-scale-ripple-multiple&quot; fullScreen &#x3D; &quot;false&quot; &gt;
+            &lt;p style&#x3D;&quot;color: purple&quot; &gt; Loading... &lt;/p&gt;
+      &lt;/ngx-spinner&gt;
+
+    &lt;/mat-dialog-content&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./find-business-dialog.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">mat-expansion-panel{
+    margin-bottom: 1rem;
+
+  }
+  .mat-accordion .mat-expansion-panel{
+    border-radius:1.75rem;
+    
+  }
+  .main { 
+    display: flex; 
+    justify-content: space-between;
+  }
+
+.padding-right-div{
+  margin-right:3rem;
+}
+
+.fixActionRow {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.spacer {
+  flex-grow: 1;
+}</code></pre>
+            <pre class="line-numbers"><code class="language-scss">
+  agm-map {
+    height: 200px;
+    width:  200px;
+  }
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div>    <div [@slideInOut]="animationState">      <h2 mat-dialog-title *ngIf="!businessWasFetched">Let\'s look for your business!</h2>      <h2 mat-dialog-title *ngIf="businessWasFetched">Here\'s what we found!</h2>      <hr>      <div *ngIf="!businessWasFetched">        <mat-dialog-content>            <mat-form-field>              <input matInput placeholder="Enter Business Name" [(ngModel)]="data.businessName">            </mat-form-field>        </mat-dialog-content>        <hr>        <mat-dialog-actions>            <div fxLayout="row">                <div class="padding-right-div">                  <button mat-raised-button (click)="searchBusiness(data.businessName)">Search</button>&nbsp;                </div>                <div>                  <button mat-raised-button color="primary" (click)="closeDialog()">Cancel</button>                </div>              </div>        </mat-dialog-actions>      </div>      <div *ngIf="businessWasFetched">        <mat-accordion>            <mat-radio-group  [(ngModel)]="selectedContent">              <mat-expansion-panel  *ngFor="let business of businessArray"  >                  <mat-expansion-panel-header>                      <mat-panel-title>                        <mat-radio-button value="businessChosen" (click)="onSelectionChange(business)">                            {{ business.name }}                        </mat-radio-button>                      </mat-panel-title>                      <mat-panel-description>                        {{ business.formattedAddress }}                      </mat-panel-description>                  </mat-expansion-panel-header>                                    <div  [ngClass] = "main">                        <agm-map  [latitude]=\'business.lat\' [longitude]=\'business.lng\'                         [mapTypeId]=\'mapType\'>                        <agm-marker [latitude]="business.lat" [longitude]="business.lng"></agm-marker>                        </agm-map>                         <mat-card>                            <div *ngFor="let dayInfo of business.business_hours">                                {{ dayInfo.day }} :  {{ dayInfo.openHour}}   -    {{ dayInfo.closeHour }}                            </div>                        </mat-card>                  </div>              </mat-expansion-panel>          </mat-radio-group>        </mat-accordion>      </div>            <div *ngIf="businessWasFetched">        <mat-dialog-actions align="bottom">          <button mat-raised-button color="primary" (click)="closeDialog()">Cancel</button>          <button mat-raised-button color ="primary"[mat-dialog-close]="data" >This is my business!</button>        </mat-dialog-actions>      </div>  </div>    <div [@slideInOut]="!animationState">      <h2 mat-dialog-title>We\'re looking for your business, hang tight!</h2>      <hr>      <mat-dialog-content>      <ngx-spinner bdColor = "rgba(0, 0, 0, 0)"   size = "medium"   color = "#800080" type = "ball-scale-ripple-multiple" fullScreen = "false" >            <p style="color: purple" > Loading... </p>      </ngx-spinner>    </mat-dialog-content>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccountSettingsComponent', 'selector': 'app-account-settings'},{'name': 'AddRecurringShiftFormComponent', 'selector': 'app-add-recurring-shift-form'},{'name': 'AddShiftFormComponent', 'selector': 'app-add-shift-form'},{'name': 'AdminAppointmentsComponent', 'selector': 'app-admin-appointments'},{'name': 'AdminEmployeesComponent', 'selector': 'app-admin-employees'},{'name': 'AdminServicesComponent', 'selector': 'app-admin-services'},{'name': 'AdminUsersComponent', 'selector': 'app-admin-users'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppointmentCardComponent', 'selector': 'app-appointment-card'},{'name': 'AppointmentsComponent', 'selector': 'app-appointments'},{'name': 'AppointmentsSectionComponent', 'selector': 'app-appointments-section'},{'name': 'AssignServicesDialogComponent', 'selector': 'assign-services-dialog'},{'name': 'BookComponent', 'selector': 'app-book'},{'name': 'BusinessRegisterComponent', 'selector': 'app-business-register'},{'name': 'BusinessViewComponent', 'selector': 'app-business-view'},{'name': 'CancelDialogComponent', 'selector': 'cancel-dialog'},{'name': 'CardsUiComponent', 'selector': 'app-cards-ui'},{'name': 'ChangeClientToEmployeeDialogComponent', 'selector': 'change-client-to-employee-dialog'},{'name': 'CreateServiceComponent', 'selector': 'app-admin-create-service'},{'name': 'CustomStepperComponent', 'selector': 'app-custom-stepper'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DetailsComponent', 'selector': 'app-details'},{'name': 'EmployeeAppointmentsComponent', 'selector': 'app-employee-appointments'},{'name': 'ErrorDialogComponent', 'selector': 'app-error-dialog'},{'name': 'FindBusinessDialogComponent', 'selector': 'app-find-business-dialog'},{'name': 'GoogleMapsComponent', 'selector': 'app-google-maps'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'NotesAndReserveComponent', 'selector': 'app-notes-and-reserve'},{'name': 'PickDayComponent', 'selector': 'app-pick-day'},{'name': 'ReasonDialogComponent', 'selector': 'app-reason-dialog'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReminderSettingsComponent', 'selector': 'app-reminder-settings'},{'name': 'ReviewComponent', 'selector': 'app-review'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ServiceSelectionGridListComponent', 'selector': 'app-service-selection-grid-list'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'ShiftComponent', 'selector': 'app-shift'},{'name': 'ShiftPickerComponent', 'selector': 'app-shift-picker'},{'name': 'SyncCalendarsComponent', 'selector': 'app-sync-calendars'},{'name': 'TimePickerDialogComponent', 'selector': 'app-time-picker-dialog'},{'name': 'VerifiedComponent', 'selector': 'app-verified'}];
+    var DIRECTIVES = [{'name': 'AutofocusDirective', 'selector': '[appAutofocus]'},{'name': 'ButtonIconDirective', 'selector': '[appButtonIcon]'},{'name': 'CardSizeDirective', 'selector': '[appCardSize]'},{'name': 'FabBottomRightDirective', 'selector': 'button[appFabBottomRight]'}];
+    var ACTUAL_COMPONENT = {'name': 'FindBusinessDialogComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'FindBusinessDialogComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

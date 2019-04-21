@@ -22,7 +22,7 @@ export class ServiceService {
     }
 
     public createService(businessId: number, service: ServiceCreateDto): Observable<any> {
-        return this.http.post<Service>(['api', 'business', 'admin', businessId.toString(), 'service'].join('/'), service);
+        return this.http.post<Service>(['api', 'business', businessId.toString(), 'admin', 'service'].join('/'), service);
     }
     public registerService(businessId: number, service: ServiceCreateDto): Observable<any> {
         return this.http.post<Service>(['api', 'business', 'services', businessId.toString(), 'service'].join('/'), service);
