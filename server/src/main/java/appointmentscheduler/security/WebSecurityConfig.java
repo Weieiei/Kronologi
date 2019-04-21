@@ -78,7 +78,7 @@ public class WebSecurityConfig  {
             http.csrf().disable()
                     .cors().and()
                     .authorizeRequests()
-                    .antMatchers("/api/user/login", "/api/user/register").permitAll()
+                    .antMatchers("/api/user/login", "/api/user/register", "/api/password/reset", "/api/password/forgot").permitAll()
                     .regexMatchers("\\/api\\/user\\/verification\\?hash=.*").permitAll()
                     .antMatchers("/external/google/login/google").authenticated()
                     .antMatchers("/api/*").authenticated()
@@ -109,17 +109,6 @@ public class WebSecurityConfig  {
 
             return registrationBean;
         }
-
-//        @Bean
-//        public FilterRegistrationBean<GuestAuthenticationFilter> jwtGuestFilter(){
-//            FilterRegistrationBean<GuestAuthenticationFilter> registrationBean
-//                    = new FilterRegistrationBean<>();
-//
-//            registrationBean.setFilter(guestAuthenticationFilter);
-//            registrationBean.addUrlPatterns("/guest/*");
-//
-//            return registrationBean;
-//        }
 
     }
 

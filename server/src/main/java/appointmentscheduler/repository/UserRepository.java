@@ -19,4 +19,6 @@ Optional<User> findByIdAndBusinessId(long id, long businessId);
     Optional<List<User>> findAllByBusinessId(long businessId);
 
     List<User> findByRole(RoleEnum role);
+
+    Optional<List<User>> findByRoleOrBusinessIdOrderByRole(RoleEnum roleEnum, long businessId);
   }

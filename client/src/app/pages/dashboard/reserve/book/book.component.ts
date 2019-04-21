@@ -170,7 +170,7 @@ export class BookComponent implements OnInit {
             employeeId: this.employeeId,
             serviceId: this.service.id,
             date: this.date,
-            startTime: this.time,
+            startTime: this.time
         };
         this.appointmentService.bookAppointment(this.appointment).subscribe(
             res => console.log(res)
