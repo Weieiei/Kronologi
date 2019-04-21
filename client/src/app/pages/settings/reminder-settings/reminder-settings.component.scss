@@ -36,3 +36,7 @@
 .mat-checkbox-frame{
     border-color:blue;
 }
+
+::ng-deep .mat-checkbox-layout .mat-checkbox-label {
+    color: black;
+}

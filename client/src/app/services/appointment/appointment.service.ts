@@ -7,6 +7,7 @@ import { UserAppointmentDTO } from '../../interfaces/appointment/user-appointmen
 import { Appointment } from 'src/app/interfaces/appointment';
 import { CancelAppointmentDTO } from 'src/app/interfaces/cancelAppointmentDTO';
 import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
+import {GuestCreateDto} from "../../interfaces/guest/guest-create-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,10 @@ export class AppointmentService {
         return this.http.post<any>(['api', 'business', '1', 'appointments'].join('/'), payload);
     }
 
+    public bookGuestAppointment(guestDTO: GuestCreateDto): Observable<any> {
+        return this.http.post<any>(['api', 'business', '1', 'guest_appointments'].join('/'), guestDTO);
+    }
+
     public updateAppointment(id: number, payload: BookAppointmentDTO): Observable<any> {
         return this.http.put<any>(['api','business','1','appointments', id].join('/'), payload);
     }
@@ -42,7 +47,7 @@ export class AppointmentService {
     }
 
     public getMyAppointmentsEmployee(): Observable<Appointment[]> {
-        return this.http.get<Appointment[]>(['api', 'business','1','employee','appointments'].join('/'));
+        return this.http.get<Appointment[]>(['api', 'business', 'employee', '1', 'appointments'].join('/'));
     }
 
     public cancelAppointmentsEmployee(appointment:CancelAppointmentDTO): Observable<any> {

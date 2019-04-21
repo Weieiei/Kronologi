@@ -1,6 +1,7 @@
 <div class="admin-shifts-container" fxLayout="column" fxLayoutGap="1rem">
 
-    <h5>You are currently viewing {{ employee?.firstName + ' ' + employee?.lastName }}'s shifts.</h5>
+    <h5 class="display-employee-name">You are currently viewing {{ employee?.firstName + ' ' + employee?.lastName }}'s
+        shifts.</h5>
 
     <table *ngIf="shifts?.length" class="shift-table mat-elevation-z4" mat-table [dataSource]="shifts">
 

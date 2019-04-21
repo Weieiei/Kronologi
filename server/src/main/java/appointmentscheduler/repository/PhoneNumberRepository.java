@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface PhoneNumberRepository extends JpaRepository<PhoneNumber, Long> {
 
     Optional<PhoneNumber> findByUserId(long userId);
+    Optional<PhoneNumber> findByGuestId(long guestId);
 
 }

@@ -1,0 +1,574 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>appointment-scheduler documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">appointment-scheduler documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Interfaces</li>
+  <li>BusinessHours</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/pages/register/business-register/business-register.component.ts</code>
+        </p>
+
+
+
+        <section>
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#end">end</a>
+                                </li>
+                                <li>
+                                        <a href="#start">start</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section>
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="end"></a>
+                                        <span class="name"><b>end</b><a href="#end"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>end:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="start"></a>
+                                        <span class="name"><b>start</b><a href="#start"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>start:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { ServiceService } from &#x27;../../../services/service/service.service&#x27;;
+import { BusinessService } from &#x27;../../../services/business/business.service&#x27;;
+import { BusinessUserRegisterDTO } from &#x27;../../../interfaces/user/business-user-register-dto&#x27;;
+import { BusinessRegisterDTO } from &#x27;../../../interfaces/business/business-register-dto&#x27;;
+import { BusinessDTO } from &#x27;../../../interfaces/business/business-dto&#x27;;
+import { UserService } from &#x27;../../../services/user/user.service&#x27;;
+import { FormBuilder, FormGroup, Validators, FormArray } from &#x27;@angular/forms&#x27;;
+import * as countryData from &#x27;country-telephone-data&#x27;;
+import { GoogleAnalyticsService } from &#x27;src/app/services/google/google-analytics.service&#x27;;
+import { ServiceCreateDto } from &#x27;../../../interfaces/service/service-create-dto&#x27;;
+import { BusinessHoursDTO } from &#x27;../../../interfaces/business/businessHours-dto&#x27;
+import { FindBusinessDialogComponent } from &#x27;../../../components/find-business-dialog/find-business-dialog.component&#x27;;
+import { MatDialogConfig, MatDialog } from &#x27;@angular/material&#x27;;
+import { NgxSpinnerService } from &#x27;ngx-spinner&#x27;;
+import { trigger, state, style, transition, animate, group } from &#x27;@angular/animations&#x27;;
+import { PasswordMismatchStateMatcher } from &#x27;../../../../shared/password-mismatch-state-matcher&#x27;;
+
+export interface Domain {
+    value: string;
+}
+
+export interface BusinessHours {
+    start: string;
+    end: string;
+}
+
+@Component ({
+  selector: &#x27;app-business-register&#x27;,
+  templateUrl: &#x27;./business-register.component.html&#x27;,
+  styleUrls: [&#x27;./business-register.component.scss&#x27;],
+  animations: [
+    trigger(&#x27;slideInOut&#x27;, [
+      state(&#x27;true&#x27;, style({
+          &#x27;max-height&#x27;: &#x27;500px&#x27;, &#x27;opacity&#x27;: &#x27;1&#x27;, &#x27;visibility&#x27;: &#x27;visible&#x27;
+      })),
+      state(&#x27;false&#x27;, style({
+          &#x27;max-height&#x27;: &#x27;0px&#x27;, &#x27;opacity&#x27;: &#x27;0&#x27;, &#x27;visibility&#x27;: &#x27;hidden&#x27;
+      })),
+      transition(&#x27;true &#x3D;&gt; false&#x27;, [group([
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;opacity&#x27;: &#x27;0&#x27;
+          })),
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;max-height&#x27;: &#x27;0px&#x27;
+          })),
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;visibility&#x27;: &#x27;hidden&#x27;
+          }))
+      ]
+      )]),
+      transition(&#x27;false &#x3D;&gt; true&#x27;, [group([
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;visibility&#x27;: &#x27;visible&#x27;
+          })),
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;max-height&#x27;: &#x27;500px&#x27;
+          })),
+          animate(&#x27;1ms ease-in-out&#x27;, style({
+              &#x27;opacity&#x27;: &#x27;1&#x27;
+          }))
+      ]
+      )])
+    ])
+  ]
+})
+export class BusinessRegisterComponent implements OnInit {
+
+    daysOfWeek: string[] &#x3D; [&#x27;Monday&#x27;, &#x27;Tuesday&#x27;, &#x27;Wednesday&#x27;, &#x27;Thursday&#x27;, &#x27;Friday&#x27;, &#x27;Saturday&#x27;, &#x27;Sunday&#x27;];
+    possibleBusinessHours: string[] &#x3D; [&#x27;00:00&#x27;, &#x27;00:30&#x27;, &#x27;01:00&#x27;, &#x27;01:30&#x27;, &#x27;02:00&#x27;, &#x27;02:30&#x27;, &#x27;03:00&#x27;, &#x27;03:30&#x27;, &#x27;04:00&#x27;, &#x27;04:30&#x27;, &#x27;05:00&#x27;,
+        &#x27;05:30&#x27;, &#x27;06:00&#x27;, &#x27;06:30&#x27;, &#x27;07:00&#x27;, &#x27;07:30&#x27;, &#x27;08:00&#x27;, &#x27;08:30&#x27;, &#x27;09:00&#x27;, &#x27;09:30&#x27;, &#x27;10:00&#x27;, &#x27;10:30&#x27;, &#x27;11:00&#x27;, &#x27;11:30&#x27;, &#x27;12:00&#x27;,
+        &#x27;12:30&#x27;, &#x27;13:00&#x27;, &#x27;13:30&#x27;, &#x27;14:00&#x27;, &#x27;14:30&#x27;, &#x27;15:00&#x27;, &#x27;15:30&#x27;, &#x27;16:00&#x27;, &#x27;16:30&#x27;, &#x27;17:00&#x27;, &#x27;17:30&#x27;, &#x27;18:00&#x27;, &#x27;18:30&#x27;, &#x27;19:00&#x27;,
+        &#x27;19:30&#x27;, &#x27;20:00&#x27;, &#x27;20:30&#x27;, &#x27;21:00&#x27;, &#x27;21:30&#x27;, &#x27;22:00&#x27;, &#x27;22:30&#x27;, &#x27;23:00&#x27;, &#x27;23:30&#x27;, &#x27;24:00&#x27;];
+    selectedBusiness: BusinessDTO;
+    businessHourMap &#x3D; new Map();
+    animationState &#x3D; true;
+    fileSelectMsg &#x3D; &#x27;No file selected yet.&#x27;;
+    fileUploadMsg &#x3D; &#x27;No file uploaded yet.&#x27;;
+    disabled &#x3D; false;
+    personalInfoForm: FormGroup;
+    businessInfoForm: FormGroup;
+    serviceInfoForm: FormGroup;
+    selectedFile: File &#x3D; null;
+    // new business object
+    business: BusinessDTO;
+    businessName: string;
+    businessDomain: string;
+
+    domains: Domain[] &#x3D; [
+        {value: &#x27;Beauty&#x27;},
+        {value: &#x27;Healthcare&#x27;},
+        {value: &#x27;Retail&#x27;},
+        {value: &#x27;Other&#x27;}
+    ];
+    description: string;
+    address: string;
+    city:  string;
+    province: string;
+    country: string;
+    postalCode: string;
+    // new service object
+    service: string;
+    serviceDuration: number;
+    // new user object
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+
+    countries: Object[] &#x3D; countryData.allCountries;
+    selectedCountry: Object;
+
+    areaCode: string;
+    number: string;
+
+    confirmPassword: string;
+    isPasswordVisible &#x3D; false;
+
+    registerPhone &#x3D; false;
+
+    businessId: number;
+    matcher: PasswordMismatchStateMatcher;
+
+    index &#x3D; 0;
+    constructor(
+        private spinner: NgxSpinnerService,
+        private dialog: MatDialog,
+        private http: HttpClient,
+        private router: Router,
+        private _formBuilder: FormBuilder,
+        private userService: UserService,
+        private serviceService: ServiceService,
+        private googleAnalytics: GoogleAnalyticsService,
+        private businessService: BusinessService
+         ) {
+        this.matcher &#x3D; new PasswordMismatchStateMatcher();
+    }
+
+    ngOnInit() {
+        this.personalInfoForm &#x3D; this._formBuilder.group({
+            firstName: [this.firstName || &#x27;&#x27;,  [Validators.required] ],
+            lastName: [this.lastName || &#x27;&#x27;,  [Validators.required] ],
+            email: [this.email || &#x27;&#x27;,  [Validators.required, Validators.email] ],
+            password: [this.password || &#x27;&#x27;,  [Validators.required, Validators.pattern(&#x27;^(?&#x3D;.*\\d)(?&#x3D;.*[a-zA-Z]).{6,30}$&#x27;)] ],
+            confirmPassword: [this.confirmPassword || &#x27;&#x27;,  [Validators.required] ],
+            areaCode: [this.areaCode || &#x27;&#x27;,  [] ],
+            number: [this.number || &#x27;&#x27;,  [] ],
+        }, {validator: this.checkPasswords});
+        this.businessInfoForm &#x3D; this._formBuilder.group({
+            businessDomain: [this.businessDomain || &#x27;&#x27;,  [Validators.required] ],
+            businessName: [this.businessName || &#x27;&#x27;,  [Validators.required] ],
+            description: [this.description || &#x27;&#x27;,  [Validators.required] ],
+            address: [this.address || &#x27;&#x27;,  [Validators.required] ],
+            city: [this.city || &#x27;&#x27;,  [Validators.required] ],
+            province: [this.province || &#x27;&#x27;,  [Validators.required] ],
+            country: [this.country || &#x27;&#x27;,  [Validators.required] ],
+            postalCode: [this.postalCode || &#x27;&#x27;,  [Validators.required] ],
+        });
+        this.serviceInfoForm &#x3D; this._formBuilder.group({
+            firstNewService: [this.service, [Validators.required]],
+            firstNewServiceDuration: [this.serviceDuration, [Validators.required]],
+            newServices: this._formBuilder.array([])
+        });
+      }
+
+    checkPasswords(inputFormGroup: FormGroup) {
+        const password &#x3D; inputFormGroup.controls.password.value;
+        const confirmPassword &#x3D; inputFormGroup.controls.confirmPassword.value;
+        return password &#x3D;&#x3D;&#x3D; confirmPassword ? null : { mismatched: true };
+    }
+
+
+    getBusinessById(businessId: Number): BusinessDTO {
+        this.businessService.getBusinessById(this.businessId).subscribe(
+            res &#x3D;&gt; {
+                this.business &#x3D; res;
+            },
+        );
+        return this.business;
+    }
+
+    business_register() {
+        this.spinner.show();
+        this.animationState &#x3D; false;
+        const businessHoursDTO: BusinessHoursDTO[] &#x3D; [];
+        if (!this.isEmptyObject(this.businessHourMap)) {
+            this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) &#x3D;&gt; {
+                const businessHourDTOTemp: BusinessHoursDTO &#x3D; {
+                    day: day,
+                    openHour : openAndClose.start,
+                    closeHour : openAndClose.end
+                };
+                businessHoursDTO.push(businessHourDTOTemp);
+            });
+        }
+
+        const businessInfoValues &#x3D; this.businessInfoForm.value;
+        const finalizedAddress: string &#x3D; businessInfoValues.address + &#x27;,&#x27; + businessInfoValues.city + &#x27;,&#x27; + businessInfoValues.province
+            + &#x27; &#x27; + businessInfoValues.postalCode;
+        const payload_business: BusinessRegisterDTO &#x3D; {
+            name: businessInfoValues.businessName,
+            domain: businessInfoValues.businessDomain,
+            description: businessInfoValues.description,
+            formatted_address: finalizedAddress
+        };
+
+        const serviceInfoValues &#x3D; this.serviceInfoForm.value;
+        const firstService &#x3D; {
+            name: serviceInfoValues.firstNewService,
+            duration: serviceInfoValues.firstNewServiceDuration,
+        };
+
+        const payload_service: ServiceCreateDto[] &#x3D; [firstService];
+
+        if (this.newServiceForms) {
+            this.newServiceForms.controls.forEach((individualControl: FormGroup) &#x3D;&gt; {
+                const subsequentService &#x3D; {
+                    name: individualControl.controls.newServiceName.value,
+                    duration: individualControl.controls.newServiceDuration.value,
+                };
+                payload_service.push(subsequentService);
+            });
+        }
+
+        const personalInfoValues &#x3D; this.personalInfoForm.value;
+        let payload: BusinessUserRegisterDTO &#x3D; null;
+        if (this.password &#x3D;&#x3D;&#x3D; this.confirmPassword ) {
+        payload &#x3D; {
+            firstName: personalInfoValues.firstName,
+            lastName: personalInfoValues.lastName,
+            email: personalInfoValues.email,
+            password: personalInfoValues.password,
+            phoneNumber: {
+                countryCode: this.selectedCountry[&#x27;dialCode&#x27;],
+                areaCode: personalInfoValues.areaCode,
+                number: personalInfoValues.number
+            }
+        };
+
+        this.googleAnalytics.trackValues(&#x27;formSubmit&#x27;, &#x27;register&#x27;);
+        this.businessService.createBusiness(payload_business, payload_service, payload, businessHoursDTO, this.selectedFile).subscribe(
+        res &#x3D;&gt; {
+                this.router.navigate([&#x27;login&#x27;]);
+            },
+            err &#x3D;&gt; {
+                    console.log(err);
+                }
+            );
+        }
+    }
+
+    togglePasswordVisibility() {
+        this.isPasswordVisible &#x3D; !this.isPasswordVisible;
+    }
+
+    selectCountry(country: Object) {
+        this.selectedCountry &#x3D; country;
+    }
+
+    selectEvent(file: File): void {
+        this.selectedFile &#x3D; file;
+        this.fileSelectMsg &#x3D; file.name;
+    }
+
+    uploadEvent(file: File): void {
+        this.fileUploadMsg &#x3D; file.name;
+    }
+
+    cancelEvent(): void {
+        this.fileSelectMsg &#x3D; &#x27;No file selected yet.&#x27;;
+        this.fileUploadMsg &#x3D; &#x27;No file uploaded yet.&#x27;;
+    }
+
+    toggleDisabled(): void {
+        this.disabled &#x3D; !this.disabled;
+    }
+
+    saveStartTime(day: string, time: string): void {
+        if  (this.businessHourMap.has(day)) {
+            const businessHours: BusinessHours &#x3D; this.businessHourMap.get(day);
+        businessHours.start &#x3D; time;
+        } else {
+            const businessHours: BusinessHours &#x3D; {start: time, end: &#x27;&#x27;};
+        this.businessHourMap.set(day, businessHours);
+        }
+    }
+
+    saveEndTime(day: string, time: string): void {
+        if (this.businessHourMap.has(day)) {
+            const businessHours: BusinessHours &#x3D; this.businessHourMap.get(day);
+            businessHours.end &#x3D; time;
+        } else {
+            const businessHours: BusinessHours &#x3D; {start: &#x27;&#x27;, end: time};
+            this.businessHourMap.set(day, businessHours);
+        }
+    }
+
+    isTimeLower(day: string, end: string): boolean {
+        if (this.businessHourMap.has(day)) {
+            const startString: string[] &#x3D; this.businessHourMap.get(day).start.split(&#x27;:&#x27;);
+            const startTime: number &#x3D; (+startString[0]) * 60 * 60 + (+startString[1]) * 60;
+
+            const endString: string[] &#x3D; end.split(&#x27;:&#x27;);
+            const endTime: number &#x3D; (+endString[0]) * 60 * 60 + (+endString[1]) * 60;
+
+            if (endTime &lt;&#x3D; startTime) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isEmptyObject(obj: any): boolean {
+        return Object.keys(obj).length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; obj.constructor &#x3D;&#x3D;&#x3D; Object;
+    }
+
+    openFindBusinessDialog() {
+        const dialogConfig &#x3D; new MatDialogConfig();
+
+        dialogConfig.disableClose &#x3D; true;
+        dialogConfig.autoFocus &#x3D; true;
+        dialogConfig.width &#x3D; &#x27;400px&#x27;;
+        dialogConfig.height &#x3D; &#x27;400px&#x27;;
+
+        dialogConfig.data &#x3D; {
+            business: this.selectedBusiness
+        };
+        const dialogRef &#x3D; this.dialog.open(FindBusinessDialogComponent, dialogConfig);
+
+        dialogRef.afterClosed().subscribe(business &#x3D;&gt; {
+        });
+    }
+
+    stopRegistering() {
+        this.animationState &#x3D; true;
+        this.spinner.hide();
+    }
+
+    get newServiceForms() {
+        return this.serviceInfoForm.get(&#x27;newServices&#x27;) as FormArray;
+
+    }
+    addService() {
+        const newService &#x3D; this._formBuilder.group({
+          newServiceName: [&#x27;&#x27;, [Validators.required]],
+          newServiceDuration: [&#x27;&#x27;, [Validators.required]],
+        });
+        this.newServiceForms.push(newService);
+    }
+    deleteService(i) {
+        this.newServiceForms.removeAt(i);
+    }
+}
+
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'BusinessHours.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
