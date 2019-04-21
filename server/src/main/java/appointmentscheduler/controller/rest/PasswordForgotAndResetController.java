@@ -41,10 +41,9 @@ public class PasswordForgotAndResetController {
 
         ResetPasswordToken token = resetPasswordTokenRepository.findByToken(resetPasswordDTO.getToken());
         User user = token.getUser();
-        String updatedPassword = passwordEncoder.encode(resetPasswordDTO.getPassword());
 
         if (!token.isExpired()) {
-            userService.resetPassword(user.getId(), updatedPassword);
+            userService.resetPassword(user.getId(), resetPasswordDTO.getPassword());
             resetPasswordTokenRepository.delete(token);
             return ResponseEntity.ok().build();
         }
