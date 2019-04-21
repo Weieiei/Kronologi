@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
-import { ServiceService } from "../../services/service/service.service";
+import {Component, OnInit} from "@angular/core";
+import {ServiceService} from "../../services/service/service.service";
 import {ServiceCreateDto} from "../../interfaces/service/service-create-dto";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {MatDialogConfig} from "@angular/material";
 
 @Component({
     selector: 'app-admin-create-service',
@@ -16,15 +17,21 @@ export class CreateServiceComponent implements OnInit {
     businessId: number;
     serviceForm: FormGroup;
 
+    //  const dialogConfig = new MatDialogConfig();
+
     constructor(
         private serviceService: ServiceService,
         private fb: FormBuilder,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute,
+
     ) {
     }
 
     ngOnInit() {
         this.initForm();
+        this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
+
     }
 
     initForm(): void {
@@ -38,13 +45,23 @@ export class CreateServiceComponent implements OnInit {
         const serviceCreateDTO: ServiceCreateDto = {
             name: this.serviceForm.value.name,
             duration: this.serviceForm.value.duration,
-            //TODO: need to get Admin' business
-           // businessId: 0
         };
-        //TODO: updated the 0 to the real businessID
-        this.serviceService.createService(1,serviceCreateDTO).subscribe(
+        this.serviceService.createService(this.businessId, serviceCreateDTO).subscribe(
             res => this.router.navigate(['admin/services']),
             err => console.log(err)
         );
     }
+
+    openDialog(errorMessage: any) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            title: "ERROR",
+            message: errorMessage,
+        };
+        // this.dialog.open(ErrorDialogComponent, dialogConfig);
+    }
+
+
 }

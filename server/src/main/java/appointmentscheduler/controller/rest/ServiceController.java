@@ -37,7 +37,7 @@ import java.util.Map;
 import appointmentscheduler.exception.FileStorageException;
 
 @RestController
-@RequestMapping("${rest.api.path}/business/services")
+@RequestMapping("${rest.api.path}/business")
 
 public class ServiceController {
 
@@ -61,7 +61,7 @@ public class ServiceController {
         this.serviceFileStorageService = serviceFileStorageService;
     }
 
-    @GetMapping(value = "/{businessId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{businessId}/services", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findAll(@PathVariable long businessId) {
             final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
 
@@ -73,7 +73,7 @@ public class ServiceController {
         }
     }
 
-    @GetMapping(value = "/{businessId}/{serviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{businessId}/services/{serviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findById(@PathVariable long businessId, @PathVariable long serviceId) {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
 
@@ -101,14 +101,14 @@ public class ServiceController {
     }
 
     @LogREST
-    @PostMapping("/{serviceId}/profile")
+    @PostMapping("/{businessId}/services/{serviceId}/profile")
     public ResponseEntity<Map<String, String>> updateProfile(@PathVariable long serviceId,
                                                              @RequestPart("file") MultipartFile serviceFile) {
         return ResponseEntity.ok(serviceFileStorageService.saveServiceFile(serviceFile, serviceId));
     }
 
     @LogREST
-    @GetMapping("/{serviceId}/profile")
+    @GetMapping("/{businessId}/services/{serviceId}/profile")
     public  ResponseEntity<Map<String,String>> getProfile(@PathVariable long serviceId) throws JSONException {
         ServiceFile serviceFile;
         try {

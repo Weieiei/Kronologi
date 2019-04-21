@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Service } from '../../../../models/service/Service';
-import { ServiceService } from '../../../../services/service/service.service';
-import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {Service} from '../../../../models/service/Service';
+import {ServiceService} from '../../../../services/service/service.service';
+import {map} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
+import {HttpErrorResponse} from '@angular/common/http';
 import {UserService} from "../../../../services/user/user.service";
 
 @Component({
@@ -19,12 +19,11 @@ export class AdminServicesComponent implements OnInit {
  fileUploadMsg: string = 'No file uploaded yet.';
 public userService: UserService;
 
-    displayedColumns: string[] = ['id', 'name', 'duration', 'client', 'employee', 'profile'];
+    displayedColumns: string[] = ['id', 'name', 'duration', 'profile'];
     services: Service[];
 
     componentState: {
         services: Array<Service>,
-        // currentSort: IDataTableSort,
         currentPage: number,
         itemsPerPage: number,
         search: string,
@@ -32,15 +31,14 @@ public userService: UserService;
     };
 
     constructor(private serviceService: ServiceService,
-        private router: Router
+                private router: Router, private route: ActivatedRoute
         ) {
     }
 
     ngOnInit() {
-        this.businessId = (this.userService.getFirstNameFromToken());
+        this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
         this.componentState = {
             services: [],
-            // currentSort: IDataTableSort,
             currentPage: 1,
             itemsPerPage: 10,
             search: '',
@@ -51,7 +49,7 @@ public userService: UserService;
     }
 
     getAllServices(): void {
-        this.serviceService.getPlainServices().pipe(
+        this.serviceService.getPlainServices(this.businessId).pipe(
             map(data => {
                 return data.map(a => {
                     return new Service(
@@ -115,7 +113,6 @@ public userService: UserService;
             this.serviceService.updateServicePicture(this.selectedFile , serviceId).subscribe(
                 res => {
                     console.log('File seccessfully uploaded. ');
-                    //this.fileUploadMsg = 'File seccessfully uploaded. ';
                     //get picture and show it in the profile  or update the page
                     this.router.navigate(['business']);
 
@@ -127,5 +124,10 @@ public userService: UserService;
                 }
             );
         }
+    }
+
+    redirectToCreateNewService() {
+        this.router.navigate([this.businessId + '/admin/services/create']);
+
     }
 }

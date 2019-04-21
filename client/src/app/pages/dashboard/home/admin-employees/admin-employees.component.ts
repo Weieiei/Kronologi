@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AdminService } from '../../../../services/admin/admin.service';
+import {Component, OnInit} from '@angular/core';
+import {AdminService} from '../../../../services/admin/admin.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
-import { UserToDisplay } from '../../../../models/user/UserToDisplay';
+import {AdminEmployeeDTO} from '../../../../interfaces/employee/admin-employee-dto';
 
 @Component({
     selector: 'app-admin-employees',
@@ -16,7 +15,6 @@ export class AdminEmployeesComponent implements OnInit {
 
     componentState: {
         employees: Array<AdminEmployeeDTO>,
-        // currentSort: IDataTableSort,
         currentPage: number,
         itemsPerPage: number,
         search: string,

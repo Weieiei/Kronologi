@@ -1,13 +1,12 @@
 import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import { AdminService } from '../../../../services/admin/admin.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SnackBar } from '../../../../snackbar';
-import { AdminEmployeeShiftDTO } from '../../../../interfaces/shift/admin-employee-shift-dto';
-import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
-import { HttpErrorResponse } from '@angular/common/http';
-import { NewShiftDTO } from '../../../../interfaces/shift/new-shift-dto';
+import {AdminService} from '../../../../services/admin/admin.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {SnackBar} from '../../../../snackbar';
+import {AdminEmployeeShiftDTO} from '../../../../interfaces/shift/admin-employee-shift-dto';
+import {AdminEmployeeDTO} from '../../../../interfaces/employee/admin-employee-dto';
+import {HttpErrorResponse} from '@angular/common/http';
+import {NewShiftDTO} from '../../../../interfaces/shift/new-shift-dto';
 import {MatDialog, MatDialogConfig} from "@angular/material";
-import {CancelDialogComponent} from "../../../../components/cancel-dialog/cancel-dialog.component";
 import {ErrorDialogComponent} from "../../../../components/error-dialog/error-dialog.component";
 
 @Component({

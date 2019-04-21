@@ -22,7 +22,9 @@
                 <li class="menu-link" [ngClass]="{'menu-link-dark': darkModeActive}" routerLink="/syncCalendars" routerLinkActive="link-active" *ngIf="userService.isEmployee()" (click)="goToSyncCalendars()">Sync External Calendar</li>
                 <li class="menu-link " [ngClass]="{'menu-link-dark': darkModeActive}"
                     (click)="goToAdminAppointments()" *ngIf="authService.isAdmin()">Appointments Management</li>
-                <li class="menu-link " [ngClass]="{'menu-link-dark': darkModeActive}" routerLink="/admin/services" routerLinkActive="link-active" (click)="goToAdminServices()" *ngIf="authService.isAdmin()">Services</li>
+                  <li class="menu-link " [ngClass]="{'menu-link-dark': darkModeActive}" (click)="goToAdminServices()"
+                      *ngIf="authService.isAdmin()">Services
+                  </li>
                 <li class="menu-link" [ngClass]="{'menu-link-dark': darkModeActive}" routerLink="/admin/users" routerLinkActive="link-active" (click)="goToAdminUsers()" *ngIf="authService.isAdmin()">User Management</li>
                 <li class="menu-link"  [ngClass]="{'menu-link-dark': darkModeActive}"   routerLinkActive="link-active" (click)="logout()">Logout</li>
               </ul>

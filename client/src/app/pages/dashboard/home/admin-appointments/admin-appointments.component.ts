@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AppointmentService } from '../../../../services/appointment/appointment.service';
-import { AppointmentDetailed } from '../../../../models/appointment/AppointmentDetailed';
-import { map } from 'rxjs/operators';
-import { User } from '../../../../models/user/User';
-import { Service } from '../../../../models/service/Service';
-import { ThemeService } from '../../../../core/theme/theme.service';
-import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
-import { UserToDisplay } from '../../../../models/user/UserToDisplay';
+import {Component, OnInit} from '@angular/core';
+import {AppointmentService} from '../../../../services/appointment/appointment.service';
+import {AppointmentDetailed} from '../../../../models/appointment/AppointmentDetailed';
+import {map} from 'rxjs/operators';
+import {User} from '../../../../models/user/User';
+import {Service} from '../../../../models/service/Service';
+import {ThemeService} from '../../../../core/theme/theme.service';
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -23,7 +21,6 @@ export class AdminAppointmentsComponent implements OnInit {
 
     componentState: {
         appointments: Array<AppointmentDetailed>,
-        // currentSort: IDataTableSort,
         currentPage: number,
         itemsPerPage: number,
         search: string,

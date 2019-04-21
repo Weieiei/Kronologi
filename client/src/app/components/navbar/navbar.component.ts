@@ -1,12 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatSidenav } from '@angular/material';
-import { UserService } from '../../services/user/user.service';
-import { Router } from '@angular/router';
-import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
-import { AuthService } from '../../services/auth/auth.service';
-import { ThemeService } from "../../core/theme/theme.service";
-import { OverlayContainer } from "@angular/cdk/overlay";
-import { DomSanitizer} from '@angular/platform-browser';
+import {Component, Input, OnInit} from '@angular/core';
+import {MatSidenav} from '@angular/material';
+import {UserService} from '../../services/user/user.service';
+import {Router} from '@angular/router';
+import {GoogleAnalyticsService} from 'src/app/services/google/google-analytics.service';
+import {AuthService} from '../../services/auth/auth.service';
+import {ThemeService} from "../../core/theme/theme.service";
+import {OverlayContainer} from "@angular/cdk/overlay";
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-navbar',
@@ -119,7 +119,7 @@ export class NavbarComponent implements OnInit {
     }
 
     goToAdminServices() {
-        this.router.navigate(['admin/services']);
+        this.router.navigate([this.businessId + '/admin/services']);
     }
 
     goToAdminUsers() {
