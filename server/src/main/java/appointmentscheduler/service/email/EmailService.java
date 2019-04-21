@@ -80,6 +80,11 @@ public class EmailService {
 
     }
 
+    public boolean sendPasswordResetEmail(String receiver, String token, boolean attachLogo) throws MessagingException {
+        return sendEmail(receiver, this.registerSubject, generatePasswordResetMessage(token), attachLogo);
+
+    }
+
     public String generateRegistrationMessage(String hash)
     {
         String message = "Welcome to Kronologi! Please Confirm your email by clicking on the button below.<br />" ;
@@ -91,6 +96,27 @@ public class EmailService {
                 "                  <td style=\"border-radius: 2px;\" bgcolor=\"#ED2939\">\n" +
                 "                      <a href=\"http://localhost:4200/verification?hash=" + hash + "\" target=\"_blank\" style=\"padding: 8px 12px; border: 1px solid #ED2939;border-radius: 2px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;\">\n" +
                 "                          Confirm Email             \n" +
+                "                      </a>\n" +
+                "                  </td>\n" +
+                "              </tr>\n" +
+                "          </table>\n" +
+                "      </td>\n" +
+                "  </tr>\n" +
+                "</table>";
+        return message + button;
+    }
+
+    public String generatePasswordResetMessage(String token)
+    {
+        String message = "You recently requested a password reset. Please click on the button below to reset your password in the next 24 hours.<br />" ;
+        String button = "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">\n" +
+                "  <tr>\n" +
+                "      <td>\n" +
+                "          <table cellspacing=\"0\" cellpadding=\"0\">\n" +
+                "              <tr>\n" +
+                "                  <td style=\"border-radius: 2px;\" bgcolor=\"#ED2939\">\n" +
+                "                      <a href=\"http://localhost:4200/passwordreset?token=" + token + "\" target=\"_blank\" style=\"padding: 8px 12px; border: 1px solid #ED2939;border-radius: 2px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;\">\n" +
+                "                          Reset Password             \n" +
                 "                      </a>\n" +
                 "                  </td>\n" +
                 "              </tr>\n" +

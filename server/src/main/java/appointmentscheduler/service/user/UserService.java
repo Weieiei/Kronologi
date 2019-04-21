@@ -14,6 +14,7 @@ import appointmentscheduler.entity.settings.Settings;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.user.UserFactory;
+import appointmentscheduler.entity.verification.ResetPasswordToken;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.*;
@@ -52,6 +53,7 @@ public class UserService {
     private final SettingsRepository settingsRepository;
     private final PhoneNumberRepository phoneNumberRepository;
     private final BusinessRepository businessRepository;
+    private final ResetPasswordTokenRepository resetPasswordTokenRepository;
     //private final UserFileRepository userFileRepository;
    // private final UserFileStorageService userFileStorageService;
     @Autowired
@@ -59,7 +61,8 @@ public class UserService {
             EmployeeRepository employeeRepository, BusinessRepository businessRepository, UserRepository userRepository,
             JwtProvider jwtProvider,
             VerificationRepository verificationRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
-            @Qualifier("authenticationManagerBean") AuthenticationManager authenticationManager, SettingsRepository settingsRepository, PhoneNumberRepository phoneNumberRepository
+            @Qualifier("authenticationManagerBean") AuthenticationManager authenticationManager, SettingsRepository settingsRepository,
+            PhoneNumberRepository phoneNumberRepository, ResetPasswordTokenRepository resetPasswordTokenRepository
     ) {
         this.employeeRepository = employeeRepository;
         this.businessRepository = businessRepository;
@@ -70,6 +73,7 @@ public class UserService {
         this.authenticationManager = authenticationManager;
         this.settingsRepository = settingsRepository;
         this.phoneNumberRepository = phoneNumberRepository;
+        this.resetPasswordTokenRepository = resetPasswordTokenRepository;
     }
 
     public Map<String, Object> register(UserRegisterDTO userRegisterDTO, RoleEnum role) throws IOException, MessagingException, NoSuchAlgorithmException {
@@ -144,7 +148,13 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %d not found.", id)));
     }
 
-//todo change user repository to query the businessId also, user table doesnt have businessId
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with email %d not found.", email)));
+    }
+
+
+    // todo change user repository to query the businessId also, user table doesnt have businessId
     public User findUserByIdAndBusinessId(long id, long businessId) {
         User user = userRepository.findByIdAndBusinessId(id, businessId).
                 orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %d and business id %d " +
@@ -159,7 +169,6 @@ public class UserService {
                         "not found.", id, businessId)));
         return employee;
     }
-
 
     public List<User> findAllByBusinessId(long id) {
         return userRepository.findAllByBusinessId(id)
@@ -210,7 +219,6 @@ public class UserService {
         return message(String.format("You've successfully updated your email to %s.", user.getEmail()));
 
     }
-
 
     public Map<String, String> updatePassword(long id, UpdatePasswordDTO updatePasswordDTO) {
 
@@ -369,4 +377,8 @@ public class UserService {
         return buildTokenRegisterMap( token, verification);
     }
 
+    public void createResetPasswordTokenForUser(User user, String token) {
+        ResetPasswordToken resetPasswordToken = new ResetPasswordToken(token, user);
+        resetPasswordTokenRepository.save(resetPasswordToken);
+    }
 }
