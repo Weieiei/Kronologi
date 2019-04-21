@@ -162,4 +162,5 @@ export class UserService {
     }
     resetPassword(payload: PasswordResetDTO): Observable<any> {
         return this.http.post<any>(['api', 'password', 'reset'].join('/'), payload);
+    }
 }
