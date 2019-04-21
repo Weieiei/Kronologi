@@ -240,6 +240,22 @@ public class UserService {
 
     }
 
+    public Map<String, String> resetPassword(long id, String newPassword) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with ID %d not found.", id)));
+
+        if (newPassword == null) {
+            throw new PasswordNotProvidedExcetion("You must provide a new password.");
+        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        return message("You've successfully updated your password.");
+
+    }
+
     public Settings getSettings(long userId) {
         return settingsRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Settings not found under user with ID %d.", userId)));

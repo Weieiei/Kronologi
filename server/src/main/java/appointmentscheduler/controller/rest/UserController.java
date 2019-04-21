@@ -258,15 +258,4 @@ public class UserController extends AbstractController {
         repo.delete(cred);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @LogREST
-    @PostMapping(value = "/user/resetPassword")
-    public ResponseEntity resetPassword(@RequestParam("email") String email) throws MessagingException {
-        User user = userService.findUserByEmail(email);
-        String token = UUID.randomUUID().toString();
-        userService.createResetPasswordTokenForUser(user, token);
-        emailService.sendPasswordResetEmail(email, token, true);
-
-        return ResponseEntity.ok().build();
-    }
 }
