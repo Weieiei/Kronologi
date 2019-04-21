@@ -71,6 +71,8 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
 import { ConfirmationAndPaymentComponent } from './pages/dashboard/reserve/confirmation-and-payment/confirmation-and-payment.component';
 import { PaymentDialogComponent } from './components/payment-dialog/payment-dialog.component';
 import { Module as StripeModule } from "stripe-angular";
+import { TermsAndServicesDialogComponent } from './components/terms-and-services-dialog/terms-and-services-dialog.component';
+
 
 
 @NgModule({
@@ -130,7 +132,8 @@ import { Module as StripeModule } from "stripe-angular";
         DetailsComponent,
         GoogleMapsComponent,
         ConfirmationAndPaymentComponent,
-        PaymentDialogComponent
+        PaymentDialogComponent,
+        TermsAndServicesDialogComponent
     ],
     imports: [
         StripeModule.forRoot(),
@@ -157,6 +160,7 @@ import { Module as StripeModule } from "stripe-angular";
         StarRatingModule.forRoot()
     ],
     entryComponents: [
+        TermsAndServicesDialogComponent,
         PaymentDialogComponent,
         ErrorDialogComponent,
         FindBusinessDialogComponent,

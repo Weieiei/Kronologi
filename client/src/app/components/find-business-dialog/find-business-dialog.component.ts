@@ -47,12 +47,12 @@ import { GeocodingApiService } from '../../services/google/geocode.service'
       )])
     ])
   ],
-  styles: [`
-  agm-map {
+  styles: [
+  `agm-map {
     height: 200px;
     width:  200px;
-  }
-`]
+  }`
+]
 })
 export class FindBusinessDialogComponent implements OnInit {
 

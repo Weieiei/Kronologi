@@ -171,4 +171,5 @@ export class AdminUsersComponent implements OnInit {
         this.componentState.search = searchTerm;
         this.updateServices(this.users);
     }
+
 }

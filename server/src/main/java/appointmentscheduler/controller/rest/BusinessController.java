@@ -7,6 +7,8 @@ import appointmentscheduler.converters.service.ServiceDTOToService;
 import appointmentscheduler.dto.business.BusinessDTO;
 import appointmentscheduler.dto.business.BusinessHoursDTO;
 import appointmentscheduler.dto.service.ServiceCreateDTO;
+import appointmentscheduler.dto.user.BankAccountDTO;
+import appointmentscheduler.dto.user.StripeSellerInfoDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
@@ -27,6 +29,7 @@ import appointmentscheduler.service.GoogleApiCalls.GoogleApi;
 import appointmentscheduler.service.business.BusinessService;
 import appointmentscheduler.service.email.EmailService;
 import appointmentscheduler.service.file.FileStorageService;
+import appointmentscheduler.service.service.ServiceService;
 import appointmentscheduler.service.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -84,22 +87,24 @@ public class BusinessController extends AbstractController {
     private final ModelMapper modelMapper;
     private final BusinessDTOToBusiness businessConverter;
     private GoogleApi googleApi;
+    private ServiceService serviceService;
     private ServiceDTOToService serviceConverter;
     private UserService userService;
     private EmailService emailService;
     private FileStorageService fileStorageService;
     private BusinessHoursDTOToBusinessHours businessHoursConverter;
     @Autowired
-    public BusinessController(BusinessService businessService, BusinessRepository businessRepository,
-                              ObjectMapperFactory objectMapperFactory, ModelMapper modelMapper,BusinessDTOToBusiness businessConverter,
-                              ServiceDTOToService serviceConverter, UserService userService, EmailService emailService, FileStorageService fileStorageService,BusinessHoursDTOToBusinessHours businessHoursConverter,
-                              GoogleApi googleApi) {
+    public BusinessController(  BusinessService businessService, BusinessRepository businessRepository,
+                                ObjectMapperFactory objectMapperFactory, ModelMapper modelMapper,BusinessDTOToBusiness businessConverter,
+                                ServiceService serviceService, ServiceDTOToService serviceConverter, UserService userService, EmailService emailService,
+                                FileStorageService fileStorageService,BusinessHoursDTOToBusinessHours businessHoursConverter, GoogleApi googleApi) {
         this.googleApi = googleApi;
         this.businessService = businessService;
         this.businessRepository = businessRepository;
         this.objectMapperFactory = objectMapperFactory;
         this.modelMapper = modelMapper;
         this.businessConverter = businessConverter;
+        this.serviceService = serviceService;
         this.serviceConverter = serviceConverter;
         this.businessHoursConverter = businessHoursConverter;
         this.userService = userService;
@@ -245,48 +250,116 @@ public class BusinessController extends AbstractController {
 
   @LogREST
   @PostMapping("/businessWithLogo")
-  public ResponseEntity<Map<String, Object>> createBusinessWithLogo(@RequestPart("file") MultipartFile aFile, @RequestPart("business") BusinessDTO businessDTO,
-                                                     @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws StripeException, IOException, MessagingException, NoSuchAlgorithmException {
-      return createBusiness(aFile,businessDTO,businessHoursDTO,service,userRegisterDTO);
+  public ResponseEntity<Map<String, Object>> createBusinessWithLogo(@RequestPart("file") MultipartFile aFile,
+          @RequestPart("business") BusinessDTO businessDTO, @RequestPart("businessHours")BusinessHoursDTO[] businessHoursDTOs,
+          @RequestPart("services") ServiceCreateDTO[] serviceCreateDTOs, @RequestPart("user") UserRegisterDTO userRegisterDTO, @RequestPart("stripeSellerInfo") StripeSellerInfoDTO stripeSellerInfoDTO, @RequestPart("bankAccountInfo") BankAccountDTO bankAccount) throws StripeException,IOException,
+          MessagingException, NoSuchAlgorithmException {
+      return createBusiness(aFile, businessDTO, businessHoursDTOs, serviceCreateDTOs, userRegisterDTO, stripeSellerInfoDTO, bankAccount);
   }
 
   @LogREST
   @PostMapping("/businessNoLogo")
-  public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO, @RequestPart("businessHour")BusinessHoursDTO businessHoursDTO[], @RequestPart("service") ServiceCreateDTO service, @RequestPart("user") UserRegisterDTO userRegisterDTO) throws StripeException, IOException, MessagingException, NoSuchAlgorithmException {
-      return createBusiness(null,businessDTO,businessHoursDTO,service,userRegisterDTO);
+  public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO,
+                                                                      @RequestPart("businessHours")BusinessHoursDTO[] businessHoursDTOs, @RequestPart("services") ServiceCreateDTO[] serviceCreateDTOs,
+                                                                      @RequestPart("user") UserRegisterDTO userRegisterDTO, @RequestPart("stripeSellerInfo")StripeSellerInfoDTO stripeSellerInfoDTO, @RequestPart("bankAccountInfo") BankAccountDTO bankAccount) throws StripeException, IOException, MessagingException, NoSuchAlgorithmException {
+      return createBusiness(null, businessDTO, businessHoursDTOs, serviceCreateDTOs, userRegisterDTO, stripeSellerInfoDTO,bankAccount);
   }
 
-    private ResponseEntity<Map<String, Object>> createBusiness(MultipartFile aFile, BusinessDTO businessDTO, BusinessHoursDTO businessHoursDTO[], ServiceCreateDTO service, UserRegisterDTO userRegisterDTO)throws StripeException, IOException, MessagingException, NoSuchAlgorithmException {
+  private ResponseEntity<Map<String, Object>> createBusiness(MultipartFile aFile, BusinessDTO businessDTO, BusinessHoursDTO[] businessHoursDTOs,
+            ServiceCreateDTO[] serviceCreateDTOs, UserRegisterDTO userRegisterDTO, StripeSellerInfoDTO stripeSellerInfoDTO, BankAccountDTO bankAccount)throws StripeException,IOException, MessagingException, NoSuchAlgorithmException {
+
+        Account newBusinessStripeAccount  = null;
+        if(stripeSellerInfoDTO != null){
+            Stripe.apiKey =stripe_key;
+
+            String ipAddress = this.getIpAddresss();
+
+            String bankAccountType = bankAccount.getAccountType().equalsIgnoreCase("business") ? "company" : "individual";
+            Map<String, Object> bankAccountInfo = new HashMap<String, Object>();
+            bankAccountInfo.put("object","bank_account");
+            bankAccountInfo.put("country", "CA");
+            bankAccountInfo.put("currency","CAD");
+            bankAccountInfo.put("account_holder_name", bankAccount.getBankAccountHolderFirstName() + bankAccount.getBankAccountHolderLastName());
+            bankAccountInfo.put("account_holder_type", bankAccountType);
+            bankAccountInfo.put("routing_number", bankAccount.getRoutinNumber());
+            bankAccountInfo.put("account_number", bankAccount.getAccountNumber());
+
+            Map<String, Object> accountParams = new HashMap<String, Object>();
+            Map<String, Object> address = new HashMap<String, Object>();
+
+            Map<String,Object> dob = new HashMap<>();
+            accountParams.put("type", "custom");
+            accountParams.put("country", "CA");
+            accountParams.put("email", userRegisterDTO.getEmail());
+
+            Map<String,Object> companyParams = new HashMap<>();
+            Map<String,Object> individualParams = new HashMap<>();
+            if(stripeSellerInfoDTO.getBusinessTaxNumber() != 0){
+                companyParams.put("name",businessDTO.getName());
+                companyParams.put("tax_id", stripeSellerInfoDTO.getBusinessTaxNumber());
+                accountParams.put("company",companyParams);
+
+            }else{
+                address.put("city",stripeSellerInfoDTO.getCity());
+                address.put("country","CA");
+                address.put("line1",stripeSellerInfoDTO.getAddress());
+                address.put("postal_code",stripeSellerInfoDTO.getPostalCode());
+                address.put("state", "QC");
+
+                dob.put("day", stripeSellerInfoDTO.getBirthDay());
+                dob.put("month", stripeSellerInfoDTO.getBirthMonth());
+                dob.put("year", stripeSellerInfoDTO.getBirthYear());
+                individualParams.put("address", stripeSellerInfoDTO.getAddress());
+                individualParams.put("first_name",stripeSellerInfoDTO.getFirstName());
+                individualParams.put("last_name",stripeSellerInfoDTO.getLastName());
+                individualParams.put("id_number",stripeSellerInfoDTO.getSocialInsuranceNumber());
+                individualParams.put("dob",dob);
+                individualParams.put("address",address);
+                accountParams.put("individual", individualParams);
+            }
+
+
+            Map<String,Object> tosAcceptance = new HashMap<>();
+            tosAcceptance.put("date", stripeSellerInfoDTO.getTosAcceptance().getTime()/1000);
+            tosAcceptance.put("ip", ipAddress);
+            accountParams.put("business_type",bankAccountType);
+            accountParams.put("external_account",bankAccountInfo);
+            accountParams.put("tos_acceptance", tosAcceptance);
+            newBusinessStripeAccount = Account.create(accountParams);
+        }
+
         try {
-            Stripe.apiKey = "sk_test_PGAvep9Hlolpo6wUKh2NxEI600vssAShv4";
 
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("country", "US");
-            params.put("type", "custom");
-
-            Account acct = Account.create(params);
             Map<String, Object> tokenMap = userService.register(userRegisterDTO, RoleEnum.ADMIN);
             Verification verification = (Verification) tokenMap.get("verification");
             emailService.sendRegistrationEmail(userRegisterDTO.getEmail(), verification.getHash(), true);
 
-            //create business and save it.
+            // create business and save it
             Business business = businessConverter.convert(businessDTO);
+            if(newBusinessStripeAccount !=null){
+                business.setStripeAccountId(newBusinessStripeAccount.getId());
+            }
             business.setOwner(verification.getUser());
             long businessId = businessService.add(business);
 
-
-            //businessHours
+            // create and associate business hours to business
             List<BusinessHours> businessHours = new ArrayList<>();
-            for(BusinessHoursDTO bhDTO : businessHoursDTO){
+            for(BusinessHoursDTO bhDTO : businessHoursDTOs){
                 BusinessHours businessHour = businessHoursConverter.convert(bhDTO);
                 businessHour.setBusiness(business);
                 businessHours.add(businessHour);
             }
-
             businessService.addAll(businessHours);
-            //associate service to business
-            Service newService = serviceConverter.convert(service);
-            newService.setBusiness(business);
+
+
+            // create and associate services to business
+            List<Service> services = new ArrayList<>();
+            for(ServiceCreateDTO scDTO : serviceCreateDTOs){
+                Service service = serviceConverter.convert(scDTO);
+                service.setBusiness(business);
+                services.add(service);
+            }
+            serviceService.addAll(services);
 
             if(aFile !=null){
                 fileStorageService.saveFile(aFile, businessId);

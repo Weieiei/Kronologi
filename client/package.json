@@ -40,6 +40,7 @@
     "jquery": "^3.4.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
+    "multiple-date-picker": "^2.1.6",
     "ngx-country-picker": "^2.0.0",
     "ngx-lightbox": "^1.2.0",
     "ngx-slick-carousel": "^0.4.4",

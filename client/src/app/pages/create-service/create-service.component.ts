@@ -38,6 +38,7 @@ export class CreateServiceComponent implements OnInit {
         const serviceCreateDTO: ServiceCreateDto = {
             name: this.serviceForm.value.name,
             duration: this.serviceForm.value.duration,
+            price: this.serviceForm.value.price
             //TODO: need to get Admin' business
            // businessId: 0
         };

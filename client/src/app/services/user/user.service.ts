@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError as observableThrowError } from "rxjs";
 import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as decode from 'jwt-decode';
 import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
 import { BusinessUserRegisterDTO } from '../../interfaces/user/business-user-register-dto';
@@ -10,6 +10,7 @@ import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
 import { SettingsDTO } from '../../interfaces/settings/settings-dto';
 import { UpdateSettingsDTO } from '../../interfaces/settings/update-settings-dto';
 import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
+import { catchError, map } from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -155,6 +156,19 @@ export class UserService {
     getUserProfile(): Observable<any> {
        return this.http.get<any>(['api', 'user', 'profile'].join('/'));
     }
+    
+    getIpAddress(): Observable<any> {
+        return this.http
+          .get<any>("https://freegeoip.net/json/?callback").pipe(
+            map(response => response || {}),
+            catchError(this.handleError)
+          );
+      }
+
+      private handleError(error:HttpErrorResponse    ): Observable<any> {
+        console.error("observable error: ", error);
+        return observableThrowError(error);
+      }
 
 
     }
