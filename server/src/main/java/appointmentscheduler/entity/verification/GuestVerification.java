@@ -1,8 +1,7 @@
 package appointmentscheduler.entity.verification;
 
 import appointmentscheduler.entity.AuditableEntity;
-import appointmentscheduler.entity.business.Business;
-import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.guest.Guest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -11,25 +10,25 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Entity
-@Table(name = "verification")
-public class Verification extends AuditableEntity {
+@Table(name = "guest_verification")
+public class GuestVerification extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "guest_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private User user;
+    private Guest guest;
 
     @Column(name = "hash")
     private String hash;
 
-    public Verification() { }
+    public GuestVerification() { }
 
-    public Verification(User user) {
-        this.user = user;
+    public GuestVerification(Guest guest) {
+        this.guest = guest;
     }
 
     @PostPersist
@@ -40,15 +39,12 @@ public class Verification extends AuditableEntity {
     private void generateHash()  {
         try {
             String hashtext;
-            if (this.user != null) {
-
+            if (this.guest != null) {
                 MessageDigest m = MessageDigest.getInstance("SHA-256");
                 m.reset();
-                m.update(this.user.getEmail().getBytes());
-                byte[] digest = m.digest();
-                BigInteger bigInt = new BigInteger(1, digest);
+                m.update(this.guest.getEmail().getBytes());
+                BigInteger bigInt = new BigInteger(1, m.digest());
                 hashtext = bigInt.toString(16);
-                //retrieve hashed text
                 while (hashtext.length() < 32) {
                     hashtext = "0" + hashtext;
                 }
@@ -62,17 +58,28 @@ public class Verification extends AuditableEntity {
         }
     }
 
-    public long getId() { return id; }
+    public long getId() {
+        return id;
+    }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public User getUser() { return user; }
+    public Guest getGuest() {
+        return guest;
+    }
 
-    public void setUser(User user) { this.user = user; }
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
 
-    public String getHash() { return hash; }
+    public String getHash() {
+        return hash;
+    }
 
-    public void setHash(String date) { this.hash = date; }
-
+    public void setHash(String date) {
+        this.hash = date;
+    }
 
 }

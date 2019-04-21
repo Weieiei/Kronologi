@@ -102,11 +102,17 @@ export class UserService {
     }
 
     isAdmin(): boolean {
-        return this.getRolesFromToken().includes('ADMIN');
+        const roleToken = this.getRolesFromToken();
+        if (roleToken)
+            return this.getRolesFromToken().includes('ADMIN');
+        return false;
     }
 
     isEmployee(): boolean {
-        return this.getRolesFromToken().includes('EMPLOYEE');
+        const roleToken = this.getRolesFromToken();
+        if (roleToken)
+            return this.getRolesFromToken().includes('EMPLOYEE');
+        return false;
     }
 
     updateEmail(payload: UpdateEmailDTO): Observable<any> {

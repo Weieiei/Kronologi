@@ -69,6 +69,8 @@ import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.co
 import { SearchInputComponent } from './components/search-box/search-box.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
+import { GuestComponent } from './pages/guest/guest.component';
+import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 
 
 @NgModule({
@@ -126,6 +128,9 @@ import { PasswordForgotDialogComponent } from './components/password-forgot-dial
         ErrorDialogComponent,
         DetailsComponent,
         GoogleMapsComponent,
+        SyncCalendarsComponent,
+        GuestComponent,
+        GuestAppointmentComponent,
         PasswordResetRedirectComponent,
         PasswordForgotDialogComponent
     ],
