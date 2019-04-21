@@ -15,7 +15,7 @@ import appointmentscheduler.entity.AuditableEntity;
 import appointmentscheduler.entity.user.User;
 
 @Entity
-@Table(name = "reset-password")
+@Table(name = "reset_password")
 public class ResetPasswordToken extends AuditableEntity {
 
     private static final int EXPIRATION_TIME_IN_MINUTES = 1440;

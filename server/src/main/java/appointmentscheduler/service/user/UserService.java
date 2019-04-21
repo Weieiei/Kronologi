@@ -253,7 +253,6 @@ public class UserService {
         userRepository.save(user);
 
         return message("You've successfully updated your password.");
-
     }
 
     public Settings getSettings(long userId) {

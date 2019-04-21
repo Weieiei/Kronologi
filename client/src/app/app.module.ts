@@ -69,6 +69,7 @@ import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.component';
 import { SearchInputComponent } from './components/search-box/search-box.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
+import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
 
 
 @NgModule({
@@ -127,7 +128,8 @@ import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/
         ErrorDialogComponent,
         DetailsComponent,
         GoogleMapsComponent,
-        PasswordResetRedirectComponent
+        PasswordResetRedirectComponent,
+        PasswordForgotDialogComponent
     ],
     imports: [
         LightboxModule,
@@ -159,7 +161,8 @@ import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/
         CancelDialogComponent,
         ReasonDialogComponent,
         AssignServicesDialogComponent,
-        ChangeClientToEmployeeDialogComponent
+        ChangeClientToEmployeeDialogComponent,
+        PasswordForgotDialogComponent
     ],
     providers: [
         AuthService,

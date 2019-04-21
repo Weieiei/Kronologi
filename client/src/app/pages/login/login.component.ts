@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
-import { AuthService } from "../../services/auth/auth.service";
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { PasswordForgotDialogComponent } from '../../components/password-forgot-dialog/password-forgot-dialog.component';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
 
     constructor(private userService: UserService,
                 private router: Router,
-                private googleAnalytics :  GoogleAnalyticsService) {
+                private googleAnalytics:  GoogleAnalyticsService,
+                private dialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -58,6 +60,17 @@ export class LoginComponent implements OnInit {
         );
 
     }
+
+    openDialog() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            email: this.username,
+        };
+        this.dialog.open(PasswordForgotDialogComponent, dialogConfig);
+    }
+
 
     togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;
