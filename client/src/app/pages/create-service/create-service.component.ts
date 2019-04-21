@@ -3,7 +3,8 @@ import {ServiceService} from "../../services/service/service.service";
 import {ServiceCreateDto} from "../../interfaces/service/service-create-dto";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MatDialogConfig} from "@angular/material";
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import {ErrorDialogComponent} from "../../components/error-dialog/error-dialog.component";
 
 @Component({
     selector: 'app-admin-create-service',
@@ -17,13 +18,13 @@ export class CreateServiceComponent implements OnInit {
     businessId: number;
     serviceForm: FormGroup;
 
-    //  const dialogConfig = new MatDialogConfig();
-
     constructor(
+        private dialog: MatDialog,
         private serviceService: ServiceService,
         private fb: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
+
 
     ) {
     }
@@ -47,9 +48,12 @@ export class CreateServiceComponent implements OnInit {
             duration: this.serviceForm.value.duration,
         };
         this.serviceService.createService(this.businessId, serviceCreateDTO).subscribe(
-            res => this.router.navigate(['admin/services']),
-            err => console.log(err)
-        );
+            res => this.router.navigate([this.businessId,"admin","services"]),
+
+            err => {
+                this.openDialog(err["status"]);
+            }
+        )
     }
 
     openDialog(errorMessage: any) {
@@ -58,10 +62,14 @@ export class CreateServiceComponent implements OnInit {
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
             title: "ERROR",
-            message: errorMessage,
+            messageOrStatus: errorMessage,
         };
-        // this.dialog.open(ErrorDialogComponent, dialogConfig);
+         this.dialog.open(ErrorDialogComponent, dialogConfig);
     }
 
 
+    redirectToServices() {
+        this.router.navigate([this.businessId + '/admin/services']);
+
+    }
 }

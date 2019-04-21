@@ -2,8 +2,11 @@
     align-content: center;
 }
 
-.mat-raised-button{
-    display: block;
-    max-width: 300px;
-    margin: auto;
+.mat-dialog-actions{
+    .mat-raised-button{
+        display: block;
+        max-width: 300px;
+        margin: auto;
+    }
 }
+
