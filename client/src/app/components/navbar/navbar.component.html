@@ -36,9 +36,9 @@
       </aside>
 
         <header [ngClass]="{'main__header-dark': darkModeActive}" class="main__header">
-
+            <!--<div *ngIf='isNotLoggedIn' class="left__section bg-container">fuck me</div>-->
           <div class="left__section bg-container">
-            <svg (click)="toggleMenu()" class="hamburger__icon" id="Menu_Burger_Icon" data-name="Menu Burger Icon"
+            <svg *ngIf="!authService.isGuest()" (click)="toggleMenu()" class="hamburger__icon" id="Menu_Burger_Icon" data-name="Menu Burger Icon"
                  viewBox="31.5 30 49.9 32">
               <defs>
                 <style>.hamburger__icon__fill {
@@ -55,8 +55,9 @@
                     class="hamburger__icon__fill" data-name="Rectangle 11" rx="2"
                     transform="translate(31.5 30)"/>
             </svg>
-
-
+            <div *ngIf="authService.isGuest()">
+                <button mat-button  class="login_button" (click)="login()">Login</button>
+            </div>
           </div>
       
           <div class="nav-title"

@@ -4,7 +4,8 @@ public enum  RoleEnum {
 
     ADMIN("ADMIN"),
     CLIENT("CLIENT"),
-    EMPLOYEE("EMPLOYEE");
+    EMPLOYEE("EMPLOYEE"),
+    GUEST("GUEST");
 
     private String role;
 
