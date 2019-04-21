@@ -34,6 +34,10 @@ public class ServiceService {
         return message("Service successfully added.");
     }
 
+    public void addAll(List<Service> services){
+        serviceRepository.saveAll(services);
+    }
+
     public List<Service> findByBusinessId(long businessId) {
         return serviceRepository.findServicesByBusinessId(businessId);
     }
