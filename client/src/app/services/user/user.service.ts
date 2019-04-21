@@ -77,6 +77,14 @@ export class UserService {
         }
     }
 
+    getBusinessIdFromToken(): string {
+        try {
+            return this.getTokenClaims()['businessId'];
+        } catch (e) {
+            return null;
+        }
+    }
+
     getLastNameFromToken(): string {
         try {
             return this.getTokenClaims()['lastName'];

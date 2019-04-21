@@ -37,9 +37,10 @@ export class LoginComponent implements OnInit {
                 this.googleAnalytics.trackValues('security', 'login', 'success');
                 const token = res['token'];
                 this.userService.setToken(token);
+                let businessId = this.userService.getBusinessIdFromToken();
 
                 if (this.userService.isAdmin()){
-                    this.router.navigate(['admin/appts']);
+                    this.router.navigate([businessId.toString()+'/admin/appts']);
                 }
                 else if (this.userService.isEmployee()){
                     this.router.navigate(['employee/appts']);

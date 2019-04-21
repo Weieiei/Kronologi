@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Service } from '../../../../models/service/Service';
 import { ServiceService } from '../../../../services/service/service.service';
 import { map } from 'rxjs/operators';
-import { UserToDisplay } from '../../../../models/user/UserToDisplay';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import {UserService} from "../../../../services/user/user.service";
 
 @Component({
     selector: 'app-admin-services',
@@ -13,10 +13,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AdminServicesComponent implements OnInit {
  // Fields to upload a service profile picture
+ businessId : any;
  selectedFile: File = null;
  fileSelectMsg: string = 'No file selected yet.';
  fileUploadMsg: string = 'No file uploaded yet.';
-    serviceUploadId: number;
+public userService: UserService;
 
     displayedColumns: string[] = ['id', 'name', 'duration', 'client', 'employee', 'profile'];
     services: Service[];
@@ -36,6 +37,7 @@ export class AdminServicesComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.businessId = (this.userService.getFirstNameFromToken());
         this.componentState = {
             services: [],
             // currentSort: IDataTableSort,
@@ -108,7 +110,6 @@ export class AdminServicesComponent implements OnInit {
       }
 
       updateServicePicture(serviceId): void {
-          console.log(serviceId);
 
         if (this.selectedFile != null) {
             this.serviceService.updateServicePicture(this.selectedFile , serviceId).subscribe(
@@ -117,7 +118,6 @@ export class AdminServicesComponent implements OnInit {
                     //this.fileUploadMsg = 'File seccessfully uploaded. ';
                     //get picture and show it in the profile  or update the page
                     this.router.navigate(['business']);
-
 
                 },
                 err => {

@@ -42,6 +42,7 @@ public class JwtProvider implements Serializable {
                 .claim("firstName", user.getFirstName())
                 .claim("lastName", user.getLastName())
                 .claim("email", user.getEmail())
+                .claim("businessId", user.getBusiness().getId())
                 .signWith(SignatureAlgorithm.HS256, getKey())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))

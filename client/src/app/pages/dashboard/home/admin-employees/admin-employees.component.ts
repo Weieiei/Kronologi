@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../../../services/admin/admin.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
 import { UserToDisplay } from '../../../../models/user/UserToDisplay';
 
@@ -10,7 +10,7 @@ import { UserToDisplay } from '../../../../models/user/UserToDisplay';
     styleUrls: ['./admin-employees.component.scss']
 })
 export class AdminEmployeesComponent implements OnInit {
-
+    businessId: number;
     columns: string[] = ['firstName', 'lastName', 'email', 'shifts'];
     employees: AdminEmployeeDTO[];
 
@@ -25,11 +25,13 @@ export class AdminEmployeesComponent implements OnInit {
 
     constructor(
         private adminService: AdminService,
-        private router: Router
+        private router: Router,
+        private route : ActivatedRoute,
     ) {
     }
 
     ngOnInit() {
+        this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
         this.componentState = {
             employees: [],
             // currentSort: IDataTableSort,
@@ -39,11 +41,11 @@ export class AdminEmployeesComponent implements OnInit {
             totalItems: 0,
         };
 
-        this.getAllEmployees();
+        this.getAllEmployees(this.businessId);
     }
 
-    getAllEmployees(): void {
-        this.adminService.getAllEmployees().subscribe(
+    getAllEmployees(businessId: number): void {
+        this.adminService.getAllEmployees(businessId).subscribe(
             res => {
                 this.employees = res;
                 this.componentState.employees = res;
@@ -54,7 +56,7 @@ export class AdminEmployeesComponent implements OnInit {
     }
 
     goToEmployee(id: number): void {
-        this.router.navigate(['admin', 'employees', id, 'shifts']);
+        this.router.navigate([this.businessId,'admin', 'employees', id, 'shifts']);
     }
 
     filterItems(items: Array<AdminEmployeeDTO>, search: string): Array<AdminEmployeeDTO> {

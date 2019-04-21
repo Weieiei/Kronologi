@@ -28,6 +28,7 @@ export class NavbarComponent implements OnInit {
     light_theme:string = 'light-theme';
     theme:string = 'light-theme';
     imagePath :string = "";
+    businessId: number;
 
     imageToShow: any;
     isImageLoading: any;
@@ -47,7 +48,7 @@ export class NavbarComponent implements OnInit {
     ngOnInit() {
         this.authService.checkAdmin();
         this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
-        this.userEmail = this.userService.getEmailFromToken();
+        this.businessId = parseInt(this.userService.getBusinessIdFromToken());
         this.themeService.darkModeState.subscribe(value => {
             this.darkModeActive = value;
         });
@@ -113,8 +114,8 @@ export class NavbarComponent implements OnInit {
     goToSyncCalendars(){
         this.router.navigate(['syncCalendars']);
     }
-    goToAdminAppointmens() {
-        this.router.navigate(['admin/appts']);
+    goToAdminAppointments() {
+        this.router.navigate([this.businessId, 'admin', 'appts']);
     }
 
     goToAdminServices() {
@@ -126,6 +127,6 @@ export class NavbarComponent implements OnInit {
     }
 
     goToEmployees() {
-        this.router.navigate(['admin', 'employees']);
+        this.router.navigate([this.businessId, 'admin', 'employees']);
     }
 }

@@ -52,8 +52,8 @@ const routes: Routes = [
             { path: 'home/:businessId', component: HomeComponent },
 
             // Admin
-            { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
-            { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
+            { path: ':businessId/admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
+            { path: ':businessId/admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
 
             // Reserving and modifying reservation
             {path : 'details/:businessId', component: DetailsComponent},
@@ -65,7 +65,7 @@ const routes: Routes = [
             { path: 'review/:apptmtId', component: ReviewComponent },
             { path: 'my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
-            { path: 'admin/appts', component: AdminAppointmentsComponent },
+            { path: ':businessId/admin/appts', component: AdminAppointmentsComponent },
             { path: 'admin/services', component: AdminServicesComponent },
             { path: 'admin/services/create', component: CreateServiceComponent },
             { path: 'admin/users', component: AdminUsersComponent },

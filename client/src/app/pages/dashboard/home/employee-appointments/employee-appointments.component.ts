@@ -3,6 +3,7 @@ import {AppointmentService} from '../../../../services/appointment/appointment.s
 import {Appointment} from 'src/app/interfaces/appointment';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {CancelDialogComponent} from 'src/app/components/cancel-dialog/cancel-dialog.component';
+import {HomeComponent} from "../home.component";
 
 @Component({
     selector: 'app-employee-appointments',
@@ -10,7 +11,7 @@ import {CancelDialogComponent} from 'src/app/components/cancel-dialog/cancel-dia
     styleUrls: ['./employee-appointments.component.scss']
 })
 export class EmployeeAppointmentsComponent implements OnInit {
-
+    businessId : number;
     displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee', 'status', 'actions'];
     displayedColumnsPastAppointments: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee', 'status'];
     appointments: Appointment[];
