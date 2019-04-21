@@ -133,7 +133,7 @@ import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appoi
         GuestComponent,
         GuestAppointmentComponent,
         PasswordResetRedirectComponent,
-        PasswordForgotDialogComponent
+        PasswordForgotDialogComponent,
         AppGradientButtonComponent
     ],
     imports: [
