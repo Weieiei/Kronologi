@@ -110,17 +110,6 @@ public class WebSecurityConfig  {
             return registrationBean;
         }
 
-//        @Bean
-//        public FilterRegistrationBean<GuestAuthenticationFilter> jwtGuestFilter(){
-//            FilterRegistrationBean<GuestAuthenticationFilter> registrationBean
-//                    = new FilterRegistrationBean<>();
-//
-//            registrationBean.setFilter(guestAuthenticationFilter);
-//            registrationBean.addUrlPatterns("/guest/*");
-//
-//            return registrationBean;
-//        }
-
     }
 
 

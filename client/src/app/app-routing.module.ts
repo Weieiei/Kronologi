@@ -39,13 +39,9 @@ const routes: Routes = [
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
-    //
-    // // Guest
+
+    // Guest
     { path: 'guest', component: GuestComponent, canActivate: [AnonymousGuard] },
-    // { path: 'guest_appointment', component: GuestAppointmentComponent, canActivate: [AnonymousGuard] },
-    // { path: 'business', component: BusinessViewComponent, canActivate: [AnonymousGuard] },
-    // { path: 'appointments', component: AppointmentsComponent, canActivate: [AnonymousGuard] },
-    // { path: 'book/:businessId', component: BookComponent },
 
     // Password Reset
     { path: 'password/reset', component: PasswordResetRedirectComponent, canActivate: [AnonymousGuard] },

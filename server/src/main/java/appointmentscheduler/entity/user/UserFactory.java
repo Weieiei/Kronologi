@@ -74,7 +74,6 @@ public class UserFactory {
         guest.setFirstName(firstName);
         guest.setLastName(lastName);
         guest.setEmail(email);
-        //guest.setPassword(password);
 
         return guest;
     }
