@@ -47,7 +47,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    @Mock
     private UserRepository userRepository;
 
 
@@ -101,11 +101,27 @@ public class UserServiceTest {
         fail("Exception should have been thrown");
     }
 
-//    @Test
-//    @Ignore
-//    public void registerSucceeded() {
-//        fail("todo");
-//    }
+    @Test
+    public void registerSucceeded() throws NoSuchAlgorithmException, MessagingException, IOException {
+        // create mocks
+        User mockedUser = new User();
+        final UserRegisterDTO userRegisterDTO = mock(UserRegisterDTO.class);
+        final Verification mockVerification = mock(Verification.class);
+
+        // mock methods
+        when(userRegisterDTO.getEmail()).thenReturn("testEmail");
+        when(userRegisterDTO.getPassword()).thenReturn("pass");
+
+        //user does not already exist
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.empty());
+
+        //create user + verification
+        when(userRepository.save(any())).thenReturn(mockedUser);
+        when(verificationRepository.save(any())).thenReturn(mockVerification);
+
+        // run method
+        userService.register(userRegisterDTO, RoleEnum.CLIENT);
+    }
 
     @Test(expected = BadCredentialsException.class)
     public void loginFailed() {
