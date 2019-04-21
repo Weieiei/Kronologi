@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordMismatchStateMatcher } from '../../../shared/password-mismatch-state-matcher';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
 import { PasswordResetDTO } from '../../interfaces/password-reset/password-reset-dto';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SnackBar } from '../../snackbar';
 
 @Component({
     selector: 'app-password-reset-redirect',
@@ -20,6 +22,8 @@ export class PasswordResetRedirectComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private userService: UserService,
+        private snackBar: SnackBar,
+        private router: Router
     ) {
     }
 
@@ -55,10 +59,14 @@ export class PasswordResetRedirectComponent implements OnInit {
             };
             this.userService.resetPassword(passwordResetDto).subscribe(
                 res => {
-                    console.log('Reset');
+                    this.snackBar.openSnackBarSuccess('Your password has been successfully reset');
+                    this.router.navigate(['login']);
                 },
                 err => {
-                    console.log(err);
+                    if (err instanceof HttpErrorResponse) {
+                        this.snackBar.openSnackBarError('The system errored, please try again');
+                        this.router.navigate(['login']);
+                    }
                 }
             );
         }

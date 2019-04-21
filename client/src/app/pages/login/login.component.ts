@@ -5,6 +5,7 @@ import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { PasswordForgotDialogComponent } from '../../components/password-forgot-dialog/password-forgot-dialog.component';
+import { SnackBar } from '../../snackbar';
 
 
 @Component({
@@ -22,7 +23,9 @@ export class LoginComponent implements OnInit {
     constructor(private userService: UserService,
                 private router: Router,
                 private googleAnalytics:  GoogleAnalyticsService,
-                private dialog: MatDialog) {
+                private dialog: MatDialog,
+                private snackBar: SnackBar
+    ) {
     }
 
     ngOnInit() {
@@ -40,13 +43,11 @@ export class LoginComponent implements OnInit {
                 const token = res['token'];
                 this.userService.setToken(token);
 
-                if (this.userService.isAdmin()){
+                if (this.userService.isAdmin()) {
                     this.router.navigate(['admin/appts']);
-                }
-                else if (this.userService.isEmployee()){
+                } else if (this.userService.isEmployee()) {
                     this.router.navigate(['employee/appts']);
-                }
-                else {
+                } else {
                     this.router.navigate(['business']);
                 }
 
@@ -58,7 +59,6 @@ export class LoginComponent implements OnInit {
                 console.log(err);
             }
         );
-
     }
 
     openDialog() {
@@ -69,6 +69,10 @@ export class LoginComponent implements OnInit {
             email: this.username,
         };
         this.dialog.open(PasswordForgotDialogComponent, dialogConfig);
+        this.dialog.afterAllClosed
+            .subscribe(() => {
+                this.snackBar.openSnackBarSuccess('A password request message has been sent');
+            });
     }
 
 
