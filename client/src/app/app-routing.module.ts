@@ -24,8 +24,6 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
-import { GuestComponent } from "./pages/guest/guest.component";
-import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { DetailsComponent } from './pages/details/details.component';
@@ -40,9 +38,6 @@ const routes: Routes = [
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
-
-    // Guest
-    { path: 'guest', component: GuestComponent, canActivate: [AnonymousGuard] },
 
     // Password Reset
     { path: 'password/reset', component: PasswordResetRedirectComponent, canActivate: [AnonymousGuard] },
@@ -63,7 +58,7 @@ const routes: Routes = [
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
-            { path: 'admin/receipts', component: ReceiptsComponent, canActivate: [AdminGuard]},
+            { path: 'admin/:businessId/receipts', component: ReceiptsComponent, canActivate: [AdminGuard]},
 
             // Reserving and modifying reservation
             {path : 'details/:businessId', component: DetailsComponent},

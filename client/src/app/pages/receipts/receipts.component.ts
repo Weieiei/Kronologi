@@ -69,9 +69,6 @@ export class ReceiptsComponent implements OnInit {
         const doc = html2pdf();
         let invoice = document.getElementById('invoice');
         invoice.style.display = 'block';
-        // doc.fromHTML(invoice, 15, 15, {
-        //     'width': 170,
-        // });
         doc.from(invoice).save();
 
     }
