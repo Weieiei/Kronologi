@@ -52,7 +52,9 @@ export class AdminServicesComponent implements OnInit {
         this.serviceService.getPlainServices().pipe(
             map(data => {
                 return data.map(a => {
-                    return a;
+                    return new Service(
+                        a.id, a.name, a.duration
+                    )
                 });
             })
         ).subscribe(

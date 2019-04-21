@@ -52,7 +52,6 @@ import { BusinessViewComponent } from './pages/business-view/business-view.compo
 import { CardsUiComponent } from './components/cards-ui/cards-ui.component';
 import { BusinessRegisterComponent } from './pages/register/business-register/business-register.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { ServicesComponent } from './pages/services/services.component';
 import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.component';
 import { FindBusinessDialogComponent } from './components/find-business-dialog/find-business-dialog.component';
 import { AgmCoreModule } from '@agm/core';
@@ -114,7 +113,6 @@ import { PasswordForgotDialogComponent } from './components/password-forgot-dial
         BusinessViewComponent,
         CardsUiComponent,
         BusinessRegisterComponent,
-        ServicesComponent,
         SyncCalendarsComponent,
         AddRecurringShiftFormComponent,
         SearchInputComponent,
