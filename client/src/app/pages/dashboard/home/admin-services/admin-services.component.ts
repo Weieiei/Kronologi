@@ -110,7 +110,7 @@ public userService: UserService;
       updateServicePicture(serviceId): void {
 
         if (this.selectedFile != null) {
-            this.serviceService.updateServicePicture(this.selectedFile , serviceId).subscribe(
+            this.serviceService.updateServicePicture(this.selectedFile , serviceId, this.businessId).subscribe(
                 res => {
                     console.log('File seccessfully uploaded. ');
                     //get picture and show it in the profile  or update the page

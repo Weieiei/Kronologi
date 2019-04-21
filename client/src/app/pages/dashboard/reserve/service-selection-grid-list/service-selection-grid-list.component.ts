@@ -12,7 +12,7 @@ import { DomSanitizer} from '@angular/platform-browser';
 export class ServiceSelectionGridListComponent implements OnInit {
 
     services: ServiceDTO[] = [];
-    imagePath :string = "";
+    imagePath: string = "";
 
     serviceId: number;
     serviceSubscription: Subscription;
@@ -30,7 +30,7 @@ export class ServiceSelectionGridListComponent implements OnInit {
     };
 
     constructor(private serviceService: ServiceService,
-        private sanitizer: DomSanitizer,) {
+        private sanitizer: DomSanitizer) {
         this.componentState = {
             totalItems: 0,
             currentPageSize: 8,
@@ -39,7 +39,8 @@ export class ServiceSelectionGridListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getServices();
+       // this.getServices();
+        console.log( this.getServices());
     }
 
     selectService(service: ServiceDTO) {
@@ -50,9 +51,10 @@ export class ServiceSelectionGridListComponent implements OnInit {
     getServices() {
         this.serviceService.getServices(this.businessId).subscribe(res => {
             this.services = res;
+            console.log(this.services);
 //get prfile for each service
-for (let service of this.services){
-    this.serviceService.getServiceProfile(service.id).subscribe(
+for (let service of this.services) {
+    this.serviceService.getServiceProfile(service.id, this.businessId).subscribe(
         data => {
             if ( data ) {
               this.imagePath = 'data:image/png;base64,' + data["image_encoded"];

@@ -14,7 +14,7 @@ export class ServiceService {
     }
 
     public getServices(businessId:number): Observable<ServiceDTO[]> {
-        return this.http.get<ServiceDTO[]>(['api', 'business','services', businessId].join('/'));
+        return this.http.get<ServiceDTO[]>(['api', 'business', businessId.toString(), 'services'].join('/'));
     }
 
     public getPlainServices(businessId: number): Observable<Service[]> {
@@ -33,13 +33,13 @@ export class ServiceService {
         return this.http.post<any>(['api', 'business', 'admin','1', 'service', employeedId, serviceId].join('/'), "");
     }
 
-    public updateServicePicture(serviceFile: File, serviceId: number): Observable<any> {
+    public updateServicePicture(serviceFile: File, serviceId: number, businessId: number): Observable<any> {
         let formData = new FormData();
         formData.append('file', serviceFile);
-        return this.http.post(['api', 'business', 'services', serviceId.toString(), 'profile'].join('/'), formData);
+        return this.http.post(['api', 'business', businessId.toString(), 'services', serviceId.toString(), 'profile'].join('/'), formData);
         }
 
-     public  getServiceProfile(serviceId: number): Observable<any> {
-            return this.http.get<any>(['api', 'business', 'services' , serviceId.toString(), 'profile'].join('/'));
+     public  getServiceProfile(serviceId: number, businessId: number): Observable<any> {
+            return this.http.get<any>(['api', 'business', businessId.toString(), 'services' , serviceId.toString(), 'profile'].join('/'));
         }
 }
