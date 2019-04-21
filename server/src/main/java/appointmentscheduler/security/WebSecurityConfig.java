@@ -89,7 +89,7 @@ public class WebSecurityConfig  {
             http.csrf().disable()
                     .cors().and()
                     .authorizeRequests()
-                    .antMatchers("/api/user/login", "/api/user/register").permitAll()
+                    .antMatchers("/api/user/login", "/api/user/register", "/api/password/reset", "/api/password/forgot").permitAll()
                     .regexMatchers("\\/api\\/user\\/verification\\?hash=.*").permitAll()
                     .antMatchers("/external/google/login/google").authenticated()
                     .antMatchers("/api/*").authenticated()

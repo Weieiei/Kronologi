@@ -27,6 +27,7 @@ import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { DetailsComponent } from './pages/details/details.component';
+import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 
 const routes: Routes = [
     // Login
@@ -35,8 +36,10 @@ const routes: Routes = [
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
-
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
+
+    // Password Reset
+    { path: 'password/reset', component: PasswordResetRedirectComponent, canActivate: [AnonymousGuard] },
 
     // Dashboard
     {
