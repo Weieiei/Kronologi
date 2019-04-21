@@ -27,10 +27,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Service
@@ -57,8 +54,12 @@ public class GuestService {
         this.userDetailsEmailService = userDetailsEmailService;
     }
 
-    public Map<String, Object> register(GuestDTO guestDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
+    public Guest findGuest(GuestDTO guestDTO) {
+        Optional<Guest> guestOptional = guestRepository.findGuestByEmailIgnoreCase(guestDTO.getEmail());
+        return guestOptional.orElse(null);
+    }
 
+    public Guest register(GuestDTO guestDTO) throws IOException, MessagingException, NoSuchAlgorithmException {
 
         Guest guest = GuestFactory.createGuest(Guest.class, guestDTO.getFirstName(), guestDTO.getLastName(), guestDTO.getEmail());
 
@@ -81,10 +82,8 @@ public class GuestService {
         Guest savedGuest = guestRepository.save(guest);
 
         GuestVerification guestVerification = new GuestVerification(savedGuest);
-        guestVerificationRepository.save(guestVerification);
+        return guestVerificationRepository.save(guestVerification).getGuest();
 
-        String token = generateToken(savedGuest);
-        return buildTokenRegisterMap(token, guestVerification);//, verification);
     }
 
     public PhoneNumber getPhoneNumber(long guestId){

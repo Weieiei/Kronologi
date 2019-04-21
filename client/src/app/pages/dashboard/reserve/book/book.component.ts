@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {ServiceDTO} from "../../../../interfaces/service/service-dto";
-import {MatDatepickerInputEvent} from "@angular/material";
 import {AppointmentService} from "../../../../services/appointment/appointment.service";
 import {EmployeeFreeTime} from "../../../../interfaces/employee/employee-free-time";
-import {DateDTO} from "../../../../interfaces/date-and-time/DateDTO";
 import {TimeDTO} from "../../../../interfaces/date-and-time/TimeDTO";
-import * as moment from 'moment'
-import {EmployeeTimes} from "../../../../interfaces/employee/employee-times";
-import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appointment-dto';
-import {Router, ActivatedRoute} from "@angular/router";
-import {AnonymousGuard} from '../../../../guards/anonymous/anonymous.guard';
+import {BookAppointmentDTO} from '../../../../interfaces/appointment/book-appointment-dto';
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from '../../../../services/auth/auth.service';
-import { GuestComponent } from '../../../../pages/guest/guest.component';
+import {GuestCreateDto} from "../../../../interfaces/guest/guest-create-dto";
+import * as countryData from 'country-telephone-data';
 
 @Component({
   selector: 'app-book',
@@ -24,6 +20,11 @@ export class BookComponent implements OnInit {
     secondFormGroup: FormGroup;
     firstName;
     lastName;
+    registerPhone;
+    areaCode;
+    number;
+    countries: Object[] = countryData.allCountries;
+    selectedCountry: Object;
     email;
     isOptional = false;
     service: ServiceDTO;
@@ -172,7 +173,8 @@ export class BookComponent implements OnInit {
             employeeId: this.employeeId,
             serviceId: this.service.id,
             date: this.date,
-            startTime: this.time
+            startTime: this.time,
+            registerPhone: this.registerPhone
         };
         this.appointmentService.bookAppointment(this.appointment).subscribe(
             res => console.log(res)
@@ -191,17 +193,37 @@ export class BookComponent implements OnInit {
         this.router.navigate(['/home']);
     }
 
+    selectCountry(country: Object) {
+        this.selectedCountry = country;
+    }
+
     bookGuestAppointment() {
-        this.appointment = {
+
+        const payload: GuestCreateDto = {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            phoneNumber: null,
+            appointment: null
+        };
+
+        payload.appointment = {
             employeeId: this.employeeId,
             serviceId: this.service.id,
             date: this.date,
             startTime: this.time,
-            email: this.email,
-            firstName: this.firstName,
-            lastName: this.lastName
         };
-        this.appointmentService.bookGuestAppointment(this.appointment).subscribe(
+
+        if (this.registerPhone) {
+            payload.phoneNumber = {
+                countryCode: this.selectedCountry['dialCode'],
+                areaCode: this.areaCode,
+                number: this.number
+            };
+        }
+
+
+        this.appointmentService.bookGuestAppointment(payload).subscribe(
             res => console.log(res)
         );
 

@@ -23,7 +23,6 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/${rest.api.path}/business", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,16 +56,13 @@ public class AppointmentController extends AbstractController {
     }
 
     @PostMapping("/{businessId}/guest_appointments")
-    public ResponseEntity<String> addGuestAppointmentToBusiness(@RequestBody AppointmentDTO appointmentDTO, @PathVariable long businessId) throws NoSuchAlgorithmException, MessagingException, IOException {
+    public ResponseEntity<String> addGuestAppointmentToBusiness(@RequestBody GuestDTO guestDTO, @PathVariable long businessId) throws NoSuchAlgorithmException, MessagingException, IOException {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Appointment.class, new GuestSerializer());
-        GuestDTO guestDTO = new GuestDTO();
-        guestDTO.setEmail(appointmentDTO.getEmail());
-        guestDTO.setFirstName(appointmentDTO.getFirstName());
-        guestDTO.setLastName(appointmentDTO.getLastName());
-        guestService.register(guestDTO);
-        Optional<Guest> guestOptional = guestRepository.findGuestByEmailIgnoreCase(guestDTO.getEmail());
-        long guest_id = guestOptional.get().getId();
-        Appointment savedAppointment = appointmentService.addGuest(appointmentDTO, guest_id, businessId);
+        Guest guest = guestService.findGuest(guestDTO);
+        if (guest == null) {
+            guest = guestService.register(guestDTO);
+        }
+        Appointment savedAppointment = appointmentService.addGuest(guestDTO.getAppointment(), guest.getId(), businessId);
         return getJson(mapper, savedAppointment);
     }
 

@@ -1,5 +1,6 @@
 package appointmentscheduler.dto.appointment;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.guest.Guest;
@@ -17,35 +18,6 @@ public class AppointmentDTO {
     private long businessId;
     private long employeeId;
     private long serviceId;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    private String email;
-    private String firstName;
-    private String lastName;
-
     private LocalDate date;
     private LocalTime startTime;
 

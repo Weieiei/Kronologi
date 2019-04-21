@@ -57,7 +57,7 @@ public class GuestSerializer extends StdSerializer<Appointment> {
     }
 
     private void serializeGuest(Guest guest, JsonGenerator gen) throws IOException {
-        gen.writeObjectFieldStart("client");
+        gen.writeObjectFieldStart("guest");
         gen.writeObjectField("id", guest.getId());
         gen.writeStringField("firstName", guest.getFirstName());
         gen.writeObjectField("lastName", guest.getLastName());
