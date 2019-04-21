@@ -90,31 +90,4 @@ public class GuestService {
         return phoneNumberRepository.findByGuestId(guestId).orElse(null);
     }
 
-    private String generateToken(Guest guest) {
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(RoleEnum.GUEST.toString()));
-        UserDetails userDetails = userDetailsEmailService.loadUserByUsername(String.valueOf(guest.getId()));
-        Authentication authentication = new AnonymousAuthenticationToken(String.valueOf(guest.getId()), userDetails, authorities );
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(guest.getId(), "", authorities));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtProvider.generateGuestToken(guest, authentication);
-    }
-
-    private Map<String, Object> buildTokenRegisterMap(String token, Verification verification) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("token", token);
-        map.put("verification", verification);
-
-        return map;
-    }
-
-    private Map<String, Object> buildTokenRegisterMap(String token, GuestVerification guestVerification) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("token", token);
-        map.put("verification", guestVerification);
-
-        return map;
-    }
-
-
 }
