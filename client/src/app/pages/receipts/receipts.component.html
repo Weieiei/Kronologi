@@ -1,29 +1,111 @@
-<form autocomplete="off" (submit)="submit()">
+<form autocomplete="off">
     <div fxLayoutAlign="center">
     <div fxLayout="column" [align]="centered" fxFlex.gt-sm="800px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
         <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput [(ngModel)]="firstName" name="first_name" required appAutofocus>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput [(ngModel)]="lastName" name="last_name" required appAutofocus>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Business</mat-label>
-            <input matInput [(ngModel)]="business" name="business" required appAutofocus>
+            <mat-select (selectionChange)="getAllServiceForBusiness($event.value)">
+                <mat-option *ngFor="let business of businesses" [value]="business">
+                    <span> {{ business.name }} </span>
+                </mat-option>
+            </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Service</mat-label>
-            <input matInput [(ngModel)]="service" name="service" required appAutofocus>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-            <mat-label>Date</mat-label>
-            <input matInput [(ngModel)]="date" name="date" required appAutofocus>
+            <mat-select (selectionChange)="setService($event.value)">
+                <mat-option *ngFor="let service of services" [value]="service" >
+                    <span> {{ service.name }} </span>
+                </mat-option>
+            </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>Price</mat-label>
-            <input matInput [(ngModel)]="price" name="price" required appAutofocus>
+            <input matInput [(ngModel)]="price" name="price" pattern="^\d+\.?\d{0,2}" required appAutofocus>
         </mat-form-field>
 
+        <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <!--<input matInput [(ngModel)]="date" name="date" required appAutofocus>-->
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="setDate($event)">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">
             <button mat-raised-button color="primary" type="submit" (click)="createPDF()">Submit Receipt</button>
         </div>
     </div>
     </div>
 </form>
+
+
+<div class="invoice-box" id="invoice">
+    <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+            <td colspan="2">
+                <table>
+                    <tr>
+                        <td class="title">
+                            <img src="assets/images/kronologi-logo-1.png" style="width:100%; max-width:300px;">
+                        </td>
+
+                        <td>
+                            Invoice #: 123<br>
+                            Created: {{today}}<br>
+                            Due: {{dueDate}}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr class="information">
+            <td colspan="2">
+                <table>
+                    <tr>
+                        <td>
+                            Client: {{firstName}} {{lastName}}<br>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr class="heading">
+            <td>
+                Item
+            </td>
+
+            <td>
+                Price
+            </td>
+        </tr>
+
+        <tr class="item">
+            <td>
+                {{businessName}} - {{serviceName}}
+            </td>
+
+            <td>
+                ${{price}}
+            </td>
+        </tr>
+
+        <tr class="total">
+            <td></td>
+
+            <td>
+                Total: ${{price}}
+            </td>
+        </tr>
+    </table>
+</div>
+
 
