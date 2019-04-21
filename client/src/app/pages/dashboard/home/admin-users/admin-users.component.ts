@@ -7,6 +7,7 @@ import { AssignServicesDialogComponent } from './assign-services-dialog/assign-s
 import { ServiceService } from '../../../../services/service/service.service';
 import { Service } from '../../../../models/service/Service';
 import { ChangeClientToEmployeeDialogComponent } from './change-client-to-employee-dialog/change-client-to-employee-dialog.component';
+import {getTypeOf} from "@angular/core/testing/src/lang_utils";
 
 @Component({
     selector: 'app-admin-users',
@@ -44,6 +45,11 @@ export class AdminUsersComponent implements OnInit {
         };
 
         this.getAllUsers();
+        this.userService.getAllUsers().subscribe(
+           res=>{
+               console.log(res);
+           }
+        );
         this.getAllServices();
     }
 
@@ -51,9 +57,10 @@ export class AdminUsersComponent implements OnInit {
         this.userService.getAllUsers().pipe(
             map(data => {
                 return data.map(a => {
+                    console.log((a.role.toString()));
                     return new UserToDisplay (
                         a.id, a.firstName, a.lastName, a.email,
-                        a.roles, a.services, a.createdAt, a.updatedAt
+                        a.role, a.services, a.createdAt, a.updatedAt
                     );
                 });
             })
@@ -90,27 +97,11 @@ export class AdminUsersComponent implements OnInit {
     }
 
     isEmployee(user: UserToDisplay): boolean {
-        let roleFound = 0;
-        // if (user.userRoles.length > 0) {
-        //     user.userRoles.forEach((roles) => {
-        //         if (roles.role === 'EMPLOYEE') {
-        //             roleFound++;
-        //         }
-        //     });
-        // }
-        return roleFound > 0;
+        return user.userRole ==='EMPLOYEE';
     }
 
     isClient(user: UserToDisplay): boolean {
-        let roleFound = 0;
-        // if (user.userRoles.length > 0) {
-        //     user.userRoles.forEach((roles) => {
-        //         if (roles.role === 'CLIENT') {
-        //             roleFound++;
-        //         }
-        //     });
-        // }
-        return roleFound > 0;
+       return user.userRole ==='CLIENT';
     }
 
     openAddServiceDialog(user: any) {

@@ -11,7 +11,7 @@ import { UserToDisplay } from '../../../../models/user/UserToDisplay';
 })
 export class AdminServicesComponent implements OnInit {
 
-    displayedColumns: string[] = ['id', 'name', 'duration', 'client', 'employee'];
+    displayedColumns: string[] = ['id', 'name', 'duration', 'created at', 'updated at'];
     services: Service[];
 
     componentState: {

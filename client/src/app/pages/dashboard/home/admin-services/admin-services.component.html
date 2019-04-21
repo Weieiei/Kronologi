@@ -27,13 +27,13 @@
         </ng-container>
 
         <!-- Client Column -->
-        <ng-container matColumnDef="client">
+        <ng-container matColumnDef="created at">
             <th mat-header-cell *matHeaderCellDef> Created at </th>
             <td mat-cell *matCellDef="let service"> {{ service.createdAt | date: 'short' }} </td>
         </ng-container>
 
         <!-- Employee Column -->
-        <ng-container matColumnDef="employee">
+        <ng-container matColumnDef="updated at">
             <th mat-header-cell *matHeaderCellDef> Updated at </th>
             <td mat-cell *matCellDef="let service"> {{ service.updatedAt | date: 'short' }} </td>
         </ng-container>
