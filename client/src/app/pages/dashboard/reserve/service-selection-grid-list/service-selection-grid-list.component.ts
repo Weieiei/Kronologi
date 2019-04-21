@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ServiceDTO } from '../../../../interfaces/service/service-dto';
-import { Observable, Subscription } from 'rxjs';
-import { ServiceService } from '../../../../services/service/service.service';
-import { DomSanitizer} from '@angular/platform-browser';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ServiceDTO} from '../../../../interfaces/service/service-dto';
+import {Observable, Subscription} from 'rxjs';
+import {ServiceService} from '../../../../services/service/service.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-service-selection-grid-list',
@@ -12,7 +12,7 @@ import { DomSanitizer} from '@angular/platform-browser';
 export class ServiceSelectionGridListComponent implements OnInit {
 
     services: ServiceDTO[] = [];
-    imagePath :string = "";
+    imagePath: string = "";
 
     serviceId: number;
     serviceSubscription: Subscription;
@@ -30,7 +30,7 @@ export class ServiceSelectionGridListComponent implements OnInit {
     };
 
     constructor(private serviceService: ServiceService,
-        private sanitizer: DomSanitizer,) {
+                private sanitizer: DomSanitizer,) {
         this.componentState = {
             totalItems: 0,
             currentPageSize: 8,
@@ -48,27 +48,26 @@ export class ServiceSelectionGridListComponent implements OnInit {
     }
 
     getServices() {
+        console.log(this.businessId);
+        console.log(this.serviceService.getServices(this.businessId));
         this.serviceService.getServices(this.businessId).subscribe(res => {
             this.services = res;
-//get prfile for each service
-for (let service of this.services){
-    this.serviceService.getServiceProfile(service.id).subscribe(
-        data => {
-            if ( data ) {
-              this.imagePath = 'data:image/png;base64,' + data["image_encoded"];
-              this.sanitizedImageData = this.sanitizer.bypassSecurityTrustUrl(this.imagePath);
-            } else {
-                      this.sanitizedImageData = 'assets/images/kronologi-logo-1.png';
-                  }
+            for (let service of this.services) {
+                this.serviceService.getServiceProfile(this.businessId, service.id).subscribe(
+                    data => {
+                        if (data) {
+                            this.imagePath = 'data:image/png;base64,' + data["image_encoded"];
+                            this.sanitizedImageData = this.sanitizer.bypassSecurityTrustUrl(this.imagePath);
+                        } else {
+                            this.sanitizedImageData = 'assets/images/kronologi-logo-1.png';
+                        }
 
-        },
+                    },
+                    err => console.log(err)
+                );
+            }
 
-
-               err => console.log(err)
-      );
-}
-
-  //added pics
+            //added pics
             this.componentState.totalItems = this.services.length;
             this.services.sort((a, b) => {
                 if (a.name.toLowerCase() < b.name.toLowerCase()) {

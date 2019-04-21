@@ -1,16 +1,19 @@
 package appointmentscheduler.controller.rest;
 
-import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.annotation.LogREST;
+import appointmentscheduler.converters.service.ServiceDTOToService;
+import appointmentscheduler.dto.service.ServiceCreateDTO;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.file.ServiceFile;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.exception.FileStorageException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.ServiceSerializer;
-import appointmentscheduler.serializer.UserAppointmentSerializer;
-import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.service.business.BusinessService;
+import appointmentscheduler.service.file.ServiceFileStorageService;
 import appointmentscheduler.service.service.ServiceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,22 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
-import appointmentscheduler.annotation.LogREST;
-import appointmentscheduler.converters.service.ServiceDTOToService;
-import appointmentscheduler.dto.service.ServiceCreateDTO;
 import org.springframework.web.multipart.MultipartFile;
-import appointmentscheduler.service.file.ServiceFileStorageService;
 
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import appointmentscheduler.exception.FileStorageException;
 
 @RestController
 @RequestMapping("${rest.api.path}/business")

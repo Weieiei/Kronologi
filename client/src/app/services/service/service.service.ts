@@ -14,7 +14,7 @@ export class ServiceService {
     }
 
     public getServices(businessId:number): Observable<ServiceDTO[]> {
-        return this.http.get<ServiceDTO[]>(['api', 'business','services', businessId].join('/'));
+        return this.http.get<ServiceDTO[]>(['api', 'business', businessId, 'services',].join('/'));
     }
 
     public getPlainServices(businessId: number): Observable<Service[]> {
@@ -39,7 +39,7 @@ export class ServiceService {
         return this.http.post(['api', 'business', 'services', serviceId.toString(), 'profile'].join('/'), formData);
         }
 
-     public  getServiceProfile(serviceId: number): Observable<any> {
-            return this.http.get<any>(['api', 'business', 'services' , serviceId.toString(), 'profile'].join('/'));
+    public getServiceProfile(businessId: number, serviceId: number): Observable<any> {
+        return this.http.get<any>(['api', 'business', businessId, 'services', serviceId, 'profile'].join('/'));
         }
 }

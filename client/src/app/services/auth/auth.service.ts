@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable, Subject} from 'rxjs';
+import {Router} from '@angular/router';
 import * as decode from 'jwt-decode';
-import { UserType } from '../../models/user/UserType';
-import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
-import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
+import {UserType} from '../../models/user/UserType';
+import {UserLoginDTO} from '../../interfaces/user/user-login-dto';
+import {UserRegisterDTO} from '../../interfaces/user/user-register-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -94,7 +94,7 @@ export class AuthService {
     checkAdmin(): void {
         const claims: any = this.getTokenClaims(this.getToken());
         const roles: Array<string> = claims.roles.toString().split(",");
-        this.admin = claims === null ? false : (roles.includes(UserType.admin) || roles.includes(UserType.admin.toUpperCase()));
+        this.admin = claims === null ? false : (roles.includes(UserType.admin) || roles.includes("ADMIN"));
     }
 
 }
