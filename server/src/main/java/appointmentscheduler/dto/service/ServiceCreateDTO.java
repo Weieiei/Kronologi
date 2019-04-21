@@ -4,6 +4,7 @@ public class ServiceCreateDTO {
   //  private long serviceId;
     private String name;
     private int duration;
+    private double price;
 
   /*  public long getId() {
         return serviceId;
@@ -13,6 +14,10 @@ public class ServiceCreateDTO {
         this.serviceId = serviceId;
     }
 */
+    public double getPrice() { return price;}
+
+    public void setPrice(double price){this.price = price;}
+
     public String getName() {
         return name;
     }
