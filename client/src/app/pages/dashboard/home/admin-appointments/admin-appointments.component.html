@@ -1,6 +1,6 @@
 <div class="appointments-container" *ngIf="appointments?.length" [ngClass]="{'appointments-container-dark': darkModeActive}">
 
-    <p>The system has {{ componentState.appointments?.length }} appointment(s):</p>
+    <p class="appointments-msg">The system has {{ componentState.appointments?.length }} appointment(s):</p>
     <app-search-input
         [placeholderText]="'Search'"
         (changed)="onSearch($event)">

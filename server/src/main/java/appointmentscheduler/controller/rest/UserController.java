@@ -12,7 +12,7 @@ import appointmentscheduler.dto.user.UserLoginDTO;
 import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
-import appointmentscheduler.entity.file.File;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.file.UserFile;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
@@ -21,27 +21,25 @@ import appointmentscheduler.entity.verification.GoogleCred;
 import appointmentscheduler.entity.verification.Verification;
 import appointmentscheduler.exception.FileStorageException;
 import appointmentscheduler.exception.ResourceNotFoundException;
-import appointmentscheduler.repository.GoogleCredentialRepository;
 import appointmentscheduler.repository.BusinessRepository;
+import appointmentscheduler.repository.GoogleCredentialRepository;
 import appointmentscheduler.repository.VerificationRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.UserAppointmentSerializer;
 import appointmentscheduler.service.appointment.AppointmentService;
+import appointmentscheduler.service.business.BusinessService;
 import appointmentscheduler.service.email.EmailService;
-import appointmentscheduler.service.service.ServiceService;
+import appointmentscheduler.service.file.UserFileStorageService;
 import appointmentscheduler.service.user.UserService;
 import appointmentscheduler.service.verification.VerificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
@@ -52,11 +50,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import appointmentscheduler.entity.business.Business;
-import appointmentscheduler.service.business.BusinessService;
-import appointmentscheduler.service.file.UserFileStorageService;
-import appointmentscheduler.repository.BusinessRepository;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("${rest.api.path}/user")
@@ -120,7 +113,7 @@ public class UserController extends AbstractController {
         try {
             Business business = businessService.findById(businessId);
 
-            Map<String, Object> tokenMap = userService.business_register(userRegisterDTO,business);
+            Map<String, Object> tokenMap = userService.businessRegister(userRegisterDTO, business);
             Verification verification = (Verification) tokenMap.get("verification");
             emailService.sendRegistrationEmail(userRegisterDTO.getEmail(),verification.getHash(), true);
             return ResponseEntity.ok(tokenMap);

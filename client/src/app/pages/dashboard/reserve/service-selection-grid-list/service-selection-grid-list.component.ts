@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ServiceDTO } from '../../../../interfaces/service/service-dto';
 import { Observable, Subscription } from 'rxjs';
 import { ServiceService } from '../../../../services/service/service.service';
