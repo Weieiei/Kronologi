@@ -1,0 +1,1132 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>appointment-scheduler documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">appointment-scheduler documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>RegisterComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/pages/register/register.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-register</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./register.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./register.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#areaCode">areaCode</a>
+                            </li>
+                            <li>
+                                <a href="#confirmPassword">confirmPassword</a>
+                            </li>
+                            <li>
+                                <a href="#countries">countries</a>
+                            </li>
+                            <li>
+                                <a href="#email">email</a>
+                            </li>
+                            <li>
+                                <a href="#firstName">firstName</a>
+                            </li>
+                            <li>
+                                <a href="#isPasswordVisible">isPasswordVisible</a>
+                            </li>
+                            <li>
+                                <a href="#lastName">lastName</a>
+                            </li>
+                            <li>
+                                <a href="#number">number</a>
+                            </li>
+                            <li>
+                                <a href="#password">password</a>
+                            </li>
+                            <li>
+                                <a href="#registerPhone">registerPhone</a>
+                            </li>
+                            <li>
+                                <a href="#selectedCountry">selectedCountry</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#register">register</a>
+                            </li>
+                            <li>
+                                <a href="#selectCountry">selectCountry</a>
+                            </li>
+                            <li>
+                                <a href="#togglePasswordVisibility">togglePasswordVisibility</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(userService: <a href="../injectables/UserService.html">UserService</a>, serviceService: <a href="../injectables/ServiceService.html">ServiceService</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, googleAnalytics: <a href="../injectables/GoogleAnalyticsService.html">GoogleAnalyticsService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/pages/register/register.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>serviceService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ServiceService.html" target="_self" >ServiceService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>googleAnalytics</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/GoogleAnalyticsService.html" target="_self" >GoogleAnalyticsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/app/pages/register/register.component.ts:41</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="register"></a>
+                    <span class="name">
+                        <b>
+                            register
+                        </b>
+                        <a href="#register"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>register()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/app/pages/register/register.component.ts:44</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectCountry"></a>
+                    <span class="name">
+                        <b>
+                            selectCountry
+                        </b>
+                        <a href="#selectCountry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>selectCountry(country: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="84"
+                            class="link-to-prism">src/app/pages/register/register.component.ts:84</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>country</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank" >Object</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="togglePasswordVisibility"></a>
+                    <span class="name">
+                        <b>
+                            togglePasswordVisibility
+                        </b>
+                        <a href="#togglePasswordVisibility"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>togglePasswordVisibility()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="80"
+                            class="link-to-prism">src/app/pages/register/register.component.ts:80</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="areaCode"></a>
+                        <span class="name">
+                            <b>
+                            areaCode</b>
+                            <a href="#areaCode"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/pages/register/register.component.ts:25</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="confirmPassword"></a>
+                        <span class="name">
+                            <b>
+                            confirmPassword</b>
+                            <a href="#confirmPassword"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/pages/register/register.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="countries"></a>
+                        <span class="name">
+                            <b>
+                            countries</b>
+                            <a href="#countries"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Object[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>countryData.allCountries</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/pages/register/register.component.ts:22</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="email"></a>
+                        <span class="name">
+                            <b>
+                            email</b>
+                            <a href="#email"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/pages/register/register.component.ts:18</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="firstName"></a>
+                        <span class="name">
+                            <b>
+                            firstName</b>
+                            <a href="#firstName"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/pages/register/register.component.ts:16</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isPasswordVisible"></a>
+                        <span class="name">
+                            <b>
+                            isPasswordVisible</b>
+                            <a href="#isPasswordVisible"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/pages/register/register.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="lastName"></a>
+                        <span class="name">
+                            <b>
+                            lastName</b>
+                            <a href="#lastName"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/pages/register/register.component.ts:17</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="number"></a>
+                        <span class="name">
+                            <b>
+                            number</b>
+                            <a href="#number"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/pages/register/register.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="password"></a>
+                        <span class="name">
+                            <b>
+                            password</b>
+                            <a href="#password"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/pages/register/register.component.ts:19</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="registerPhone"></a>
+                        <span class="name">
+                            <b>
+                            registerPhone</b>
+                            <a href="#registerPhone"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/pages/register/register.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedCountry"></a>
+                        <span class="name">
+                            <b>
+                            selectedCountry</b>
+                            <a href="#selectedCountry"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank" >Object</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/pages/register/register.component.ts:23</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { ServiceService } from &#x27;../../services/service/service.service&#x27;;
+import { UserRegisterDTO } from &#x27;../../interfaces/user/user-register-dto&#x27;;
+import { UserService } from &#x27;../../services/user/user.service&#x27;;
+import * as countryData from &#x27;country-telephone-data&#x27;;
+import { GoogleAnalyticsService } from &#x27;src/app/services/google/google-analytics.service&#x27;;
+
+@Component({
+    selector: &#x27;app-register&#x27;,
+    templateUrl: &#x27;./register.component.html&#x27;,
+    styleUrls: [&#x27;./register.component.scss&#x27;]
+})
+export class RegisterComponent implements OnInit {
+
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+
+
+    countries: Object[] &#x3D; countryData.allCountries;
+    selectedCountry: Object;
+
+    areaCode: string;
+    number: string;
+
+    confirmPassword: string;
+    isPasswordVisible &#x3D; false;
+
+    registerPhone &#x3D; false;
+
+    constructor(
+        private userService: UserService,
+        private serviceService: ServiceService,
+        private router: Router,
+        private googleAnalytics: GoogleAnalyticsService
+    ) {
+    }
+
+    ngOnInit() {
+    }
+
+    register(): void {
+
+        if (this.password &#x3D;&#x3D;&#x3D; this.confirmPassword) {
+
+            const payload: UserRegisterDTO &#x3D; {
+                firstName: this.firstName,
+                lastName: this.lastName,
+                email: this.email,
+                password: this.password,
+                phoneNumber: null,
+
+            };
+
+            if (this.registerPhone) {
+                payload.phoneNumber &#x3D; {
+                    countryCode: this.selectedCountry[&#x27;dialCode&#x27;],
+                    areaCode: this.areaCode,
+                    number: this.number
+                };
+            }
+
+            this.googleAnalytics.trackValues(&#x27;formSubmit&#x27;, &#x27;register&#x27;);
+
+            this.userService.register(payload).subscribe(
+                res &#x3D;&gt; {
+                    this.router.navigate([&#x27;login&#x27;]);
+                },
+                err &#x3D;&gt; console.log(err)
+            );
+
+        } else {
+            alert(&#x27;The passwords don\&#x27;t match.&#x27;);
+        }
+
+    }
+
+    togglePasswordVisibility() {
+        this.isPasswordVisible &#x3D; !this.isPasswordVisible;
+    }
+
+    selectCountry(country: Object) {
+        this.selectedCountry &#x3D; country;
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div fxLayout&#x3D;&quot;row&quot; fxLayoutAlign&#x3D;&quot;center&quot; fxFlex&#x3D;&quot;noshrink&quot;&gt;
+    &lt;div fxLayout&#x3D;&quot;column&quot; fxFlex.gt-sm&#x3D;&quot;600px&quot; ngClass.gt-sm&#x3D;&quot;mat-elevation-z3&quot; class&#x3D;&quot;container&quot; fxLayoutGap&#x3D;&quot;20px&quot;&gt;
+        &lt;img src&#x3D;&quot;assets/images/kronologi-logo-1.png&quot; width&#x3D;&quot;128&quot;/&gt;
+        &lt;span class&#x3D;&quot;title&quot;&gt;Create your Kronologi Account&lt;/span&gt;
+
+        &lt;form (submit)&#x3D;&quot;register()&quot; autocomplete&#x3D;&quot;off&quot; fxLayout&#x3D;&quot;column&quot;&gt;
+            &lt;div fxLayout.gt-sm&#x3D;&quot;row&quot; fxLayout.lt-md&#x3D;&quot;column&quot; fxLayoutGap.gt-sm&#x3D;&quot;20px&quot;&gt;
+                &lt;mat-form-field appearance&#x3D;&quot;outline&quot; fxFlex&gt;
+                    &lt;mat-label&gt;First Name&lt;/mat-label&gt;
+                    &lt;input matInput [(ngModel)]&#x3D;&quot;firstName&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;firstname&quot; pattern&#x3D;&quot;.{1,}&quot; required appAutofocus&gt;
+                &lt;/mat-form-field&gt;
+
+                &lt;mat-form-field appearance&#x3D;&quot;outline&quot; fxFlex&gt;
+                    &lt;mat-label&gt;Last Name&lt;/mat-label&gt;
+                    &lt;input matInput [(ngModel)]&#x3D;&quot;lastName&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;lastname&quot; pattern&#x3D;&quot;.{1,}&quot; required&gt;
+                &lt;/mat-form-field&gt;
+            &lt;/div&gt;
+
+            &lt;mat-form-field appearance&#x3D;&quot;outline&quot;&gt;
+                &lt;mat-label&gt;Email&lt;/mat-label&gt;
+                &lt;input matInput [(ngModel)]&#x3D;&quot;email&quot; type&#x3D;&quot;email&quot; name&#x3D;&quot;email&quot; pattern&#x3D;&quot;^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$&quot; required&gt;
+                &lt;mat-hint&gt;E.g.: johndoe@gmail.com&lt;/mat-hint&gt;
+            &lt;/mat-form-field&gt;
+
+            &lt;div fxLayout&#x3D;&quot;column&quot; class&#x3D;&quot;passwords-container&quot;&gt;
+                &lt;div fxLayout.gt-sm&#x3D;&quot;row&quot; fxLayout.lt-md&#x3D;&quot;column&quot; fxLayoutGap&#x3D;&quot;20px&quot;&gt;
+                    &lt;mat-form-field appearance&#x3D;&quot;outline&quot; class&#x3D;&quot;no-mat-padding&quot; fxFlex&gt;
+                        &lt;mat-label&gt;Password&lt;/mat-label&gt;
+                        &lt;input matInput [(ngModel)]&#x3D;&quot;password&quot; [type]&#x3D;&quot;isPasswordVisible ? &#x27;text&#x27; : &#x27;password&#x27;&quot; name&#x3D;&quot;password&quot; pattern&#x3D;&quot;^(?&#x3D;.*\d)(?&#x3D;.*[a-zA-Z]).{6,30}$&quot; required&gt;
+                    &lt;/mat-form-field&gt;
+
+                    &lt;mat-form-field appearance&#x3D;&quot;outline&quot; class&#x3D;&quot;no-mat-padding&quot; fxFlex&gt;
+                        &lt;mat-label&gt;Confirm&lt;/mat-label&gt;
+                        &lt;input matInput [(ngModel)]&#x3D;&quot;confirmPassword&quot; [type]&#x3D;&quot;isPasswordVisible ? &#x27;text&#x27; : &#x27;password&#x27;&quot; name&#x3D;&quot;confirmPassword&quot; required&gt;
+                    &lt;/mat-form-field&gt;
+
+                    &lt;button mat-icon-button type&#x3D;&quot;button&quot; ngClass.gt-sm&#x3D;&quot;visibility-icon&quot; (click)&#x3D;&quot;togglePasswordVisibility()&quot;&gt;
+                        &lt;mat-icon&gt;{{ isPasswordVisible ? &#x27;visibility_on&#x27; : &#x27;visibility_off&#x27;}}&lt;/mat-icon&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;span class&#x3D;&quot;hint&quot;&gt;
+                    Between 6 and 30 characters
+                    &lt;br&gt;
+                    Contains 1 letter and 1 digit
+                &lt;/span&gt;
+            &lt;/div&gt;
+
+
+            &lt;div class&#x3D;&quot;phone-container&quot; fxLayout&#x3D;&quot;column&quot; fxLayoutGap&#x3D;&quot;20px&quot;&gt;
+
+                &lt;mat-checkbox class&#x3D;&quot;phone-checkbox&quot; color&#x3D;&quot;primary&quot; [(ngModel)]&#x3D;&quot;registerPhone&quot; name&#x3D;&quot;registerPhone&quot;&gt;Add phone number?&lt;/mat-checkbox&gt;
+
+                &lt;div fxLayout&#x3D;&quot;column&quot; fxLayoutGap&#x3D;&quot;20px&quot; *ngIf&#x3D;&quot;registerPhone&quot;&gt;
+                    &lt;mat-form-field appearance&#x3D;&quot;outline&quot; class&#x3D;&quot;no-mat-padding&quot; fxFlex&#x3D;&quot;25&quot;&gt;
+                        &lt;mat-label&gt;Country&lt;/mat-label&gt;
+                        &lt;mat-select [required]&#x3D;&quot;true&quot; (selectionChange)&#x3D;&quot;selectCountry($event.value)&quot;&gt;
+                            &lt;mat-select-trigger *ngIf&#x3D;&quot;selectedCountry&quot;&gt;
+                                {{ selectedCountry.name }} &lt;span class&#x3D;&quot;country-code-small&quot;&gt;(+{{ selectedCountry.dialCode }})&lt;/span&gt;
+                            &lt;/mat-select-trigger&gt;
+                            &lt;mat-option *ngFor&#x3D;&quot;let country of countries&quot; [value]&#x3D;&quot;country&quot;&gt;
+                                &lt;img src&#x3D;&quot;assets/flags/blank.gif&quot; class&#x3D;&quot;flag flag-{{ country.iso2 }}&quot;&gt;&amp;nbsp;
+                                &lt;span&gt; {{ country.name }} | &lt;span class&#x3D;&quot;country-code&quot;&gt;+{{ country.dialCode }}&lt;/span&gt;&lt;/span&gt;
+                            &lt;/mat-option&gt;
+                        &lt;/mat-select&gt;
+                    &lt;/mat-form-field&gt;
+
+                    &lt;div fxLayout.gt-sm&#x3D;&quot;row&quot; fxLayout.lt-md&#x3D;&quot;column&quot; fxLayoutGap&#x3D;&quot;20px&quot;&gt;
+                        &lt;mat-form-field appearance&#x3D;&quot;outline&quot; class&#x3D;&quot;no-mat-padding&quot; fxFlex&#x3D;&quot;30&quot;&gt;
+                            &lt;mat-label&gt;Area Code&lt;/mat-label&gt;
+                            &lt;input matInput [(ngModel)]&#x3D;&quot;areaCode&quot; name&#x3D;&quot;areaCode&quot; pattern&#x3D;&quot;\d{3}&quot; minlength&#x3D;&quot;3&quot; maxlength&#x3D;&quot;3&quot; required&gt;
+                        &lt;/mat-form-field&gt;
+
+                        &lt;mat-form-field appearance&#x3D;&quot;outline&quot; class&#x3D;&quot;no-mat-padding&quot; fxFlex&#x3D;&quot;70&quot;&gt;
+                            &lt;mat-label&gt;Phone Number&lt;/mat-label&gt;
+                            &lt;input matInput [(ngModel)]&#x3D;&quot;number&quot; name&#x3D;&quot;number&quot; pattern&#x3D;&quot;\d{7}&quot; minlength&#x3D;&quot;7&quot; maxlength&#x3D;&quot;7&quot; required&gt;
+                        &lt;/mat-form-field&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+            &lt;/div&gt;
+
+
+            &lt;div fxLayout&#x3D;&quot;row&quot; fxLayoutAlign&#x3D;&quot;space-between&quot; class&#x3D;&quot;buttons&quot;&gt;
+            &lt;button mat-button color&#x3D;&quot;primary&quot; type&#x3D;&quot;button&quot; routerLink&#x3D;&quot;/login&quot;&gt;Sign in instead&lt;/button&gt;
+            &lt;button mat-raised-button color&#x3D;&quot;primary&quot; type&#x3D;&quot;button&quot; routerLink&#x3D;&quot;/register_business&quot; &gt;Register a business account&lt;/button&gt;
+            &lt;button mat-raised-button color&#x3D;&quot;primary&quot; type&#x3D;&quot;submit&quot;&gt;Register&lt;/button&gt;
+            
+            
+        &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./register.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.container {
+    padding: 50px;
+
+    .visibility-icon {
+        margin-top: 16px;
+    }
+
+    .hint {
+        font-size: 12px;
+        padding-left: 12px;
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .buttons {
+        margin-top: 20px;
+
+        button {
+            font-weight: bold;
+        }
+    }
+
+    .passwords-container,
+    .phone-container {
+        margin-top: 12px;
+
+        .no-mat-padding {
+            ::ng-deep {
+                .mat-form-field-wrapper {
+                    padding-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+img.flag {
+    vertical-align: middle;
+    margin-bottom: 4px;
+}
+
+.country-code,
+.country-code-small {
+    color: #999;
+}
+
+.country-code-small {
+    font-size: 0.75rem;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div fxLayout="row" fxLayoutAlign="center" fxFlex="noshrink">    <div fxLayout="column" fxFlex.gt-sm="600px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">        <img src="assets/images/kronologi-logo-1.png" width="128"/>        <span class="title">Create your Kronologi Account</span>        <form (submit)="register()" autocomplete="off" fxLayout="column">            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">                <mat-form-field appearance="outline" fxFlex>                    <mat-label>First Name</mat-label>                    <input matInput [(ngModel)]="firstName" type="text" name="firstname" pattern=".{1,}" required appAutofocus>                </mat-form-field>                <mat-form-field appearance="outline" fxFlex>                    <mat-label>Last Name</mat-label>                    <input matInput [(ngModel)]="lastName" type="text" name="lastname" pattern=".{1,}" required>                </mat-form-field>            </div>            <mat-form-field appearance="outline">                <mat-label>Email</mat-label>                <input matInput [(ngModel)]="email" type="email" name="email" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,3}$" required>                <mat-hint>E.g.: johndoe@gmail.com</mat-hint>            </mat-form-field>            <div fxLayout="column" class="passwords-container">                <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex>                        <mat-label>Password</mat-label>                        <input matInput [(ngModel)]="password" [type]="isPasswordVisible ? \'text\' : \'password\'" name="password" pattern="^(?=.*\d)(?=.*[a-zA-Z]).{6,30}$" required>                    </mat-form-field>                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex>                        <mat-label>Confirm</mat-label>                        <input matInput [(ngModel)]="confirmPassword" [type]="isPasswordVisible ? \'text\' : \'password\'" name="confirmPassword" required>                    </mat-form-field>                    <button mat-icon-button type="button" ngClass.gt-sm="visibility-icon" (click)="togglePasswordVisibility()">                        <mat-icon>{{ isPasswordVisible ? \'visibility_on\' : \'visibility_off\'}}</mat-icon>                    </button>                </div>                <span class="hint">                    Between 6 and 30 characters                    <br>                    Contains 1 letter and 1 digit                </span>            </div>            <div class="phone-container" fxLayout="column" fxLayoutGap="20px">                <mat-checkbox class="phone-checkbox" color="primary" [(ngModel)]="registerPhone" name="registerPhone">Add phone number?</mat-checkbox>                <div fxLayout="column" fxLayoutGap="20px" *ngIf="registerPhone">                    <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="25">                        <mat-label>Country</mat-label>                        <mat-select [required]="true" (selectionChange)="selectCountry($event.value)">                            <mat-select-trigger *ngIf="selectedCountry">                                {{ selectedCountry.name }} <span class="country-code-small">(+{{ selectedCountry.dialCode }})</span>                            </mat-select-trigger>                            <mat-option *ngFor="let country of countries" [value]="country">                                <img src="assets/flags/blank.gif" class="flag flag-{{ country.iso2 }}">&nbsp;                                <span> {{ country.name }} | <span class="country-code">+{{ country.dialCode }}</span></span>                            </mat-option>                        </mat-select>                    </mat-form-field>                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="20px">                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="30">                            <mat-label>Area Code</mat-label>                            <input matInput [(ngModel)]="areaCode" name="areaCode" pattern="\d{3}" minlength="3" maxlength="3" required>                        </mat-form-field>                        <mat-form-field appearance="outline" class="no-mat-padding" fxFlex="70">                            <mat-label>Phone Number</mat-label>                            <input matInput [(ngModel)]="number" name="number" pattern="\d{7}" minlength="7" maxlength="7" required>                        </mat-form-field>                    </div>                </div>            </div>            <div fxLayout="row" fxLayoutAlign="space-between" class="buttons">            <button mat-button color="primary" type="button" routerLink="/login">Sign in instead</button>            <button mat-raised-button color="primary" type="button" routerLink="/register_business" >Register a business account</button>            <button mat-raised-button color="primary" type="submit">Register</button>                                </div>        </form>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AccountSettingsComponent', 'selector': 'app-account-settings'},{'name': 'AddRecurringShiftFormComponent', 'selector': 'app-add-recurring-shift-form'},{'name': 'AddShiftFormComponent', 'selector': 'app-add-shift-form'},{'name': 'AdminAppointmentsComponent', 'selector': 'app-admin-appointments'},{'name': 'AdminEmployeesComponent', 'selector': 'app-admin-employees'},{'name': 'AdminServicesComponent', 'selector': 'app-admin-services'},{'name': 'AdminUsersComponent', 'selector': 'app-admin-users'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppointmentCardComponent', 'selector': 'app-appointment-card'},{'name': 'AppointmentsComponent', 'selector': 'app-appointments'},{'name': 'AppointmentsSectionComponent', 'selector': 'app-appointments-section'},{'name': 'AssignServicesDialogComponent', 'selector': 'assign-services-dialog'},{'name': 'BookComponent', 'selector': 'app-book'},{'name': 'BusinessRegisterComponent', 'selector': 'app-business-register'},{'name': 'BusinessViewComponent', 'selector': 'app-business-view'},{'name': 'CancelDialogComponent', 'selector': 'cancel-dialog'},{'name': 'CardsUiComponent', 'selector': 'app-cards-ui'},{'name': 'ChangeClientToEmployeeDialogComponent', 'selector': 'change-client-to-employee-dialog'},{'name': 'CreateServiceComponent', 'selector': 'app-admin-create-service'},{'name': 'CustomStepperComponent', 'selector': 'app-custom-stepper'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DetailsComponent', 'selector': 'app-details'},{'name': 'EmployeeAppointmentsComponent', 'selector': 'app-employee-appointments'},{'name': 'ErrorDialogComponent', 'selector': 'app-error-dialog'},{'name': 'FindBusinessDialogComponent', 'selector': 'app-find-business-dialog'},{'name': 'GoogleMapsComponent', 'selector': 'app-google-maps'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'NotesAndReserveComponent', 'selector': 'app-notes-and-reserve'},{'name': 'PickDayComponent', 'selector': 'app-pick-day'},{'name': 'ReasonDialogComponent', 'selector': 'app-reason-dialog'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReminderSettingsComponent', 'selector': 'app-reminder-settings'},{'name': 'ReviewComponent', 'selector': 'app-review'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ServiceSelectionGridListComponent', 'selector': 'app-service-selection-grid-list'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'ShiftComponent', 'selector': 'app-shift'},{'name': 'ShiftPickerComponent', 'selector': 'app-shift-picker'},{'name': 'SyncCalendarsComponent', 'selector': 'app-sync-calendars'},{'name': 'TimePickerDialogComponent', 'selector': 'app-time-picker-dialog'},{'name': 'VerifiedComponent', 'selector': 'app-verified'}];
+    var DIRECTIVES = [{'name': 'AutofocusDirective', 'selector': '[appAutofocus]'},{'name': 'ButtonIconDirective', 'selector': '[appButtonIcon]'},{'name': 'CardSizeDirective', 'selector': '[appCardSize]'},{'name': 'FabBottomRightDirective', 'selector': 'button[appFabBottomRight]'}];
+    var ACTUAL_COMPONENT = {'name': 'RegisterComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'RegisterComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
