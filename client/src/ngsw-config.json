@@ -23,5 +23,30 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "api-performance",
+      "urls": [
+          "/assets/**"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": "100",
+        "maxAge": "3d"
+      }
+    },
+    {
+      "name": "api_freshness",
+      "urls": [
+          "/api/**"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": "100",
+        "maxAge": "3d",
+        "timeOut": "10s"
+      }
+    }
   ]
 }
