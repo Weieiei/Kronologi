@@ -1,4 +1,4 @@
-import {ElementRef, Injectable, ViewChild} from '@angular/core';
+import { ElementRef, Injectable, ViewChild } from '@angular/core';
 // pica can be installed by typing npm install pica
 // more information is available at https://github.com/nodeca/pica
 import pica from 'pica';
@@ -11,15 +11,15 @@ export class ImageResizeService {
     @ViewChild('myCanvas') myCanvas: ElementRef;
     // public context: CanvasRenderingContext2D;
 
-    //expected image sizes for the business profile image and for the user profile image:
+    // expected image sizes for the business profile image and for the user profile image:
     private businessImgHeight = 250;
     private businessImgWidth = 200;
     private userImgHeight = 100;
     private userImgWidth = 100;
 
     // ratios between height and width:
-    private businessImageRatio = this.businessImgHeight/this.businessImgWidth;
-    private userImageRatio = this.userImgHeight/this.userImgWidth;
+    private businessImageRatio = this.businessImgHeight / this.businessImgWidth;
+    private userImageRatio = this.userImgHeight / this.userImgWidth;
 
   constructor() { }
 
@@ -33,8 +33,8 @@ export class ImageResizeService {
               unsharpRadius: 0.6,
               unsharpThreshold: 2
       }).then(result => {
-          return result;})
-          .catch(err => console.log(err))
+          return result; })
+          .catch(err => console.log(err));
 
   }
 
@@ -50,8 +50,7 @@ export class ImageResizeService {
             const destinationHeight = img.naturalHeight - (img.naturalWidth * this.businessImageRatio);
             context.drawImage(img, 0, (img.naturalHeight - destinationHeight) / 2, img.naturalWidth, destinationHeight, 0, 0, img.naturalWidth, destinationHeight);
 
-        }
-        else if ((img.naturalHeight / img.naturalWidth) < this.businessImageRatio) { // if the image is wider than expected
+        } else if ((img.naturalHeight / img.naturalWidth) < this.businessImageRatio) { // if the image is wider than expected
             // crop the right and left:
             const destinationWidth = img.naturalWidth - (img.naturalHeight / this.businessImageRatio);
             context.drawImage(img, (img.naturalWidth - destinationWidth) / 2, 0, destinationWidth, img.naturalHeight, 0, 0, destinationWidth, img.naturalWidth);
@@ -60,7 +59,7 @@ export class ImageResizeService {
         this.resizeImage(img, this.businessImgWidth, this.businessImgHeight);
     }
 
-    userImgResize(img){
+    userImgResize(img) {
       // same logic as method above, we are just using the values for userImg
         const context: CanvasRenderingContext2D = (<HTMLCanvasElement>this.myCanvas.nativeElement).getContext('2d');
         if ((img.naturalHeight / img.naturalWidth) > this.userImageRatio) { // if the image is taller than expected
@@ -68,8 +67,7 @@ export class ImageResizeService {
             const destinationHeight = img.naturalHeight - (img.naturalWidth * this.userImageRatio);
             context.drawImage(img, 0, (img.naturalHeight - destinationHeight) / 2, img.naturalWidth, destinationHeight, 0, 0, img.naturalWidth, destinationHeight);
 
-        }
-        else if ((img.naturalHeight / img.naturalWidth) < this.userImageRatio) { // if the image is wider than expected
+        } else if ((img.naturalHeight / img.naturalWidth) < this.userImageRatio) { // if the image is wider than expected
             // crop the right and left:
             const destinationWidth = img.naturalWidth - (img.naturalHeight / this.userImageRatio);
             context.drawImage(img, (img.naturalWidth - destinationWidth) / 2, 0, destinationWidth, img.naturalHeight, 0, 0, destinationWidth, img.naturalWidth);

@@ -14,11 +14,11 @@ export class AdminService {
     }
 
     public getAllEmployees(): Observable<AdminEmployeeDTO[]> {
-        return this.http.get<AdminEmployeeDTO[]>(['api', 'business',  '1', 'admin','employees'].join('/'));
+        return this.http.get<AdminEmployeeDTO[]>(['api', 'business',  '1', 'admin', 'employees'].join('/'));
     }
 
     getEmployee(employeeId: number): Observable<AdminEmployeeDTO> {
-        return this.http.get<AdminEmployeeDTO>(['api', 'business', '1','admin', 'employee', employeeId].join('/'));
+        return this.http.get<AdminEmployeeDTO>(['api', 'business', '1', 'admin', 'employee', employeeId].join('/'));
     }
 
     getEmployeeShifts(employeeId: number): Observable<AdminEmployeeShiftDTO[]> {
