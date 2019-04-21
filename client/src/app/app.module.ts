@@ -70,6 +70,7 @@ import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.co
 import { SearchInputComponent } from './components/search-box/search-box.component';
 import { GuestComponent } from './pages/guest/guest.component';
 import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
+import { ReceiptsComponent } from './pages/receipts/receipts.component';
 
 
 @NgModule({
@@ -130,7 +131,8 @@ import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appoi
         GoogleMapsComponent,
         SyncCalendarsComponent,
         GuestComponent,
-        GuestAppointmentComponent
+        GuestAppointmentComponent,
+        ReceiptsComponent
     ],
     imports: [
         LightboxModule,
