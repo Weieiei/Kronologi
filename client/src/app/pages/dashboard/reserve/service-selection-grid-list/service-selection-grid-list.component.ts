@@ -3,6 +3,7 @@ import {ServiceDTO} from '../../../../interfaces/service/service-dto';
 import {Observable, Subscription} from 'rxjs';
 import {ServiceService} from '../../../../services/service/service.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {AppointmentService} from "../../../../services/appointment/appointment.service";
 
 @Component({
     selector: 'app-service-selection-grid-list',
@@ -12,7 +13,8 @@ import {DomSanitizer} from '@angular/platform-browser';
 export class ServiceSelectionGridListComponent implements OnInit {
 
     services: ServiceDTO[] = [];
-    imagePath: string = "";
+    imagePath: string = '';
+    servicesAvailable: number[] = [];
 
     serviceId: number;
     serviceSubscription: Subscription;
@@ -29,8 +31,10 @@ export class ServiceSelectionGridListComponent implements OnInit {
         currentPage: number;
     };
 
+
     constructor(private serviceService: ServiceService,
-                private sanitizer: DomSanitizer,) {
+                private sanitizer: DomSanitizer,
+                private appointmentService: AppointmentService) {
         this.componentState = {
             totalItems: 0,
             currentPageSize: 8,
@@ -48,10 +52,17 @@ export class ServiceSelectionGridListComponent implements OnInit {
     }
 
     getServices() {
-        console.log(this.businessId);
-        console.log(this.serviceService.getServices(this.businessId));
         this.serviceService.getServices(this.businessId).subscribe(res => {
             this.services = res;
+            for (let service in this.services) {
+                let serviceId = this.services[service]['id'];
+                this.appointmentService.getAvailabilitiesForService(this.businessId, serviceId).subscribe(
+                    res => {
+                        if (res.toString().length != 0)
+                            this.servicesAvailable.push(serviceId);
+                    }
+                )
+            }
             for (let service of this.services) {
                 this.serviceService.getServiceProfile(this.businessId, service.id).subscribe(
                     data => {
