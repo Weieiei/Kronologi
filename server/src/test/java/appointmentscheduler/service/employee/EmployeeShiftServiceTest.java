@@ -18,9 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -150,6 +148,36 @@ public class EmployeeShiftServiceTest {
         final EmployeeShiftDTO employeeShiftDTO = mock(EmployeeShiftDTO.class);
 
         employeeShiftService.modifyShift(anyLong(), anyLong(), employeeShiftDTO, 1);
+        fail("Should have thrown an exception.");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void modifyShiftConflict() {
+        final Business mockBusiness = mock(Business.class);
+        final LocalDate localDate = LocalDate.now();
+        final LocalTime startTime = LocalTime.of(1,0);
+        final LocalTime endTime = LocalTime.of(2,0);
+        final LocalTime newStartTime = LocalTime.of(2,0);
+        final LocalTime newEndTime = LocalTime.of(3,0);
+
+        Shift shift = new Shift();
+        shift.setId(1);
+        shift.setDate(localDate);
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
+
+        EmployeeShiftDTO employeeShiftDTO = new EmployeeShiftDTO();
+        employeeShiftDTO.setDate(localDate);
+        employeeShiftDTO.setStartTime(newStartTime);
+        employeeShiftDTO.setEndTime(newEndTime);
+
+        when(shiftRepository.findByIdAndBusinessId(anyLong(),anyLong())).thenReturn(Optional.of(shift));
+        when(businessRepository.findById(anyLong())).thenReturn(Optional.of(mockBusiness));
+        //return conflict shift as existing employee shift
+        when(shiftRepository.findByEmployeeIdAndBusinessId(anyLong(), anyLong())).thenReturn(Arrays.asList(shift));
+
+        employeeShiftService.modifyShift(anyLong(), anyLong(), employeeShiftDTO, 1);
+
         fail("Should have thrown an exception.");
     }
 
