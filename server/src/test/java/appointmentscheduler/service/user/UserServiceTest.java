@@ -65,8 +65,12 @@ public class UserServiceTest {
 
     @Mock
     private BusinessRepository businessRepository;
+
     @Mock
     private EmployeeRepository employeeRepository;
+
+    @Mock
+    private ResetPasswordTokenRepository resetPasswordTokenRepository;
 
     private UserService userService;
 
@@ -74,7 +78,7 @@ public class UserServiceTest {
     public void before() {
         userService = new UserService(
                 employeeRepository, businessRepository, userRepository, jwtProvider, verificationRepository,
-                bCryptPasswordEncoder, authenticationManager, settingsRepository, phoneNumberRepository
+                bCryptPasswordEncoder, authenticationManager, settingsRepository, phoneNumberRepository, resetPasswordTokenRepository
         );
     }
 

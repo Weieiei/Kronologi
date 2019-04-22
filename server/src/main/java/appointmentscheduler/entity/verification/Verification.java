@@ -32,8 +32,6 @@ public class Verification extends AuditableEntity {
         this.user = user;
     }
 
-
-
     @PostPersist
     public void afterInsert()  {
         generateHash();

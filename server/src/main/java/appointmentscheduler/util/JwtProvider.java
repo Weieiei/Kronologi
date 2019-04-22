@@ -1,5 +1,6 @@
 package appointmentscheduler.util;
 
+import appointmentscheduler.entity.guest.Guest;
 import appointmentscheduler.entity.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider implements Serializable {
 
-    private  String KEY;
+    private String KEY;
 
     private static String googleKey;
 
@@ -36,19 +37,52 @@ public class JwtProvider implements Serializable {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
+        if (user.getBusiness() == null || user.getBusiness().getId() == 0) {
+            return Jwts.builder()
+                    .claim("sub", user.getId())
+                    .claim("roles", authorities)
+                    .claim("firstName", user.getFirstName())
+                    .claim("lastName", user.getLastName())
+                    .claim("email", user.getEmail())
+                    .signWith(SignatureAlgorithm.HS256, getKey())
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                    .compact();
+        } else {
+            return Jwts.builder()
+                    .claim("sub", user.getId())
+                    .claim("roles", authorities)
+                    .claim("firstName", user.getFirstName())
+                    .claim("lastName", user.getLastName())
+                    .claim("email", user.getEmail())
+                    .claim("businessId", user.getBusiness().getId())
+                    .signWith(SignatureAlgorithm.HS256, getKey())
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                    .compact();
+        }
+
+    }
+
+    public String generateGuestToken(Guest guest, Authentication authentication) {
+
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
         return Jwts.builder()
-                .claim("sub", user.getId())
+                .claim("sub", guest.getId())
                 .claim("roles", authorities)
-                .claim("firstName", user.getFirstName())
-                .claim("lastName", user.getLastName())
-                .claim("email", user.getEmail())
-                .claim("businessId", user.getBusiness().getId())
+                .claim("firstName", guest.getFirstName())
+                .claim("lastName", guest.getLastName())
+                .claim("email", guest.getEmail())
                 .signWith(SignatureAlgorithm.HS256, getKey())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .compact();
 
     }
+
 
     public String generateCalendarToken(User user, Authentication authentication) {
 
@@ -143,15 +177,15 @@ public class JwtProvider implements Serializable {
         RandomStringGenerator.Builder builder = new RandomStringGenerator.Builder();
         char[] numbers = new char[]{'0', '9'};
         char[] lowercase = new char[]{'a', 'z'};
-        char[]  uppercase = new char[]{'A', 'Z'};
+        char[] uppercase = new char[]{'A', 'Z'};
         builder.withinRange(numbers, lowercase, uppercase);
         RandomStringGenerator generator = builder.build();
 
         return generator.generate(128);
     }
 
-    private String getKey(){
-        if(KEY == null){
+    private String getKey() {
+        if (KEY == null) {
             KEY = generateRandomSecret();
         }
 
@@ -159,14 +193,13 @@ public class JwtProvider implements Serializable {
     }
 
 
-    private String getGoogleKey(){
-        if(googleKey == null){
+    private String getGoogleKey() {
+        if (googleKey == null) {
             googleKey = generateRandomSecret();
         }
 
         return googleKey;
     }
-
 
 
 }

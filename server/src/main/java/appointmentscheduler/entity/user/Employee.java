@@ -85,7 +85,7 @@ public class Employee extends User {
         Shift availableShift;
 
         // Make sure the client and employee are not the same
-        if (appointment.getClient().equals(this)) {
+        if (appointment.getClient() != null && appointment.getClient().equals(this)) {
             throw new ModelValidationException("You cannot book an appointment with yourself.");
         }
 

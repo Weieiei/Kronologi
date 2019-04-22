@@ -32,7 +32,6 @@ export class AdminEmployeesComponent implements OnInit {
         this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
         this.componentState = {
             employees: [],
-            // currentSort: IDataTableSort,
             currentPage: 1,
             itemsPerPage: 10,
             search: '',

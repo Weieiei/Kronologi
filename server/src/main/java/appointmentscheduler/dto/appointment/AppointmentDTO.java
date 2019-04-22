@@ -1,7 +1,9 @@
 package appointmentscheduler.dto.appointment;
 
+import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.business.Business;
+import appointmentscheduler.entity.guest.Guest;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
@@ -16,7 +18,6 @@ public class AppointmentDTO {
     private long businessId;
     private long employeeId;
     private long serviceId;
-
     private LocalDate date;
     private LocalTime startTime;
 
@@ -75,6 +76,23 @@ public class AppointmentDTO {
         });
         Appointment appointment = modelMapper.map(this, Appointment.class);
         appointment.setClient(client);
+        appointment.setEmployee(employee);
+        appointment.setService(service);
+        appointment.setBusiness(business);
+        //set endtime with service duration
+        appointment.setEndTime(startTime.plusMinutes(service.getDuration()));
+        return appointment;
+    }
+
+    public Appointment convertToAppointment(Guest client, Employee employee, Service service, Business business){
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addMappings(new PropertyMap<AppointmentDTO, Appointment>() {
+            protected void configure() {
+                skip().setId(0);
+            }
+        });
+        Appointment appointment = modelMapper.map(this, Appointment.class);
+        appointment.setGuest(client);
         appointment.setEmployee(employee);
         appointment.setService(service);
         appointment.setBusiness(business);

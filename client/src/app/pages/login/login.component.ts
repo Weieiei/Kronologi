@@ -4,6 +4,10 @@ import { UserService } from '../../services/user/user.service';
 import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { AuthService } from "../../services/auth/auth.service";
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { PasswordForgotDialogComponent } from '../../components/password-forgot-dialog/password-forgot-dialog.component';
+import { SnackBar } from '../../snackbar';
+import {ErrorDialogComponent} from "../../components/error-dialog/error-dialog.component";
 
 
 @Component({
@@ -20,7 +24,12 @@ export class LoginComponent implements OnInit {
 
     constructor(private userService: UserService,
                 private router: Router,
-                private googleAnalytics :  GoogleAnalyticsService) {
+                private googleAnalytics:  GoogleAnalyticsService,
+                private dialog: MatDialog,
+                private snackBar: SnackBar,
+                private errorDialog: MatDialog,
+
+    ) {
     }
 
     ngOnInit() {
@@ -43,7 +52,7 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([businessId.toString()+'/admin/appts']);
                 }
                 else if (this.userService.isEmployee()){
-                    this.router.navigate(['employee/appts']);
+                    this.router.navigate([businessId.toString()+'employee/appts']);
                 }
                 else {
                     this.router.navigate(['business']);
@@ -53,11 +62,36 @@ export class LoginComponent implements OnInit {
 
             },
             err => {
+                this.openErrorDialog(err["status"]);
                 this.googleAnalytics.trackValues('security', 'login', 'failure');
                 console.log(err);
             }
         );
+    }
 
+    openDialog() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            email: this.username,
+        };
+        this.dialog.open(PasswordForgotDialogComponent, dialogConfig);
+        this.dialog.afterAllClosed
+            .subscribe(() => {
+                this.snackBar.openSnackBarSuccess('A password request message has been sent');
+            });
+    }
+
+    openErrorDialog(errorMessage: any) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            title: "ERROR",
+            messageOrStatus: errorMessage,
+        };
+        this.dialog.open(ErrorDialogComponent, dialogConfig);
     }
 
     togglePasswordVisibility() {

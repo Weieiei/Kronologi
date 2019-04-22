@@ -1,11 +1,13 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {BookAppointmentDTO} from '../../interfaces/appointment/book-appointment-dto';
-import {UserAppointmentDTO} from '../../interfaces/appointment/user-appointment-dto';
-import {Appointment} from 'src/app/interfaces/appointment';
-import {CancelAppointmentDTO} from 'src/app/interfaces/cancelAppointmentDTO';
-import {AppointmentDetailed} from '../../models/appointment/AppointmentDetailed';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { RequestOptions, RequestMethod } from '@angular/http';
+import { Observable } from 'rxjs';
+import { BookAppointmentDTO } from '../../interfaces/appointment/book-appointment-dto';
+import { UserAppointmentDTO } from '../../interfaces/appointment/user-appointment-dto';
+import { Appointment } from 'src/app/interfaces/appointment';
+import { CancelAppointmentDTO } from 'src/app/interfaces/cancelAppointmentDTO';
+import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
+import {GuestCreateDto} from "../../interfaces/guest/guest-create-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -32,6 +34,10 @@ export class AppointmentService {
         return this.http.post<any>(['api', 'business', businessId , 'appointments'].join('/'), payload);
     }
 
+    public bookGuestAppointment(guestDTO: GuestCreateDto): Observable<any> {
+        return this.http.post<any>(['api', 'business', '1', 'guest_appointments'].join('/'), guestDTO);
+    }
+
     public updateAppointment(id: number, payload: BookAppointmentDTO): Observable<any> {
         return this.http.put<any>(['api','business','1','appointments', id].join('/'), payload);
     }
@@ -40,8 +46,8 @@ export class AppointmentService {
         return this.http.post<CancelAppointmentDTO>(['api','business','1','user','appointments',id].join('/'),payload)
     }
 
-    public getMyAppointmentsEmployee(): Observable<Appointment[]> {
-        return this.http.get<Appointment[]>(['api', 'business', 'employee', '1', 'appointments'].join('/'));
+    public getMyAppointmentsEmployee(businessId: number): Observable<Appointment[]> {
+        return this.http.get<Appointment[]>(['api', 'business', 'employee', businessId, 'appointments'].join('/'));
     }
 
     public cancelAppointmentsEmployee(appointment:CancelAppointmentDTO): Observable<any> {

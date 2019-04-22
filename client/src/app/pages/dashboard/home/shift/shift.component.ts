@@ -77,7 +77,7 @@ export class ShiftComponent implements OnInit, OnChanges {
             res => this.employee = res,
             err => {
                 if (err instanceof HttpErrorResponse) {
-                    this.openDialog(err.error.message);
+                    this.openDialog(err["status"]);
                     this.router.navigate(['']);
                 }
             }
@@ -109,8 +109,7 @@ export class ShiftComponent implements OnInit, OnChanges {
             },
             err => {
                 if (err instanceof HttpErrorResponse) {
-                    this.openDialog(err.error.message);
-                    this.snackBar.openSnackBarError(err.error.message);
+                    this.openDialog(err["status"]);
                 }
             }
         );
@@ -127,8 +126,8 @@ export class ShiftComponent implements OnInit, OnChanges {
             },
             err => {
                 console.log(err);
+                this.openDialog(err["status"]);
                 if (err instanceof HttpErrorResponse) {
-                    this.openDialog(err.error.message);
                 }
             }
         );
@@ -145,9 +144,9 @@ export class ShiftComponent implements OnInit, OnChanges {
             },
             err => {
                 console.log(err);
+                this.openDialog(err["status"]);
                 if (err instanceof HttpErrorResponse) {
-                  // this.openDialog(err.error.message);
-                    this.snackBar.openSnackBarError(err.error.message);
+
                 }
             }
         );

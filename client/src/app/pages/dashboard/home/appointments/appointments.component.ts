@@ -1,8 +1,9 @@
 import { Component, OnInit , Input} from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment/appointment.service';
-import { MatDialog } from '@angular/material';
+import {MatDialog, MatDialogConfig} from '@angular/material';
 import { UserAppointmentDTO } from '../../../../interfaces/appointment/user-appointment-dto';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import {ErrorDialogComponent} from "../../../../components/error-dialog/error-dialog.component";
 
 @Component({
     selector: 'app-appointments',
@@ -58,5 +59,17 @@ export class AppointmentsComponent implements OnInit {
             err => console.log(err)
         );
     }
+
+  /*  openDialog(errorMessage: any) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            title: "ERROR",
+            messageOrStatus: errorMessage,
+        };
+        this.dialog.open(ErrorDialogComponent, dialogConfig);
+    }
+*/
 
 }

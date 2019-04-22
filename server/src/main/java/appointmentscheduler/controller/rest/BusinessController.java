@@ -87,25 +87,8 @@ public class BusinessController extends AbstractController {
         this.emailService = emailService;
         this.fileStorageService = fileStorageService;
     }
-//TODO figure out how the buisness id will be handled
-//    private Business mapBusinessDTOToBusiness(BusinessDTO businessDTO){
- //       Business business = modelMapper.map(businessDTO, Business.class);
-
-//        Business business = businessRepository.findById(getUserId()).orElseThrow(ResourceNotFoundException::new);
-//        appointment.setClient(client);
-//
-//        Employee employee = employeeRepository.findById(appointmentDTO.getEmployeeId()).orElseThrow(ResourceNotFoundException::new);
-//        appointment.setEmployee(employee);
-//
-//        Service service = serviceRepository.findById(appointmentDTO.getServiceId()).orElseThrow(ResourceNotFoundException::new);
-//        appointment.setService(service);
-//
-//        return appointment;
-//    }
-
 
     @LogREST
-
     @GetMapping("/")
     public ResponseEntity<String> findAll() {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Business.class, new BusinessSerializer());
@@ -122,7 +105,6 @@ public class BusinessController extends AbstractController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
 
   @LogREST
