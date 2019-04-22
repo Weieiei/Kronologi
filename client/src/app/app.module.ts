@@ -67,10 +67,9 @@ import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/ser
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.component';
 import { SearchInputComponent } from './components/search-box/search-box.component';
+import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
-import { GuestComponent } from './pages/guest/guest.component';
-import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
@@ -131,10 +130,9 @@ import { environment } from '../environments/environment';
         DetailsComponent,
         GoogleMapsComponent,
         SyncCalendarsComponent,
-        GuestComponent,
-        GuestAppointmentComponent,
         PasswordResetRedirectComponent,
-        PasswordForgotDialogComponent
+        PasswordForgotDialogComponent,
+        ReceiptsComponent
     ],
     imports: [
         LightboxModule,
