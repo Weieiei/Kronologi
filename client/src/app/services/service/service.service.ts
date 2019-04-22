@@ -1,16 +1,55 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { switchMap, shareReplay, map, takeUntil } from 'rxjs/operators';
+import { timer } from 'rxjs/observable/timer';
 import { Service } from '../../models/service/Service';
 import { ServiceCreateDto } from '../../interfaces/service/service-create-dto';
 import { ServiceDTO } from '../../interfaces/service/service-dto';
+
+const REFRESH_INTERVAL = 10000;
+const CACHE_SIZE = 1;
 
 @Injectable({
     providedIn: 'root'
 })
 export class ServiceService {
 
+    private cache$: Observable<Array<Service>>;
+    private reload$ = new Subject<void>();
+
     constructor(private http: HttpClient) {
+    }
+
+    get allServices() {
+        if (!this.cache$) {
+            const timer$ = timer(0, REFRESH_INTERVAL);
+
+            this.cache$ = timer$.pipe(
+                switchMap(() => this.requestAllEmployees()),
+                takeUntil(this.reload$),
+                shareReplay(CACHE_SIZE)
+            );
+        }
+
+        return this.cache$;
+    }
+
+    requestAllEmployees() {
+        return this.getPlainServices().pipe(
+            map(data => {
+                return data.map(a => {
+                    return new Service(
+                        a.id, a.name, a.duration
+                    );
+                });
+            })
+        );
+    }
+
+    forceReload() {
+        this.reload$.next();
+        this.cache$ = null;
     }
 
     public getServices(businessId: number): Observable<ServiceDTO[]> {
