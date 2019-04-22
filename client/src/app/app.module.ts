@@ -67,6 +67,7 @@ import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/ser
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.component';
 import { SearchInputComponent } from './components/search-box/search-box.component';
+import { AppGradientButtonComponent } from './components/app-gradient-button/app-gradient-button.component';
 import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
@@ -132,7 +133,8 @@ import { environment } from '../environments/environment';
         SyncCalendarsComponent,
         PasswordResetRedirectComponent,
         PasswordForgotDialogComponent,
-        ReceiptsComponent
+        ReceiptsComponent,
+        AppGradientButtonComponent
     ],
     imports: [
         LightboxModule,

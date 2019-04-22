@@ -17,8 +17,8 @@ export class AppointmentService {
     constructor(private http: HttpClient) {
     }
 
-    public getAllAppointments(): Observable<AppointmentDetailed[]> {
-        return this.http.get<AppointmentDetailed[]>(['api', 'business', '1', 'admin' , 'appointments'].join('/'));
+    public getAllAppointments(businessId : number): Observable<AppointmentDetailed[]> {
+        return this.http.get<AppointmentDetailed[]>(['api','business', businessId, 'admin' , 'appointments'].join('/'));
     }
 
     public getMyAppointments(businessId: number): Observable<UserAppointmentDTO[]> {
@@ -29,8 +29,8 @@ export class AppointmentService {
         return this.http.get<UserAppointmentDTO>(['api', 'business', '1', 'user', 'appointments', id].join('/'));
     }
 
-    public bookAppointment(payload: BookAppointmentDTO): Observable<any> {
-        return this.http.post<any>(['api', 'business', '1', 'appointments'].join('/'), payload);
+    public bookAppointment(businessId: number, payload: BookAppointmentDTO): Observable<any> {
+        return this.http.post<any>(['api', 'business', businessId , 'appointments'].join('/'), payload);
     }
 
     public bookGuestAppointment(guestDTO: GuestCreateDto): Observable<any> {
@@ -45,8 +45,8 @@ export class AppointmentService {
         return this.http.post<CancelAppointmentDTO>(['api', 'business', '1', 'user', 'appointments', id].join('/'), payload);
     }
 
-    public getMyAppointmentsEmployee(): Observable<Appointment[]> {
-        return this.http.get<Appointment[]>(['api', 'business', 'employee', '1', 'appointments'].join('/'));
+    public getMyAppointmentsEmployee(businessId: number): Observable<Appointment[]> {
+        return this.http.get<Appointment[]>(['api', 'business', 'employee', businessId, 'appointments'].join('/'));
     }
 
     public cancelAppointmentsEmployee(appointment: CancelAppointmentDTO): Observable<any> {
@@ -57,8 +57,8 @@ export class AppointmentService {
         return this.http.get(['api', 'business', '1', 'appointments', 'cancel', id].join('/'));
     }
 
-    public getAvailabilitiesForService(serviceId: any ): Observable<any> {
-        return this.http.get(['api', 'business', '1', 'availabilities', serviceId].join('/'));
+    public getAvailabilitiesForService(businessId : number, serviceId: any ): Observable<any> {
+        return this.http.get(['api', 'business', businessId ,'availabilities',serviceId].join('/'));
     }
 
     public googleLogin(): Observable<any> {

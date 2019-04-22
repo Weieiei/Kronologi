@@ -4,7 +4,6 @@
     </mat-card-header>
     <mat-card-content>
         <form [formGroup]="serviceForm">
-            <!--<h4>Create a new service</h4>-->
 
             <mat-form-field class="name-input">
                 <input formControlName="name" matInput placeholder="Name">
@@ -17,3 +16,9 @@
 
     </mat-card-content>
 </mat-card>
+
+<div class="cool-button">
+    <app-app-gradient-button (click)="redirectToServices()" class="gradient-button">
+        Go Back
+    </app-app-gradient-button>
+</div>

@@ -1,16 +1,19 @@
 package appointmentscheduler.controller.rest;
 
-import appointmentscheduler.entity.appointment.Appointment;
+import appointmentscheduler.annotation.LogREST;
+import appointmentscheduler.converters.service.ServiceDTOToService;
+import appointmentscheduler.dto.service.ServiceCreateDTO;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.file.ServiceFile;
 import appointmentscheduler.entity.service.Service;
+import appointmentscheduler.exception.FileStorageException;
 import appointmentscheduler.exception.ResourceNotFoundException;
 import appointmentscheduler.repository.BusinessRepository;
 import appointmentscheduler.repository.ServiceRepository;
 import appointmentscheduler.serializer.ObjectMapperFactory;
 import appointmentscheduler.serializer.ServiceSerializer;
-import appointmentscheduler.serializer.UserAppointmentSerializer;
-import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.service.business.BusinessService;
+import appointmentscheduler.service.file.ServiceFileStorageService;
 import appointmentscheduler.service.service.ServiceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,25 +22,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
-import appointmentscheduler.annotation.LogREST;
-import appointmentscheduler.converters.service.ServiceDTOToService;
-import appointmentscheduler.dto.service.ServiceCreateDTO;
 import org.springframework.web.multipart.MultipartFile;
-import appointmentscheduler.service.file.ServiceFileStorageService;
 
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import appointmentscheduler.exception.FileStorageException;
 
 @RestController
-@RequestMapping("${rest.api.path}/business/services")
+@RequestMapping("${rest.api.path}/business")
 
 public class ServiceController {
 
@@ -61,7 +54,7 @@ public class ServiceController {
         this.serviceFileStorageService = serviceFileStorageService;
     }
 
-    @GetMapping(value = "/{businessId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{businessId}/services", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findAll(@PathVariable long businessId) {
             final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
 
@@ -73,7 +66,7 @@ public class ServiceController {
         }
     }
 
-    @GetMapping(value = "/{businessId}/{serviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{businessId}/services/{serviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findById(@PathVariable long businessId, @PathVariable long serviceId) {
         final ObjectMapper mapper = objectMapperFactory.createMapper(Service.class, new ServiceSerializer());
 
@@ -101,14 +94,14 @@ public class ServiceController {
     }
 
     @LogREST
-    @PostMapping("/{serviceId}/profile")
+    @PostMapping("/{businessId}/services/{serviceId}/profile")
     public ResponseEntity<Map<String, String>> updateProfile(@PathVariable long serviceId,
                                                              @RequestPart("file") MultipartFile serviceFile) {
         return ResponseEntity.ok(serviceFileStorageService.saveServiceFile(serviceFile, serviceId));
     }
 
     @LogREST
-    @GetMapping("/{serviceId}/profile")
+    @GetMapping("/{businessId}/services/{serviceId}/profile")
     public  ResponseEntity<Map<String,String>> getProfile(@PathVariable long serviceId) throws JSONException {
         ServiceFile serviceFile;
         try {

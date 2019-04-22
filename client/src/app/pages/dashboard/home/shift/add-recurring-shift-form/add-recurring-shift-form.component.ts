@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NewShiftDTO } from '../../../../../interfaces/shift/new-shift-dto';
+import {ThemeService} from "../../../../../core/theme/theme.service";
 
 @Component({
   selector: 'app-add-recurring-shift-form',
@@ -15,14 +16,18 @@ export class AddRecurringShiftFormComponent implements OnInit {
     startHour: number;
     startMinute: number;
     @Output() shiftChange = new EventEmitter();
-
+    darkModeActive: boolean;
     endHour: number;
     endMinute: number;
-  constructor() {
+  constructor(    private themeService :ThemeService
+  ) {
 
   }
 
   ngOnInit() {
+      this.themeService.darkModeState.subscribe(value => {
+          this.darkModeActive = value;
+      })
   }
 
     onChange(day: string) {

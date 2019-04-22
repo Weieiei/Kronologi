@@ -36,6 +36,10 @@ export class BusinessViewComponent implements OnInit {
           }
         )
     }
-  }
+
+    getAllAppointmentsForUserForBusiness(businessId: number) {
+        this.router.navigate([businessId + '/my/appts']);
+    }
+}
 
 

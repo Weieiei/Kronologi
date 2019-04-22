@@ -53,7 +53,6 @@ export class BookComponent implements OnInit {
 
     setService(service: ServiceDTO): void {
         this.service = service;
-      //  this.getAllAvailabilitiesForService(this.service);
     }
 
     serviceIsSelected(): boolean {
@@ -63,30 +62,15 @@ export class BookComponent implements OnInit {
     setDate(date: any) {
         this.date = date;
     }
-
-    dateIsSelected(): boolean{
-        return !!this.date;
-    }
-
-    setTime(time: String) {
-        this.time = time;
-    }
-
     timeIsSelected(): boolean {
         return !!this.time;
-    }
-
-
-
-    selectStartTime(startTime :  TimeDTO){
-
     }
 
     getAllAvailabilitiesForService(service: ServiceDTO) {
         this.monthsMap = new Map<number, number[]>();
         this.daysMap = new Map<number, Array<EmployeeFreeTime>>();
 
-        this.appointmentService.getAvailabilitiesForService(service.id).subscribe(
+        this.appointmentService.getAvailabilitiesForService(this.businessId, service.id).subscribe(
             res => {
                 for (let eachEmployee of res) {
                     let emp_id;
@@ -141,7 +125,7 @@ export class BookComponent implements OnInit {
                                         this.daysMap.set(parseInt(each['date']['dayOfYear']), arr);
 
                                     }
-                                    //if the DAY key is already in the map, add the day in the amp
+                                    //if the DAY key is already in the map, add the day in the map
                                     else if (this.daysMap.has(each['date']['dayOfYear'])) {
                                         let arrayOfEmployeeFreeTimes = this.daysMap.get(parseInt(each['date']['dayOfYear']));
                                         dayOfYear = parseInt(each['date']['dayOfYear']);
@@ -160,8 +144,6 @@ export class BookComponent implements OnInit {
                         }
                     }
                 }
-       console.log(this.daysMap);
-
         });
     }
 
@@ -172,7 +154,7 @@ export class BookComponent implements OnInit {
             date: this.date,
             startTime: this.time
         };
-        this.appointmentService.bookAppointment(this.appointment).subscribe(
+        this.appointmentService.bookAppointment(this.businessId, this.appointment).subscribe(
             res => console.log(res)
         );
     }

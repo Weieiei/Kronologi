@@ -1,28 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { UserService } from '../../../../services/user/user.service';
-import { UserToDisplay } from '../../../../models/user/UserToDisplay';
-import { MatDialog } from '@angular/material';
-import { AssignServicesDialogComponent } from './assign-services-dialog/assign-services-dialog.component';
-import { ServiceService } from '../../../../services/service/service.service';
-import { Service } from '../../../../models/service/Service';
-import { ChangeClientToEmployeeDialogComponent } from './change-client-to-employee-dialog/change-client-to-employee-dialog.component';
-import {getTypeOf} from "@angular/core/testing/src/lang_utils";
+import {Component, OnInit} from '@angular/core';
+import {map} from 'rxjs/operators';
+import {UserService} from '../../../../services/user/user.service';
+import {UserToDisplay} from '../../../../models/user/UserToDisplay';
+import {MatDialog} from '@angular/material';
+import {AssignServicesDialogComponent} from './assign-services-dialog/assign-services-dialog.component';
+import {ServiceService} from '../../../../services/service/service.service';
+import {Service} from '../../../../models/service/Service';
+import {ChangeClientToEmployeeDialogComponent} from './change-client-to-employee-dialog/change-client-to-employee-dialog.component';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'app-admin-users',
     templateUrl: './admin-users.component.html',
     styleUrls: ['./admin-users.component.scss']
 })
+
+
 export class AdminUsersComponent implements OnInit {
 
     displayedColumns: string[] = ['id', 'name', 'email', 'services', 'roles', 'actions'];
     users: UserToDisplay[];
     services: Service[];
+    businessId: number;
 
     componentState: {
         users: Array<UserToDisplay>,
-        // currentSort: IDataTableSort,
         currentPage: number,
         itemsPerPage: number,
         search: string,
@@ -31,13 +33,14 @@ export class AdminUsersComponent implements OnInit {
 
     constructor(private userService: UserService,
                 private serviceService: ServiceService,
-                public dialog: MatDialog) {
+                public dialog: MatDialog,
+                private route: ActivatedRoute) {
     }
 
     ngOnInit() {
+        this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
         this.componentState = {
             users: [],
-            // currentSort: IDataTableSort,
             currentPage: 1,
             itemsPerPage: 10,
             search: '',
@@ -124,7 +127,7 @@ export class AdminUsersComponent implements OnInit {
     }
 
     getAllServices(): void {
-        this.serviceService.getPlainServices().pipe(
+        this.serviceService.getPlainServices(this.businessId).pipe(
             map(data => {
                 return data.map(a => {
                     return a;

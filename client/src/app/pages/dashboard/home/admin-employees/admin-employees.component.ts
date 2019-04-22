@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../../../services/admin/admin.service';
-import { Router } from '@angular/router';
 import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
 import { skip, take, mergeMap, switchMap, mapTo } from 'rxjs/operators';
 import { merge } from 'rxjs/observable/merge';
 import { Observable, Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-employees',
@@ -12,7 +12,7 @@ import { Observable, Subject } from 'rxjs';
     styleUrls: ['./admin-employees.component.scss']
 })
 export class AdminEmployeesComponent implements OnInit {
-
+    businessId: number;
     columns: string[] = ['firstName', 'lastName', 'email', 'shifts'];
     employees: AdminEmployeeDTO[];
 
@@ -24,7 +24,6 @@ export class AdminEmployeesComponent implements OnInit {
 
     componentState: {
         employees: Array<AdminEmployeeDTO>,
-        // currentSort: IDataTableSort,
         currentPage: number,
         itemsPerPage: number,
         search: string,
@@ -33,11 +32,14 @@ export class AdminEmployeesComponent implements OnInit {
 
     constructor(
         private adminService: AdminService,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute,
     ) {
     }
 
     ngOnInit() {
+        this.businessId = parseInt(this.route.snapshot.paramMap.get('businessId'));
+        this.adminService.setBusinessId(this.businessId);
         const initialEmployees$ = this.getDataOnce();
 
         const updates$ = merge(this.update$, this.forceReload$).pipe(
@@ -46,7 +48,6 @@ export class AdminEmployeesComponent implements OnInit {
 
         this.componentState = {
             employees: [],
-            // currentSort: IDataTableSort,
             currentPage: 1,
             itemsPerPage: 10,
             search: '',
@@ -88,7 +89,7 @@ export class AdminEmployeesComponent implements OnInit {
     }
 
     goToEmployee(id: number): void {
-        this.router.navigate(['admin', 'employees', id, 'shifts']);
+        this.router.navigate([this.businessId, 'admin', 'employees', id, 'shifts']);
     }
 
     filterItems(items: Array<AdminEmployeeDTO>, search: string): Array<AdminEmployeeDTO> {

@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Service } from '../../../../models/service/Service';
 import { ServiceService } from '../../../../services/service/service.service';
 import { skip, take, mergeMap, switchMap, mapTo } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 import { merge } from 'rxjs/observable/merge';
-import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
 @Component({
@@ -14,12 +13,13 @@ import { Observable, Subject } from 'rxjs';
 })
 export class AdminServicesComponent implements OnInit {
  // Fields to upload a service profile picture
+ businessId : any;
     selectedFile: File = null;
     fileSelectMsg = 'No file selected yet.';
     fileUploadMsg = 'No file uploaded yet.';
     serviceUploadId: number;
 
-    displayedColumns: string[] = ['id', 'name', 'duration', 'client', 'employee', 'profile'];
+    displayedColumns: string[] = ['id', 'name', 'duration', 'profile'];
     services: Service[];
 
     services$: Observable<Array<Service>>;
@@ -29,7 +29,6 @@ export class AdminServicesComponent implements OnInit {
 
     componentState: {
         services: Array<Service>,
-        // currentSort: IDataTableSort,
         currentPage: number,
         itemsPerPage: number,
         search: string,
@@ -37,11 +36,13 @@ export class AdminServicesComponent implements OnInit {
     };
 
     constructor(private serviceService: ServiceService,
-        private router: Router
+                private router: Router, private route: ActivatedRoute
         ) {
     }
 
     ngOnInit() {
+        this.businessId = parseInt(this.route.snapshot.paramMap.get('businessId'));
+        this.serviceService.setBusinessId(this.businessId);
         const initialService$ = this.getDataOnce();
 
         const updates$ = merge(this.update$, this.forceReload$).pipe(
@@ -50,7 +51,6 @@ export class AdminServicesComponent implements OnInit {
 
         this.componentState = {
             services: [],
-            // currentSort: IDataTableSort,
             currentPage: 1,
             itemsPerPage: 10,
             search: '',
@@ -110,13 +110,11 @@ export class AdminServicesComponent implements OnInit {
         }
     }
 
-
     onSearch(searchTerm: string) {
         this.componentState.currentPage = 1;
         this.componentState.search = searchTerm;
         this.updateServices(this.services);
     }
-
 
     selectEvent(file: File): void {
         this.selectedFile = file;
@@ -132,25 +130,23 @@ export class AdminServicesComponent implements OnInit {
         this.fileUploadMsg = 'No file uploaded yet.';
       }
 
-      updateServicePicture(serviceId): void {
-          console.log(serviceId);
-
+    updateServicePicture(serviceId): void {
         if (this.selectedFile != null) {
             this.serviceService.updateServicePicture(this.selectedFile , serviceId).subscribe(
                 res => {
                     console.log('File seccessfully uploaded. ');
-                    //this.fileUploadMsg = 'File seccessfully uploaded. ';
-                    //get picture and show it in the profile  or update the page
+                    // get picture and show it in the profile  or update the page
                     this.router.navigate(['business']);
-
 
                 },
                 err => {
-                    if (err instanceof HttpErrorResponse) {
-                        err => console.log(err)
-                    }
+                    console.log(err);
                 }
             );
         }
+    }
+
+    redirectToCreateNewService() {
+        this.router.navigate([this.businessId + '/admin/services/create']);
     }
 }
