@@ -200,7 +200,7 @@ public class BusinessController extends AbstractController {
   @PostMapping("/businessWithLogo")
   public ResponseEntity<Map<String, Object>> createBusinessWithLogo(@RequestPart("file") MultipartFile aFile,
           @RequestPart("business") BusinessDTO businessDTO, @RequestPart("businessHours")BusinessHoursDTO[] businessHoursDTOs,
-          @RequestPart("services") ServiceCreateDTO[] serviceCreateDTOs, @RequestPart("user") UserRegisterDTO userRegisterDTO, @RequestPart("stripeSellerInfo") StripeSellerInfoDTO stripeSellerInfoDTO, @RequestPart("bankAccountInfo") BankAccountDTO bankAccount) throws StripeException,IOException,
+          @RequestPart("services") ServiceCreateDTO[] serviceCreateDTOs, @RequestPart("user") UserRegisterDTO userRegisterDTO, @RequestPart(required =false,name="stripeSellerInfo") StripeSellerInfoDTO stripeSellerInfoDTO, @RequestPart(required =false,name=    "bankAccountInfo") BankAccountDTO bankAccount) throws StripeException,IOException,
           MessagingException, NoSuchAlgorithmException {
       return createBusiness(aFile, businessDTO, businessHoursDTOs, serviceCreateDTOs, userRegisterDTO, stripeSellerInfoDTO, bankAccount);
   }
@@ -209,7 +209,7 @@ public class BusinessController extends AbstractController {
   @PostMapping("/businessNoLogo")
   public ResponseEntity<Map<String, Object>> createBusinessWithNoLogo(@RequestPart("business") BusinessDTO businessDTO,
                                                                       @RequestPart("businessHours")BusinessHoursDTO[] businessHoursDTOs, @RequestPart("services") ServiceCreateDTO[] serviceCreateDTOs,
-                                                                      @RequestPart("user") UserRegisterDTO userRegisterDTO, @RequestPart("stripeSellerInfo")StripeSellerInfoDTO stripeSellerInfoDTO, @RequestPart("bankAccountInfo") BankAccountDTO bankAccount) throws StripeException, IOException, MessagingException, NoSuchAlgorithmException {
+                                                                      @RequestPart("user") UserRegisterDTO userRegisterDTO, @RequestPart(required =false,name="stripeSellerInfo")StripeSellerInfoDTO stripeSellerInfoDTO, @RequestPart(required =false,name="bankAccountInfo") BankAccountDTO bankAccount) throws StripeException, IOException, MessagingException, NoSuchAlgorithmException {
       return createBusiness(null, businessDTO, businessHoursDTOs, serviceCreateDTOs, userRegisterDTO, stripeSellerInfoDTO,bankAccount);
   }
 
