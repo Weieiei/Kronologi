@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import * as countryData from 'country-telephone-data';
 import {PhoneNumberDTO} from "../../interfaces/phonenumber/phone-number-dto";
 import {GuestCreateDto} from "../../interfaces/guest/guest-create-dto";
+import { BookAppointmentDTO } from '../../interfaces/appointment/book-appointment-dto';
 
 @Component({
   selector: 'app-guest',
@@ -34,8 +35,9 @@ export class GuestComponent implements OnInit {
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
-            phoneNumber: null
-        };
+            phoneNumber: null,
+            appointment: null
+  };
         this.guestService.register_guest(payload).subscribe(
             res => {
                 const token = res['token'];

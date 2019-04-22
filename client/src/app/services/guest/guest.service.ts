@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import * as decode from "jwt-decode";
-import { PhoneNumberDTO } from "../../interfaces/phonenumber/phone-number-dto";
-import { GuestCreateDto } from "../../interfaces/guest/guest-create-dto";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as decode from 'jwt-decode';
+import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
+import { GuestCreateDto } from '../../interfaces/guest/guest-create-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class GuestService {
   constructor(private http: HttpClient) { }
 
     register_guest(payload: GuestCreateDto): Observable<any> {
-        return this.http.post<any>(['api', 'guest', 'add'].join('/'),payload);
+        return this.http.post<any>(['api', 'guest', 'add'].join('/'), payload);
     }
 
     register(payload: GuestCreateDto): Observable<any> {
