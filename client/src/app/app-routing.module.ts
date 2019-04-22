@@ -28,6 +28,7 @@ import { BusinessViewComponent } from './pages/business-view/business-view.compo
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { DetailsComponent } from './pages/details/details.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
+import { ReceiptsComponent } from "./pages/receipts/receipts.component";
 
 const routes: Routes = [
     // Login
@@ -57,6 +58,7 @@ const routes: Routes = [
             // Admin
             { path: ':businessId/admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: ':businessId/admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
+            { path: 'admin/:businessId/receipts', component: ReceiptsComponent, canActivate: [AdminGuard]},
 
             // Reserving and modifying reservation
             {path : 'details/:businessId', component: DetailsComponent},

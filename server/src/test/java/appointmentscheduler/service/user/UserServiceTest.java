@@ -468,31 +468,28 @@ public void businessRegisterFailed() throws IOException, MessagingException, NoS
     @Test
     public void businessRegisterSucceeded() throws IOException, MessagingException, NoSuchAlgorithmException{
         // create mocks
+
         final User mockedUser = mock(User.class);
-        final User savedUser =mock(User.class);
+
         final UserRegisterDTO userRegisterDTO = mock(UserRegisterDTO.class);
         final Business mockedBusiness= mock(Business.class);
         final Verification mockedVerification = mock(Verification.class);
-        final Verification savedVerification = mock(Verification.class);
-        final VerificationRepository verificationRepository =mock(VerificationRepository.class);
-        final UserRepository userRepository = mock(UserRepository.class);
-        final UserFactory userFactory = mock(UserFactory.class);
-
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
-        // when(verificationRepository.sa    ve(any(Verification.class))).thenReturn(savedVerification);
-
-        //when(userFactory.createAdmin(any(Business.class),User.class,anyString(),anyString()
-         //       ,anyString(),anyString())
-       //).thenReturn(mockedUser);
-
-        Map<String, Object> map = userService.business_register_test(userRepository, userRegisterDTO, mockedBusiness,mockedUser,mockedVerification ,savedUser, savedVerification);
 
 
-       // verify(userFactory).createAdmin(any(Business.class),User.class,anyString(),anyString()
-        //        ,anyString(),anyString());
-       // verify(mockedUser).setRole(anyString());
-        verify(userRepository).save(any(User.class));
-       // verify(verificationRepository).save(any(Verification.class));
+        PhoneNumberDTO phoneNumberDTO = mock(PhoneNumberDTO.class);
+
+        //stub
+        when(userRegisterDTO.getEmail()).thenReturn("abc@abc.com");
+        when(userRegisterDTO.getPassword()).thenReturn("password");
+        when(userRegisterDTO.getPhoneNumber()).thenReturn(phoneNumberDTO);
+        when(phoneNumberDTO.getAreaCode()).thenReturn("514");
+        when(phoneNumberDTO.getCountryCode()).thenReturn("1");
+        when(phoneNumberDTO.getNumber()).thenReturn("1234567");
+        when(userRepository.save(any(User.class))).thenReturn(mockedUser);
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.empty());
+
+        Map<String, Object> map = userService.businessRegister(userRegisterDTO, mockedBusiness);
+        verify(verificationRepository).save(any(Verification.class));
 
     }
 }

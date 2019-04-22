@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {AdminService} from '../../../../services/admin/admin.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AdminEmployeeDTO} from '../../../../interfaces/employee/admin-employee-dto';
+import { Component, OnInit } from '@angular/core';
+import { AdminService } from '../../../../services/admin/admin.service';
+import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
+import { skip, take, mergeMap, switchMap, mapTo } from 'rxjs/operators';
+import { merge } from 'rxjs/observable/merge';
+import { Observable, Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-employees',
@@ -12,6 +15,12 @@ export class AdminEmployeesComponent implements OnInit {
     businessId: number;
     columns: string[] = ['firstName', 'lastName', 'email', 'shifts'];
     employees: AdminEmployeeDTO[];
+
+    employees$: Observable<Array<AdminEmployeeDTO>>;
+    showNotification$: Observable<boolean>;
+    update$ = new Subject<void>();
+    forceReload$ = new Subject<void>();
+
 
     componentState: {
         employees: Array<AdminEmployeeDTO>,
@@ -24,12 +33,19 @@ export class AdminEmployeesComponent implements OnInit {
     constructor(
         private adminService: AdminService,
         private router: Router,
-        private route : ActivatedRoute,
+        private route: ActivatedRoute,
     ) {
     }
 
     ngOnInit() {
-        this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
+        this.businessId = parseInt(this.route.snapshot.paramMap.get('businessId'));
+        this.adminService.setBusinessId(this.businessId);
+        const initialEmployees$ = this.getDataOnce();
+
+        const updates$ = merge(this.update$, this.forceReload$).pipe(
+            mergeMap(() => this.getDataOnce())
+        );
+
         this.componentState = {
             employees: [],
             currentPage: 1,
@@ -38,11 +54,31 @@ export class AdminEmployeesComponent implements OnInit {
             totalItems: 0,
         };
 
-        this.getAllEmployees(this.businessId);
+        this.employees$ = merge(initialEmployees$, updates$);
+        const reload$ = this.forceReload$.pipe(switchMap(() => this.getNotifications()));
+        const initialNotifications$ = this.getNotifications();
+        const show$ = merge(initialNotifications$, reload$).pipe(mapTo(true));
+        const hide$ = this.update$.pipe(mapTo(false));
+        this.showNotification$ = merge(show$, hide$);
+
+        this.getAllEmployees();
     }
 
-    getAllEmployees(businessId: number): void {
-        this.adminService.getAllEmployees(businessId).subscribe(
+    getDataOnce() {
+        return this.adminService.allEmployees.pipe(take(1));
+    }
+
+    getNotifications() {
+        return this.adminService.allEmployees.pipe(skip(1));
+    }
+
+    forceReload() {
+        this.adminService.forceReload();
+        this.forceReload$.next();
+    }
+
+    getAllEmployees(): void {
+        this.employees$.subscribe(
             res => {
                 this.employees = res;
                 this.componentState.employees = res;
@@ -53,7 +89,7 @@ export class AdminEmployeesComponent implements OnInit {
     }
 
     goToEmployee(id: number): void {
-        this.router.navigate([this.businessId,'admin', 'employees', id, 'shifts']);
+        this.router.navigate([this.businessId, 'admin', 'employees', id, 'shifts']);
     }
 
     filterItems(items: Array<AdminEmployeeDTO>, search: string): Array<AdminEmployeeDTO> {

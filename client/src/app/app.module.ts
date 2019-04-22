@@ -67,9 +67,12 @@ import { ServiceSelectionGridListComponent } from './pages/dashboard/reserve/ser
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.component';
 import { SearchInputComponent } from './components/search-box/search-box.component';
-import {AppGradientButtonComponent} from './components/app-gradient-button/app-gradient-button.component';
+import { AppGradientButtonComponent } from './components/app-gradient-button/app-gradient-button.component';
+import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -130,6 +133,7 @@ import { PasswordForgotDialogComponent } from './components/password-forgot-dial
         SyncCalendarsComponent,
         PasswordResetRedirectComponent,
         PasswordForgotDialogComponent,
+        ReceiptsComponent,
         AppGradientButtonComponent
     ],
     imports: [
@@ -153,7 +157,8 @@ import { PasswordForgotDialogComponent } from './components/password-forgot-dial
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyBstSo5jhmmQQ5u2ZjEXOLbMIzXJIdV_48'
           }),
-        StarRatingModule.forRoot()
+        StarRatingModule.forRoot(),
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     entryComponents: [
         ErrorDialogComponent,

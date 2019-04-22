@@ -358,39 +358,6 @@ public class UserService {
         return buildTokenRegisterMap( token, verification);
     }
 
-    public Map<String, Object> business_register_test(UserRepository userRepository,UserRegisterDTO userRegisterDTO, Business business, User user, Verification verification,User savedUser, Verification savedVerification) throws IOException, MessagingException, NoSuchAlgorithmException {
-        //works the same as the businessRegister, just put the class this method depends as
-    //parameters, so it is easy to mock
-        if (userRepository.findByEmailIgnoreCase(userRegisterDTO.getEmail()).orElse(null) != null) {
-            throw new UserAlreadyExistsException(String.format("A user with the email %s already exists.", userRegisterDTO.getEmail()));
-        }
-
-         user = UserFactory.createAdmin(business, User.class, userRegisterDTO.getFirstName(), userRegisterDTO.getLastName(), userRegisterDTO.getEmail(), bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
-        if (userRegisterDTO.getPhoneNumber() != null) {
-
-            PhoneNumberDTO phoneNumberDTO = userRegisterDTO.getPhoneNumber();
-            PhoneNumber phoneNumber = new PhoneNumber(
-                    phoneNumberDTO.getCountryCode(),
-                    phoneNumberDTO.getAreaCode(),
-                    phoneNumberDTO.getNumber()
-            );
-
-            user.setPhoneNumber(phoneNumber);
-            phoneNumber.setUser(user);
-
-        }
-
-         user.setRole(RoleEnum.ADMIN.toString());
-         savedUser = userRepository.save(user);
-
-         verification = new Verification(savedUser);
-
-        savedVerification = verificationRepository.save(verification);
-
-        String token = generateToken(savedUser, userRegisterDTO.getPassword());
-
-        return buildTokenRegisterMap( token, verification);
-    }
 
     public void createResetPasswordTokenForUser(User user, String token) {
         ResetPasswordToken resetPasswordToken = new ResetPasswordToken(token, user);

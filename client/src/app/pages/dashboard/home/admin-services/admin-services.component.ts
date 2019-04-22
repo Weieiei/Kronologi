@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Service} from '../../../../models/service/Service';
-import {ServiceService} from '../../../../services/service/service.service';
-import {map} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import {HttpErrorResponse} from '@angular/common/http';
-import {UserService} from "../../../../services/user/user.service";
+import { Component, OnInit } from '@angular/core';
+import { Service } from '../../../../models/service/Service';
+import { ServiceService } from '../../../../services/service/service.service';
+import { skip, take, mergeMap, switchMap, mapTo } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { merge } from 'rxjs/observable/merge';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
     selector: 'app-admin-services',
@@ -14,13 +14,18 @@ import {UserService} from "../../../../services/user/user.service";
 export class AdminServicesComponent implements OnInit {
  // Fields to upload a service profile picture
  businessId : any;
- selectedFile: File = null;
- fileSelectMsg: string = 'No file selected yet.';
- fileUploadMsg: string = 'No file uploaded yet.';
-public userService: UserService;
+    selectedFile: File = null;
+    fileSelectMsg = 'No file selected yet.';
+    fileUploadMsg = 'No file uploaded yet.';
+    serviceUploadId: number;
 
     displayedColumns: string[] = ['id', 'name', 'duration', 'profile'];
     services: Service[];
+
+    services$: Observable<Array<Service>>;
+    showNotification$: Observable<boolean>;
+    update$ = new Subject<void>();
+    forceReload$ = new Subject<void>();
 
     componentState: {
         services: Array<Service>,
@@ -36,7 +41,14 @@ public userService: UserService;
     }
 
     ngOnInit() {
-        this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
+        this.businessId = parseInt(this.route.snapshot.paramMap.get('businessId'));
+        this.serviceService.setBusinessId(this.businessId);
+        const initialService$ = this.getDataOnce();
+
+        const updates$ = merge(this.update$, this.forceReload$).pipe(
+            mergeMap(() => this.getDataOnce())
+        );
+
         this.componentState = {
             services: [],
             currentPage: 1,
@@ -45,19 +57,32 @@ public userService: UserService;
             totalItems: 0,
         };
 
+        this.services$ = merge(initialService$, updates$);
+
+        const reload$ = this.forceReload$.pipe(switchMap(() => this.getNotifications()));
+        const initialNotifications$ = this.getNotifications();
+        const show$ = merge(initialNotifications$, reload$).pipe(mapTo(true));
+        const hide$ = this.update$.pipe(mapTo(false));
+        this.showNotification$ = merge(show$, hide$);
+
         this.getAllServices();
     }
 
+    getDataOnce() {
+        return this.serviceService.allServices.pipe(take(1));
+    }
+
+    getNotifications() {
+        return this.serviceService.allServices.pipe(skip(1));
+    }
+
+    forceReload() {
+        this.serviceService.forceReload();
+        this.forceReload$.next();
+    }
+
     getAllServices(): void {
-        this.serviceService.getPlainServices(this.businessId).pipe(
-            map(data => {
-                return data.map(a => {
-                    return new Service(
-                        a.id, a.name, a.duration
-                    )
-                });
-            })
-        ).subscribe(
+        this.services$.subscribe(
             res => {
                 this.services = res;
                 this.componentState.services = res;
@@ -85,13 +110,11 @@ public userService: UserService;
         }
     }
 
-
     onSearch(searchTerm: string) {
         this.componentState.currentPage = 1;
         this.componentState.search = searchTerm;
         this.updateServices(this.services);
     }
-
 
     selectEvent(file: File): void {
         this.selectedFile = file;
@@ -107,20 +130,17 @@ public userService: UserService;
         this.fileUploadMsg = 'No file uploaded yet.';
       }
 
-      updateServicePicture(serviceId): void {
-
+    updateServicePicture(serviceId): void {
         if (this.selectedFile != null) {
             this.serviceService.updateServicePicture(this.selectedFile , serviceId).subscribe(
                 res => {
                     console.log('File seccessfully uploaded. ');
-                    //get picture and show it in the profile  or update the page
+                    // get picture and show it in the profile  or update the page
                     this.router.navigate(['business']);
 
                 },
                 err => {
-                    if (err instanceof HttpErrorResponse) {
-                        err => console.log(err)
-                    }
+                    console.log(err);
                 }
             );
         }
@@ -128,6 +148,5 @@ public userService: UserService;
 
     redirectToCreateNewService() {
         this.router.navigate([this.businessId + '/admin/services/create']);
-
     }
 }
