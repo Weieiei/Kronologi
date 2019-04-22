@@ -45,6 +45,21 @@ Import as a Maven project, build the project and run.
 running with travis, and the builds can be review here:
 [![Build Status](https://travis-ci.com/Weieiei/Kronologi.svg?token=7N9eDY6SkjyrqRyfMw8A&branch=master)](https://travis-ci.com/Weieiei/Kronologi)
 
+# Our documentation
+Our document for iteration 13 can be found at the following link: https://docs.google.com/document/d/179TRykE3Y_d6OMDAfY3hynwP09fs0jRQNxlVFvOiBGc/edit#
+
+The slide presentation can be found here:
+ https://docs.google.com/presentation/d/1pr50xdgorZldymK19Dqg-xEYTaxGTOGofH2yz7rdsjQ/edit?ts=5cbd014f#slide=id.p1
+
+We have also made a user manual here:
+ https://docs.google.com/document/d/1unQv-PCBmX-QfEAzjvSi2UB498eqYPW6iWzCaQy05eg/edit#
+Our poster can be seen here, in PNG format: https://drive.google.com/open?id=1VuSax9HUA8D_ezCFySQSSKIFQV_driMm
+
+We have also made a survey, as discussed, to have data about our users, the results of which are visible here:
+ https://docs.google.com/forms/d/1V0nEoUfld02Bh1opOYuEjeDYcGcLpzPHe_d9qMHZRoU/edit#responses
+(to view the results, make sure you are logged in with your Google account).
+Please let us know if there are any issues or if you or the tutors have trouble accessing any of the links.
+
 
 # Running the stack
 
