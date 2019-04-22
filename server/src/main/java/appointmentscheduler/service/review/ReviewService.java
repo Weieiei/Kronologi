@@ -14,8 +14,13 @@ import java.util.Optional;
 @org.springframework.stereotype.Service
 public class ReviewService {
 
-    @Autowired
+
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    public ReviewService (ReviewRepository reviewRepository){
+        this.reviewRepository = reviewRepository;
+    }
 
     public Map<String, String> add(Review review) {
         try{
