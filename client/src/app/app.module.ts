@@ -70,8 +70,6 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
 import {AppGradientButtonComponent} from './components/app-gradient-button/app-gradient-button.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
-import { GuestComponent } from './pages/guest/guest.component';
-import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 
 
 @NgModule({
@@ -130,8 +128,6 @@ import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appoi
         DetailsComponent,
         GoogleMapsComponent,
         SyncCalendarsComponent,
-        GuestComponent,
-        GuestAppointmentComponent,
         PasswordResetRedirectComponent,
         PasswordForgotDialogComponent,
         AppGradientButtonComponent

@@ -28,8 +28,6 @@ import { BusinessViewComponent } from './pages/business-view/business-view.compo
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { DetailsComponent } from './pages/details/details.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
-import { GuestComponent } from "./pages/guest/guest.component";
-import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 
 const routes: Routes = [
     // Login
@@ -39,9 +37,6 @@ const routes: Routes = [
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
-
-    // Guest
-    { path: 'guest', component: GuestComponent, canActivate: [AnonymousGuard] },
 
     // Password Reset
     { path: 'password/reset', component: PasswordResetRedirectComponent, canActivate: [AnonymousGuard] },
@@ -68,15 +63,15 @@ const routes: Routes = [
             {path : 'syncCalendars', component: SyncCalendarsComponent, canActivate: [EmployeeGuard]},
 
             // Appointments
-            { path: 'employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
+            { path: ':businessId/employee/appts', component: EmployeeAppointmentsComponent, canActivate: [EmployeeGuard] },
             { path: 'appointments', component: AppointmentsComponent },
             { path: 'review/:apptmtId', component: ReviewComponent },
-            { path: 'my/appts', component: AppointmentsComponent },
+            { path: ':businessId/my/appts', component: AppointmentsComponent },
             { path: 'add/employee', component: RegisterComponent },
             { path: ':businessId/admin/appts', component: AdminAppointmentsComponent },
             {path: ':businessId/admin/services', component: AdminServicesComponent},
             {path: ':businessId/admin/services/create', component: CreateServiceComponent},
-            { path: 'admin/users', component: AdminUsersComponent },
+            { path: ':businessId/admin/users', component: AdminUsersComponent },
             { path: 'book/:businessId', component: BookComponent },
 
             // User settings

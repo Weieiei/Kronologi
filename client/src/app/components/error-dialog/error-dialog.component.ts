@@ -32,6 +32,8 @@ export class ErrorDialogComponent implements OnInit {
         this.errorStatus.set(300, "We moved this somewhere, if you can’t find what you’re looking for, try emailing" +
             " us");
         this.errorStatus.set(0, "Something went wrong, please try again later");
+        this.errorStatus.set(403, "Something went wrong, please try again");
+
 
 
 

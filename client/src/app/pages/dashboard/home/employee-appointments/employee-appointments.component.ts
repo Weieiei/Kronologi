@@ -4,6 +4,8 @@ import {Appointment} from 'src/app/interfaces/appointment';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {CancelDialogComponent} from 'src/app/components/cancel-dialog/cancel-dialog.component';
 import {HomeComponent} from "../home.component";
+import {ActivatedRoute} from "@angular/router";
+import {ErrorDialogComponent} from "../../../../components/error-dialog/error-dialog.component";
 
 @Component({
     selector: 'app-employee-appointments',
@@ -11,29 +13,35 @@ import {HomeComponent} from "../home.component";
     styleUrls: ['./employee-appointments.component.scss']
 })
 export class EmployeeAppointmentsComponent implements OnInit {
-    businessId : number;
+    businessId: number;
     displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee', 'status', 'actions'];
     displayedColumnsPastAppointments: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee', 'status'];
     appointments: Appointment[];
     pastAppointments: Appointment[];
 
-    constructor(private dialog: MatDialog, private appointmentService: AppointmentService) {
+
+    constructor(
+        private errorDialog: MatDialog,
+        private route: ActivatedRoute,
+        private dialog: MatDialog, private appointmentService: AppointmentService) {
         this.appointments = [];
         this.pastAppointments = [];
+
 
     }
 
     ngOnInit() {
         this.dialog.afterAllClosed
-        .subscribe(() => {
-        // update appointments when we cancel one on dialog close.
-          this.appointments=[];
-          this.getAllAppointments();
-        })
+            .subscribe(() => {
+                // update appointments when we cancel one on dialog close.
+                this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
+                this.appointments = [];
+                this.getAllAppointments();
+            })
     }
 
     getAllAppointments(): void {
-        this.appointmentService.getMyAppointmentsEmployee().subscribe(
+        this.appointmentService.getMyAppointmentsEmployee(this.businessId).subscribe(
             res => {
 
                 const now = new Date();
@@ -49,7 +57,9 @@ export class EmployeeAppointmentsComponent implements OnInit {
                     }
                 }
             },
-            err => console.log(err)
+            err => {
+                console.log(err);
+            }
         );
     }
 
@@ -75,11 +85,14 @@ export class EmployeeAppointmentsComponent implements OnInit {
         return this.appointments[row_number].status == 'CANCELLED';
     }
 
-
-    getFormattedDate(date: Date) {
-        var month = date.getMonth()+1;
-        var day = date.getDate();
-        var year = date.getFullYear();
-        return month + "-" + day + "-" + year;
+    openErrorDialog( errorMessage : any) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            title: "ERROR",
+            message: errorMessage,
+        };
+        this.dialog.open(ErrorDialogComponent, dialogConfig);
     }
 }

@@ -7,6 +7,7 @@ import { AuthService } from "../../services/auth/auth.service";
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { PasswordForgotDialogComponent } from '../../components/password-forgot-dialog/password-forgot-dialog.component';
 import { SnackBar } from '../../snackbar';
+import {ErrorDialogComponent} from "../../components/error-dialog/error-dialog.component";
 
 
 @Component({
@@ -25,7 +26,9 @@ export class LoginComponent implements OnInit {
                 private router: Router,
                 private googleAnalytics:  GoogleAnalyticsService,
                 private dialog: MatDialog,
-                private snackBar: SnackBar
+                private snackBar: SnackBar,
+                private errorDialog: MatDialog,
+
     ) {
     }
 
@@ -49,7 +52,7 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([businessId.toString()+'/admin/appts']);
                 }
                 else if (this.userService.isEmployee()){
-                    this.router.navigate(['employee/appts']);
+                    this.router.navigate([businessId.toString()+'employee/appts']);
                 }
                 else {
                     this.router.navigate(['business']);
@@ -59,6 +62,7 @@ export class LoginComponent implements OnInit {
 
             },
             err => {
+                this.openErrorDialog(err["status"]);
                 this.googleAnalytics.trackValues('security', 'login', 'failure');
                 console.log(err);
             }
@@ -79,6 +83,16 @@ export class LoginComponent implements OnInit {
             });
     }
 
+    openErrorDialog(errorMessage: any) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            title: "ERROR",
+            messageOrStatus: errorMessage,
+        };
+        this.dialog.open(ErrorDialogComponent, dialogConfig);
+    }
 
     togglePasswordVisibility() {
         this.isPasswordVisible = !this.isPasswordVisible;

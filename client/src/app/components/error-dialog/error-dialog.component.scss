@@ -1,7 +1,3 @@
-.mat-dialog-title{
-    align-content: center;
-}
-
 .mat-dialog-actions{
     .mat-raised-button{
         display: block;
@@ -10,3 +6,8 @@
     }
 }
 
+.container-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

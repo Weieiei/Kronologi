@@ -114,7 +114,7 @@ export class NavbarComponent implements OnInit {
     }
 
     goToEmployeeAppointments() {
-        this.router.navigate(['employee', 'appts']);
+        this.router.navigate([this.businessId, 'employee', 'appts']);
     }
 
     goToSyncCalendars(){
@@ -129,7 +129,7 @@ export class NavbarComponent implements OnInit {
     }
 
     goToAdminUsers() {
-        this.router.navigate(['admin/users']);
+        this.router.navigate([this.businessId +'/admin/users']);
     }
 
     goToEmployees() {

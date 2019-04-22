@@ -46,8 +46,8 @@ export class AppointmentService {
         return this.http.post<CancelAppointmentDTO>(['api','business','1','user','appointments',id].join('/'),payload)
     }
 
-    public getMyAppointmentsEmployee(): Observable<Appointment[]> {
-        return this.http.get<Appointment[]>(['api', 'business', 'employee', '1', 'appointments'].join('/'));
+    public getMyAppointmentsEmployee(businessId: number): Observable<Appointment[]> {
+        return this.http.get<Appointment[]>(['api', 'business', 'employee', businessId, 'appointments'].join('/'));
     }
 
     public cancelAppointmentsEmployee(appointment:CancelAppointmentDTO): Observable<any> {
