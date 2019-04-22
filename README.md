@@ -34,7 +34,7 @@ google.key =AIzaSyC8dJm42p5ASWP_9_w-_1kkrV9PTj2L1rA
 
 # Running the angular for the frontend
 cd to client folder, do follow scripts:
-npm insatll
+npm insatll and 
 ng servce
 This will run  http://localhost:4200
 
