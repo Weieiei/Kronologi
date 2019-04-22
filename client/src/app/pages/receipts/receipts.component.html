@@ -1,6 +1,9 @@
 <form autocomplete="off">
     <div fxLayoutAlign="center">
     <div fxLayout="column" [align]="centered" fxFlex.gt-sm="800px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
+        <mat-toolbar class="header">
+            <span>{{ business.name }}</span>
+        </mat-toolbar>
         <mat-form-field appearance="outline">
             <mat-label>First Name</mat-label>
             <input matInput [(ngModel)]="firstName" name="first_name" required appAutofocus>
@@ -8,14 +11,6 @@
         <mat-form-field appearance="outline">
             <mat-label>Last Name</mat-label>
             <input matInput [(ngModel)]="lastName" name="last_name" required appAutofocus>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Business</mat-label>
-            <mat-select (selectionChange)="getAllServiceForBusiness($event.value)">
-                <mat-option *ngFor="let business of businesses" [value]="business">
-                    <span> {{ business.name }} </span>
-                </mat-option>
-            </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Service</mat-label>
@@ -33,7 +28,7 @@
 
         <mat-form-field appearance="outline">
             <mat-label>Date</mat-label>
-            <!--<input matInput [(ngModel)]="date" name="date" required appAutofocus>-->
+            <input matInput [(ngModel)]="date" name="date" required appAutofocus>
             <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="setDate($event)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -57,6 +52,7 @@
                         </td>
 
                         <td>
+                            {{business.name}}<br>
                             Invoice #: 123<br>
                             Created: {{today}}<br>
                             Due: {{dueDate}}
@@ -90,7 +86,7 @@
 
         <tr class="item">
             <td>
-                {{businessName}} - {{serviceName}}
+                {{serviceName}}
             </td>
 
             <td>

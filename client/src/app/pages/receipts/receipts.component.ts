@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BusinessService} from "../../services/business/business.service";
-import {BusinessDTO} from "../../interfaces/business/business-dto";
 import {ServiceDTO} from "../../interfaces/service/service-dto";
 import {ServiceService} from "../../services/service/service.service";
 import * as html2pdf from 'html2pdf.js';
+import {ActivatedRoute} from "@angular/router";
+import {BusinessDTO} from "../../interfaces/business/business-dto";
 
 @Component({
   selector: 'app-receipts',
@@ -11,38 +12,37 @@ import * as html2pdf from 'html2pdf.js';
   styleUrls: ['./receipts.component.scss']
 })
 export class ReceiptsComponent implements OnInit {
-    businesses: BusinessDTO[];
     services: ServiceDTO[];
+    business: BusinessDTO;
     firstName: string;
     lastName: string;
-    businessName: string;
     serviceName: string;
     price: number;
     today: string;
     dueDate: string;
-  constructor(  private businessService : BusinessService, private serviceService: ServiceService ) {
-      this.businesses =[];
+    businessId: number;
+  constructor(private route: ActivatedRoute,  private businessService : BusinessService, private serviceService: ServiceService ) {
       this.services = [];
       this.setTodayAndDueDate(new Date())
   }
 
   ngOnInit() {
-      this.getAllBusiness()
+      //const businessId =+ this.route.snapshot.paramMap.get('businessId');
+      const businessId = parseInt(this.route.snapshot.paramMap.get('businessId'));
+      this.setBusinessById(businessId);
+      this.getAllServiceForBusiness(businessId);
   }
 
-  getAllBusiness(): void{
-        this.businessService.getAllBusinesses().subscribe(
-            result =>{
-                for(const business of result){
-                    this.businesses.push(business)
-                }
-            }
-        )
-    }
+  setBusinessById(businessId: number){
+      this.businessService.getBusinessById(businessId).subscribe(
+          res => {
+              this.business = res;
+          },
+      );
+  }
 
-    getAllServiceForBusiness(business: BusinessDTO) {
-      this.businessName = business.name;
-        this.serviceService.getServices(business.id).subscribe(
+    getAllServiceForBusiness(businessId: number) {
+        this.serviceService.getServices(businessId).subscribe(
             result =>{
                 for(const service of result){
                     this.services.push(service)
@@ -52,7 +52,9 @@ export class ReceiptsComponent implements OnInit {
     }
 
     setService(service: ServiceDTO) {
-      this.serviceName = service.name
+      if (service != null) {
+          this.serviceName = service.name
+      }
     }
 
     setDate(date: any){

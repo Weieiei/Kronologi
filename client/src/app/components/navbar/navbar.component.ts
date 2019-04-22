@@ -71,6 +71,7 @@ export class NavbarComponent implements OnInit {
                  err => console.log(err)
         );
 
+
     }
 
     onThemeChange(theme: string) {
@@ -136,7 +137,7 @@ export class NavbarComponent implements OnInit {
     }
 
     goToReceipts() {
-        this.router.navigate(['admin', 'receipts']);
+        this.router.navigate(['admin', '1', 'receipts']);
     }
 
 }

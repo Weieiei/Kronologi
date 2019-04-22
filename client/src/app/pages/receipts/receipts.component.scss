@@ -63,6 +63,10 @@
     font-weight: bold;
 }
 
+.header {
+    background-color: transparent;
+}
+
 @media only screen and (max-width: 600px) {
     .invoice-box table tr.top table td {
         width: 100%;
