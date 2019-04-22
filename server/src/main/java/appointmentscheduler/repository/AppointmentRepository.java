@@ -30,6 +30,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findByDateAndClientIdAndBusinessIdAndStatus(LocalDate date, long clientId,long businessId, AppointmentStatus status);
 
+    List<Appointment> findByDateAndGuestIdAndBusinessIdAndStatus(LocalDate date, long guestId,long businessId, AppointmentStatus status);
+
     List<Appointment> findByEmployeeId(long employeeId);
 
     List<Appointment> findByDateAndEmployeeIdAndBusinessIdAndStatus(LocalDate date, long employeeId, long businessId, AppointmentStatus status);

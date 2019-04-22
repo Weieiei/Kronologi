@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router, NavigationEnd } from '@angular/router';
 
-//declare the function that is found in the  scripts/google folder
+// declare the function that is found in the  scripts/google folder
 declare let ga: Function;
 
 @Injectable({
@@ -31,7 +31,7 @@ export class GoogleAnalyticsService {
    */
   public trackValues(cat: string, interaction: string, category: string = null, value: number = null) {
     try {
-      //ga function declared in the scripts 
+      // ga function declared in the scripts
       ga('send', 'event', { eventCategory: cat, eventLabel: interaction,
         eventAction: category, eventValue: value
       } );

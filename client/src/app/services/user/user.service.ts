@@ -103,11 +103,17 @@ export class UserService {
     }
 
     isAdmin(): boolean {
-        return this.getRolesFromToken().includes('ADMIN');
+        const roleToken = this.getRolesFromToken();
+        if (roleToken)
+            return this.getRolesFromToken().includes('ADMIN');
+        return false;
     }
 
     isEmployee(): boolean {
-        return this.getRolesFromToken().includes('EMPLOYEE');
+        const roleToken = this.getRolesFromToken();
+        if (roleToken)
+            return this.getRolesFromToken().includes('EMPLOYEE');
+        return false;
     }
 
     updateEmail(payload: UpdateEmailDTO): Observable<any> {
@@ -140,7 +146,7 @@ export class UserService {
     }
 
     getAllUsers(): Observable<any[]> {
-        return this.http.get<any[]>(['api', 'business','1','admin', 'users'].join('/'));
+        return this.http.get<any[]>(['api', 'business', '1', 'admin', 'users'].join('/'));
     }
 
     changeUserToEmployee(id: number): Observable<any> {

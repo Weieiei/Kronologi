@@ -7,11 +7,12 @@ import { AuthService } from '../../services/auth/auth.service';
 import { ThemeService } from "../../core/theme/theme.service";
 import { OverlayContainer } from "@angular/cdk/overlay";
 import { DomSanitizer} from '@angular/platform-browser';
+import {AuthGuard} from "../../guards/auth/auth.guard";
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.scss']
+    styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
 
@@ -45,7 +46,8 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.authService.checkAdmin();
+        this.authService.setUserAuth();
+
         this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
         this.userEmail = this.userService.getEmailFromToken();
         this.themeService.darkModeState.subscribe(value => {
@@ -79,6 +81,10 @@ export class NavbarComponent implements OnInit {
             overlayContainerClasses.remove(...themeClassesToRemove);
         }
         overlayContainerClasses.add(theme);
+    }
+
+    login(): void {
+        this.router.navigate(['login']);
     }
 
     logout(): void {
@@ -128,4 +134,5 @@ export class NavbarComponent implements OnInit {
     goToEmployees() {
         this.router.navigate(['admin', 'employees']);
     }
+
 }

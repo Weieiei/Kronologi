@@ -9,6 +9,7 @@ import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.employee_service.EmployeeService;
 import appointmentscheduler.entity.event.AppEventBase;
 import appointmentscheduler.entity.googleEntity.SyncEntity;
+import appointmentscheduler.entity.guest.Guest;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.shift.Shift;
 import appointmentscheduler.entity.user.Employee;
@@ -96,6 +97,7 @@ public class AppointmentService {
     private ShiftRepository shiftRepository;
     private GeneralAppointmentRepository generalAppointmentRepository;
     private GoogleCredentialRepository googleCredentialRepository;
+    private GuestRepository guestRepository;
 
     public AppointmentService(AppointmentRepository appointmentRepository) {
         this.appointmentRepository = appointmentRepository;
@@ -119,7 +121,8 @@ public class AppointmentService {
     public AppointmentService(
             AppointmentRepository appointmentRepository, EmployeeRepository employeeRepository, ShiftRepository shiftRepository, CancelledRepository cancelledRepository,
             UserRepository userRepository, ServiceRepository serviceRepository, BusinessRepository businessRepository, EmailService emailService,
-            GeneralAppointmentRepository generalAppointmentRepository, GoogleCredentialRepository googleCredentialRepository, GoogleSyncService googleSyncService
+            GeneralAppointmentRepository generalAppointmentRepository, GoogleCredentialRepository googleCredentialRepository, GoogleSyncService googleSyncService,
+            GuestRepository guestRepository
     ) {
         this.googleCredentialRepository = googleCredentialRepository;
         this.cancelledRepository = cancelledRepository;
@@ -131,7 +134,7 @@ public class AppointmentService {
         this.businessRepository = businessRepository;
         this.generalAppointmentRepository = generalAppointmentRepository;
         this.googleCredentialRepository = googleCredentialRepository;
-
+        this.guestRepository = guestRepository;
         this.googleSyncService = googleSyncService;
         this.emailService = emailService;
     }
@@ -165,6 +168,29 @@ public class AppointmentService {
         appointment = appointmentDTO.convertToAppointment(client,employee,service,business);
 
         return appointment;
+    }
+
+
+    private Appointment getGuestAppoinment(AppointmentDTO appointmentDTO, long guestId, long businessId) {
+        Appointment appointment;
+
+        Guest guest = guestRepository.findById(guestId).orElseThrow(ResourceNotFoundException::new);
+
+        Employee employee = employeeRepository.findByIdAndBusinessId(appointmentDTO.getEmployeeId(), businessId).orElseThrow(ResourceNotFoundException::new);
+
+        Service service = serviceRepository.findByIdAndBusinessId(appointmentDTO.getServiceId(), businessId).orElseThrow(ResourceNotFoundException::new);
+
+        Business business = businessRepository.findById(businessId).orElseThrow(ResourceNotFoundException::new);
+
+        appointment = appointmentDTO.convertToAppointment(guest, employee,service,business);
+
+        return appointment;
+    }
+
+    public Appointment addGuest(AppointmentDTO appointmentDTO, long guestId, long businessId) {
+        Appointment appointment = getGuestAppoinment(appointmentDTO, guestId, businessId);
+        validateGuest(appointment, false);
+        return appointmentRepository.save(appointment);
     }
 
     public Appointment add(AppointmentDTO appointmentDTO, long userId, long businessId) {
@@ -328,6 +354,17 @@ public class AppointmentService {
 
         employee.validateAndAddAppointment(appointment);
 
+    }
+
+    private void validateGuest(Appointment appointment, boolean modifying) throws ModelValidationException, EmployeeDoesNotOfferServiceException, EmployeeNotWorkingException, EmployeeAppointmentConflictException, ClientAppointmentConflictException{
+        final Employee employee = appointment.getEmployee();
+
+        // Check if the client does not have an appointment scheduled already
+        List<Appointment> clientAppointments = appointmentRepository.findByDateAndGuestIdAndBusinessIdAndStatus(appointment.getDate(), appointment.getGuest().getId(),appointment.getBusiness().getId(), AppointmentStatus.CONFIRMED);
+        if(DateConflictChecker.hasConflictList(clientAppointments, appointment, modifying)) {
+            throw new ClientAppointmentConflictException("You already have another appointment booked at the same time.");
+        }
+        employee.validateAndAddAppointment(appointment);
     }
 
     public Appointment findMyAppointmentById(long userId, long appointmentId) {
@@ -513,6 +550,7 @@ public class AppointmentService {
        }
 
    }
+
 
     private void sendConfirmationMessage(Appointment appointment, boolean modifying) throws MessagingException {
 

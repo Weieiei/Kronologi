@@ -66,12 +66,16 @@ public class AppointmentServiceTest {
 
     @Mock
     private CancelledRepository cancelledRepository;
+
+    @Mock
+    private GuestRepository guestRepository;
+
     private AppointmentService appointmentService;
 
 
     @Before
     public void setup() {
-        appointmentService = new AppointmentService(appointmentRepository, employeeRepository, shiftRepository, cancelledRepository, userRepository, serviceRepository, businessRepository, emailService, generalAppointmentRepository, googleCredentialRepository, googleSyncService);
+        appointmentService = new AppointmentService(appointmentRepository, employeeRepository, shiftRepository, cancelledRepository, userRepository, serviceRepository, businessRepository, emailService, generalAppointmentRepository, googleCredentialRepository, googleSyncService, guestRepository);
     }
 
     public void mockGetAppointment(User user, Employee employee, Service service, Business business) {

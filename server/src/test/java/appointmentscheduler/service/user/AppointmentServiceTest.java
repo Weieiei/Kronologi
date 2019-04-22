@@ -1,4 +1,4 @@
-/*
+
 package appointmentscheduler.service.user;
 
 import appointmentscheduler.entity.appointment.Appointment;
@@ -6,6 +6,7 @@ import appointmentscheduler.entity.appointment.AppointmentFactory;
 import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
+import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.service.appointment.AppointmentService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,6 +34,8 @@ public class AppointmentServiceTest {
         User mockClient = Mockito.mock(User.class);
         Employee mockEmployee = Mockito.mock(Employee.class);
         Service mockService = Mockito.mock(Service.class);
+        Business mockBusiness =  Mockito.mock(Business.class);
+
 
         String clientFirstName = "clientFirstName";
         String clientLastName = "clientLastName";
@@ -40,6 +43,7 @@ public class AppointmentServiceTest {
         String employeeLastName = "clientLastName";
         String serviceName = "serviceName";
         int serviceDuration = 20;
+        long businessId = 1;
 
         LocalDate date = LocalDate.now();
         LocalTime startTime = LocalTime.now();
@@ -51,6 +55,7 @@ public class AppointmentServiceTest {
         Mockito.when(mockClient.getLastName()).thenReturn(clientLastName);
         Mockito.when(mockService.getDuration()).thenReturn(serviceDuration);
         Mockito.when(mockService.getName()).thenReturn(serviceName);
+        Mockito.when(mockBusiness.getId()).thenReturn(businessId);
 
 
         String notes = "note";
@@ -58,10 +63,10 @@ public class AppointmentServiceTest {
         appointment.setEndTime(endTime);
         List<Appointment> appointments = new ArrayList<>();
         appointments.add(appointment);
-        Mockito.when(mockAppointmentService.findByClientId(Mockito.anyLong())).thenReturn(appointments);
+        Mockito.when(mockAppointmentService.findByClientIdAndBusinessId(Mockito.anyLong(),Mockito.anyLong())).thenReturn(appointments);
 
 
-        List <Appointment> result = mockAppointmentService.findByClientId(5);
+        List <Appointment> result = mockAppointmentService.findByClientIdAndBusinessId(5,mockBusiness.getId());
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(endTime , result.get(0).getEndTime());
@@ -80,6 +85,7 @@ public class AppointmentServiceTest {
         User mockClient = Mockito.mock(User.class);
         Employee mockEmployee = Mockito.mock(Employee.class);
         Service mockService = Mockito.mock(Service.class);
+        Business mockBusiness =  Mockito.mock(Business.class);
 
         String clientFirstName = "clientFirstName";
         String clientLastName = "clientLastName";
@@ -87,6 +93,7 @@ public class AppointmentServiceTest {
         String employeeLastName = "clientLastName";
         String serviceName = "serviceName";
         int serviceDuration = 20;
+        long businessId = 1;
 
         LocalDate date = LocalDate.now();
         LocalTime startTime = LocalTime.now();
@@ -98,17 +105,17 @@ public class AppointmentServiceTest {
         Mockito.when(mockClient.getLastName()).thenReturn(clientLastName);
         Mockito.when(mockService.getDuration()).thenReturn(serviceDuration);
         Mockito.when(mockService.getName()).thenReturn(serviceName);
-
+        Mockito.when(mockBusiness.getId()).thenReturn(businessId);
 
         String notes = "note";
         Appointment appointment = new Appointment(mockClient, mockEmployee, mockService, date, startTime, notes);
         appointment.setEndTime(endTime);
         List<Appointment> appointments = new ArrayList<>();
         appointments.add(appointment);
-        Mockito.when(mockAppointmentService.findByEmployeeId(Mockito.anyLong())).thenReturn(appointments);
+        Mockito.when(mockAppointmentService.findByEmployeeIdAndBusinessId(Mockito.anyLong(),Mockito.anyLong())).thenReturn(appointments);
 
 
-        List <Appointment> result = mockAppointmentService.findByEmployeeId(5);
+        List <Appointment> result = mockAppointmentService.findByEmployeeIdAndBusinessId(5, mockBusiness.getId());
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(endTime , result.get(0).getEndTime());
@@ -121,4 +128,4 @@ public class AppointmentServiceTest {
         Assert.assertEquals(serviceDuration, result.get(0).getService().getDuration() );
     }
 }
-*/
+

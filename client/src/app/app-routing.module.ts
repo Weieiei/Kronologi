@@ -24,6 +24,8 @@ import { SyncCalendarsComponent } from './pages/sync-calendars/sync-calendars.co
 import { ShiftComponent } from './pages/dashboard/home/shift/shift.component';
 import { AdminGuard } from './guards/admin/admin.guard';
 import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/admin-employees.component';
+import { GuestComponent } from "./pages/guest/guest.component";
+import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { DetailsComponent } from './pages/details/details.component';
@@ -38,6 +40,9 @@ const routes: Routes = [
     { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
 
+    // Guest
+    { path: 'guest', component: GuestComponent, canActivate: [AnonymousGuard] },
+
     // Password Reset
     { path: 'password/reset', component: PasswordResetRedirectComponent, canActivate: [AnonymousGuard] },
 
@@ -45,14 +50,14 @@ const routes: Routes = [
     {
         path: '',
         component: DashboardComponent,
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         children: [
 
             // Appointments for business
-            { path: 'business', component: BusinessViewComponent },
+            { path: 'business', component: BusinessViewComponent},
 
             // Home
-            { path: 'home/:businessId', component: HomeComponent },
+            { path: 'home/:businessId', component: HomeComponent,  canActivate: [AdminGuard] },
 
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },

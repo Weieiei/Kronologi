@@ -1,0 +1,37 @@
+<div fxLayout="row" fxLayoutAlign="center" fxFlex="noshrink">
+    <div fxLayout="column" fxFlex.gt-sm="600px" ngClass.gt-sm="mat-elevation-z3" class="container" fxLayoutGap="20px">
+        <img src="assets/images/kronologi-logo-1.png" width="128"/>
+        <span class="title">Make a Guest Appointment</span>
+
+        <form (submit)="register()" autocomplete="off" fxLayout="column">
+            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Business</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let business of businesses" [value]="business.value">
+                            {{business.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Service</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let business of businesses" [value]="business.value">
+                            {{business.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" placeholder="Choose a date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <!-- TO DO: need a time-picker here!! -->
+                <mat-form-field>
+
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+</div>
