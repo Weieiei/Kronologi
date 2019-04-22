@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  ViewChild, Renderer2, ViewChildren, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ServiceService } from '../../../services/service/service.service';
@@ -21,11 +21,16 @@ import { TermsAndServicesDialogComponent } from 'src/app/components/terms-and-se
 import { StripeUserInfo } from 'src/app/interfaces/user/stripe-user-info';
 import { StripeScriptTag, StripeToken , StripeSource, StripeInstance} from "stripe-angular"
 import { BankAccountInfo } from 'src/app/interfaces/user/seller-bank-account-dto';
+import { RoutingAndAccountHelpComponent } from 'src/app/components/routing-and-account-help/routing-and-account-help.component';
+
 
 export interface Domain {
     value: string;
 }
 
+export interface Provinces{
+    value: string;
+}
 export interface AccountType{
     value: string
 }
@@ -74,7 +79,8 @@ export interface BusinessHours {
   ]
 })
 export class BusinessRegisterComponent implements OnInit {
-
+     @ViewChildren('start') start;
+    @ViewChild('end') end;
     private publishableKey:string ="pk_test_Abn7eEcmv3zmYE39xC2PGovO00rTzkGohi";
     loaded:boolean
     lastError:Error
@@ -109,6 +115,21 @@ export class BusinessRegisterComponent implements OnInit {
         {value: 'Business'}
     ];
 
+
+    provinceChoice: Provinces[] = [
+        {value: 'QC'},
+        {value: 'ON'},
+        {value: 'AB'},
+        {value: 'BC'},
+        {value: 'NB'},
+        {value: 'NL'},
+        {value: 'NS'},
+        {value: 'NT'},
+        {value: 'NU'},
+        {value: 'PE'},
+        {value: 'SK'},
+        {value: 'YT'}
+    ];
     domains: Domain[] = [
         {value: 'Beauty'},
         {value: 'Healthcare'},
@@ -167,7 +188,8 @@ export class BusinessRegisterComponent implements OnInit {
         private serviceService: ServiceService,
         private googleAnalytics: GoogleAnalyticsService,
         private businessService: BusinessService,
-        public StripeScriptTag:StripeScriptTag
+        public StripeScriptTag:StripeScriptTag,
+        public elRef : ElementRef
          ) {
         this.matcher = new PasswordMismatchStateMatcher();
     }
@@ -178,8 +200,8 @@ export class BusinessRegisterComponent implements OnInit {
             firstName: [this.firstName || '',  [Validators.required] ],
             lastName: [this.lastName || '',  [Validators.required] ],
             email: [this.email || '',  [Validators.required, Validators.email] ],
-            password: [this.password || '',  [Validators.required, Validators.pattern('^(?=.*\\d)(?=.*[a-zA-Z]).{6,30}$')] ],
-            confirmPassword: [this.confirmPassword || '',  [Validators.required] ],
+            password: [this.password || '',  [Validators.required, Validators.pattern('^(?=.*\\d)(?=.*[a-zA-Z]).{6,30}$')]],
+            confirmPassword: [this.confirmPassword || '',  [Validators.required]],
             areaCode: [this.areaCode || '',  [] ],
             number: [this.number || '',  [] ],
         }, {validator: this.checkPasswords});
@@ -192,6 +214,7 @@ export class BusinessRegisterComponent implements OnInit {
             province: [this.province || '',  [Validators.required] ],
             country: [this.country || '',  [Validators.required] ],
             postalCode: [this.postalCode || '',  [Validators.required] ],
+
         });
         this.serviceInfoForm = this._formBuilder.group({
             firstNewService: [this.service, [Validators.required]],
@@ -203,12 +226,13 @@ export class BusinessRegisterComponent implements OnInit {
         this.extraInformation = this._formBuilder.group({
             dateOfBirth: new FormControl(new Date()),
             socialSecurityNumber: [this.socialSecurityNumber || '', [Validators.required]],
-            businessTaxId: [this.businessTaxId || '', [Validators.required]],
-            bankRoutingNumber: [this.bankRoutingNumber || '', [Validators.required]],
-            bankAccountNumber: [this.bankAccountNumber || '', [Validators.required]],
+            businessTaxId: [this.businessTaxId],
+            bankRoutingNumber: [this.bankRoutingNumber || '', [Validators.required, Validators.pattern('(([0-9]){5}[-]([0-9]){3})|([0-9]){8}')]],
+            bankAccountNumber: [this.bankAccountNumber || '', [Validators.required, Validators.pattern('[0-9]{7,12}')]],
             bankAccountHolderFn: [this.bankAccountHolderFn || '', [Validators.required]],
             bankAccountHolderLn: [this.bankAccountHolderLn || '', [Validators.required]],
-            accountType: [this.accountType || '', [Validators.required]]
+            accountType: [this.accountType || '', [Validators.required]],
+            provinceChoice: new FormControl()        
         });
         
       }
@@ -318,7 +342,7 @@ export class BusinessRegisterComponent implements OnInit {
                 business_type: businessInfoValues.businessDomain,
                 address: businessInfoValues.address,
                 city:businessInfoValues.city,
-                province:businessInfoValues.province,
+                province:extraInfoStripe.provinceChoice,
                 postalCode: businessInfoValues.postalCode,
                 country:businessInfoValues.country,
                 businessTaxNumber:extraInfoStripe.businessTaxId,
@@ -423,10 +447,42 @@ export class BusinessRegisterComponent implements OnInit {
         dialogConfig.data = {
             business: this.selectedBusiness
         };
-        const dialogRef = this.dialog.open(FindBusinessDialogComponent, dialogConfig);
+        const dialogRef = this.dialog.open(FindBusinessDialogComponent, dialogConfig).afterClosed().subscribe(
+            response => {
+                if(response!== undefined){
 
-        dialogRef.afterClosed().subscribe(business => {
-        });
+                    this.businessInfoForm.controls["businessName"].setValue(response["name"])
+
+                    let description : string = response["description"].replace("[","");
+                    description = description.replace("]","");
+                    description = description.replace("\"","");
+                    this.businessInfoForm.controls["description"].setValue(description);
+                    
+                    let formattedAddressFound : string[] = response["formattedAddress"].split(",");
+
+                    this.businessInfoForm.controls["address"].setValue(formattedAddressFound[0]);
+                    this.businessInfoForm.controls["city"].setValue(formattedAddressFound[1]);
+                    
+                    let provinceAndPostalCode : string[] = formattedAddressFound[2].split(" ");
+                    this.businessInfoForm.controls["province"].setValue(provinceAndPostalCode[1]);
+                   
+                    let postalCode = provinceAndPostalCode[2]+" "+provinceAndPostalCode[3];
+                    this.businessInfoForm.controls["postalCode"].setValue(postalCode);
+
+                    this.businessInfoForm.controls["country"].setValue(formattedAddressFound[3]);
+                    
+                   for(const child of this.start._results){
+                       console.log(child)
+                       if(child["controlType"] !== undefined){
+                        console.log(child.trigger["nativeElement"].part.contains("value"))
+                        
+                       }
+                   }
+                }   
+               
+        });;
+
+     
     }
 
 
@@ -441,6 +497,17 @@ export class BusinessRegisterComponent implements OnInit {
         this.dialog.open(TermsAndServicesDialogComponent, dialogConfig);
 
     }
+    openRoutingAndAccountNumberHelp() {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = '700px';
+        dialogConfig.height = '500px';
+
+        this.dialog.open(RoutingAndAccountHelpComponent, dialogConfig);
+
+    }
 
     stopRegistering() {
         this.animationState = true;
@@ -449,7 +516,6 @@ export class BusinessRegisterComponent implements OnInit {
 
     get newServiceForms() {
         return this.serviceInfoForm.get('newServices') as FormArray;
-
     }
     addService() {
         const newService = this._formBuilder.group({

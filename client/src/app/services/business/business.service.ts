@@ -70,7 +70,7 @@ export class BusinessService {
     public findBusinessThroughGoogle(businessName: string): Observable<BusinessDTO[]> {
         let params = new HttpParams();
         params = params.append('nameOfBusiness', businessName);
-        return this.http.get<BusinessDTO[]>(['api', 'businesses', 'findWithGoogle'].join('/'), {params: params} );
+        return this.http.get<BusinessDTO[]>(['api', 'businesses', 'getInfoFromBusiness'].join('/'), {params: params} );
     }
 
 }

@@ -271,17 +271,17 @@
                     </div>
                     <div fxLayout="row">
                         <div fxFlex="17">
-                            <div style="padding: 1.4rem" *ngFor="let day of daysOfWeek">
+                            <div style="padding-top:2rem; padding-bottom:2rem" *ngFor="let day of daysOfWeek">
                                 {{ day }} :
                             </div>
                         </div>
                         <div fxFlex="30">
-                            <div *ngFor="let day of daysOfWeek">
-                                <mat-form-field>
+                            <div #start *ngFor="let day of daysOfWeek">
+                                <mat-form-field appearance="outline" > 
                                     <mat-label>Start</mat-label>
-                                    <mat-select name="food">
-                                        <mat-option *ngFor="let time of possibleBusinessHours"
-                                                    (onSelectionChange)="saveStartTime(day,time)" [value]="time">
+                                    <mat-select #start id="i" name="food" >
+                                        <mat-option  *ngFor="let time of possibleBusinessHours" [value]="time"
+                                                    (onSelectionChange)="saveStartTime(d    ay,time)" >
                                             {{time}}
                                         </mat-option>
                                     </mat-select>
@@ -289,11 +289,11 @@
                             </div>
                         </div>
                         <div fxFlex="30">
-                            <div *ngFor="let day of daysOfWeek">
-                                <mat-form-field>
+                            <div *ngFor="let day of daysOfWeek;let i = index" [attr.data-index]="i">
+                                <mat-form-field appearance="outline">
                                     <mat-label>End</mat-label>
                                     <mat-select name="food">
-                                        <mat-option *ngFor="let time of possibleBusinessHours"
+                                        <mat-option #end *ngFor="let time of possibleBusinessHours"
                                                     (onSelectionChange)="saveEndTime(day,time)"
                                                     [disabled]="isTimeLower(day,time)" [value]="time">
                                             {{time}}
@@ -395,12 +395,15 @@
                         </div>
                     </div>
                 </form> 
-                    <mat-checkbox [(ngModel)]="checked" style="color:black" >I would like for clients to have the ability to pay upon booking</mat-checkbox>
-                        <form [formGroup]="extraInformation" *ngIf="checked">
-                            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px">
+                <div style="padding-top:1rem; padding-bottom:1rem">
+                        <mat-checkbox [(ngModel)]="checked" style="color:black"  >I would like for clients to have the ability to pay upon booking</mat-checkbox>
+                </div>
+                   
+                    <form [formGroup]="extraInformation" *ngIf="checked">
+                            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px" style="padding-bottom:.80rem">
                                 <mat-form-field appearance="outline" fxFlex>
                                     <input matInput [matDatepicker]="picker" placeholder="Choose a date of birth" formControlName="dateOfBirth" id="dateOfBirth" 
-                                            readonly (click)="picker.open()">
+                                            readonly (click)="picker.open()" required>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>  
@@ -422,26 +425,27 @@
                                                         name="businessTaxId"  appAutofocus>
                                     </mat-form-field>
                             </div>
-                            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="30px">
+                            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="30px" style="padding-bottom:.80rem">
 
                                 <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Banking Routing Number to receive funds</mat-label>
+                                        <mat-label>Bank Routing Number. Format: XXXXX-YYY or XXXXXXYYY</mat-label>
                                         <input formControlName="bankRoutingNumber" matInput 
                                                     name="bankRoutingNumber" required appAutofocus>
                                         <mat-error *ngIf="extraInformation.get('bankRoutingNumber').touched &&
                                                     extraInformation.get('bankRoutingNumber').errors
                                                     && extraInformation.get('bankRoutingNumber').errors.required">
-                                                    Routing # is <strong>required</strong> for receiving payment.
+                                                    Routing # needs to be <strong>8 digit long</strong>
+                                                    <a style="text-decoration: underline; color:rgb(16, 144, 230)"(click)=openRoutingAndAccountNumberHelp()>  Click here if you don't know your routing number or account number, or don't know how to get it.</a>      
                                         </mat-error>
                                     </mat-form-field>  
                                  <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Bank Account Number</mat-label>
+                                        <mat-label>Bank Account Number.The length be between 7-12 digits long</mat-label>
                                         <input formControlName="bankAccountNumber" matInput 
                                                     name="bankAccountNumber" required appAutofocus>
-                                        <mat-error *ngIf="extraInformation.get('bankAccountNumber').touched &&
+                                        <mat-error style="padding-bottom:.5rem" *ngIf="extraInformation.get('bankAccountNumber').touched &&
                                                     extraInformation.get('bankAccountNumber').errors
                                                     && extraInformation.get('bankAccountNumber').errors.required">
-                                                    Account # is <strong>required</strong> for receiving payment.
+                                                    Account # is <strong>required and should be between 7-12 digits</strong> for receiving payment.
                                         </mat-error>
                                     </mat-form-field>    
                             </div>
@@ -467,8 +471,8 @@
                                             </mat-error>
                                  </mat-form-field> 
 
-                                 <mat-form-field>
-                                        <mat-select formControlName="accountType" placeholder="Account Type">
+                                 <mat-form-field appearance="outline" fxFlex>
+                                        <mat-select formControlName="accountType" placeholder="Account Type" >
                                             <mat-option *ngFor="let accountType of bankAccountType" [value]="accountType.value">
                                                 {{accountType.value}}
                                             </mat-option>
@@ -479,7 +483,17 @@
                                             Account type sector is <strong>required</strong>
                                         </mat-error>
                                     </mat-form-field>
-                            </div>                                  
+                            </div> 
+                            <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px" style="padding-top:.5rem">
+                                <mat-form-field appearance="outline" fxFlex>
+                                        <mat-select placeholder="Select Province" formControlName="provinceChoice" [(ngModel)]="province" required>
+                                                <mat-option *ngFor="let province of provinceChoice" value="province.value">
+                                                  {{province.value}}
+                                                </mat-option>
+                                         </mat-select>
+                                    </mat-form-field>  
+                            </div>
+                                 
                         </form>
                     <div *ngIf="checked">
                          <mat-checkbox [(ngModel)]="termOfServices" style="color:black; padding-top:.5rem; padding-bottom:.5rem" (change)="TOSDate()"></mat-checkbox> I agree to the <a style="text-decoration: underline; color:rgb(16, 144, 230)"(click)=openTermsAndServicesDialog()>terms and services</a>

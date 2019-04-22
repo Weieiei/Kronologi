@@ -158,46 +158,26 @@ public class BusinessController extends AbstractController {
   }
 
     @LogREST
-    @GetMapping("/getInfoFromBusiness")
-    public ResponseEntity<String> getInfo(@RequestParam String nameOfBusiness) throws JSONException {
+        @GetMapping("/getInfoFromBusiness")
+    public ResponseEntity<String> getInfo(@RequestParam String nameOfBusiness) throws JSONException,ApiException, IOException, InterruptedException {
 
         List<Business> googleBusinesses = new ArrayList<>();
         final ObjectMapper mapper = objectMapperFactory.createMapper(Business.class, new BusinessSerializer());
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
-                .queryParam("key", googleApiKey)
-                .queryParam("input", nameOfBusiness.replaceAll(" ",""))
-                .queryParam("inputtype", "textquery")
-                .queryParam("fields","place_id");
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
+        List<String> candidatesIdList = this.googleApi.getPlaceFromText(nameOfBusiness);
 
 
-        HttpEntity<String> response = restTemplate.exchange(
-                builder.toUriString(),
-                HttpMethod.GET,
-                entity,
-                String.class);
-
-        JSONObject googlePlaceId = new JSONObject(response.getBody());
-        JSONArray candidates = googlePlaceId.getJSONArray("candidates");
-        List<String> candidatesIdList = new ArrayList<>();
-        for(int i = 0; i < candidates.length(); i++){
-            candidatesIdList.add(candidates.getJSONObject(i).getString("place_id"));
-        }
-
-        //means we found only 1 business and we'll fetch on that
-        if(candidatesIdList.size() == 1){
+            //means we found only 1 business and we'll fetch on that
+        for(String str : candidatesIdList) {
             UriComponentsBuilder build = UriComponentsBuilder.fromHttpUrl(inDepthPlacesAPIurl)
                     .queryParam("key", googleApiKey)
                     .queryParam("placeid", candidatesIdList.get(0))
-                    .queryParam("fields","opening_hours,formatted_address,name");
+                    .queryParam("fields", "opening_hours,formatted_address,name,types");
 
-            entity = new HttpEntity<>(headers);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
 
-            response = restTemplate.exchange(
+            HttpEntity<String> response = restTemplate.exchange(
                     build.toUriString(),
                     HttpMethod.GET,
                     entity,
@@ -208,7 +188,7 @@ public class BusinessController extends AbstractController {
 
             List<BusinessHours> businessHoursList = new ArrayList<>();
 
-            for(int i = 0 ; i < periodsArray.length(); i++){
+            for (int i = 0; i < periodsArray.length(); i++) {
                 BusinessHours temp = new BusinessHours();
                 temp.setDayOfWeek(periodsArray.getJSONObject(i).getJSONObject("open").getInt("day"));
 
@@ -226,13 +206,12 @@ public class BusinessController extends AbstractController {
             Business business = new Business();
             business.setOwner(null);
             business.setBusinessHours(businessHoursList);
+            business.setDescription(responseJson.getJSONObject("result").getString("types"));
             business.setName(responseJson.getJSONObject("result").getString("name"));
             business.setAddress(responseJson.getJSONObject("result").getString("formatted_address"));
             googleBusinesses.add(business);
-            return getJson(mapper, googleBusinesses);
         }
-
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return getJson(mapper, googleBusinesses);
     }
 
   @LogREST

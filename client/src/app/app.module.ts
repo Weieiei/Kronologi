@@ -74,6 +74,7 @@ import { TermsAndServicesDialogComponent } from './components/terms-and-services
 
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
+import { RoutingAndAccountHelpComponent } from './components/routing-and-account-help/routing-and-account-help.component';
 
 
 @NgModule({
@@ -136,7 +137,8 @@ import { PasswordForgotDialogComponent } from './components/password-forgot-dial
         GoogleMapsComponent,
         ConfirmationAndPaymentComponent,
         PaymentDialogComponent,
-        TermsAndServicesDialogComponent
+        TermsAndServicesDialogComponent,
+        RoutingAndAccountHelpComponent
     ],
     imports: [
         StripeModule.forRoot(),
@@ -163,6 +165,7 @@ import { PasswordForgotDialogComponent } from './components/password-forgot-dial
         StarRatingModule.forRoot()
     ],
     entryComponents: [
+        RoutingAndAccountHelpComponent,
         TermsAndServicesDialogComponent,
         PaymentDialogComponent,
         ErrorDialogComponent,

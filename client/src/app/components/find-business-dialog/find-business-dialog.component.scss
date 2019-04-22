@@ -24,3 +24,13 @@ mat-expansion-panel{
 .spacer {
   flex-grow: 1;
 }
+
+mat-expansion-panel-content:not(.mat-expanded) {
+  height: 0px !important;
+  visibility: hidden !important;
+}
+
+.mat-expansion-panel-header  {
+  display:flex;
+  align-items:normal;
+}
