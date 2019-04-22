@@ -5,4 +5,5 @@ export interface ServiceDTO {
     name: string;
     duration: number;
     employees: EmployeeDTO[];
+    price: number;
 }

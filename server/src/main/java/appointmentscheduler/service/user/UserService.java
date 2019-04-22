@@ -175,7 +175,13 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Users for business ID %d " +
                         "not found.", id)));
     }
+    public void associateBusinessToUser(long businessId, long userId){
+       Business business = this.businessRepository.findById(businessId).get();
+       User user = this.userRepository.findById(userId).get();
 
+       business.setOwner(user);
+       this.businessRepository.save(business);
+    }
     public Map<String, String> updateUser(User user, long businessId) throws DataAccessException {
         Business business = businessRepository.findById(businessId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with ID %d not found.",
@@ -184,6 +190,27 @@ public class UserService {
         userRepository.save(user);
         return message("User updated");
     }
+
+    public Map<String, String> updateUserRole(User user, long businessId, String role) throws DataAccessException {
+        Business business = businessRepository.findById(businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with ID %d not found.",
+                        businessId)));
+        Employee employee = new Employee();
+        employee.setBusiness(business);
+        employee.setRole(role);
+        employee.setFirstName(user.getFirstName());
+        employee.setLastName(user.getLastName());
+        employee.setPassword(user.getPassword());
+        employee.setVerified(user.isVerified());
+        employee.setCreatedAt(user.getCreatedAt());
+        employee.setUpdatedAt(user.getUpdatedAt());
+        employee.setSettings(user.getSettings());
+        employee.setEmail(user.getEmail());
+        userRepository.delete(user);
+        employeeRepository.save(employee);
+        return message("User updated");
+    }
+
 
     private String generateToken(User user, String unhashedPassword) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), unhashedPassword));

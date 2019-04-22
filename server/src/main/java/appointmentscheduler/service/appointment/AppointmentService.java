@@ -41,6 +41,9 @@ import appointmentscheduler.repository.EmployeeRepository;
 import appointmentscheduler.repository.ShiftRepository;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
+import com.stripe.model.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +68,8 @@ public class AppointmentService {
 
     GoogleClientSecrets clientSecrets;
 
+    @Value("${stripe.key}")
+    private String stripePrivateKey;
     @Value("${google.client.client-id}")
     private String clientId;
     @Value("${google.client.client-secret}")
@@ -460,6 +465,19 @@ public class AppointmentService {
         return allAvailabilities;
     }
 
+    //currently only supporting CAD currency.
+    public void chargeClient(Token user_card, long price, long businessId) throws StripeException {
+        Business business = businessRepository.findById(businessId).get();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("amount", price);
+        params.put("currency", "cad");
+        params.put("source", user_card.getId());
+        Map<String, Object> destinationParams = new HashMap<String, Object>();
+        destinationParams.put("destination", business.getStripeAccountId());
+        params.put("destination", destinationParams);
+        Charge charge = Charge.create(params);
+    }
 
     private Map<String, String> message(String message) {
         Map<String, String> map = new HashMap<>();

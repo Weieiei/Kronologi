@@ -2,6 +2,8 @@ FROM node:10-alpine AS node
 
 WORKDIR /home/node
 
+
+RUN apk add --no-cache git
 COPY package.json /home/node
 RUN npm install
 

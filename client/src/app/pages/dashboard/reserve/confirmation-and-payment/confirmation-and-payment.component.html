@@ -1,0 +1,23 @@
+<div class="account-settings-container" fxLayout="column" fxLayoutGap="60px" [ngClass]="{'account-settings-container-dark': darkModeActive }">
+  <div fxLayout="column" fxLayoutGap="30px ">
+
+      <div fxLayout="column">
+          <h5 style="color: black">Information about your upcoming appointment</h5>
+          <mat-divider></mat-divider>
+      </div>
+
+      <div class="change-email-container" fxLayout="column" fxLay="10px"  style="padding-left:50px">
+          <div fxLayout="row">
+              <mat-hint fxFlex="60" fxFlex.lt-md [ngClass]="{'text-color-dark' : darkModeActive}" style="color:black">Your appointment will be the : {{ chosenDate }}</mat-hint>
+            </div>
+            <div fxLayout="row">
+                <mat-hint fxFlex="60" fxFlex.lt-md [ngClass]="{'text-color-dark' : darkModeActive}" style="color:black">The time of the appointment is : {{ chosenTime }}</mat-hint>
+              </div>
+              <div fxLayout="row">
+                <mat-hint fxFlex="60" fxFlex.lt-md [ngClass]="{'text-color-dark' : darkModeActive}" style="color:black">The service is : {{ service.name }}</mat-hint>
+              </div>
+        </div>
+
+        <mat-checkbox [(ngModel)]="checked" style="color:black" (change)="onChange()">I would like to pay upon completing my booking</mat-checkbox>
+  </div>
+</div>

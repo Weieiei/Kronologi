@@ -2,6 +2,7 @@ package appointmentscheduler.controller.rest;
 
 import appointmentscheduler.annotation.LogREST;
 import appointmentscheduler.dto.appointment.AppointmentDTO;
+import appointmentscheduler.dto.appointment.PaymentInfoDTO;
 import appointmentscheduler.dto.user.GuestDTO;
 import appointmentscheduler.entity.appointment.Appointment;
 import appointmentscheduler.entity.appointment.CancelledAppointment;
@@ -14,10 +15,14 @@ import appointmentscheduler.serializer.*;
 import appointmentscheduler.service.appointment.AppointmentService;
 import appointmentscheduler.service.guest.GuestService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -112,13 +117,26 @@ public class AppointmentController extends AbstractController {
         return getJson(objectMapper, appointmentService.getConfirmedAppointmentsByDateAndBusinessId(date,businessId));
     }
 
-
+    @LogREST
     @GetMapping("{businessId}/cancel/{id}")
     public ResponseEntity<String> findId(@PathVariable long id, @PathVariable long businessId){
         ObjectMapper mapper = objectMapperFactory.createMapper(CancelledAppointment.class, new CancelledAppointmentSerializer());
         return getJson(mapper, appointmentService.findByCancelledIdAndBusinessId(id,  businessId));
     }
 
+    @PostMapping("/{businessId}/processPayment")
+    public ResponseEntity<String> processPaymentForAppointment(@RequestBody PaymentInfoDTO paymentInfoDTO){
+       try {
+           Token client_token = paymentInfoDTO.getStripeToken();
+           long businessId = paymentInfoDTO.getBusinessId();
+           long price =  paymentInfoDTO.getServicePrice();
+           appointmentService.chargeClient(client_token,price,businessId);
+
+           return ResponseEntity.ok().build();
+       }catch(StripeException e){
+           return ResponseEntity.status(400).build();
+       }
+    }
     //TODO fix
     @LogREST
     @GetMapping("/{businessId}/availabilities/{serviceId}")

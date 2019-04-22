@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError as observableThrowError } from "rxjs";
 import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as decode from 'jwt-decode';
 import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
 import { UpdateEmailDTO } from '../../interfaces/user/update-email-dto';
@@ -9,6 +9,7 @@ import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
 import { SettingsDTO } from '../../interfaces/settings/settings-dto';
 import { UpdateSettingsDTO } from '../../interfaces/settings/update-settings-dto';
 import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
+import { catchError, map } from "rxjs/operators";
 import { PasswordResetDTO } from '../../interfaces/password-reset/password-reset-dto';
 
 @Injectable({
@@ -77,7 +78,7 @@ export class UserService {
         }
     }
 
-    getBusinessIdFromToken(): string {
+    getBusinessIdFromToken(): number {
         try {
             return this.getTokenClaims()['businessId'];
         } catch (e) {
@@ -152,12 +153,12 @@ export class UserService {
 
     }
 
-    getAllUsers(): Observable<any[]> {
-        return this.http.get<any[]>(['api', 'business', '1', 'admin', 'users'].join('/'));
+    getAllUsers(businessId: number): Observable<any[]> {
+        return this.http.get<any[]>(['api', 'business', businessId, 'admin', 'users'].join('/'));
     }
 
-    changeUserToEmployee(id: number): Observable<any> {
-        return this.http.post<any[]>(['api', 'business', 'admin', '1', 'user', 'employee', id].join('/'), '');
+    changeUserToEmployee(id: number, businessId: number): Observable<any> {
+        return this.http.post<any[]>(['api', 'business', businessId, 'admin', 'user', 'employee', id].join('/'), '');
     }
 
     uploadUserPicture(userFile: File): Observable<any> {
@@ -173,7 +174,6 @@ export class UserService {
     sendPasswordResetEmail(email: string): Observable<any> {
         return this.http.get<any>(['api', 'password', 'forgot'].join('/'), { params: { email: email }});
     }
-
     resetPassword(payload: PasswordResetDTO): Observable<any> {
         return this.http.post<any>(['api', 'password', 'reset'].join('/'), payload);
     }

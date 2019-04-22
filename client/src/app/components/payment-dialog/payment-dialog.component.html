@@ -1,0 +1,41 @@
+<!-- <form #checkout="ngForm" (ngSubmit)="onSubmit(checkout)" class="checkout">
+  <div class="form-row">
+    <label for="card-info">Card Info</label>
+    <div id="card-info" #cardInfo></div>
+
+    <div id="card-errors" role="alert" *ngIf="error">{{ error }}</div>
+  </div>
+
+  <button type="submit">Pay $777</button>
+</form> -->
+<ng-container>
+
+  <div *ngIf="!changekey" style="padding:1em;">
+      <ng-container *ngIf="stripe">
+        <label for="card-like-element">
+          Credit or debit card
+        </label>
+        <div id="card-like-element" style="background-color:white;border-radius: 5px;border:1px solid #DDD;padding:.33em;">
+            <div *ngIf="invalidError" style="color:red">
+                {{ invalidError.message }}
+              </div>
+              
+              <stripe-card
+                #stripeCard
+                (catch) = " ($event)"
+                [(token)]="token"
+                [(invalid)] = "invalidError"
+                (tokenChange) = "setStripeToken($event)"
+                (sourceChange) = "setStripeSource($event)"
+              ></stripe-card>
+              
+             
+        </div>
+        <br />
+        <button type="button" (click)="stripeCard.createToken()">Pay now</button>
+        <div *ngIf="token" style="padding:1em;">
+          <strong>Token</strong>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>

@@ -5,7 +5,7 @@
                 <app-service-selection-grid-list [businessId]="businessId" (serviceChange)="setService($event)"></app-service-selection-grid-list>
 
             <div *ngIf="serviceIsSelected()">
-                <button mat-button matStepperNext (click)="getAllAvailabilitiesForService(service)">Next</button>
+                <button mat-raised-button matStepperNext (click)="getAllAvailabilitiesForService(service)">Next</button>
             </div>
         </form>
     </mat-step>
@@ -16,14 +16,24 @@
                               [childDaysMap]="daysMap" (timeChangeAndEmployeeChange)="setTimeAndEmployeeId($event)">
                 </app-pick-day>
             <div *ngIf="timeIsSelected()">
+                <button mat-raised-button matStepperPrevious>Back</button>
+                <button mat-raised-button matStepperNext (click)="bookAppointment()">Next</button>
                 <button mat-button matStepperPrevious>Back</button>
                 <button *ngIf="!authService.isGuest()" mat-button matStepperNext (click)="bookAppointment()">Next</button>
                 <button *ngIf="authService.isGuest()" mat-button matStepperNext>Register</button>
             </div>
 
             <div *ngIf="timeIsSelected() == false">
-                <button mat-button matStepperPrevious>Back</button>
+                <button mat-raised-button matStepperPrevious>Back</button>
             </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup" [optional]="isOptional">
+        <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Confirmation</ng-template>
+            <app-confirmation-and-payment (isPaymentWanted) ="setIsPayment($event)" [service]="service" [chosenTime]="time" [chosenDate]="dateString"></app-confirmation-and-payment>
+            <button mat-raised-button matStepperPrevious>Back</button>
+            <button mat-raised-button matStepperNext (click)="bookAppointment()">Next</button>
         </form>
     </mat-step>
     <mat-step *ngIf="authService.isGuest()" >
@@ -97,7 +107,7 @@
         <ng-template matStepLabel>Done</ng-template>
         You are now done.
         <div>
-        <button mat-button color="primary" type="button" routerLink="/business">Return to home page</button>
+        <button mat-raised-button color="primary" type="button" routerLink="/business">Return to home page</button>
         </div>
   </mat-step>
 </mat-horizontal-stepper>

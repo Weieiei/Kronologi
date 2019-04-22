@@ -49,10 +49,10 @@ export class LoginComponent implements OnInit {
                 let businessId = this.userService.getBusinessIdFromToken();
 
                 if (this.userService.isAdmin()){
-                    this.router.navigate([businessId.toString()+'/admin/appts']);
+                    this.router.navigate([businessId+'/admin/appts']);
                 }
                 else if (this.userService.isEmployee()){
-                    this.router.navigate([businessId.toString()+'/employee/appts']);
+                    this.router.navigate([businessId+'/employee/appts']);
                 }
                 else {
                     this.router.navigate(['business']);

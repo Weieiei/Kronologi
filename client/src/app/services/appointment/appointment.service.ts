@@ -6,7 +6,8 @@ import { UserAppointmentDTO } from '../../interfaces/appointment/user-appointmen
 import { Appointment } from 'src/app/interfaces/appointment';
 import { CancelAppointmentDTO } from 'src/app/interfaces/cancelAppointmentDTO';
 import { AppointmentDetailed } from '../../models/appointment/AppointmentDetailed';
-import { GuestCreateDto } from '../../interfaces/guest/guest-create-dto';
+import { GuestCreateDto } from '../../interfaces/guest/guest-create-dto';;
+import { PaymentInfoDTO } from 'src/app/interfaces/business/payment-processing-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +23,7 @@ export class AppointmentService {
     }
 
     public getMyAppointments(businessId: number): Observable<UserAppointmentDTO[]> {
-        return this.http.get<UserAppointmentDTO[]>(['api', 'user', 'business', businessId.toString(), 'appointments'].join('/'));
+        return this.http.get<UserAppointmentDTO[]>(['api', 'user', 'business', businessId, 'appointments'].join('/'));
     }
 
     public getAppointmentById(id: number): Observable<UserAppointmentDTO> {
@@ -65,4 +66,8 @@ export class AppointmentService {
         return this.http.get(['external', 'google', 'login', 'google'].join('/'));
     }
 
+    public payForAppointment(paymentInfo : PaymentInfoDTO,businessId : number): Observable<any> {
+        console.log(paymentInfo)
+        return this.http.post<any>(['api', 'business',businessId,'processPayment'].join('/'), paymentInfo);
+    }
 }

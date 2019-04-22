@@ -30,10 +30,12 @@
               "node_modules/slick-carousel/slick/slick.scss",
               "node_modules/slick-carousel/slick/slick-theme.scss"
             ],
-            "scripts": [
-              "src/assets/js/google-analytics.js",
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/slick-carousel/slick/slick.min.js"
+            "scripts":
+              ["src/assets/js/google-analytics.js",
+                "src/assets/js/stripe-elements.js",
+                "node_modules/jquery/dist/jquery.min.js",
+                "node_modules/slick-carousel/slick/slick.min.js"
+
             ]
           },
           "configurations": {

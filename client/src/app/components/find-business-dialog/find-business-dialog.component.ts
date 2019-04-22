@@ -47,12 +47,12 @@ import { GeocodingApiService } from '../../services/google/geocode.service'
       )])
     ])
   ],
-  styles: [`
-  agm-map {
-    height: 200px;
-    width:  200px;
-  }
-`]
+  styles: [
+  `agm-map {
+    height: 300px;
+    width:  500px;
+  }`
+]
 })
 export class FindBusinessDialogComponent implements OnInit {
 
@@ -104,7 +104,7 @@ export class FindBusinessDialogComponent implements OnInit {
             this.businessWasFetched = true;
             this.animationState = true;
             this.spinner.hide();
-            this.dialogRef.updateSize('600px','600px');
+            this.dialogRef.updateSize('800px','800px');
         },
         err => console.log(err)
       );
@@ -135,6 +135,6 @@ export class FindBusinessDialogComponent implements OnInit {
   }
 
   closeDialog() : void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.chosenBusiness);
   }
 }

@@ -44,6 +44,10 @@ public class BusinessSerializer extends StdSerializer<Business> {
 
         for (BusinessHours businessHours : hours) {
             gen.writeStartObject();
+
+            if(businessHours.getDayOfWeek() == 0){
+                businessHours.setDayOfWeek(businessHours.getDayOfWeek()+1);
+            }
             String dayOfWeek = DayOfWeek.of(businessHours.getDayOfWeek()).toString().toLowerCase();
             dayOfWeek = dayOfWeek.substring(0,1).toUpperCase() + dayOfWeek.substring(1).toLowerCase();
             gen.writeObjectField("day", dayOfWeek);

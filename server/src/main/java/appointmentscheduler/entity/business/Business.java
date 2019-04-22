@@ -38,6 +38,9 @@ public class Business extends AuditableEntity {
     @Column(name = "address")
     private String formattedAddress;
 
+    @Column(name= "stripe_account_id")
+    private String stripeAccountId;
+
     public Business() {
     }
 
@@ -98,4 +101,8 @@ public class Business extends AuditableEntity {
     public void setBusinessLogo(String businessLogo) {
         this.businessLogo = businessLogo;
     }
+
+    public String getStripeAccountId(){ return stripeAccountId;}
+
+    public void setStripeAccountId(String stripeAccountId){this.stripeAccountId = stripeAccountId;}
 }

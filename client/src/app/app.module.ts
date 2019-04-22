@@ -68,11 +68,16 @@ import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { PickDayComponent } from './pages/dashboard/reserve/pick-day/pick-day.component';
 import { SearchInputComponent } from './components/search-box/search-box.component';
 import { AppGradientButtonComponent } from './components/app-gradient-button/app-gradient-button.component';
+import { ConfirmationAndPaymentComponent } from './pages/dashboard/reserve/confirmation-and-payment/confirmation-and-payment.component';
+import { PaymentDialogComponent } from './components/payment-dialog/payment-dialog.component';
+import { Module as StripeModule } from "stripe-angular";
+import { TermsAndServicesDialogComponent } from './components/terms-and-services-dialog/terms-and-services-dialog.component';
 import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { RoutingAndAccountHelpComponent } from './components/routing-and-account-help/routing-and-account-help.component';
 
 
 @NgModule({
@@ -134,9 +139,16 @@ import { environment } from '../environments/environment';
         PasswordResetRedirectComponent,
         PasswordForgotDialogComponent,
         ReceiptsComponent,
+        ReceiptsComponent,
+        GoogleMapsComponent,
+        ConfirmationAndPaymentComponent,
+        PaymentDialogComponent,
+        TermsAndServicesDialogComponent,
+        RoutingAndAccountHelpComponent,
         AppGradientButtonComponent
     ],
     imports: [
+        StripeModule.forRoot(),
         LightboxModule,
         CovalentFileModule,
         NgxSpinnerModule,
@@ -161,6 +173,9 @@ import { environment } from '../environments/environment';
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     entryComponents: [
+        RoutingAndAccountHelpComponent,
+        TermsAndServicesDialogComponent,
+        PaymentDialogComponent,
         ErrorDialogComponent,
         FindBusinessDialogComponent,
         TimePickerDialogComponent,

@@ -68,18 +68,18 @@ export class ServiceService {
         return this.http.post<Service>(['api', 'business', businessId, 'admin', 'service'].join('/'), service);
     }
     public registerService(businessId: number, service: ServiceCreateDto): Observable<any> {
-        return this.http.post<Service>(['api', 'business', 'services', businessId.toString(), 'service'].join('/'), service);
+        return this.http.post<Service>(['api', 'business', 'services', businessId, 'service'].join('/'), service);
     }
 
     // TODO: need to add the businessID instead of s=using '1'
-    public addServiceToUser(employeedId: number, serviceId: number): Observable<any> {
-        return this.http.post<any>(['api', 'business', 'admin', '1', 'service', employeedId, serviceId].join('/'), '');
+    public addServiceToUser(employeedId: number, serviceId: number, businessId:number): Observable<any> {
+        return this.http.post<any>(['api',  'business', businessId, 'admin' , 'service', employeedId, serviceId].join('/'), '');
     }
 
     public updateServicePicture(serviceFile: File, serviceId: number): Observable<any> {
         let formData = new FormData();
         formData.append('file', serviceFile);
-        return this.http.post(['api', 'business', 'services', serviceId.toString(), 'profile'].join('/'), formData);
+        return this.http.post(['api', 'business', 'services', serviceId, 'profile'].join('/'), formData);
     }
 
     public getServiceProfile(businessId: number, serviceId: number): Observable<any> {

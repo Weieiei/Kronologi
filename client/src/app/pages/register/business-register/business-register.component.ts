@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  ViewChild, Renderer2, ViewChildren, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ServiceService } from '../../../services/service/service.service';
@@ -7,21 +7,33 @@ import { BusinessUserRegisterDTO } from '../../../interfaces/user/business-user-
 import { BusinessRegisterDTO } from '../../../interfaces/business/business-register-dto';
 import { BusinessDTO } from '../../../interfaces/business/business-dto';
 import { UserService } from '../../../services/user/user.service';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray , FormControl} from '@angular/forms';
 import * as countryData from 'country-telephone-data';
 import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics.service';
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
 import { BusinessHoursDTO } from '../../../interfaces/business/businessHours-dto'
 import { FindBusinessDialogComponent } from '../../../components/find-business-dialog/find-business-dialog.component';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog, _countGroupLabelsBeforeOption } from '@angular/material';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { trigger, state, style, transition, animate, group } from '@angular/animations';
 import { PasswordMismatchStateMatcher } from '../../../../shared/password-mismatch-state-matcher';
+import { TermsAndServicesDialogComponent } from 'src/app/components/terms-and-services-dialog/terms-and-services-dialog.component';
+import { StripeUserInfo } from 'src/app/interfaces/user/stripe-user-info';
+import { StripeScriptTag, StripeToken , StripeSource, StripeInstance} from "stripe-angular"
+import { BankAccountInfo } from 'src/app/interfaces/user/seller-bank-account-dto';
+import { RoutingAndAccountHelpComponent } from 'src/app/components/routing-and-account-help/routing-and-account-help.component';
+
 
 export interface Domain {
     value: string;
 }
 
+export interface Provinces{
+    value: string;
+}
+export interface AccountType{
+    value: string
+}
 export interface BusinessHours {
     start: string;
     end: string;
@@ -67,7 +79,16 @@ export interface BusinessHours {
   ]
 })
 export class BusinessRegisterComponent implements OnInit {
-
+    @ViewChildren('start') start;
+    @ViewChildren('end') end;
+    private publishableKey:string ="pk_test_Abn7eEcmv3zmYE39xC2PGovO00rTzkGohi";
+    loaded:boolean
+    lastError:Error
+    token:any
+    stripe:StripeInstance
+    checked: boolean = false;
+    termOfServices: boolean = false;
+    tosDateAcceptance:Date;
     daysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     possibleBusinessHours: string[] = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00',
         '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00',
@@ -82,12 +103,34 @@ export class BusinessRegisterComponent implements OnInit {
     personalInfoForm: FormGroup;
     businessInfoForm: FormGroup;
     serviceInfoForm: FormGroup;
+    extraInformation: FormGroup;
     selectedFile: File = null;
     // new business object
     business: BusinessDTO;
     businessName: string;
     businessDomain: string;
 
+    alreadyLoaded : boolean = false;
+    bankAccountType: AccountType[] = [
+        {value: 'Individual'},
+        {value: 'Business'}
+    ];
+
+
+    provinceChoice: Provinces[] = [
+        {value: 'QC'},
+        {value: 'ON'},
+        {value: 'AB'},
+        {value: 'BC'},
+        {value: 'NB'},
+        {value: 'NL'},
+        {value: 'NS'},
+        {value: 'NT'},
+        {value: 'NU'},
+        {value: 'PE'},
+        {value: 'SK'},
+        {value: 'YT'}
+    ];
     domains: Domain[] = [
         {value: 'Beauty'},
         {value: 'Healthcare'},
@@ -103,18 +146,29 @@ export class BusinessRegisterComponent implements OnInit {
     // new service object
     service: string;
     serviceDuration: number;
+    servicePrice: number;
     // new user object
     firstName: string;
     lastName: string;
     email: string;
     password: string;
 
+    dateOfBirth: Date;
+    socialSecurityNumber:number;
+    businessTaxId: number; 
     countries: Object[] = countryData.allCountries;
     selectedCountry: Object;
+
+    bankRoutingNumber: number;
+    bankAccountNumber: number;
+    bankAccountHolderFn: string;
+    bankAccountHolderLn: string;
+    accountType: string;
 
     areaCode: string;
     number: string;
 
+    businessHoursDTO: BusinessHoursDTO[] = [];
     confirmPassword: string;
     isPasswordVisible = false;
 
@@ -122,6 +176,8 @@ export class BusinessRegisterComponent implements OnInit {
 
     businessId: number;
     matcher: PasswordMismatchStateMatcher;
+
+    stripeTokenForBankAccount : StripeToken;
 
     index = 0;
     constructor(
@@ -133,18 +189,21 @@ export class BusinessRegisterComponent implements OnInit {
         private userService: UserService,
         private serviceService: ServiceService,
         private googleAnalytics: GoogleAnalyticsService,
-        private businessService: BusinessService
+        private businessService: BusinessService,
+        public StripeScriptTag:StripeScriptTag,
+        public elRef : ElementRef
          ) {
         this.matcher = new PasswordMismatchStateMatcher();
     }
 
     ngOnInit() {
+        this.apply(this.publishableKey).then( ()=>this.loaded=true )
         this.personalInfoForm = this._formBuilder.group({
             firstName: [this.firstName || '',  [Validators.required] ],
             lastName: [this.lastName || '',  [Validators.required] ],
             email: [this.email || '',  [Validators.required, Validators.email] ],
-            password: [this.password || '',  [Validators.required, Validators.pattern('^(?=.*\\d)(?=.*[a-zA-Z]).{6,30}$')] ],
-            confirmPassword: [this.confirmPassword || '',  [Validators.required] ],
+            password: [this.password || '',  [Validators.required, Validators.pattern('^(?=.*\\d)(?=.*[a-zA-Z]).{6,30}$')]],
+            confirmPassword: [this.confirmPassword || '',  [Validators.required]],
             areaCode: [this.areaCode || '',  [] ],
             number: [this.number || '',  [] ],
         }, {validator: this.checkPasswords});
@@ -157,14 +216,34 @@ export class BusinessRegisterComponent implements OnInit {
             province: [this.province || '',  [Validators.required] ],
             country: [this.country || '',  [Validators.required] ],
             postalCode: [this.postalCode || '',  [Validators.required] ],
+
         });
         this.serviceInfoForm = this._formBuilder.group({
             firstNewService: [this.service, [Validators.required]],
             firstNewServiceDuration: [this.serviceDuration, [Validators.required]],
+            firstNewServicePrice: [this.servicePrice, [Validators.required]],
             newServices: this._formBuilder.array([])
         });
+
+        this.extraInformation = this._formBuilder.group({
+            dateOfBirth: new FormControl(new Date()),
+            socialSecurityNumber: [this.socialSecurityNumber || '', [Validators.required]],
+            businessTaxId: [this.businessTaxId],
+            bankRoutingNumber: [this.bankRoutingNumber || '', [Validators.required, Validators.pattern('(([0-9]){5}[-]([0-9]){3})|([0-9]){8}')]],
+            bankAccountNumber: [this.bankAccountNumber || '', [Validators.required, Validators.pattern('[0-9]{7,12}')]],
+            bankAccountHolderFn: [this.bankAccountHolderFn || '', [Validators.required]],
+            bankAccountHolderLn: [this.bankAccountHolderLn || '', [Validators.required]],
+            accountType: [this.accountType || '', [Validators.required]],
+            provinceChoice: new FormControl()        
+        });
+        
       }
 
+    apply(key):Promise<StripeInstance>{
+     this.publishableKey = key
+        return this.StripeScriptTag.setPublishableKey(this.publishableKey)
+    .   then(StripeInstance=>this.stripe=StripeInstance)
+    }
     checkPasswords(inputFormGroup: FormGroup) {
         const password = inputFormGroup.controls.password.value;
         const confirmPassword = inputFormGroup.controls.confirmPassword.value;
@@ -181,19 +260,24 @@ export class BusinessRegisterComponent implements OnInit {
         return this.business;
     }
 
+    setStripeToken( token:StripeToken ){
+        this.stripeTokenForBankAccount = token;
+      }
     business_register() {
         this.spinner.show();
         this.animationState = false;
-        const businessHoursDTO: BusinessHoursDTO[] = [];
-        if (!this.isEmptyObject(this.businessHourMap)) {
-            this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) => {
-                const businessHourDTOTemp: BusinessHoursDTO = {
-                    day: day,
-                    openHour : openAndClose.start,
-                    closeHour : openAndClose.end
-                };
-                businessHoursDTO.push(businessHourDTOTemp);
-            });
+        
+        if(!this.alreadyLoaded){
+            if (!this.isEmptyObject(this.businessHourMap)) {
+                this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) => {
+                    const businessHourDTOTemp: BusinessHoursDTO = {
+                        day: day,
+                        openHour : openAndClose.start,
+                        closeHour : openAndClose.end
+                    };
+                    this.businessHoursDTO.push(businessHourDTOTemp);
+                });
+            }
         }
 
         const businessInfoValues = this.businessInfoForm.value;
@@ -210,6 +294,7 @@ export class BusinessRegisterComponent implements OnInit {
         const firstService = {
             name: serviceInfoValues.firstNewService,
             duration: serviceInfoValues.firstNewServiceDuration,
+            price: serviceInfoValues.firstNewServicePrice
         };
 
         const payload_service: ServiceCreateDto[] = [firstService];
@@ -219,6 +304,7 @@ export class BusinessRegisterComponent implements OnInit {
                 const subsequentService = {
                     name: individualControl.controls.newServiceName.value,
                     duration: individualControl.controls.newServiceDuration.value,
+                    price: serviceInfoValues.firstNewServicePrice
                 };
                 payload_service.push(subsequentService);
             });
@@ -233,14 +319,52 @@ export class BusinessRegisterComponent implements OnInit {
             email: personalInfoValues.email,
             password: personalInfoValues.password,
             phoneNumber: {
-                countryCode: this.selectedCountry['dialCode'],
+                countryCode: "+1",
                 areaCode: personalInfoValues.areaCode,
                 number: personalInfoValues.number
             }
         };
+        
+        const extraInfoStripe = this.extraInformation.value;
+        console.log(extraInfoStripe)
+        let bankAccountInformation: BankAccountInfo = null;
+        let stripeSellerPayload: StripeUserInfo = null;
 
+        if(this.checked){
+            const birthYear = extraInfoStripe.dateOfBirth.getFullYear();
+            const birthMonth = extraInfoStripe.dateOfBirth.getMonth();
+            const birthDay = extraInfoStripe.dateOfBirth.getDate();
+            
+            stripeSellerPayload ={
+                firstName: personalInfoValues.firstName,
+                lastName: personalInfoValues.lastName,
+                birthYear: birthYear,
+                birthMonth: birthMonth,
+                birthDay: birthDay,
+                socialInsuranceNumber: extraInfoStripe.socialSecurityNumber,
+                
+                business_type: businessInfoValues.businessDomain,
+                address: businessInfoValues.address,
+                city:businessInfoValues.city,
+                province:extraInfoStripe.provinceChoice,
+                postalCode: businessInfoValues.postalCode,
+                country:businessInfoValues.country,
+                businessTaxNumber:extraInfoStripe.businessTaxId,
+
+                tosAcceptance: this.tosDateAcceptance,
+                stripeTokenForBankAccount :this.stripeTokenForBankAccount
+            }
+
+            bankAccountInformation = {
+                routinNumber: extraInfoStripe.bankRoutingNumber,
+                accountNumber: extraInfoStripe.bankAccountNumber,
+                bankAccountHolderFirstName: extraInfoStripe.bankAccountHolderFn,
+                bankAccountHolderLastName: extraInfoStripe.bankAccountHolderLn,
+                accountType: extraInfoStripe.accountType
+            }
+        }
         this.googleAnalytics.trackValues('formSubmit', 'register');
-        this.businessService.createBusiness(payload_business, payload_service, payload, businessHoursDTO, this.selectedFile).subscribe(
+        this.businessService.createBusiness(payload_business, payload_service, payload, this.businessHoursDTO, this.selectedFile, stripeSellerPayload,bankAccountInformation).subscribe(
         res => {
                 this.router.navigate(['login']);
             },
@@ -327,10 +451,83 @@ export class BusinessRegisterComponent implements OnInit {
         dialogConfig.data = {
             business: this.selectedBusiness
         };
-        const dialogRef = this.dialog.open(FindBusinessDialogComponent, dialogConfig);
+        const dialogRef = this.dialog.open(FindBusinessDialogComponent, dialogConfig).afterClosed().subscribe(
+            response => {
+                if(response!== undefined){
 
-        dialogRef.afterClosed().subscribe(business => {
-        });
+                    this.businessInfoForm.controls["businessName"].setValue(response["name"])
+
+                    let description : string = "This place is known to be a : ";
+                     description += response["description"].replace("[","");
+                    description = description.replace("]","");
+                    description = description.replace(/"/g, "");
+                    description = description.replace("_"," ");
+
+                    
+                    this.businessInfoForm.controls["businessDomain"].setValue("Other")
+                    this.businessInfoForm.controls["description"].setValue(description);
+                    
+                    let formattedAddressFound : string[] = response["formattedAddress"].split(",");
+
+                    this.businessInfoForm.controls["address"].setValue(formattedAddressFound[0]);
+                    this.businessInfoForm.controls["city"].setValue(formattedAddressFound[1]);
+                    
+                    let provinceAndPostalCode : string[] = formattedAddressFound[2].split(" ");
+                    this.businessInfoForm.controls["province"].setValue(provinceAndPostalCode[1]);
+                   
+                    let postalCode = provinceAndPostalCode[2]+" "+provinceAndPostalCode[3];
+                    this.businessInfoForm.controls["postalCode"].setValue(postalCode);
+
+                    this.businessInfoForm.controls["country"].setValue(formattedAddressFound[3]);
+                    
+
+                    if(response.hasOwnProperty("business_hours")){
+                        this.alreadyLoaded = true;
+                    }
+                    console.log(this.end._results)
+                    for(let i =0; i< response["business_hours"].length;i++){
+                        if(response["business_hours"][i]["openHour"] !== "Close" && response["business_hours"][i]["closeHour"] !== "Close"){
+                            this.start._results[i]._control.value = response["business_hours"][i]["openHour"];
+                            this.end._results[i]._control.value = response["business_hours"][i]["closeHour"];
+                    
+
+                            const businessHourDTOTemp: BusinessHoursDTO = {
+                                day: response["business_hours"][i]["day"],
+                                openHour : response["business_hours"][i]["openHour"],
+                                closeHour : response["business_hours"][i]["closeHour"]
+                            };
+                         this.businessHoursDTO.push(businessHourDTOTemp);
+                        }
+                    }
+                }   
+               
+        });;
+
+     
+    }
+
+
+    openTermsAndServicesDialog() {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = '600px';
+        dialogConfig.height = '350px';
+
+        this.dialog.open(TermsAndServicesDialogComponent, dialogConfig);
+
+    }
+    openRoutingAndAccountNumberHelp() {
+        const dialogConfig = new MatDialogConfig();
+
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = '700px';
+        dialogConfig.height = '500px';
+
+        this.dialog.open(RoutingAndAccountHelpComponent, dialogConfig);
+
     }
 
     stopRegistering() {
@@ -340,17 +537,33 @@ export class BusinessRegisterComponent implements OnInit {
 
     get newServiceForms() {
         return this.serviceInfoForm.get('newServices') as FormArray;
-
     }
     addService() {
         const newService = this._formBuilder.group({
           newServiceName: ['', [Validators.required]],
           newServiceDuration: ['', [Validators.required]],
+          newServicePrice: ['',[Validators.required]]
         });
         this.newServiceForms.push(newService);
     }
     deleteService(i) {
         this.newServiceForms.removeAt(i);
+    }
+
+    TOSDate():void{
+        this.tosDateAcceptance = new Date();
+    }
+    checkForExtraInfo():boolean{
+        if(this.checked){
+            const extraInfo = this.extraInformation.value;
+            const dob  = extraInfo.dateOfBirth;
+            const  socialSecurityNumber = extraInfo.socialSecurityNumber
+            if(dob === null || socialSecurityNumber === null || !this.termOfServices){
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 }
 

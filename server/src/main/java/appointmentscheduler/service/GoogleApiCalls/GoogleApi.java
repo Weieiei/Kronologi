@@ -79,4 +79,18 @@ public class GoogleApi {
         return finalMap;
     }
 
+    public List<String> getPlaceFromText(String name) throws InterruptedException, ApiException, IOException {
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey(googleApiKey)
+                .build();
+
+        FindPlaceFromText placesFound = PlacesApi.findPlaceFromText(context, name, FindPlaceFromTextRequest.InputType.TEXT_QUERY).await();
+
+        List<String> placesFoundId = new ArrayList<>();
+
+        for(PlacesSearchResult result : placesFound.candidates){
+            placesFoundId.add(result.placeId);
+        }
+        return placesFoundId;
+    }
 }

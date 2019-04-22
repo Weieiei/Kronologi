@@ -24,6 +24,10 @@ public abstract class AbstractController {
         }
     }
 
+    protected String getIpAddresss(){
+       return request.getRemoteAddr();
+    }
+
     protected String getSessionUser() { return String.valueOf(request.getSession().getAttribute("userId"));}
     protected String getUserEmail() {
         return String.valueOf(request.getAttribute("email"));
