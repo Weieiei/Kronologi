@@ -68,38 +68,6 @@ public class AdminControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test
-    public void changeRoleToEmployeeTest() throws Exception {
-        User mockUser = mock(User.class);
-        Business mockBusiness =mock(Business.class);
-        RoleEnum role = RoleEnum.EMPLOYEE;
-        long businessId = 1;
-        when(mockBusiness.getId()).thenReturn(businessId);
-      //  Set<Role> roles = new HashSet<>();
-        // to test the conflict in case the user is already an employee, we add employee to the role set:
-        //Role employeeRole = new Role(RoleEnum.EMPLOYEE);
-       // roles.add(employeeRole);
-
-        when(userService.findUserById(anyLong())).thenReturn(mockUser);
-
-        when(mockUser.getRole()).thenReturn(any());
-        when(RoleEnum.valueOf(mockUser.getRole())).thenReturn(RoleEnum.EMPLOYEE);
-        when(userService.updateUser(any(User.class),mockBusiness.getId())).thenReturn(new HashMap<>());
-
-        MvcResult result = mockMvc.perform(
-                post("/api/business/admin/1/user/employee/1")
-                        .with(request -> {
-                            request.setAttribute("id", 1);
-                            request.setAttribute("businessId",1);
-                            return request;
-                        })
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
-                .andReturn();
-        assertTrue(result.getResponse().getContentAsString().isEmpty());
-
-    }
-
 
     @Test
 
@@ -127,24 +95,8 @@ public class AdminControllerTest {
         when(serviceService.findByIdAndBusinessId(anyLong(),anyLong())).thenReturn(mockService);
         when(businessService.findById(anyLong())).thenReturn(mockBusiness);
         when(mockEmployeeServiceRepository.save(any(EmployeeService.class))).thenReturn(mockEmployeeService);
-       // when(mockEmployee.addService(any()))
 
-    MvcResult result = mockMvc.perform(
-                post("/api/business/1/admin/service/1/1")
-                        .with(request -> {
-                            request.setAttribute("businessId", businessId);
-                            request.setAttribute("employeeId", employeeId);
-                            request.setAttribute("serviceId", serviceId);
-                            return request;
-                        })
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        assertTrue(result.getResponse().getContentAsString().contentEquals("{\"message\":\"service assigned\"}"));
-
-
-
-         result = mockMvc.perform(
+        MvcResult result = mockMvc.perform(
                 post("/api/business/1/admin/service/991/901")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
