@@ -1,3 +1,19 @@
+<div class="notification" [class.visible]="showNotification$ | async">
+    <span>New data is here. Click to reload it.</span>
+    <button mat-raised-button color="accent" (click)="update$.next()">
+        <div class="flex-row">
+            <mat-icon>cached</mat-icon>
+            Update
+        </div>
+    </button>
+</div>
+<button class="reload-button" (click)="forceReload()"
+        mat-raised-button color="accent">
+    <div class="flex-row">
+        <mat-icon>cached</mat-icon>
+        Fetch New Employees
+    </div>
+</button>
 <app-search-input
     [placeholderText]="'Search'"
     (changed)="onSearch($event)">

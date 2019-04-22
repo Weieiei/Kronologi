@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import * as decode from 'jwt-decode';
@@ -94,7 +94,7 @@ export class AuthService {
         return this.admin;
     }
 
-    isEmployee():boolean {
+    isEmployee(): boolean {
         return this.employee;
     }
 
@@ -102,10 +102,10 @@ export class AuthService {
         return this.client;
     }
 
-    isGuest():boolean {
-        if(!this.admin && !this.employee && !this.client){
+    isGuest(): boolean {
+        if (!this.admin && !this.employee && !this.client){
             this.guest = true;
-        }else {
+        } else {
             this.guest = false;
         }
         return this.guest;
@@ -122,10 +122,9 @@ export class AuthService {
         const claims: any = this.getTokenClaims(this.getToken());
         let roles: Array<string> = [];
         if (claims != null) {
-            roles = claims.roles.toString().split(",");
+            roles = claims.roles.toString().split(',');
             this.admin = (roles.includes(UserType.admin) || roles.includes(UserType.admin.toUpperCase()));
-        }
-        else {
+        } else {
             this.admin = false;
         }
     }
@@ -134,10 +133,9 @@ export class AuthService {
         const claims: any = this.getTokenClaims(this.getToken());
         let roles: Array<string> = [];
         if (claims != null) {
-            roles = claims.roles.toString().split(",");
+            roles = claims.roles.toString().split(',');
             this.employee = (roles.includes(UserType.employee) || roles.includes(UserType.employee.toUpperCase()));
-        }
-        else {
+        } else {
             this.employee = false;
         }
     }
@@ -146,7 +144,7 @@ export class AuthService {
         const claims: any = this.getTokenClaims(this.getToken());
         let roles: Array<string> = [];
         if (claims != null) {
-            roles = claims.roles.toString().split(",");
+            roles = claims.roles.toString().split(',');
             this.client = (roles.includes(UserType.client) || roles.includes(UserType.client.toUpperCase()));
         }
         else {

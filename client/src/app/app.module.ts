@@ -70,6 +70,8 @@ import { SearchInputComponent } from './components/search-box/search-box.compone
 import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -153,7 +155,8 @@ import { PasswordForgotDialogComponent } from './components/password-forgot-dial
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyBstSo5jhmmQQ5u2ZjEXOLbMIzXJIdV_48'
           }),
-        StarRatingModule.forRoot()
+        StarRatingModule.forRoot(),
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     entryComponents: [
         ErrorDialogComponent,
