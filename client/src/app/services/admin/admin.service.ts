@@ -16,8 +16,13 @@ export class AdminService {
 
     private cache$: Observable<Array<AdminEmployeeDTO>>;
     private reload$ = new Subject<void>();
+    private businessId: number;
 
     constructor(private http: HttpClient) {
+    }
+
+    setBusinessId(businessId: number) {
+        this.businessId = businessId;
     }
 
     get allEmployees() {
@@ -34,7 +39,7 @@ export class AdminService {
         return this.cache$;
     }
     requestAllEmployees() {
-        return this.getAllEmployees();
+        return this.getAllEmployees(this.businessId);
     }
 
     forceReload() {
@@ -42,28 +47,29 @@ export class AdminService {
         this.cache$ = null;
     }
 
-
-    public getAllEmployees(): Observable<AdminEmployeeDTO[]> {
-        return this.http.get<AdminEmployeeDTO[]>(['api', 'business',  '1', 'admin', 'employees'].join('/'));
+    public getAllEmployees(businessId: number): Observable<AdminEmployeeDTO[]> {
+        return this.http.get<AdminEmployeeDTO[]>(['api', 'business', businessId, 'admin', 'employees'].join('/'));
     }
 
-    getEmployee(employeeId: number): Observable<AdminEmployeeDTO> {
-        return this.http.get<AdminEmployeeDTO>(['api', 'business', '1', 'admin', 'employee', employeeId].join('/'));
+    getEmployee(businessId: number, employeeId: number): Observable<AdminEmployeeDTO> {
+        return this.http.get<AdminEmployeeDTO>(['api', 'business', businessId, 'admin', 'employee', employeeId].join('/'));
     }
 
-    getEmployeeShifts(employeeId: number): Observable<AdminEmployeeShiftDTO[]> {
-        return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'business', '1', 'admin', 'employee', employeeId, 'shift'].join('/'));
+    getEmployeeShifts(businessId: number, employeeId: number): Observable<AdminEmployeeShiftDTO[]> {
+        return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'business', businessId, 'admin', 'employee', employeeId, 'shift'].join('/'));
     }
 
-    addShift(employeeId: number, payload: NewShiftDTO): Observable<AdminEmployeeShiftDTO> {
-        return this.http.post<AdminEmployeeShiftDTO>(['api', 'business', 'admin', '1', 'employee', employeeId, 'shift'].join('/'), payload);
+    addShift(businessId: number, employeeId: number, payload: NewShiftDTO): Observable<AdminEmployeeShiftDTO> {
+        return this.http.post<AdminEmployeeShiftDTO>(['api', 'business', businessId, 'admin', 'employee', employeeId,
+            'shift'].join('/'), payload);
     }
 
-    addShiftList(employeeId: number, payload: Array<NewShiftDTO>): Observable<AdminEmployeeShiftDTO[]> {
-        return this.http.post<AdminEmployeeShiftDTO[]>(['api', 'business', 'admin', '1', 'employee', employeeId, 'shift-list'].join('/'), payload);
+     addShiftList(businessId: number, employeeId: number, payload: Array<NewShiftDTO>): Observable<AdminEmployeeShiftDTO[]> {
+        return this.http.post<AdminEmployeeShiftDTO[]>(['api', 'business', businessId, 'admin', 'employee', employeeId,
+            'shift-list'].join('/'), payload);
     }
 
-    deleteShift(shiftId: number): Observable<any> {
-        return this.http.delete<any>(['api', 'business', 'admin', '1', 'employee', 'shift', shiftId].join('/'));
+    deleteShift(businessId: number, shiftId: number): Observable<any> {
+        return this.http.delete<any>(['api', 'business', businessId, 'admin', 'employee', 'shift', shiftId].join('/'));
     }
 }

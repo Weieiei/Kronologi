@@ -12,6 +12,15 @@ div.services-msg {
     color: black;
 }
 
+.cool-button {
+    display: flex;
+    padding-bottom: 20px;
+    .gradient-button {
+        margin: auto;
+    }
+}
+
+
 .notification {
     margin-bottom: 10px;
     top: 0;

@@ -1,0 +1,15 @@
+.add-recurring-shift-container{
+    .add-recurring-shift-form{
+
+        ::ng-deep {
+            .mat-form-field-appearance-outline .mat-form-field-outline {
+                color: darkGray;
+            }
+            mat-form-field {
+                .mat-hint, input, ::placeholder, .mat-form-field-label {
+                    color: black;
+                }
+            }
+        }
+    }
+}

@@ -17,8 +17,13 @@ export class ServiceService {
 
     private cache$: Observable<Array<Service>>;
     private reload$ = new Subject<void>();
+    private businessId: number;
 
     constructor(private http: HttpClient) {
+    }
+
+    setBusinessId(businessId: number) {
+        this.businessId = businessId;
     }
 
     get allServices() {
@@ -31,12 +36,19 @@ export class ServiceService {
                 shareReplay(CACHE_SIZE)
             );
         }
-
         return this.cache$;
     }
 
+    public getServices(businessId: number): Observable<ServiceDTO[]> {
+        return this.http.get<ServiceDTO[]>(['api', 'business', businessId, 'services'].join('/'));
+    }
+
+    public getPlainServices(businessId: number): Observable<Service[]> {
+        return this.http.get<Service[]>(['api', 'business', businessId, 'services'].join('/'));
+    }
+
     requestAllEmployees() {
-        return this.getPlainServices().pipe(
+        return this.getPlainServices(this.businessId).pipe(
             map(data => {
                 return data.map(a => {
                     return new Service(
@@ -52,33 +64,25 @@ export class ServiceService {
         this.cache$ = null;
     }
 
-    public getServices(businessId: number): Observable<ServiceDTO[]> {
-        return this.http.get<ServiceDTO[]>(['api', 'business', 'services', businessId].join('/'));
-    }
-
-    public getPlainServices(): Observable<Service[]> {
-        return this.http.get<Service[]>(['api', 'business', 'services', '1'].join('/'));
-    }
-
     public createService(businessId: number, service: ServiceCreateDto): Observable<any> {
-        return this.http.post<Service>(['api', 'business', businessId.toString(), 'admin', 'service'].join('/'), service);
+        return this.http.post<Service>(['api', 'business', businessId, 'admin', 'service'].join('/'), service);
     }
     public registerService(businessId: number, service: ServiceCreateDto): Observable<any> {
-        return this.http.post<Service>(['api', 'business', 'services', businessId.toString(), 'service'].join('/'), service);
+        return this.http.post<Service>(['api', 'business', 'services', businessId, 'service'].join('/'), service);
     }
 
     // TODO: need to add the businessID instead of s=using '1'
-    public addServiceToUser(employeedId: number, serviceId: number): Observable<any> {
-        return this.http.post<any>(['api', 'business', 'admin', '1', 'service', employeedId, serviceId].join('/'), '');
+    public addServiceToUser(employeedId: number, serviceId: number, businessId:number): Observable<any> {
+        return this.http.post<any>(['api',  'business', businessId, 'admin' , 'service', employeedId, serviceId].join('/'), '');
     }
 
     public updateServicePicture(serviceFile: File, serviceId: number): Observable<any> {
         let formData = new FormData();
         formData.append('file', serviceFile);
-        return this.http.post(['api', 'business', 'services', serviceId.toString(), 'profile'].join('/'), formData);
+        return this.http.post(['api', 'business', 'services', serviceId, 'profile'].join('/'), formData);
     }
 
-     public getServiceProfile(serviceId: number): Observable<any> {
-        return this.http.get<any>(['api', 'business', 'services' , serviceId.toString(), 'profile'].join('/'));
+    public getServiceProfile(businessId: number, serviceId: number): Observable<any> {
+        return this.http.get<any>(['api', 'business', businessId, 'services', serviceId, 'profile'].join('/'));
     }
 }

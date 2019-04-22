@@ -54,6 +54,7 @@ public class BusinessService {
         return map;
     }
 
+
     public Business findById(long id) {
         return businessRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with id %d not found.", id)));

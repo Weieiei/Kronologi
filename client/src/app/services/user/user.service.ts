@@ -78,6 +78,14 @@ export class UserService {
         }
     }
 
+    getBusinessIdFromToken(): number {
+        try {
+            return this.getTokenClaims()['businessId'];
+        } catch (e) {
+            return null;
+        }
+    }
+
     getLastNameFromToken(): string {
         try {
             return this.getTokenClaims()['lastName'];
@@ -145,8 +153,8 @@ export class UserService {
 
     }
 
-    getAllUsers(): Observable<any[]> {
-        return this.http.get<any[]>(['api', 'business', '1', 'admin', 'users'].join('/'));
+    getAllUsers(businessId: number): Observable<any[]> {
+        return this.http.get<any[]>(['api', 'business', businessId, 'admin', 'users'].join('/'));
     }
 
     changeUserToEmployee(id: number): Observable<any> {

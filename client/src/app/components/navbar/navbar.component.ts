@@ -29,6 +29,7 @@ export class NavbarComponent implements OnInit {
     light_theme:string = 'light-theme';
     theme:string = 'light-theme';
     imagePath :string = "";
+    businessId: number;
 
     imageToShow: any;
     isImageLoading: any;
@@ -49,7 +50,7 @@ export class NavbarComponent implements OnInit {
         this.authService.setUserAuth();
 
         this.userName = this.userService.getFirstNameFromToken() + " " + this.userService.getLastNameFromToken();
-        this.userEmail = this.userService.getEmailFromToken();
+        this.businessId = parseInt(this.userService.getBusinessIdFromToken());
         this.themeService.darkModeState.subscribe(value => {
             this.darkModeActive = value;
         });
@@ -114,26 +115,26 @@ export class NavbarComponent implements OnInit {
     }
 
     goToEmployeeAppointments() {
-        this.router.navigate(['employee', 'appts']);
+        this.router.navigate([this.businessId, 'employee', 'appts']);
     }
 
     goToSyncCalendars(){
         this.router.navigate(['syncCalendars']);
     }
-    goToAdminAppointmens() {
-        this.router.navigate(['admin/appts']);
+    goToAdminAppointments() {
+        this.router.navigate([this.businessId, 'admin', 'appts']);
     }
 
     goToAdminServices() {
-        this.router.navigate(['admin/services']);
+        this.router.navigate([this.businessId + '/admin/services']);
     }
 
     goToAdminUsers() {
-        this.router.navigate(['admin/users']);
+        this.router.navigate([this.businessId +'/admin/users']);
     }
 
     goToEmployees() {
-        this.router.navigate(['admin', 'employees']);
+        this.router.navigate([this.businessId, 'admin', 'employees']);
     }
 
     goToReceipts() {

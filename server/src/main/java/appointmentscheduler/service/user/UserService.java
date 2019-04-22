@@ -175,7 +175,13 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Users for business ID %d " +
                         "not found.", id)));
     }
+    public void associateBusinessToUser(long businessId, long userId){
+       Business business = this.businessRepository.findById(businessId).get();
+       User user = this.userRepository.findById(userId).get();
 
+       business.setOwner(user);
+       this.businessRepository.save(business);
+    }
     public Map<String, String> updateUser(User user, long businessId) throws DataAccessException {
         Business business = businessRepository.findById(businessId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with ID %d not found.",

@@ -1,8 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { ServiceService } from "../../services/service/service.service";
+import {Component, OnInit} from "@angular/core";
+import {ServiceService} from "../../services/service/service.service";
 import {ServiceCreateDto} from "../../interfaces/service/service-create-dto";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import {ErrorDialogComponent} from "../../components/error-dialog/error-dialog.component";
 
 @Component({
     selector: 'app-admin-create-service',
@@ -17,14 +19,20 @@ export class CreateServiceComponent implements OnInit {
     serviceForm: FormGroup;
 
     constructor(
+        private dialog: MatDialog,
         private serviceService: ServiceService,
         private fb: FormBuilder,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute,
+
+
     ) {
     }
 
     ngOnInit() {
         this.initForm();
+        this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
+
     }
 
     initForm(): void {
@@ -42,10 +50,29 @@ export class CreateServiceComponent implements OnInit {
             //TODO: need to get Admin' business
            // businessId: 0
         };
-        //TODO: updated the 0 to the real businessID
-        this.serviceService.createService(1,serviceCreateDTO).subscribe(
-            res => this.router.navigate(['admin/services']),
-            err => console.log(err)
-        );
+        this.serviceService.createService(this.businessId, serviceCreateDTO).subscribe(
+            res => this.router.navigate([this.businessId,"admin","services"]),
+
+            err => {
+                this.openDialog(err["status"]);
+            }
+        )
+    }
+
+    openDialog(errorMessage: any) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            title: "ERROR",
+            messageOrStatus: errorMessage,
+        };
+         this.dialog.open(ErrorDialogComponent, dialogConfig);
+    }
+
+
+    redirectToServices() {
+        this.router.navigate([this.businessId + '/admin/services']);
+
     }
 }

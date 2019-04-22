@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { AppointmentService } from '../../../../services/appointment/appointment.service';
-import { AppointmentDetailed } from '../../../../models/appointment/AppointmentDetailed';
-import { map } from 'rxjs/operators';
-import { User } from '../../../../models/user/User';
-import { Service } from '../../../../models/service/Service';
-import { ThemeService } from '../../../../core/theme/theme.service';
-import { AdminEmployeeDTO } from '../../../../interfaces/employee/admin-employee-dto';
-import { UserToDisplay } from '../../../../models/user/UserToDisplay';
+import {Component, OnInit} from '@angular/core';
+import {AppointmentService} from '../../../../services/appointment/appointment.service';
+import {AppointmentDetailed} from '../../../../models/appointment/AppointmentDetailed';
+import {map} from 'rxjs/operators';
+import {User} from '../../../../models/user/User';
+import {Service} from '../../../../models/service/Service';
+import {ThemeService} from '../../../../core/theme/theme.service';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'app-admin-appointments',
@@ -15,24 +14,26 @@ import { UserToDisplay } from '../../../../models/user/UserToDisplay';
 })
 export class AdminAppointmentsComponent implements OnInit {
 
+    businessId : number;
     displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee'];
     appointments: AppointmentDetailed[];
     darkModeActive: boolean;
 
     componentState: {
         appointments: Array<AppointmentDetailed>,
-        // currentSort: IDataTableSort,
         currentPage: number,
         itemsPerPage: number,
         search: string,
         totalItems: number,
     };
 
-    constructor(private appointmentService: AppointmentService, private themeService: ThemeService) {
+    constructor(private route : ActivatedRoute, private appointmentService: AppointmentService, private themeService: ThemeService) {
 
     }
 
     ngOnInit() {
+        this.businessId = parseInt(this.route.snapshot.paramMap.get("businessId"));
+
         this.componentState = {
             appointments: [],
             // currentSort: IDataTableSort,
@@ -42,14 +43,14 @@ export class AdminAppointmentsComponent implements OnInit {
             totalItems: 0,
         };
 
-        this.getAllAppointments();
+        this.getAllAppointments(this.businessId);
         this.themeService.darkModeState.subscribe( value => {
             this.darkModeActive = value;
         });
     }
 
-    getAllAppointments(): void {
-        this.appointmentService.getAllAppointments().pipe(
+    getAllAppointments(businessId : number): void {
+        this.appointmentService.getAllAppointments(businessId).pipe(
             map(data => {
                 return data.map(a => {
                     const client = a.client;
