@@ -13,7 +13,7 @@ import { GoogleAnalyticsService } from 'src/app/services/google/google-analytics
 import { ServiceCreateDto } from '../../../interfaces/service/service-create-dto';
 import { BusinessHoursDTO } from '../../../interfaces/business/businessHours-dto'
 import { FindBusinessDialogComponent } from '../../../components/find-business-dialog/find-business-dialog.component';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog, _countGroupLabelsBeforeOption } from '@angular/material';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { trigger, state, style, transition, animate, group } from '@angular/animations';
 import { PasswordMismatchStateMatcher } from '../../../../shared/password-mismatch-state-matcher';
@@ -79,8 +79,8 @@ export interface BusinessHours {
   ]
 })
 export class BusinessRegisterComponent implements OnInit {
-     @ViewChildren('start') start;
-    @ViewChild('end') end;
+    @ViewChildren('start') start;
+    @ViewChildren('end') end;
     private publishableKey:string ="pk_test_Abn7eEcmv3zmYE39xC2PGovO00rTzkGohi";
     loaded:boolean
     lastError:Error
@@ -110,6 +110,7 @@ export class BusinessRegisterComponent implements OnInit {
     businessName: string;
     businessDomain: string;
 
+    alreadyLoaded : boolean = false;
     bankAccountType: AccountType[] = [
         {value: 'Individual'},
         {value: 'Business'}
@@ -167,6 +168,7 @@ export class BusinessRegisterComponent implements OnInit {
     areaCode: string;
     number: string;
 
+    businessHoursDTO: BusinessHoursDTO[] = [];
     confirmPassword: string;
     isPasswordVisible = false;
 
@@ -264,16 +266,18 @@ export class BusinessRegisterComponent implements OnInit {
     business_register() {
         this.spinner.show();
         this.animationState = false;
-        const businessHoursDTO: BusinessHoursDTO[] = [];
-        if (!this.isEmptyObject(this.businessHourMap)) {
-            this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) => {
-                const businessHourDTOTemp: BusinessHoursDTO = {
-                    day: day,
-                    openHour : openAndClose.start,
-                    closeHour : openAndClose.end
-                };
-                businessHoursDTO.push(businessHourDTOTemp);
-            });
+        
+        if(!this.alreadyLoaded){
+            if (!this.isEmptyObject(this.businessHourMap)) {
+                this.businessHourMap.forEach((openAndClose: BusinessHours, day: string) => {
+                    const businessHourDTOTemp: BusinessHoursDTO = {
+                        day: day,
+                        openHour : openAndClose.start,
+                        closeHour : openAndClose.end
+                    };
+                    this.businessHoursDTO.push(businessHourDTOTemp);
+                });
+            }
         }
 
         const businessInfoValues = this.businessInfoForm.value;
@@ -360,7 +364,7 @@ export class BusinessRegisterComponent implements OnInit {
             }
         }
         this.googleAnalytics.trackValues('formSubmit', 'register');
-        this.businessService.createBusiness(payload_business, payload_service, payload, businessHoursDTO, this.selectedFile, stripeSellerPayload,bankAccountInformation).subscribe(
+        this.businessService.createBusiness(payload_business, payload_service, payload, this.businessHoursDTO, this.selectedFile, stripeSellerPayload,bankAccountInformation).subscribe(
         res => {
                 this.router.navigate(['login']);
             },
@@ -453,9 +457,14 @@ export class BusinessRegisterComponent implements OnInit {
 
                     this.businessInfoForm.controls["businessName"].setValue(response["name"])
 
-                    let description : string = response["description"].replace("[","");
+                    let description : string = "This place is known to be a : ";
+                     description += response["description"].replace("[","");
                     description = description.replace("]","");
-                    description = description.replace("\"","");
+                    description = description.replace(/"/g, "");
+                    description = description.replace("_"," ");
+
+                    
+                    this.businessInfoForm.controls["businessDomain"].setValue("Other")
                     this.businessInfoForm.controls["description"].setValue(description);
                     
                     let formattedAddressFound : string[] = response["formattedAddress"].split(",");
@@ -471,13 +480,25 @@ export class BusinessRegisterComponent implements OnInit {
 
                     this.businessInfoForm.controls["country"].setValue(formattedAddressFound[3]);
                     
-                   for(const child of this.start._results){
-                       console.log(child)
-                       if(child["controlType"] !== undefined){
-                        console.log(child.trigger["nativeElement"].part.contains("value"))
-                        
-                       }
-                   }
+
+                    if(response.hasOwnProperty("business_hours")){
+                        this.alreadyLoaded = true;
+                    }
+                    console.log(this.end._results)
+                    for(let i =0; i< response["business_hours"].length;i++){
+                        if(response["business_hours"][i]["openHour"] !== "Close" && response["business_hours"][i]["closeHour"] !== "Close"){
+                            this.start._results[i]._control.value = response["business_hours"][i]["openHour"];
+                            this.end._results[i]._control.value = response["business_hours"][i]["closeHour"];
+                    
+
+                            const businessHourDTOTemp: BusinessHoursDTO = {
+                                day: response["business_hours"][i]["day"],
+                                openHour : response["business_hours"][i]["openHour"],
+                                closeHour : response["business_hours"][i]["closeHour"]
+                            };
+                         this.businessHoursDTO.push(businessHourDTOTemp);
+                        }
+                    }
                 }   
                
         });;

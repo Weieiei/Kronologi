@@ -23,6 +23,7 @@
                 <li class="menu-link " [ngClass]="{'menu-link-dark': darkModeActive}" routerLink="/admin/appts" routerLinkActive="link-active" (click)="goToAdminAppointmens()" *ngIf="authService.isAdmin()">Appointments Management</li>
                 <li class="menu-link " [ngClass]="{'menu-link-dark': darkModeActive}" routerLink="/admin/services" routerLinkActive="link-active" (click)="goToAdminServices()" *ngIf="authService.isAdmin()">Services</li>
                 <li class="menu-link" [ngClass]="{'menu-link-dark': darkModeActive}" routerLink="/admin/users" routerLinkActive="link-active" (click)="goToAdminUsers()" *ngIf="authService.isAdmin()">User Management</li>
+                <li class="menu-link " [ngClass]="{'menu-link-dark': darkModeActive}" routerLink="/admin/receipts" routerLinkActive="link-active" (click)="goToReceipts()" *ngIf="authService.isAdmin()">Receipts</li>
                 <li class="menu-link"  [ngClass]="{'menu-link-dark': darkModeActive}"   routerLinkActive="link-active" (click)="logout()">Logout</li>
               </ul>
           </section>

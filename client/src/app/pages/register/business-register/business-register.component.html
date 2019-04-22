@@ -271,17 +271,17 @@
                     </div>
                     <div fxLayout="row">
                         <div fxFlex="17">
-                            <div style="padding-top:2rem; padding-bottom:2rem" *ngFor="let day of daysOfWeek">
+                            <div style="padding-top:2.15rem;padding-bottom:2rem" *ngFor="let day of daysOfWeek">
                                 {{ day }} :
                             </div>
                         </div>
                         <div fxFlex="30">
-                            <div #start *ngFor="let day of daysOfWeek">
-                                <mat-form-field appearance="outline" > 
+                            <div  *ngFor="let day of daysOfWeek">
+                                <mat-form-field #start appearance="outline" > 
                                     <mat-label>Start</mat-label>
-                                    <mat-select #start id="i" name="food" >
+                                    <mat-select id="i" name="food" >
                                         <mat-option  *ngFor="let time of possibleBusinessHours" [value]="time"
-                                                    (onSelectionChange)="saveStartTime(d    ay,time)" >
+                                                    (onSelectionChange)="saveStartTime(day,time)" >
                                             {{time}}
                                         </mat-option>
                                     </mat-select>
@@ -289,17 +289,17 @@
                             </div>
                         </div>
                         <div fxFlex="30">
-                            <div *ngFor="let day of daysOfWeek;let i = index" [attr.data-index]="i">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>End</mat-label>
-                                    <mat-select name="food">
-                                        <mat-option #end *ngFor="let time of possibleBusinessHours"
-                                                    (onSelectionChange)="saveEndTime(day,time)"
-                                                    [disabled]="isTimeLower(day,time)" [value]="time">
-                                            {{time}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                            <div *ngFor="let day of daysOfWeek">
+                             <mat-form-field #end appearance="outline" > 
+                                            <mat-label>End</mat-label>
+                                            <mat-select id="i" name="food" >
+                                                <mat-option  *ngFor="let time of possibleBusinessHours" (onSelectionChange)="saveEndTime(day,time)"
+                                                    [disabled]="isTimeLower(day,time)" [value]="time" >
+                                                    {{time}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                
                             </div>
                         </div>
                     </div>

@@ -72,10 +72,9 @@ import { PaymentDialogComponent } from './components/payment-dialog/payment-dial
 import { Module as StripeModule } from "stripe-angular";
 import { TermsAndServicesDialogComponent } from './components/terms-and-services-dialog/terms-and-services-dialog.component';
 
+import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
 import { PasswordForgotDialogComponent } from './components/password-forgot-dialog/password-forgot-dialog.component';
-import { GuestComponent } from './pages/guest/guest.component';
-import { GuestAppointmentComponent } from "./pages/guest-appointment/guest-appointment.component";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { RoutingAndAccountHelpComponent } from './components/routing-and-account-help/routing-and-account-help.component';
@@ -137,10 +136,9 @@ import { RoutingAndAccountHelpComponent } from './components/routing-and-account
         DetailsComponent,
         GoogleMapsComponent,
         SyncCalendarsComponent,
-        GuestComponent,
-        GuestAppointmentComponent,
         PasswordResetRedirectComponent,
         PasswordForgotDialogComponent,
+        ReceiptsComponent,
         GoogleMapsComponent,
         ConfirmationAndPaymentComponent,
         PaymentDialogComponent,
