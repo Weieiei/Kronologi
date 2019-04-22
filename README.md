@@ -16,30 +16,31 @@ SOEN 490 (Capstone) project for Concordia University.
 After cloning, add a new file called secret.properties in the Kronologi/server/src/main/resources/
 Copy paste the follow code to the newly created file.
 
-twilio.account.sid=ACb13e39c6d0fc16a2900e5cf0e4a5a538
-twilio.auth.token=84b8023cffb22f0a72c8cf2bbfe73459
-twilio.from.number=+14387951801
+twilio.account.sid=ACb13e39c6d0fc16a2900e5cf0e4a5a538<br/>
+twilio.auth.token=84b8023cffb22f0a72c8cf2bbfe73459<br/>
+twilio.from.number=+14387951801<br/>
 
-#emailService properties
-emailService.id=kronologi-appointments@outlook.com
-emailService.password=_S7)CqNVJP}E(sE6
+#emailService properties<br/>
+emailService.id=kronologi-appointments@outlook.com<br/>
+emailService.password=_S7)CqNVJP}E(sE6<br/>
 
-#cloudflare API key:
-cloudflare.key=48a6b7eb7adf124a7388131b1daf01580e6df
-cloudflare.email=marc.leclair0113@gmail.com
+#cloudflare API key:<br/>
+cloudflare.key=48a6b7eb7adf124a7388131b1daf01580e6df<br/>
+cloudflare.email=marc.leclair0113@gmail.com<br/>
 
-#Google API key:
-google.key =AIzaSyC8dJm42p5ASWP_9_w-_1kkrV9PTj2L1rA
+#Google API key:<br/>
+google.key =AIzaSyC8dJm42p5ASWP_9_w-_1kkrV9PTj2L1rA<br/>
 
 
 # Running the angular for the frontend
-cd to client folder, do follow scripts:
-npm insatll and 
-ng servce
-This will run  http://localhost:4200
+cd to client folder, do follow scripts:<br/>
+npm insatll <br/>
+ng servce<br/>
+This will run  http://localhost:4200<br/>
 
 # Running the backend with intelliJ
-Import as a Maven project, build the project and run.
+Import as a Maven project<br/>
+Build the project and run <br/>
 
 # Continuous Integration
 running with travis, and the builds can be review here:
