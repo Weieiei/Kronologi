@@ -99,11 +99,12 @@ export class AdminUsersComponent implements OnInit {
     }
 
     isEmployee(user: UserToDisplay): boolean {
-        return user.userRole ==='EMPLOYEE' || user.userRole ==='ADMIN';
+        return user.userRole === 'EMPLOYEE' || user.userRole === 'ADMIN';
     }
 
     isClient(user: UserToDisplay): boolean {
-       return user.userRole ==='CLIENT';
+        console.log(user.userRole === 'CLIENT');
+        return user.userRole === 'CLIENT';
     }
 
     openAddServiceDialog(user: any) {
@@ -119,7 +120,7 @@ export class AdminUsersComponent implements OnInit {
     openChangeClientToEmployeeDialog(user: any) {
         const dialogRef = this.dialog.open(ChangeClientToEmployeeDialogComponent, {
             width: '250px',
-            data: {user: user}
+            data: {user: user, businessId: this.businessId}
         }).afterClosed().subscribe(result => {
                 this.getAllUsers();
             }

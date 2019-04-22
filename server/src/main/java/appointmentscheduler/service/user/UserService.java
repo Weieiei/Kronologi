@@ -191,6 +191,27 @@ public class UserService {
         return message("User updated");
     }
 
+    public Map<String, String> updateUserRole(User user, long businessId, String role) throws DataAccessException {
+        Business business = businessRepository.findById(businessId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Business with ID %d not found.",
+                        businessId)));
+        Employee employee = new Employee();
+        employee.setBusiness(business);
+        employee.setRole(role);
+        employee.setFirstName(user.getFirstName());
+        employee.setLastName(user.getLastName());
+        employee.setPassword(user.getPassword());
+        employee.setVerified(user.isVerified());
+        employee.setCreatedAt(user.getCreatedAt());
+        employee.setUpdatedAt(user.getUpdatedAt());
+        employee.setSettings(user.getSettings());
+        employee.setEmail(user.getEmail());
+        userRepository.delete(user);
+        employeeRepository.save(employee);
+        return message("User updated");
+    }
+
+
     private String generateToken(User user, String unhashedPassword) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), unhashedPassword));
         SecurityContextHolder.getContext().setAuthentication(authentication);

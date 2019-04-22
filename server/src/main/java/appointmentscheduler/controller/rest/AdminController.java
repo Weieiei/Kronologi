@@ -165,14 +165,14 @@ public class AdminController extends AbstractController {
         if (role.toString().equals(RoleEnum.EMPLOYEE.toString())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
-        return ResponseEntity.ok(userService.updateUser(user, businessId));
+        return ResponseEntity.ok(userService.updateUserRole(user, businessId, RoleEnum.EMPLOYEE.toString()));
     }
 
     //TODO make sure that an employee doesnt have the given service already assigned to them before storing it in the db
     @PostMapping("/{businessId}/admin/service/{employeeId}/{serviceId}")
     public ResponseEntity<Map<String, String>> assignService(@PathVariable long businessId,
                                                              @PathVariable long employeeId, @PathVariable long serviceId){
-        Employee employee = employeeShiftService.getEmployeeByBusinessId(employeeId, businessId);
+        Employee employee = employeeShiftService.   getEmployeeByBusinessId(employeeId, businessId);
         Service service = serviceService.findByIdAndBusinessId(serviceId, businessId);
         Business business = businessService.findById(businessId);
         employee.addService(service);

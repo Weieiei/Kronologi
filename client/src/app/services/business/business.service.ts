@@ -53,7 +53,7 @@ export class BusinessService {
         }
     }
     public getBusinessById(businessId: number): Observable<BusinessDTO> {
-        return this.http.get<BusinessDTO>(['api', 'businesses', businessId.toString()].join('/'));
+        return this.http.get<BusinessDTO>(['api', 'businesses', businessId].join('/'));
     }
 
     public getMoreInfoBusiness(formatted_address: string, nameOfBusiness: string): Observable<any> {

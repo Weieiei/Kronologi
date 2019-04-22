@@ -4,7 +4,8 @@ import { UserToDisplay } from "../../../../../models/user/UserToDisplay";
 import { UserService } from "../../../../../services/user/user.service";
 
 export interface DialogData {
-    user: UserToDisplay,
+    user: UserToDisplay;
+    businessId: number;
 }
 
 @Component({
@@ -14,7 +15,7 @@ export interface DialogData {
 export class ChangeClientToEmployeeDialogComponent {
 
     displayedColumns: string[] = ['service', 'date', 'time', 'duration', 'client', 'employee', 'status', 'actions'];
-    
+
     constructor(
         public dialogRef: MatDialogRef<ChangeClientToEmployeeDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -25,8 +26,7 @@ export class ChangeClientToEmployeeDialogComponent {
     }
 
     onDialogAccept(employeeId: number): void {
-        this.userService.changeUserToEmployee(this.data.user.id
-        ).subscribe(
+        this.userService.changeUserToEmployee(this.data.user.id, this.data.businessId).subscribe(
             res => this.dialogRef.close(),
             err => console.log(err)
         );
