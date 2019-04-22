@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([businessId.toString()+'/admin/appts']);
                 }
                 else if (this.userService.isEmployee()){
-                    this.router.navigate([businessId.toString()+'employee/appts']);
+                    this.router.navigate([businessId.toString()+'/employee/appts']);
                 }
                 else {
                     this.router.navigate(['business']);
