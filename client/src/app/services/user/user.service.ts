@@ -4,12 +4,12 @@ import { UserLoginDTO } from '../../interfaces/user/user-login-dto';
 import { HttpClient } from '@angular/common/http';
 import * as decode from 'jwt-decode';
 import { UserRegisterDTO } from '../../interfaces/user/user-register-dto';
-import { BusinessUserRegisterDTO } from '../../interfaces/user/business-user-register-dto';
 import { UpdateEmailDTO } from '../../interfaces/user/update-email-dto';
 import { UpdatePasswordDTO } from '../../interfaces/user/update-password-dto';
 import { SettingsDTO } from '../../interfaces/settings/settings-dto';
 import { UpdateSettingsDTO } from '../../interfaces/settings/update-settings-dto';
 import { PhoneNumberDTO } from '../../interfaces/phonenumber/phone-number-dto';
+import { PasswordResetDTO } from '../../interfaces/password-reset/password-reset-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -38,8 +38,8 @@ export class UserService {
         return !!this.getToken();
     }
 
-    public forgetGoogleAccount(): Observable<any>{
-        return this.http.get(['api', 'user','unlinkAccount'].join('/'));
+    public forgetGoogleAccount(): Observable<any> {
+        return this.http.get(['api', 'user', 'unlinkAccount'].join('/'));
     }
 
     setToken(token: string): void {
@@ -50,11 +50,11 @@ export class UserService {
         return localStorage.getItem(UserService.TOKEN_KEY);
     }
 
-    setGoogleLinked(flag : boolean):void{
+    setGoogleLinked(flag: boolean): void {
         localStorage.setItem(UserService.GOOGLE_KEY, String(flag));
     }
 
-    isGoogleLinked() : boolean{
+    isGoogleLinked(): boolean {
         return JSON.parse(localStorage.getItem(UserService.GOOGLE_KEY));
     }
     deleteToken(): void {
@@ -102,11 +102,17 @@ export class UserService {
     }
 
     isAdmin(): boolean {
-        return this.getRolesFromToken().includes('ADMIN');
+        const roleToken = this.getRolesFromToken();
+        if (roleToken)
+            return this.getRolesFromToken().includes('ADMIN');
+        return false;
     }
 
     isEmployee(): boolean {
-        return this.getRolesFromToken().includes('EMPLOYEE');
+        const roleToken = this.getRolesFromToken();
+        if (roleToken)
+            return this.getRolesFromToken().includes('EMPLOYEE');
+        return false;
     }
 
     updateEmail(payload: UpdateEmailDTO): Observable<any> {
@@ -139,11 +145,11 @@ export class UserService {
     }
 
     getAllUsers(): Observable<any[]> {
-        return this.http.get<any[]>(['api', 'business','admin','1', 'users'].join('/'));
+        return this.http.get<any[]>(['api', 'business', '1', 'admin', 'users'].join('/'));
     }
 
     changeUserToEmployee(id: number): Observable<any> {
-        return this.http.post<any[]>(['api', 'business','admin','1', 'user', 'employee', id].join('/'), "");
+        return this.http.post<any[]>(['api', 'business', 'admin', '1', 'user', 'employee', id].join('/'), '');
     }
 
     uploadUserPicture(userFile: File): Observable<any> {
@@ -156,5 +162,11 @@ export class UserService {
        return this.http.get<any>(['api', 'user', 'profile'].join('/'));
     }
 
-
+    sendPasswordResetEmail(email: string): Observable<any> {
+        return this.http.get<any>(['api', 'password', 'forgot'].join('/'), { params: { email: email }});
     }
+
+    resetPassword(payload: PasswordResetDTO): Observable<any> {
+        return this.http.post<any>(['api', 'password', 'reset'].join('/'), payload);
+    }
+}

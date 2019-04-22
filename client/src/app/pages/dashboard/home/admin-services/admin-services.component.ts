@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Service } from '../../../../models/service/Service';
 import { ServiceService } from '../../../../services/service/service.service';
-import { map } from 'rxjs/operators';
-import { UserToDisplay } from '../../../../models/user/UserToDisplay';
+import { skip, take, mergeMap, switchMap, mapTo } from 'rxjs/operators';
+import { merge } from 'rxjs/observable/merge';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
     selector: 'app-admin-services',
@@ -13,13 +14,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AdminServicesComponent implements OnInit {
  // Fields to upload a service profile picture
- selectedFile: File = null;
- fileSelectMsg: string = 'No file selected yet.';
- fileUploadMsg: string = 'No file uploaded yet.';
+    selectedFile: File = null;
+    fileSelectMsg = 'No file selected yet.';
+    fileUploadMsg = 'No file uploaded yet.';
     serviceUploadId: number;
 
     displayedColumns: string[] = ['id', 'name', 'duration', 'client', 'employee', 'profile'];
     services: Service[];
+
+    services$: Observable<Array<Service>>;
+    showNotification$: Observable<boolean>;
+    update$ = new Subject<void>();
+    forceReload$ = new Subject<void>();
 
     componentState: {
         services: Array<Service>,
@@ -36,6 +42,12 @@ export class AdminServicesComponent implements OnInit {
     }
 
     ngOnInit() {
+        const initialService$ = this.getDataOnce();
+
+        const updates$ = merge(this.update$, this.forceReload$).pipe(
+            mergeMap(() => this.getDataOnce())
+        );
+
         this.componentState = {
             services: [],
             // currentSort: IDataTableSort,
@@ -45,17 +57,32 @@ export class AdminServicesComponent implements OnInit {
             totalItems: 0,
         };
 
+        this.services$ = merge(initialService$, updates$);
+
+        const reload$ = this.forceReload$.pipe(switchMap(() => this.getNotifications()));
+        const initialNotifications$ = this.getNotifications();
+        const show$ = merge(initialNotifications$, reload$).pipe(mapTo(true));
+        const hide$ = this.update$.pipe(mapTo(false));
+        this.showNotification$ = merge(show$, hide$);
+
         this.getAllServices();
     }
 
+    getDataOnce() {
+        return this.serviceService.allServices.pipe(take(1));
+    }
+
+    getNotifications() {
+        return this.serviceService.allServices.pipe(skip(1));
+    }
+
+    forceReload() {
+        this.serviceService.forceReload();
+        this.forceReload$.next();
+    }
+
     getAllServices(): void {
-        this.serviceService.getPlainServices().pipe(
-            map(data => {
-                return data.map(a => {
-                    return a;
-                });
-            })
-        ).subscribe(
+        this.services$.subscribe(
             res => {
                 this.services = res;
                 this.componentState.services = res;

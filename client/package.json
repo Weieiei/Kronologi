@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "compodoc": "npx compodoc -p src/tsconfig.app.json"
   },
   "private": true,
   "dependencies": {
@@ -23,7 +24,9 @@
     "@angular/material": "^7.3.5",
     "@angular/platform-browser": "^7.2.12",
     "@angular/platform-browser-dynamic": "^7.2.12",
+    "@angular/pwa": "^0.12.4",
     "@angular/router": "^7.2.12",
+    "@angular/service-worker": "^7.2.12",
     "@covalent/core": "^2.0.1",
     "@types/jwt-decode": "^2.2.1",
     "angular-base64": "^2.0.5",
@@ -34,7 +37,9 @@
     "country-telephone-data": "^0.6.0",
     "css-star-rating": "^1.2.4",
     "hammerjs": "^2.0.8",
+    "html2pdf.js": "^0.9.1",
     "jquery": "^3.3.1",
+    "jspdf": "^1.5.3",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
     "ngx-country-picker": "^2.0.0",

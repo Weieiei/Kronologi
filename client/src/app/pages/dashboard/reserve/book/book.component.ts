@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {ServiceDTO} from "../../../../interfaces/service/service-dto";
-import {MatDatepickerInputEvent} from "@angular/material";
 import {AppointmentService} from "../../../../services/appointment/appointment.service";
 import {EmployeeFreeTime} from "../../../../interfaces/employee/employee-free-time";
-import {DateDTO} from "../../../../interfaces/date-and-time/DateDTO";
 import {TimeDTO} from "../../../../interfaces/date-and-time/TimeDTO";
-import * as moment from 'moment'
-import {EmployeeTimes} from "../../../../interfaces/employee/employee-times";
-import { BookAppointmentDTO } from '../../../../interfaces/appointment/book-appointment-dto';
-import {Router, ActivatedRoute} from "@angular/router";
+import {BookAppointmentDTO} from '../../../../interfaces/appointment/book-appointment-dto';
+import {ActivatedRoute, Router} from "@angular/router";
+import {AuthService} from '../../../../services/auth/auth.service';
+import {GuestCreateDto} from "../../../../interfaces/guest/guest-create-dto";
+import * as countryData from 'country-telephone-data';
 
 @Component({
   selector: 'app-book',
@@ -19,18 +18,26 @@ import {Router, ActivatedRoute} from "@angular/router";
 export class BookComponent implements OnInit {
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
+    firstName;
+    lastName;
+    registerPhone;
+    areaCode;
+    number;
+    countries: Object[] = countryData.allCountries;
+    selectedCountry: Object;
+    email;
     isOptional = false;
     service: ServiceDTO;
     date: any;
     time: any;
-    monthMax = 11;
-    dayMax = 365;
     monthsMap: Map <number, number[]>;
     daysMap: Map <number, Array<EmployeeFreeTime>>;
     employeeId: number;
     appointment: BookAppointmentDTO;
     businessId: number;
-    constructor(public route: ActivatedRoute, private router: Router, private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
+    constructor(public route: ActivatedRoute, private router: Router,
+                public authService: AuthService,
+                private _formBuilder: FormBuilder, private appointmentService: AppointmentService) {
     }
 
     ngOnInit() {
@@ -179,6 +186,42 @@ export class BookComponent implements OnInit {
 
     goBack() {
         this.router.navigate(['/home']);
+    }
+
+    selectCountry(country: Object) {
+        this.selectedCountry = country;
+    }
+
+    bookGuestAppointment() {
+
+        const payload: GuestCreateDto = {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            phoneNumber: null,
+            appointment: null
+        };
+
+        payload.appointment = {
+            employeeId: this.employeeId,
+            serviceId: this.service.id,
+            date: this.date,
+            startTime: this.time,
+        };
+
+        if (this.registerPhone) {
+            payload.phoneNumber = {
+                countryCode: this.selectedCountry['dialCode'],
+                areaCode: this.areaCode,
+                number: this.number
+            };
+        }
+
+
+        this.appointmentService.bookGuestAppointment(payload).subscribe(
+            res => console.log(res)
+        );
+
     }
 }
 

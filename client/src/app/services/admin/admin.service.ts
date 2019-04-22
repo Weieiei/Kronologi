@@ -1,28 +1,58 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject, timer } from 'rxjs';
 import { AdminEmployeeDTO } from '../../interfaces/employee/admin-employee-dto';
 import { AdminEmployeeShiftDTO } from '../../interfaces/shift/admin-employee-shift-dto';
 import { NewShiftDTO } from '../../interfaces/shift/new-shift-dto';
+import { shareReplay, switchMap, takeUntil } from 'rxjs/operators';
+
+const REFRESH_INTERVAL = 10000;
+const CACHE_SIZE = 1;
 
 @Injectable({
     providedIn: 'root'
 })
 export class AdminService {
 
+    private cache$: Observable<Array<AdminEmployeeDTO>>;
+    private reload$ = new Subject<void>();
+
     constructor(private http: HttpClient) {
     }
 
+    get allEmployees() {
+        if (!this.cache$) {
+            const timer$ = timer(0, REFRESH_INTERVAL);
+
+            this.cache$ = timer$.pipe(
+                switchMap(() => this.requestAllEmployees()),
+                takeUntil(this.reload$),
+                shareReplay(CACHE_SIZE)
+            );
+        }
+
+        return this.cache$;
+    }
+    requestAllEmployees() {
+        return this.getAllEmployees();
+    }
+
+    forceReload() {
+        this.reload$.next();
+        this.cache$ = null;
+    }
+
+
     public getAllEmployees(): Observable<AdminEmployeeDTO[]> {
-        return this.http.get<AdminEmployeeDTO[]>(['api', 'business', 'admin', '1', 'employees'].join('/'));
+        return this.http.get<AdminEmployeeDTO[]>(['api', 'business',  '1', 'admin', 'employees'].join('/'));
     }
 
     getEmployee(employeeId: number): Observable<AdminEmployeeDTO> {
-        return this.http.get<AdminEmployeeDTO>(['api', 'business', 'admin', '1', 'employee', employeeId].join('/'));
+        return this.http.get<AdminEmployeeDTO>(['api', 'business', '1', 'admin', 'employee', employeeId].join('/'));
     }
 
     getEmployeeShifts(employeeId: number): Observable<AdminEmployeeShiftDTO[]> {
-        return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'business', 'admin', '1', 'employee', employeeId, 'shift'].join('/'));
+        return this.http.get<AdminEmployeeShiftDTO[]>(['api', 'business', '1', 'admin', 'employee', employeeId, 'shift'].join('/'));
     }
 
     addShift(employeeId: number, payload: NewShiftDTO): Observable<AdminEmployeeShiftDTO> {

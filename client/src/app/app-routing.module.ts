@@ -27,6 +27,8 @@ import { AdminEmployeesComponent } from './pages/dashboard/home/admin-employees/
 import { BusinessViewComponent } from './pages/business-view/business-view.component';
 import { BookComponent } from './pages/dashboard/reserve/book/book.component';
 import { DetailsComponent } from './pages/details/details.component';
+import { PasswordResetRedirectComponent } from './pages/password-reset-redirect/password-reset-redirect.component';
+import { ReceiptsComponent } from "./pages/receipts/receipts.component";
 
 const routes: Routes = [
     // Login
@@ -35,25 +37,28 @@ const routes: Routes = [
     // Register
     { path: 'register', component: RegisterComponent, canActivate: [AnonymousGuard] },
     { path: 'register_business', component: BusinessRegisterComponent, canActivate: [AnonymousGuard] },
-
     { path: 'verification', component: VerifiedComponent, canActivate: [AnonymousGuard] },
+
+    // Password Reset
+    { path: 'password/reset', component: PasswordResetRedirectComponent, canActivate: [AnonymousGuard] },
 
     // Dashboard
     {
         path: '',
         component: DashboardComponent,
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         children: [
 
             // Appointments for business
-            { path: 'business', component: BusinessViewComponent },
+            { path: 'business', component: BusinessViewComponent},
 
             // Home
-            { path: 'home/:businessId', component: HomeComponent },
+            { path: 'home/:businessId', component: HomeComponent,  canActivate: [AdminGuard] },
 
             // Admin
             { path: 'admin/employees', component: AdminEmployeesComponent, canActivate: [AdminGuard] },
             { path: 'admin/employees/:id/shifts', component: ShiftComponent, canActivate: [AdminGuard] },
+            { path: 'admin/:businessId/receipts', component: ReceiptsComponent, canActivate: [AdminGuard]},
 
             // Reserving and modifying reservation
             {path : 'details/:businessId', component: DetailsComponent},

@@ -1,9 +1,6 @@
 package appointmentscheduler.service.user;
 
-import appointmentscheduler.converters.business.BusinessDTOToBusiness;
 import appointmentscheduler.dto.phonenumber.PhoneNumberDTO;
-import appointmentscheduler.dto.service.ServiceCreateDTO;
-import appointmentscheduler.dto.business.BusinessDTO;
 import appointmentscheduler.dto.settings.UpdateSettingsDTO;
 import appointmentscheduler.dto.user.UpdateEmailDTO;
 import appointmentscheduler.dto.user.UpdatePasswordDTO;
@@ -12,23 +9,21 @@ import appointmentscheduler.dto.user.UserRegisterDTO;
 import appointmentscheduler.entity.business.Business;
 import appointmentscheduler.entity.phonenumber.PhoneNumber;
 import appointmentscheduler.entity.role.RoleEnum;
-import appointmentscheduler.entity.service.Service;
 import appointmentscheduler.entity.settings.Settings;
+import appointmentscheduler.entity.user.Employee;
 import appointmentscheduler.entity.user.User;
 import appointmentscheduler.entity.user.UserFactory;
 import appointmentscheduler.entity.verification.Verification;
-import appointmentscheduler.exception.IncorrectPasswordException;
-import appointmentscheduler.exception.InvalidUpdateException;
-import appointmentscheduler.exception.ResourceNotFoundException;
-import appointmentscheduler.exception.UserAlreadyExistsException;
+import appointmentscheduler.exception.*;
 import appointmentscheduler.repository.*;
 import appointmentscheduler.util.JwtProvider;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Answers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,8 +32,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -71,8 +65,12 @@ public class UserServiceTest {
 
     @Mock
     private BusinessRepository businessRepository;
+
     @Mock
     private EmployeeRepository employeeRepository;
+
+    @Mock
+    private ResetPasswordTokenRepository resetPasswordTokenRepository;
 
     private UserService userService;
 
@@ -80,7 +78,7 @@ public class UserServiceTest {
     public void before() {
         userService = new UserService(
                 employeeRepository, businessRepository, userRepository, jwtProvider, verificationRepository,
-                bCryptPasswordEncoder, authenticationManager, settingsRepository, phoneNumberRepository
+                bCryptPasswordEncoder, authenticationManager, settingsRepository, phoneNumberRepository, resetPasswordTokenRepository
         );
     }
 
@@ -95,36 +93,52 @@ public class UserServiceTest {
         when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(mockedUser));
 
         // run method
-        userService.register(userRegisterDTO, RoleEnum.CLIENT);
+        userService.register(userRegisterDTO, RoleEnum.EMPLOYEE);
 
         // fail if it didn't throw an error
         fail("Exception should have been thrown");
     }
 
     @Test
-    public void registerSucceeded() throws NoSuchAlgorithmException, MessagingException, IOException {
-        // create mocks
-        User mockedUser = new User();
-        final UserRegisterDTO userRegisterDTO = mock(UserRegisterDTO.class);
-        final Verification mockVerification = mock(Verification.class);
-
-        // mock methods
-        when(userRegisterDTO.getEmail()).thenReturn("testEmail");
-        when(userRegisterDTO.getPassword()).thenReturn("pass");
-
-        //user does not already exist
+    public void registerSucceeded() throws IOException, MessagingException, NoSuchAlgorithmException {
+        final User mockedUser = mock(User.class);
         when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.empty());
-
-        //create user + verification
-        when(userRepository.save(any())).thenReturn(mockedUser);
-        when(verificationRepository.save(any())).thenReturn(mockVerification);
-
-        // run method
+        PhoneNumberDTO phoneNumberDTO = mock(PhoneNumberDTO.class);
+        final UserRegisterDTO userRegisterDTO = mock(UserRegisterDTO.class);
+        when(userRegisterDTO.getEmail()).thenReturn("abc");
+        when(userRegisterDTO.getPassword()).thenReturn("passpass");
+        when(userRegisterDTO.getPhoneNumber()).thenReturn(phoneNumberDTO);
+        when(phoneNumberDTO.getAreaCode()).thenReturn("514");
+        when(phoneNumberDTO.getCountryCode()).thenReturn("1");
+        when(phoneNumberDTO.getNumber()).thenReturn("1234567");
+        when(userRepository.save(any(User.class))).thenReturn(mockedUser);
         userService.register(userRegisterDTO, RoleEnum.CLIENT);
+        verify(verificationRepository).save(any(Verification.class));
+
+
     }
 
+    @Test(expected = ModelValidationException.class)
+    public void testLoginIncompleteVerification() {
+        final UserLoginDTO userLoginDTO = mock(UserLoginDTO.class);
+        final User user = mock(User.class);
+        when(user.isVerified()).thenReturn(false);
+
+        // mock methods
+        when(userLoginDTO.getEmail()).thenReturn("testEmail");
+
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
+
+        // run method
+        userService.login(userLoginDTO);
+
+        // fail if it didn't throw an error
+        fail("Exception should have been thrown");
+    }
+
+
     @Test(expected = BadCredentialsException.class)
-    public void loginFailed() {
+    public void testLoginFailedBadCreDentials() {
         // create mocks
         final UserLoginDTO userLoginDTO = mock(UserLoginDTO.class);
 
@@ -369,33 +383,113 @@ public void businessRegisterFailed() throws IOException, MessagingException, NoS
 }
 
     @Test
+    public void testFindUserById() {
+        final User mockUser = Mockito.mock(User.class);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
+        Assert.assertEquals(userService.findUserById(anyLong()), mockUser);
+    }
+
+    @Test()
+    public void testFindUserByIdNotFound() {
+        String msg = "User with id 2 not found.";
+        long id = 2;
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+        try {
+            userService.findUserById(id);
+            fail();
+        } catch (ResourceNotFoundException e) {
+            Assert.assertEquals(e.getMessage(), msg);
+        }
+    }
+
+    @Test
+    public void testFindByIdAndBusinessId() {
+        Employee employeeMock = Mockito.mock(Employee.class);
+        when(employeeRepository.findByIdAndBusinessId(anyLong(), anyLong())).thenReturn(Optional.of(employeeMock));
+        Assert.assertEquals(userService.findByIdAndBusinessId(anyLong(), anyLong()),
+                employeeMock);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testFindByIdAndBusinessIdResourceNotFoundException() {
+        when(userService.findByIdAndBusinessId(anyLong(), anyLong())).thenReturn(null);
+    }
+
+    @Test
+    public void testFindAllByBusinessId() throws ResourceNotFoundException {
+        User userMock = Mockito.mock(User.class);
+        List userList = new ArrayList();
+        userList.add(userMock);
+        when(userRepository.findAllByBusinessId(anyLong())).thenReturn(Optional.of(userList));
+        Assert.assertEquals(userService.findAllByBusinessId(anyLong()), userList);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testFindAllByBusinessIdResourceNotFound() throws ResourceNotFoundException {
+        when(userRepository.findAllByBusinessId(anyLong())).thenReturn(Optional.empty());
+        userService.findAllByBusinessId(anyLong());
+    }
+
+    @Test
+    public void updateUser() {
+        Business businessMock = Mockito.mock(Business.class);
+        User userMock = Mockito.mock(User.class);
+        Map<String, String> message = new HashMap<>();
+        message.put("message", "User updated");
+        when(businessRepository.findById(anyLong())).thenReturn(Optional.of(businessMock));
+        Assert.assertEquals(userService.updateUser(userMock, anyLong()), message);
+    }
+
+    @Test
+    @Ignore
+    public void testUpdateEmail() {
+        long id = 2;
+        String msg = "You've successfully updated your email to email";
+        Map<String, String> message = new HashMap<>();
+        CharSequence charSequence = "baeldung";
+        message.put("message", msg);
+        User userMock = Mockito.mock(User.class);
+        Business businessMock = Mockito.mock(Business.class);
+        BCryptPasswordEncoder passwordEncoder = Mockito.mock(BCryptPasswordEncoder.class);
+        when(passwordEncoder.matches(any(CharSequence.class), anyString())).thenReturn(true);
+        UpdateEmailDTO updateEmailDTO = Mockito.mock(UpdateEmailDTO.class);
+        when(updateEmailDTO.getNewEmail()).thenReturn("email");
+        when(userRepository.findByIdAndEmailIgnoreCase(anyLong(), anyString())).thenReturn(Optional.of(userMock));
+        when(userRepository.findByEmailIgnoreCase(updateEmailDTO.getNewEmail())).thenReturn(Optional.of(userMock));
+        when(updateEmailDTO.getPassword()).thenReturn(charSequence.toString());
+        when(bCryptPasswordEncoder.matches(charSequence, charSequence.toString())).thenReturn(true);
+//        when(userMock.getPassword()).thenReturn(anyString());
+        when(businessRepository.findById(anyLong())).thenReturn(Optional.of(businessMock));
+        Assert.assertEquals(userService.updateEmail(id, "email", updateEmailDTO), message);
+
+    }
+
+
+    @Test
     public void businessRegisterSucceeded() throws IOException, MessagingException, NoSuchAlgorithmException{
         // create mocks
+
         final User mockedUser = mock(User.class);
-        final User savedUser =mock(User.class);
+
         final UserRegisterDTO userRegisterDTO = mock(UserRegisterDTO.class);
         final Business mockedBusiness= mock(Business.class);
         final Verification mockedVerification = mock(Verification.class);
-        final Verification savedVerification = mock(Verification.class);
-        final VerificationRepository verificationRepository =mock(VerificationRepository.class);
-        final UserRepository userRepository = mock(UserRepository.class);
-        final UserFactory userFactory = mock(UserFactory.class);
-
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
-       // when(verificationRepository.save(any(Verification.class))).thenReturn(savedVerification);
-
-        //when(userFactory.createAdmin(any(Business.class),User.class,anyString(),anyString()
-         //       ,anyString(),anyString())
-       //).thenReturn(mockedUser);
-
-        Map<String, Object> map = userService.business_register_test(userRepository, userRegisterDTO, mockedBusiness,mockedUser,mockedVerification ,savedUser, savedVerification);
 
 
-       // verify(userFactory).createAdmin(any(Business.class),User.class,anyString(),anyString()
-        //        ,anyString(),anyString());
-       // verify(mockedUser).setRole(anyString());
-        verify(userRepository).save(any(User.class));
-       // verify(verificationRepository).save(any(Verification.class));
+        PhoneNumberDTO phoneNumberDTO = mock(PhoneNumberDTO.class);
+
+        //stub
+        when(userRegisterDTO.getEmail()).thenReturn("abc@abc.com");
+        when(userRegisterDTO.getPassword()).thenReturn("password");
+        when(userRegisterDTO.getPhoneNumber()).thenReturn(phoneNumberDTO);
+        when(phoneNumberDTO.getAreaCode()).thenReturn("514");
+        when(phoneNumberDTO.getCountryCode()).thenReturn("1");
+        when(phoneNumberDTO.getNumber()).thenReturn("1234567");
+        when(userRepository.save(any(User.class))).thenReturn(mockedUser);
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.empty());
+
+        Map<String, Object> map = userService.businessRegister(userRegisterDTO, mockedBusiness);
+        verify(verificationRepository).save(any(Verification.class));
 
     }
 }
